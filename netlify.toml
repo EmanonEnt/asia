@@ -1,9 +1,0 @@
-[build]
-  command = "echo 'Build complete'"
-  publish = "."
-
-[[redirects]]
-  from = "/api/v1/auth"
-  to = "https://api.netlify.com/auth/:splat"
-  status = 200
-  force = true
