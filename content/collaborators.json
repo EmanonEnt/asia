@@ -1,0 +1,46 @@
+{
+  "logos": [
+    {
+      "name": "Partner 1",
+      "logo": "./image/logo1.png",
+      "link": "#",
+      "order": 1,
+      "active": true
+    },
+    {
+      "name": "Partner 2",
+      "logo": "./image/logo2.png",
+      "link": "#",
+      "order": 2,
+      "active": true
+    },
+    {
+      "name": "Partner 3",
+      "logo": "./image/logo3.png",
+      "link": "#",
+      "order": 3,
+      "active": true
+    },
+    {
+      "name": "Partner 4",
+      "logo": "./image/logo4.png",
+      "link": "#",
+      "order": 4,
+      "active": true
+    },
+    {
+      "name": "Partner 5",
+      "logo": "./image/logo5.png",
+      "link": "#",
+      "order": 5,
+      "active": true
+    },
+    {
+      "name": "Partner 6",
+      "logo": "./image/logo6.png",
+      "link": "#",
+      "order": 6,
+      "active": true
+    }
+  ]
+}
