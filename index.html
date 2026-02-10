@@ -416,28 +416,30 @@
             letter-spacing: 3px;
         }
 
-        /* ==================== 海报区域 ==================== */
+        /* ==================== 海报区域 - 满屏显示 ==================== */
         .posters-showcase {
             width: 100%;
-            padding: 100px 0;
+            padding: 0;
             background: linear-gradient(180deg, #050505 0%, #0a0a0a 50%, #050505 100%);
             position: relative;
         }
 
         .posters-container {
-            max-width: 1400px;
+            width: 100%;
+            max-width: none;
             margin: 0 auto;
             display: flex;
-            justify-content: center;
+            justify-content: stretch;
             align-items: stretch;
             gap: 0;
-            padding: 0 20px;
+            padding: 0;
         }
 
         /* 海报1 - 保持原有效果 */
         .poster-item {
             flex: 1;
             min-width: 0;
+            max-width: none;
             position: relative;
             overflow: hidden;
             cursor: default;
@@ -506,12 +508,13 @@
         .poster-item-alt {
             flex: 1;
             min-width: 0;
+            max-width: none;
             position: relative;
             overflow: hidden;
             cursor: default;
             background: #000;
             transition: all 0.4s ease;
-            border: 2px solid transparent;
+            border: none;
         }
 
         .poster-item-alt:hover {
@@ -867,8 +870,6 @@
             .rebel-content { opacity: 1; transform: translate(-50%, -50%); padding: 15px; }
             .rebel-content h2 { font-size: clamp(20px, 6vw, 40px); letter-spacing: 3px; margin-bottom: 15px; }
             .rebel-content .neon-btn { padding: 10px 20px; font-size: 11px; }
-            .posters-container { padding: 0 15px; gap: 12px; }
-            .poster-item { border-radius: 6px; }
             .poster-title { font-size: 14px; }
             .footer-gap { height: 100px; }
             .footer-main { padding: 40px 30px 30px; }
@@ -895,40 +896,42 @@
             .rebel-content { width: 95%; padding: 10px; }
             .rebel-content h2 { font-size: clamp(18px, 5.5vw, 28px); letter-spacing: 2px; margin-bottom: 12px; line-height: 1.3; }
             .rebel-content .neon-btn { padding: 8px 16px; font-size: 10px; letter-spacing: 1px; }
-            .posters-showcase { padding: 60px 0; }
+            
+            /* 手机端海报恢复有间距的显示 */
             .posters-container { padding: 0 20px; gap: 15px; justify-content: center; }
             
-            /* 手机端海报2和3恢复放大效果 */
+            .poster-item,
             .poster-item-alt {
                 flex: 0 0 calc(33.333% - 10px);
                 max-width: calc(33.333% - 10px);
                 min-width: auto;
                 border-radius: 4px;
-                border: none;
             }
             
+            .poster-item:hover,
             .poster-item-alt:hover {
-                border-color: transparent;
-                box-shadow: 0 25px 60px rgba(139, 0, 0, 0.4);
                 transform: translateY(-12px);
+                box-shadow: 0 25px 60px rgba(139, 0, 0, 0.4);
             }
             
+            .poster-item img,
             .poster-item-alt img {
                 transition: all 0.4s;
             }
             
+            .poster-item:hover img,
             .poster-item-alt:hover img {
                 filter: brightness(0.65);
                 transform: scale(1.08);
             }
             
+            .poster-overlay,
             .poster-item-alt .poster-overlay {
                 padding: 12px 6px 10px;
             }
             
             .poster-title { font-size: 10px; letter-spacing: 1px; margin-bottom: 4px; }
             .poster-link { font-size: 9px; letter-spacing: 0.5px; }
-            .poster-overlay { padding: 12px 6px 10px; }
             .footer-gap { height: 80px; }
             .footer-main { padding: 35px 25px 25px; }
             .footer-logo { font-size: 28px; letter-spacing: 3px; margin-bottom: 15px; }
@@ -948,6 +951,7 @@
             .hero-title { font-size: 38px; letter-spacing: 3px; }
             .hero-subtitle { font-size: 11px; }
             .posters-container { padding: 0 15px; gap: 12px; }
+            .poster-item,
             .poster-item-alt {
                 flex: 0 0 calc(33.333% - 8px);
                 max-width: calc(33.333% - 8px);
@@ -1024,7 +1028,7 @@
             </div>
         </section>
 
-        <!-- 海报 -->
+        <!-- 海报 - 满屏显示 -->
         <section class="posters-showcase">
             <div class="posters-container">
                 <div class="poster-item" data-poster-id="1" data-link="https://wxaurl.cn/HMcAK6R7fou" data-editable="poster-1">
@@ -1109,8 +1113,8 @@
 
             <div class="footer-bottom">
                 <div class="footer-legal">
-                    <a href="privacypolicy.html" data-editable="footer-privacy" data-href="privacypolicy.html" data-text="Privacy Policy">Privacy Policy</a>
-                    <a href="accessibilitystatement.html" data-editable="footer-accessibility" data-href="accessibilitystatement.html" data-text="Accessibility Statement">Accessibility Statement</a>
+                    <a href="#" data-editable="footer-privacy" data-href="#" data-text="Privacy Policy">Privacy Policy</a>
+                    <a href="#" data-editable="footer-accessibility" data-href="#" data-text="Accessibility Statement">Accessibility Statement</a>
                 </div>
                 <div class="copyright" data-editable="footer-copyright" data-text="Copyright © 2001-2026 EMANON ENT. - All Rights Reserved.">
                     Copyright © 2001-2026 EMANON ENT. - All Rights Reserved.
@@ -1148,10 +1152,65 @@
         </div>
     </div>
 
+    <!-- JavaScript -->
     <script>
-        // ==================== 后台管理 API ====================
-        
-        // 更新单个元素内容
+        function openModal() {
+            document.getElementById('membershipModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('membershipModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        document.getElementById('membershipModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        function handleSubmit(e) {
+            e.preventDefault();
+            const formData = {
+                name: document.getElementById('memberName').value,
+                email: document.getElementById('memberEmail').value,
+                phone: document.getElementById('memberPhone').value,
+                message: document.getElementById('memberMessage').value,
+                timestamp: new Date().toISOString(),
+                source: 'LiveGigs Asia Homepage'
+            };
+            let submissions = JSON.parse(localStorage.getItem('membershipSubmissions') || '[]');
+            submissions.push(formData);
+            localStorage.setItem('membershipSubmissions', JSON.stringify(submissions));
+            alert('Thank you for your application! We will contact you soon.');
+            closeModal();
+            document.getElementById('membershipForm').reset();
+        }
+
+        document.getElementById('logo').addEventListener('error', function() {
+            this.style.display = 'none';
+        });
+
+        function checkBackgroundImage() {
+            const img = new Image();
+            img.onerror = function() {
+                document.getElementById('heroBg').style.background = 'linear-gradient(135deg, #1a0000 0%, #000 50%, #1a0000 100%)';
+            };
+            img.src = './image/hero%20bg.jpeg';
+        }
+        checkBackgroundImage();
+
+        const slider = document.getElementById('rebelSlider');
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.rebel-slide');
+        const totalSlides = slides.length;
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+
+        setInterval(nextSlide, 5000);
+
         function updateContent(editableId, newValue, type = 'text') {
             const element = document.querySelector(`[data-editable="${editableId}"]`);
             if (!element) return;
@@ -1168,7 +1227,7 @@
             } else if (type === 'link') {
                 element.setAttribute('data-link', newValue);
                 const linkElement = element.querySelector('.poster-link');
-                if (linkElement) linkElement.href = newValue;
+                if (linkElement) linkElement.href = newLink;
             } else if (type === 'mailto') {
                 element.href = 'mailto:' + newValue;
                 element.textContent = newValue;
@@ -1181,12 +1240,10 @@
             }
         }
 
-        // 批量更新内容
         function updateMultipleContent(updates) {
             updates.forEach(update => updateContent(update.id, update.value, update.type));
         }
 
-        // 获取所有可编辑内容
         function getAllEditableContent() {
             const elements = document.querySelectorAll('[data-editable]');
             const content = {};
@@ -1209,7 +1266,6 @@
             return content;
         }
 
-        // 更新海报链接
         function updatePosterLink(posterId, newLink) {
             const poster = document.querySelector(`[data-poster-id="${posterId}"]`);
             if (poster) {
@@ -1219,7 +1275,6 @@
             }
         }
 
-        // 社交媒体管理
         const SocialManager = {
             add: function(platform, href, svgPath) {
                 const container = document.getElementById('socialContainer');
@@ -1246,7 +1301,6 @@
             }
         };
 
-        // 底部管理
         const FooterAdmin = {
             updateText: updateContent,
             updateHref: function(id, href) { updateContent(id, href, 'href'); },
@@ -1255,30 +1309,12 @@
             updatePhone: function(id, phone) { updateContent(id, phone, 'tel'); }
         };
 
-        // Banner管理 - 支持最多10个banner
-        const BannerManager = {
-            banners: [],
-            add: function(image, title, buttonText, buttonLink) {
-                const index = this.banners.length + 1;
-                if (index > 10) return; // 最多10个
-                
-                this.banners.push({ image, title, buttonText, buttonLink });
-                
-                // 动态添加banner到DOM
-                const slider = document.getElementById('rebelSlider');
-                const slide = document.createElement('div');
-                slide.className = 'rebel-slide';
-                slide.setAttribute('data-editable', `banner-slide-${index}`);
-                slide.innerHTML = `
-                    <img src="${image}" alt="${title}" class="rebel-poster" data-editable="banner-${index}-image" data-src="${image}">
-                    <div class="rebel-content">
-                        <h2 data-editable="banner-${index}-title" data-text="${title}">${title}</h2>
-                        <button class="neon-btn" onclick="window.open('${buttonLink}', '_blank')" data-editable="banner-${index}-btn" data-text="${buttonText}" data-href="${buttonLink}">${buttonText}</button>
-                    </div>
-                `;
-                slider.appendChild(slide);
-            },
-            update: function(index, image, title, buttonText, buttonLink) {
+        window.LiveGigsAdmin = {
+            update: updateContent,
+            updateMultiple: updateMultipleContent,
+            getAll: getAllEditableContent,
+            updatePosterLink: updatePosterLink,
+            updateBanner: function(index, image, title, buttonText, buttonLink) {
                 updateContent(`banner-${index}-image`, image, 'src');
                 updateContent(`banner-${index}-title`, title, 'text');
                 updateContent(`banner-${index}-btn`, buttonText, 'text');
@@ -1288,91 +1324,12 @@
                     btn.onclick = function() { window.open(buttonLink, '_blank'); };
                 }
             },
-            remove: function(index) {
-                const slide = document.querySelector(`[data-editable="banner-slide-${index}"]`);
-                if (slide) slide.remove();
-            }
-        };
-
-        // 海报管理
-        const PosterManager = {
-            update: function(index, image, title, linkText, link) {
+            updatePoster: function(index, image, title, linkText, link) {
                 updateContent(`poster-${index}-image`, image, 'src');
                 updateContent(`poster-${index}-title`, title, 'text');
                 updateContent(`poster-${index}-link-text`, linkText, 'text');
                 updatePosterLink(index, link);
-            }
-        };
-
-        // ==================== 原有功能 ====================
-
-        function checkBackgroundImage() {
-            const img = new Image();
-            img.onerror = function() {
-                document.getElementById('heroBg').style.background = 'linear-gradient(135deg, #1a0000 0%, #000 50%, #1a0000 100%)';
-            };
-            img.src = './image/hero%20bg.jpeg';
-        }
-        checkBackgroundImage();
-
-        function openModal() {
-            document.getElementById('membershipModal').classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeModal() {
-            document.getElementById('membershipModal').classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-
-        document.getElementById('membershipModal').addEventListener('click', function(e) {
-            if (e.target === this) closeModal();
-        });
-
-        function handleSubmit(e) {
-            e.preventDefault();
-            const formData = {
-                name: document.getElementById('memberName').value,
-                email: document.getElementById('memberEmail').value,
-                phone: document.getElementById('memberPhone').value,
-                message: document.getElementById('memberMessage').value,
-                timestamp: new Date().toISOString(),
-                source: 'LiveGigs Asia Website',
-                to: 'xrebooking@hotmail.com'
-            };
-            
-            // 保存到本地存储
-            let submissions = JSON.parse(localStorage.getItem('membershipSubmissions') || '[]');
-            submissions.push(formData);
-            localStorage.setItem('membershipSubmissions', JSON.stringify(submissions));
-            
-            // 实际应用中这里发送到后端API
-            console.log('Membership submission:', formData);
-            
-            alert('Thank you for your application! We will contact you soon.');
-            closeModal();
-            document.getElementById('membershipForm').reset();
-        }
-
-        let rebelCurrent = 0;
-        const rebelSlider = document.getElementById('rebelSlider');
-        setInterval(() => {
-            rebelCurrent = (rebelCurrent + 1) % 2;
-            rebelSlider.style.transform = `translateX(-${rebelCurrent * 100}%)`;
-        }, 5000);
-
-        document.getElementById('logo').addEventListener('error', function() {
-            this.style.display = 'none';
-        });
-
-        // ==================== 全局API暴露 ====================
-        window.LiveGigsAdmin = {
-            update: updateContent,
-            updateMultiple: updateMultipleContent,
-            getAll: getAllEditableContent,
-            updatePosterLink: updatePosterLink,
-            banner: BannerManager,
-            poster: PosterManager,
+            },
             social: SocialManager,
             footer: FooterAdmin
         };
