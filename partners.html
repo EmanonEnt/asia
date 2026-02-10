@@ -1,0 +1,1785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partners - LiveGigs Asia</title>
+    <link rel="icon" type="image/png" href="./image/webtop.png">
+    <link rel="shortcut icon" type="image/png" href="./image/webtop.png">
+    <link rel="preload" href="./image/webtop.png" as="image">
+    <style>
+        :root {
+            --dark-red: #8b0000;
+            --darker-red: #4a0000;
+            --silver: #c0c0c0;
+            --silver-bg: #d0d0d0;
+            --black: #050505;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100%;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            background-color: var(--black);
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* ==================== 导航栏 ==================== */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 80px;
+            padding: 0 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 9999;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .logo-img {
+            height: 45px;
+            width: auto;
+            max-width: 180px;
+            object-fit: contain;
+            cursor: pointer;
+            animation: logoBreathe 8s ease-in-out infinite, logoFlash 8s ease-in-out infinite;
+        }
+
+        @keyframes logoBreathe {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 5px rgba(139, 0, 0, 0.4)); }
+            50% { transform: scale(1.03); filter: drop-shadow(0 0 15px rgba(139, 0, 0, 0.8)); }
+        }
+
+        @keyframes logoFlash {
+            0%, 90%, 100% { filter: drop-shadow(0 0 5px rgba(139, 0, 0, 0.4)); }
+            95% { filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.8)) drop-shadow(0 0 15px rgba(139, 0, 0, 1)); }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .nav-links a:hover {
+            color: var(--dark-red);
+            text-shadow: 0 0 10px rgba(139, 0, 0, 0.8);
+        }
+
+        .nav-links a.active {
+            color: var(--dark-red);
+            border-bottom: 2px solid var(--dark-red);
+        }
+
+        .nav-links .neon-btn {
+            background: rgba(139, 0, 0, 0.3);
+            color: #fff;
+            border: 2px solid var(--dark-red);
+            padding: 10px 25px;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-links .neon-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-links .neon-btn:hover::before {
+            left: 100%;
+        }
+
+        .nav-links .neon-btn:hover {
+            background: var(--dark-red);
+            border-color: var(--dark-red);
+            box-shadow: 0 0 30px rgba(139, 0, 0, 0.8), 0 0 60px rgba(139, 0, 0, 0.4);
+            transform: scale(1.05);
+            letter-spacing: 3px;
+        }
+
+        /* ==================== Hero Section ==================== */
+        .hero {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('./image/hero%20bg.jpeg');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            filter: grayscale(100%) brightness(0.35);
+            z-index: 0;
+            animation: bgFlash 8s ease-in-out infinite;
+        }
+
+        @keyframes bgFlash {
+            0%, 85%, 100% { filter: grayscale(100%) brightness(0.35); }
+            90%, 95% { filter: grayscale(80%) brightness(0.5); }
+        }
+
+        .smoke-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 3;
+            overflow: hidden;
+            pointer-events: none;
+            opacity: 0.5;
+            animation: breathe 8s ease-in-out infinite;
+        }
+
+        .smoke {
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(ellipse at center, rgba(255,255,255,0.04) 0%, transparent 50%);
+            filter: blur(60px);
+        }
+
+        .smoke:nth-child(1) { top: -30%; left: -30%; animation: smokeFloat1 18s ease-in-out infinite; }
+        .smoke:nth-child(2) { top: 10%; right: -30%; animation: smokeFloat2 22s ease-in-out infinite; opacity: 0.6; }
+        .smoke:nth-child(3) { bottom: -30%; left: 10%; animation: smokeFloat3 20s ease-in-out infinite; opacity: 0.4; }
+
+        @keyframes breathe {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.02); }
+        }
+
+        @keyframes smokeFloat1 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(5%, 3%) scale(1.1); }
+        }
+
+        @keyframes smokeFloat2 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-5%, -3%) scale(1.05); }
+        }
+
+        @keyframes smokeFloat3 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(3%, -5%) scale(1.08); }
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 100%);
+            z-index: 2;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            width: 100%;
+            padding: 0 20px;
+            margin-top: 120px;
+        }
+
+        .hero-title {
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: clamp(80px, 14vw, 220px);
+            font-weight: 400;
+            letter-spacing: clamp(8px, 2vw, 20px);
+            line-height: 0.85;
+            margin-bottom: 40px;
+            max-width: 1900px;
+            margin-left: auto;
+            margin-right: auto;
+            text-transform: uppercase;
+            animation: textFlash 8s ease-in-out infinite;
+        }
+
+        @keyframes textFlash {
+            0%, 90%, 100% { opacity: 0.9; text-shadow: 0 0 30px rgba(139, 0, 0, 0.3); }
+            95% { opacity: 1; text-shadow: 0 0 60px rgba(139, 0, 0, 0.8), 0 0 100px rgba(255, 255, 255, 0.3); }
+        }
+
+        .hero-title .gray {
+            color: rgba(100, 100, 100, 0.95);
+        }
+
+        .hero-title .red {
+            color: rgba(139, 0, 0, 0.95);
+        }
+
+        .hero-subtitle {
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: clamp(22px, 3.5vw, 42px);
+            letter-spacing: clamp(4px, 1vw, 10px);
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 1400px;
+            margin: 80px auto 0;
+            padding: 0 20px;
+            line-height: 1.8;
+            animation: textFlash 8s ease-in-out infinite;
+            animation-delay: 0.3s;
+        }
+
+        .hero-subtitle .line1 {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .hero-subtitle .line2 {
+            display: block;
+            color: rgba(200, 200, 200, 0.9);
+            font-size: 0.95em;
+        }
+
+        /* ==================== 内容包装器 ==================== */
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
+            margin-top: 100vh;
+            background: var(--black);
+            min-height: 100vh;
+        }
+
+        /* ==================== Banner/Partner Blocks区域 ==================== */
+        .partner-sections {
+            width: 100%;
+            background: var(--black);
+        }
+
+        .partner-block {
+            position: relative;
+            width: 100%;
+            height: auto;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 0 0 2px rgba(192, 192, 192, 0.3), inset 0 0 20px rgba(192, 192, 192, 0.1);
+        }
+
+        .partner-block::before,
+        .partner-block::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(192, 192, 192, 0.6), transparent);
+            z-index: 5;
+        }
+
+        .partner-block::before { top: 0; }
+        .partner-block::after { bottom: 0; }
+
+        .partner-block-bg {
+            position: relative;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: auto;
+            display: block;
+            z-index: 1;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .partner-block-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 2;
+        }
+
+        /* Banner1 - 高度自适应背景图，左图右文 */
+        .partner-block.banner1 {
+            height: auto;
+        }
+
+        .partner-block-content.banner1-layout {
+            position: absolute;
+            z-index: 3;
+            width: 100%;
+            max-width: 1400px;
+            height: 100%;
+            padding: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 80px;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .banner1-phone {
+            flex: 0 0 340px;
+            height: 680px;
+            position: relative;
+            filter: drop-shadow(0 30px 60px rgba(0,0,0,0.8));
+            transition: transform 0.4s ease;
+        }
+
+        .banner1-phone:hover {
+            transform: scale(1.03);
+        }
+
+        .banner1-phone img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+        }
+
+        .banner1-info {
+            flex: 0 0 450px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+        }
+
+        .banner1-title {
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: clamp(28px, 3.5vw, 42px);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #fff;
+            margin-bottom: 20px;
+            text-shadow: 0 0 30px rgba(139, 0, 0, 0.8);
+            line-height: 1.2;
+        }
+
+        .banner1-desc {
+            font-size: 16px;
+            color: rgba(255,255,255,0.9);
+            line-height: 1.7;
+            margin-bottom: 30px;
+            font-family: 'Arial', sans-serif;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+
+        /* Banner2 - 高度自适应背景图，16:9等比例，无logo */
+        .partner-block.banner2 {
+            height: auto;
+        }
+
+        .banner2-container {
+            position: relative;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+        }
+
+        .banner2-bg-img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .partner-block-content.banner2-layout {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            padding-bottom: 60px;
+        }
+
+        .banner2-btn-wrapper {
+            margin-bottom: 20px;
+        }
+
+        /* Banner3 - 高度自适应背景图，大logo上移与文字中心对齐 */
+        .partner-block.banner3 {
+            height: auto;
+        }
+
+        .partner-block-content.banner3-layout {
+            position: absolute;
+            z-index: 3;
+            width: 100%;
+            max-width: 1400px;
+            height: 100%;
+            padding: 60px 40px 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .banner3-bg-logo {
+            position: absolute;
+            top: calc(50% - 60px);
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 500px;
+            z-index: 1;
+            opacity: 0.15;
+            animation: logoBreatheFade 4s ease-in-out infinite;
+        }
+
+        @keyframes logoBreatheFade {
+            0%, 100% { 
+                opacity: 0.1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+            50% { 
+                opacity: 0.25;
+                transform: translate(-50%, -50%) scale(1.05);
+            }
+        }
+
+        .banner3-bg-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: grayscale(100%) brightness(0.5);
+        }
+
+        .banner3-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .banner3-title {
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: clamp(70px, 11vw, 160px);
+            font-weight: 400;
+            letter-spacing: clamp(5px, 1.2vw, 12px);
+            text-transform: uppercase;
+            color: #fff;
+            margin-bottom: 40px;
+            text-shadow: 0 0 40px rgba(139, 0, 0, 0.8);
+            animation: textFlash 8s ease-in-out infinite;
+            line-height: 0.9;
+        }
+
+        .banner3-subtitle {
+            font-family: 'Arial', sans-serif;
+            font-size: clamp(19px, 2.2vw, 26px);
+            color: rgba(255,255,255,0.9);
+            letter-spacing: 2px;
+            line-height: 1.8;
+            max-width: 750px;
+            margin: 0 auto 50px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .banner3-btn-wrapper {
+            margin-top: 20px;
+        }
+
+        /* Banner4 - 高度自适应背景图，大logo下移四分之一高度 */
+        .partner-block.banner4 {
+            height: auto;
+        }
+
+        .partner-block-content.banner4-layout {
+            position: absolute;
+            z-index: 3;
+            width: 100%;
+            max-width: 1400px;
+            height: 100%;
+            padding: 40px 40px 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .banner4-logo-container {
+            width: 900px;
+            height: 900px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: -225px;
+            margin-bottom: auto;
+        }
+
+        .banner4-logo {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            animation: softGlow 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 40px rgba(255, 105, 180, 0.4));
+        }
+
+        @keyframes softGlow {
+            0%, 100% { 
+                filter: drop-shadow(0 0 30px rgba(255, 105, 180, 0.3)) brightness(1);
+                transform: scale(1);
+            }
+            50% { 
+                filter: drop-shadow(0 0 80px rgba(255, 105, 180, 0.7)) brightness(1.15);
+                transform: scale(1.03);
+            }
+        }
+
+        .banner4-btn-wrapper {
+            margin-top: auto;
+            margin-bottom: 20px;
+        }
+
+        /* 通用按钮样式 - 首页Banner同款 */
+        .partner-btn {
+            display: inline-block;
+            background: rgba(192, 192, 192, 0.2);
+            color: #fff;
+            border: 2px solid rgba(192, 192, 192, 0.5);
+            padding: 12px 35px;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .partner-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .partner-btn:hover::before {
+            left: 100%;
+        }
+
+        .partner-btn:hover {
+            background: var(--dark-red);
+            border-color: var(--dark-red);
+            box-shadow: 0 0 30px rgba(139, 0, 0, 0.8), 0 0 60px rgba(139, 0, 0, 0.4);
+            transform: scale(1.05);
+            letter-spacing: 3px;
+        }
+
+        /* ==================== OUR COLLABORATORS区域 ==================== */
+        .partners-logo-section {
+            width: 100%;
+            padding: 100px 0;
+            background: 
+                linear-gradient(180deg, rgba(5,5,5,0.95) 0%, rgba(10,10,10,0.9) 50%, rgba(5,5,5,0.95) 100%),
+                url('./image/p-c-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            border-top: none;
+            border-bottom: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .partners-logo-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.4);
+            pointer-events: none;
+        }
+
+        .partners-logo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .partners-logo-title {
+            text-align: center;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: clamp(28px, 5vw, 42px);
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--silver);
+            margin-bottom: 60px;
+            animation: titleGlow 3s ease-in-out infinite;
+            text-shadow: 0 0 20px rgba(139, 0, 0, 0.5);
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { text-shadow: 0 0 20px rgba(192, 192, 192, 0.3), 0 0 40px rgba(139, 0, 0, 0.2); }
+            50% { text-shadow: 0 0 30px rgba(139, 0, 0, 0.6), 0 0 60px rgba(139, 0, 0, 0.3), 0 0 10px rgba(192, 192, 192, 0.5); }
+        }
+
+        .partners-logo-grid {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 50px;
+            flex-wrap: wrap;
+        }
+
+        .partner-logo-item {
+            flex: 0 0 180px;
+            height: 110px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(139, 0, 0, 0.4);
+            border-radius: 10px;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .partner-logo-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(139, 0, 0, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .partner-logo-item:hover::before {
+            left: 100%;
+        }
+
+        .partner-logo-item:hover {
+            background: rgba(139, 0, 0, 0.2);
+            border-color: var(--dark-red);
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(139, 0, 0, 0.4), 0 0 30px rgba(139, 0, 0, 0.3);
+        }
+
+        .partner-logo-item img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            filter: grayscale(100%) brightness(1.4);
+            transition: all 0.4s;
+        }
+
+        .partner-logo-item:hover img {
+            filter: grayscale(0%) brightness(1.2);
+        }
+
+        /* ==================== 招聘区域 - 加大一号 ==================== */
+        .careers-section {
+            width: 100%;
+            padding: 100px 0 80px;
+            background: linear-gradient(180deg, #0f0f0f 0%, #1a1a1a 30%, #2a2a2a 50%, #1a1a1a 70%, #0f0f0f 100%);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .careers-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(192, 192, 192, 0.6), transparent);
+        }
+
+        .careers-section::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: transparent;
+        }
+
+        .careers-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .careers-icon {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 40px;
+            animation: iconPulse 4s ease-in-out infinite;
+            filter: drop-shadow(0 0 30px rgba(139, 0, 0, 0.6));
+        }
+
+        @keyframes iconPulse {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(139, 0, 0, 0.4)); }
+            50% { transform: scale(1.05); filter: drop-shadow(0 0 40px rgba(139, 0, 0, 0.8)) drop-shadow(0 0 60px rgba(255, 255, 255, 0.2)); }
+        }
+
+        .careers-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .careers-title {
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: clamp(28px, 4.5vw, 48px);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #fff;
+            margin-bottom: 25px;
+            line-height: 1.3;
+            animation: textFlash 8s ease-in-out infinite;
+        }
+
+        .careers-title .highlight {
+            color: var(--dark-red);
+            text-shadow: 0 0 30px rgba(139, 0, 0, 0.8);
+        }
+
+        .careers-subtitle {
+            font-size: 18px;
+            color: rgba(255,255,255,0.7);
+            font-family: 'Arial', sans-serif;
+            margin-bottom: 35px;
+        }
+
+        /* 招聘区域按钮 - 首页Banner同款 */
+        .careers-btn {
+            display: inline-block;
+            background: rgba(192, 192, 192, 0.2);
+            color: #fff;
+            border: 2px solid rgba(192, 192, 192, 0.5);
+            padding: 14px 40px;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: 15px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .careers-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .careers-btn:hover::before {
+            left: 100%;
+        }
+
+        .careers-btn:hover {
+            background: var(--dark-red);
+            border-color: var(--dark-red);
+            box-shadow: 0 0 30px rgba(139, 0, 0, 0.8), 0 0 60px rgba(139, 0, 0, 0.4);
+            transform: scale(1.05);
+            letter-spacing: 3px;
+        }
+
+        /* ==================== 间隙区域 ==================== */
+        .footer-gap {
+            height: 100px;
+            background: linear-gradient(180deg, #0f0f0f 0%, #1a1a1a 50%, var(--silver-bg) 100%);
+            position: relative;
+        }
+
+        /* ==================== 底部区域 ==================== */
+        .site-footer {
+            background: var(--silver-bg);
+            color: #333;
+            position: relative;
+            z-index: 100;
+        }
+
+        .footer-main {
+            padding: 40px 40px 30px;
+            position: relative;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .footer-contact-left {
+            flex: 1;
+            text-align: left;
+            font-family: 'Courier New', monospace;
+        }
+
+        .contact-item {
+            margin-bottom: 8px;
+            color: #555;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+            line-height: 1.4;
+        }
+
+        .contact-item a {
+            color: #555;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .contact-item a:hover {
+            color: var(--dark-red);
+        }
+
+        .footer-brand {
+            flex: 0 0 auto;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-size: clamp(28px, 5vw, 42px);
+            font-weight: 400;
+            letter-spacing: 3px;
+            line-height: 1;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            animation: simpleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes simpleGlow {
+            0%, 100% { 
+                text-shadow: 0 0 10px rgba(139, 0, 0, 0.3);
+                opacity: 0.95;
+            }
+            50% { 
+                text-shadow: 0 0 20px rgba(139, 0, 0, 0.6), 0 0 30px rgba(139, 0, 0, 0.3);
+                opacity: 1;
+            }
+        }
+
+        .footer-logo .livegigs {
+            color: #222;
+        }
+
+        .footer-logo .asia {
+            color: var(--dark-red);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .social-icon {
+            width: 36px;
+            height: 36px;
+            border: 2px solid #666;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #555;
+            text-decoration: none;
+            transition: all 0.3s;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .social-icon:hover {
+            border-color: var(--dark-red);
+            color: var(--dark-red);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .producer-section {
+            text-align: center;
+        }
+
+        .producer-label {
+            font-size: 9px;
+            color: #777;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .producer-logo {
+            height: 32px;
+            width: auto;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .producer-logo:hover {
+            opacity: 1;
+        }
+
+        .footer-contact-right {
+            flex: 1;
+            text-align: right;
+            font-family: 'Courier New', monospace;
+        }
+
+        .footer-bottom {
+            background: #b8b8b8;
+            border-top: 1px solid #999;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .footer-legal {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-legal a {
+            color: #555;
+            text-decoration: none;
+            font-size: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .footer-legal a:hover {
+            color: var(--dark-red);
+        }
+
+        .copyright {
+            color: #666;
+            font-size: 10px;
+            letter-spacing: 1px;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* ==================== Membership弹窗 ==================== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal-content {
+            background: linear-gradient(135deg, #0a0000 0%, #050505 100%);
+            border: 1px solid var(--darker-red);
+            padding: 35px 30px;
+            max-width: 450px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 0 50px rgba(74, 0, 0, 0.5);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 12px;
+            right: 18px;
+            font-size: 26px;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover { color: var(--dark-red); transform: scale(1.2); }
+
+        .modal-content h2 {
+            font-size: 26px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            color: #fff;
+            text-align: center;
+        }
+
+        .modal-content p {
+            font-size: 12px;
+            color: var(--silver);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group { margin-bottom: 15px; }
+
+        .form-group label {
+            display: block;
+            font-size: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--silver);
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--darker-red);
+            color: #fff;
+            font-size: 13px;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--dark-red);
+            box-shadow: 0 0 15px rgba(139, 0, 0, 0.3);
+        }
+
+        .form-group textarea {
+            min-height: 70px;
+            resize: vertical;
+        }
+
+        .modal-content .neon-btn {
+            width: 100%;
+            margin-top: 8px;
+            padding: 12px;
+            font-size: 12px;
+            background: transparent;
+            color: #fff;
+            border: 2px solid var(--darker-red);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .modal-content .neon-btn:hover {
+            background: var(--dark-red);
+            box-shadow: 0 0 20px rgba(139, 0, 0, 0.5);
+        }
+
+        /* ==================== 响应式优化 ==================== */
+        @media (max-width: 1200px) {
+            .partner-block-content.banner1-layout {
+                padding: 60px;
+                gap: 60px;
+            }
+            .banner1-phone {
+                flex: 0 0 300px;
+                height: 600px;
+            }
+            .banner1-info {
+                flex: 0 0 380px;
+            }
+            .banner3-bg-logo {
+                width: 450px;
+                height: 450px;
+                top: calc(50% - 50px);
+            }
+            .banner4-logo-container {
+                width: 700px;
+                height: 700px;
+                margin-top: -175px;
+            }
+            .careers-icon {
+                width: 110px;
+                height: 110px;
+            }
+            .careers-title {
+                font-size: clamp(26px, 4vw, 44px);
+            }
+            .careers-subtitle {
+                font-size: 17px;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            nav { padding: 0 30px; height: 70px; }
+            .logo-img { height: 40px; max-width: 150px; }
+            .nav-links { gap: 25px; }
+            .hero-content { margin-top: 100px; }
+            .hero-title { font-size: clamp(60px, 12vw, 100px); }
+            .hero-subtitle { font-size: clamp(18px, 3vw, 28px); margin-top: 50px; }
+            
+            .partner-block-content.banner1-layout {
+                flex-direction: column;
+                padding: 40px;
+                gap: 30px;
+            }
+            .banner1-phone {
+                flex: 0 0 260px;
+                height: 520px;
+            }
+            .banner1-info {
+                flex: 0 0 auto;
+                align-items: center;
+                text-align: center;
+                max-width: 450px;
+            }
+            
+            .partner-block-content.banner3-layout { 
+                padding: 40px 30px 80px;
+            }
+            .banner3-bg-logo {
+                width: 400px;
+                height: 400px;
+                top: calc(50% - 40px);
+            }
+            .banner3-title { font-size: clamp(60px, 10vw, 100px); }
+            .banner3-subtitle { font-size: clamp(17px, 2vw, 22px); }
+            
+            .partner-block-content.banner4-layout { 
+                padding: 30px 30px 80px;
+            }
+            .banner4-logo-container {
+                width: 600px;
+                height: 600px;
+                margin-top: -150px;
+            }
+            
+            .partners-logo-grid { gap: 40px; }
+            .partner-logo-item { flex: 0 0 160px; height: 100px; }
+            
+            .careers-section { padding: 90px 0 70px; }
+            .careers-icon { width: 100px; height: 100px; margin-bottom: 35px; }
+            .careers-title { font-size: clamp(24px, 4vw, 40px); margin-bottom: 22px; }
+            .careers-subtitle { font-size: 16px; margin-bottom: 30px; }
+            .careers-btn { padding: 13px 38px; font-size: 14px; }
+            .footer-container { gap: 30px; }
+        }
+
+        @media (max-width: 768px) {
+            nav { padding: 0 20px; height: 65px; }
+            .logo-img { height: 35px; max-width: 130px; }
+            .nav-links a { font-size: 11px; letter-spacing: 2px; }
+            .nav-links .neon-btn { padding: 8px 16px; font-size: 10px; }
+            
+            .hero-content { margin-top: 80px; }
+            .hero-title { font-size: clamp(45px, 12vw, 70px); letter-spacing: 4px; margin-bottom: 30px; }
+            .hero-subtitle { font-size: clamp(14px, 3vw, 20px); letter-spacing: 2px; margin-top: 40px; }
+            
+            .partner-block-content.banner1-layout {
+                padding: 50px 30px;
+            }
+            .banner1-phone {
+                flex: 0 0 220px;
+                height: 440px;
+            }
+            .banner1-title { font-size: 26px; }
+            .banner1-desc { font-size: 15px; }
+            
+            .partner-block-content.banner3-layout { 
+                padding: 30px 20px 80px;
+            }
+            .banner3-bg-logo {
+                width: 280px;
+                height: 280px;
+                top: calc(50% - 20px);
+            }
+            .banner3-title { 
+                font-size: clamp(40px, 8vw, 60px); 
+                letter-spacing: 3px;
+                margin-bottom: 25px;
+            }
+            .banner3-subtitle { 
+                font-size: 14px;
+                line-height: 1.6;
+                max-width: 90%;
+                margin-bottom: 30px;
+            }
+            .banner3-btn-wrapper {
+                margin-top: 10px;
+            }
+            
+            .partner-block-content.banner4-layout { 
+                padding: 20px 20px 80px;
+            }
+            .banner4-logo-container {
+                width: 350px;
+                height: 350px;
+                margin-top: -88px;
+                margin-bottom: 20px;
+            }
+            .banner4-btn-wrapper {
+                margin-top: auto;
+                margin-bottom: 10px;
+            }
+            
+            .partners-logo-section { padding: 60px 0; }
+            .partners-logo-grid { gap: 25px; }
+            .partner-logo-item { flex: 0 0 140px; height: 90px; padding: 15px; }
+            
+            .careers-section { padding: 70px 0 55px; }
+            .careers-icon { width: 90px; height: 90px; margin-bottom: 30px; }
+            .careers-title { font-size: clamp(22px, 4vw, 32px); margin-bottom: 20px; }
+            .careers-subtitle { font-size: 15px; margin-bottom: 25px; }
+            .careers-btn { padding: 12px 35px; font-size: 13px; }
+            
+            .footer-gap { height: 80px; }
+            .footer-main { padding: 30px 20px 25px; }
+            .footer-container { flex-direction: column; gap: 25px; text-align: center; }
+            .footer-contact-left, .footer-contact-right { text-align: center; flex: 1; width: 100%; }
+            .social-links { margin-bottom: 15px; }
+            .producer-section { text-align: center; }
+            .footer-bottom { flex-direction: column; gap: 12px; padding: 15px 20px; }
+            .footer-legal { flex-wrap: wrap; justify-content: center; gap: 15px; }
+        }
+
+        @media (max-width: 480px) {
+            nav { padding: 0 15px; height: 60px; background: rgba(0, 0, 0, 0.5); }
+            .logo-img { height: 32px; max-width: 120px; }
+            .nav-links { gap: 12px; }
+            .nav-links a { font-size: 10px; letter-spacing: 1px; }
+            .nav-links .neon-btn { padding: 6px 14px; font-size: 9px; }
+            
+            .hero-content { margin-top: 60px; }
+            .hero-title { font-size: clamp(38px, 11vw, 55px); letter-spacing: 3px; margin-bottom: 25px; }
+            .hero-subtitle { font-size: clamp(12px, 3vw, 16px); letter-spacing: 1.5px; margin-top: 30px; line-height: 1.6; }
+            .smoke-container { opacity: 0.35; }
+            
+            .partner-block-content.banner1-layout { padding: 40px 20px; }
+            .banner1-phone {
+                flex: 0 0 180px;
+                height: 360px;
+            }
+            .banner1-title { font-size: 22px; letter-spacing: 2px; }
+            .banner1-desc { font-size: 14px; line-height: 1.6; }
+            
+            .partner-block-content.banner3-layout { padding: 30px 20px 60px; }
+            .banner3-bg-logo {
+                width: 280px;
+                height: 280px;
+                top: calc(50% - 25px);
+            }
+            .banner3-title { font-size: clamp(40px, 8vw, 60px); letter-spacing: 3px; }
+            .banner3-subtitle { 
+                font-size: 14px;
+                line-height: 1.6;
+            }
+            
+            .partner-block-content.banner4-layout { 
+                padding: 20px 20px 60px;
+            }
+            .banner4-logo-container {
+                width: 400px;
+                height: 400px;
+                margin-top: -100px;
+            }
+            
+            .partners-logo-title { font-size: 22px; margin-bottom: 30px; }
+            .partners-logo-grid { gap: 15px; }
+            .partner-logo-item { flex: 0 0 130px; height: 80px; }
+            
+            .careers-section { padding: 60px 0 45px; }
+            .careers-icon { width: 80px; height: 80px; margin-bottom: 25px; }
+            .careers-title { font-size: clamp(20px, 4vw, 28px); margin-bottom: 18px; }
+            .careers-subtitle { font-size: 14px; margin-bottom: 22px; }
+            .careers-btn { padding: 10px 30px; font-size: 12px; }
+            
+            .footer-gap { height: 60px; }
+            .footer-main { padding: 25px 15px 20px; }
+            .footer-logo { font-size: 26px; letter-spacing: 2px; margin-bottom: 12px; }
+            .social-links { gap: 10px; }
+            .social-icon { width: 34px; height: 34px; }
+            .social-icon svg { width: 14px; height: 14px; }
+            .contact-item { font-size: 11px; margin-bottom: 6px; }
+            .producer-label { font-size: 8px; letter-spacing: 1px; }
+            .producer-logo { height: 28px; }
+            .footer-bottom { padding: 12px 15px; gap: 10px; }
+            .footer-legal { gap: 12px; }
+            .footer-legal a { font-size: 9px; }
+            .copyright { font-size: 9px; }
+            
+            .modal-content { padding: 30px 20px; }
+            .modal-content h2 { font-size: 22px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 导航栏 -->
+    <nav>
+        <img src="./image/logo.png" alt="LiveGigs Asia" class="logo-img" id="logo" onclick="location.href='./index.html'" data-editable="logo" data-src="./image/logo.png">
+        <div class="nav-links">
+            <a href="events.html" data-editable="nav-events" data-text="Events" data-href="events.html">Events</a>
+            <a href="#" class="active" data-editable="nav-partners" data-text="Partners" data-href="partners.html">Partners</a>
+            <button class="neon-btn" onclick="openModal()" data-editable="nav-membership" data-text="Membership">Membership</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg" id="heroBg" data-editable="partners-hero-bg" data-src="./image/hero%20bg.jpeg"></div>
+        
+        <div class="smoke-container">
+            <div class="smoke"></div>
+            <div class="smoke"></div>
+            <div class="smoke"></div>
+        </div>
+        
+        <div class="hero-overlay"></div>
+        
+        <div class="hero-content">
+            <h1 class="hero-title" data-editable="partners-hero-title">
+                <span class="gray" data-editable="partners-hero-title-gray" data-text="LIVEGIGS">LIVEGIGS</span><span class="red" data-editable="partners-hero-title-red" data-text="ASIA">ASIA</span>
+            </h1>
+            <p class="hero-subtitle" data-editable="partners-hero-subtitle" data-text="Partnered in a Spirit of Collaboration">
+                <span class="line1" data-editable="partners-hero-subtitle-line1" data-text="Partnered in a Spirit of Collaboration">Partnered in a Spirit of Collaboration</span>
+            </p>
+        </div>
+    </section>
+
+    <!-- 内容包装器 -->
+    <div class="content-wrapper">
+
+        <!-- Banner/Partner Blocks区域 -->
+        <section class="partner-sections" id="partnerSections">
+            
+            <!-- Banner 1 - 高度自适应背景图，左图右文 -->
+            <div class="partner-block banner1" data-editable="partner-block-1" data-block-id="1">
+                <img src="./image/p-p-1.jpg" alt="Partner Background" class="partner-block-bg" 
+                     data-editable="partner-1-bg" data-src="./image/p-p-1.jpg">
+                <div class="partner-block-overlay"></div>
+                <div class="partner-block-content banner1-layout" data-editable="partner-1-position" data-position="left">
+                    <div class="banner1-phone" data-editable="partner-1-phone" data-src="./image/livegigscn1.png">
+                        <img src="./image/livegigscn1.png" alt="LiveGigs CN App" 
+                             onerror="this.src='https://via.placeholder.com/340x680/8b0000/fff?text=LiveGigs+CN'">
+                    </div>
+                    <div class="banner1-info">
+                        <h3 class="banner1-title" data-editable="partner-1-title" data-text="LiveGigs.CN">LiveGigs.CN</h3>
+                        <p class="banner1-desc" data-editable="partner-1-desc" data-text="Head to our homepage at livegigs.cn and follow us there for exclusive content, early bird tickets, and behind-the-scenes access to China's top live events!">
+                            Head to our homepage at livegigs.cn and follow us there for exclusive content, early bird tickets, and behind-the-scenes access to China's top live events!
+                        </p>
+                        <a href="https://livegigs.cn" class="partner-btn" target="_blank" data-editable="partner-1-btn" data-text="GO TO LIVEGIGS CN" data-href="https://livegigs.cn">GO TO LIVEGIGS CN</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Banner 2 - 高度自适应背景图，16:9等比例，无logo -->
+            <div class="partner-block banner2" data-editable="partner-block-2" data-block-id="2">
+                <div class="banner2-container">
+                    <img src="./image/p-p-2.jpg" alt="Partner Background" class="banner2-bg-img" data-editable="partner-2-bg" data-src="./image/p-p-2.jpg">
+                </div>
+                <div class="partner-block-overlay"></div>
+                <div class="partner-block-content banner2-layout" data-editable="partner-2-position" data-position="center">
+                    <div class="banner2-btn-wrapper">
+                        <a href="https://kids-union.com" class="partner-btn" target="_blank" 
+                           data-editable="partner-2-btn" data-text="小子聯盟唱片" data-href="https://kids-union.com">小子聯盟唱片</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Banner 3 - 高度自适应背景图，大logo上移与文字中心对齐 -->
+            <div class="partner-block banner3" data-editable="partner-block-3" data-block-id="3">
+                <img src="./image/p-p-3.png" alt="Partner Background" class="partner-block-bg" 
+                     data-editable="partner-3-bg" data-src="./image/p-p-3.png">
+                <div class="partner-block-overlay"></div>
+                <div class="partner-block-content banner3-layout" data-editable="partner-3-position" data-position="center">
+                    <div class="banner3-bg-logo">
+                        <img src="./image/webtop.png" alt="Background Logo" data-editable="partner-3-bg-icon" data-src="./image/webtop.png">
+                    </div>
+                    <div class="banner3-content">
+                        <h3 class="banner3-title" data-editable="partner-3-title" data-text="XRE BOOKING">XRE BOOKING</h3>
+                        <p class="banner3-subtitle" data-editable="partner-3-subtitle" data-text="Booking Agency in Punkrock, Garage, Mod, Powerpop, Surf, Poppunk, RocknRoll, Hardcore, Metal.">
+                            Booking Agency in Punkrock, Garage, Mod,<br>
+                            Powerpop, Surf, Poppunk, RocknRoll,<br>
+                            Hardcore, Metal.
+                        </p>
+                        <div class="banner3-btn-wrapper">
+                            <a href="#" class="partner-btn" target="_blank" data-editable="partner-3-btn" data-text="XRE BOOKING" data-href="#">XRE BOOKING</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Banner 4 - 高度自适应背景图，大logo下移四分之一高度 -->
+            <div class="partner-block banner4" data-editable="partner-block-4" data-block-id="4">
+                <img src="./image/p-p-4.jpg" alt="Partner Background" class="partner-block-bg" 
+                     data-editable="partner-4-bg" data-src="./image/p-p-4.jpg">
+                <div class="partner-block-overlay"></div>
+                <div class="partner-block-content banner4-layout" data-editable="partner-4-position" data-position="center">
+                    <div class="banner4-logo-container">
+                        <img src="./image/p-p-4logo.png" alt="ChineseRocks Logo" class="banner4-logo"
+                             data-editable="partner-4-logo" data-src="./image/p-p-4logo.png"
+                             onerror="this.style.display='none'">
+                    </div>
+                    <div class="banner4-btn-wrapper">
+                        <a href="https://chineserocks.net" class="partner-btn" target="_blank" 
+                           data-editable="partner-4-btn" data-text="ChineseRocks" data-href="https://chineserocks.net">ChineseRocks</a>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- OUR COLLABORATORS区域 -->
+        <section class="partners-logo-section" data-editable="collaborators-section">
+            <div class="partners-logo-container">
+                <h2 class="partners-logo-title" data-editable="partners-logo-title" data-text="OUR COLLABORATORS">OUR COLLABORATORS</h2>
+                <div class="partners-logo-grid" id="partnersLogoGrid">
+                    <a href="#" target="_blank" class="partner-logo-item" data-editable="collab-logo-1" data-href="#" data-name="Partner 1">
+                        <img src="./image/p-logo-1.png" alt="Partner 1" onerror="this.src='https://via.placeholder.com/180x110/333/fff?text=Partner+1'">
+                    </a>
+                    <a href="#" target="_blank" class="partner-logo-item" data-editable="collab-logo-2" data-href="#" data-name="Partner 2">
+                        <img src="./image/p-logo-2.png" alt="Partner 2" onerror="this.src='https://via.placeholder.com/180x110/333/fff?text=Partner+2'">
+                    </a>
+                    <a href="#" target="_blank" class="partner-logo-item" data-editable="collab-logo-3" data-href="#" data-name="Partner 3">
+                        <img src="./image/p-logo-3.png" alt="Partner 3" onerror="this.src='https://via.placeholder.com/180x110/333/fff?text=Partner+3'">
+                    </a>
+                    <a href="#" target="_blank" class="partner-logo-item" data-editable="collab-logo-4" data-href="#" data-name="Partner 4">
+                        <img src="./image/p-logo-4.png" alt="Partner 4" onerror="this.src='https://via.placeholder.com/180x110/333/fff?text=Partner+4'">
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 招聘区域 - 加大一号 -->
+        <section class="careers-section">
+            <div class="careers-container">
+                <div class="careers-icon" data-editable="careers-icon" data-src="./image/webtop.png">
+                    <img src="./image/webtop.png" alt="LiveGigs Asia" 
+                         onerror="this.src='https://via.placeholder.com/120x120/8b0000/fff?text=LG'">
+                </div>
+                <h2 class="careers-title" data-editable="careers-title" data-text="We're always looking for dynamic team players who love to work smart.">
+                    We're always looking for <span class="highlight">dynamic</span> team players who love to work <span class="highlight">smart</span>.
+                </h2>
+                <p class="careers-subtitle" data-editable="careers-subtitle" data-text="Send us your CV – there could be an opportunity for you!">
+                    Send us your CV – there could be an opportunity for you!
+                </p>
+                <a href="mailto:careers@livegigsasia.com" class="careers-btn" data-editable="careers-btn" data-text="JOIN OUR TEAM" data-href="mailto:careers@livegigsasia.com">
+                    JOIN OUR TEAM
+                </a>
+            </div>
+        </section>
+
+        <!-- 间隙区域 -->
+        <div class="footer-gap"></div>
+
+        <!-- 底部区域 -->
+        <footer class="site-footer">
+            <div class="footer-main">
+                <div class="footer-container">
+                    <div class="footer-contact-left">
+                        <div class="contact-item" data-editable="footer-email">
+                            <a href="mailto:LiveGigsCn@Hotmail.Com">LiveGigsCn@Hotmail.Com</a>
+                        </div>
+                        <div class="contact-item" data-editable="footer-phone">
+                            <a href="tel:+852-456-7890">+852-456-7890</a>
+                        </div>
+                    </div>
+
+                    <div class="footer-brand">
+                        <div class="footer-logo" data-editable="footer-logo">
+                            <span class="livegigs">LIVEGIGS</span><span class="asia">ASIA</span>
+                        </div>
+                        
+                        <div class="social-links" id="socialContainer">
+                            <a href="#" class="social-icon" data-editable="social-facebook" data-href="https://facebook.com" data-platform="facebook" title="Facebook">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                            </a>
+                            <a href="#" class="social-icon" data-editable="social-instagram" data-href="https://instagram.com" data-platform="instagram" title="Instagram">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                            </a>
+                            <a href="#" class="social-icon" data-editable="social-youtube" data-href="https://youtube.com" data-platform="youtube" title="YouTube">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                            </a>
+                            <a href="#" class="social-icon" data-editable="social-x" data-href="https://x.com" data-platform="x" title="X">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                            </a>
+                        </div>
+
+                        <div class="producer-section">
+                            <div class="producer-label">Produced by</div>
+                            <img src="./image/emanonent-logo.png" alt="EMANON ENT." class="producer-logo" 
+                                 onerror="this.style.display='none'" 
+                                 data-editable="producer-logo" data-src="./image/emanonent-logo.png">
+                        </div>
+                    </div>
+
+                    <div class="footer-contact-right">
+                        <div class="contact-item" data-editable="footer-address">
+                            #303 TERRY FRANCINE STREET,<br>
+                            HONGKONG, CN 999077
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="footer-legal">
+                    <a href="privacypolicy.html" data-editable="footer-privacy" data-href="privacypolicy.html" data-text="Privacy Policy">Privacy Policy</a>
+                    <a href="accessibilitystatement.html" data-editable="footer-accessibility" data-href="accessibilitystatement.html" data-text="Accessibility Statement">Accessibility Statement</a>
+                </div>
+                <div class="copyright" data-editable="footer-copyright" data-text="Copyright © 2001-2026 EMANON ENT. - All Rights Reserved.">
+                    Copyright © 2001-2026 EMANON ENT. - All Rights Reserved.
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Membership 弹窗 -->
+    <div class="modal-overlay" id="membershipModal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <h2 data-editable="modal-title" data-text="Join Membership">Join Membership</h2>
+            <p data-editable="modal-desc" data-text="Get exclusive access to presales and events">Get exclusive access to presales and events</p>
+            <form id="membershipForm" onsubmit="handleSubmit(event)">
+                <div class="form-group">
+                    <label for="memberName" data-editable="modal-label-name" data-text="Name">Name</label>
+                    <input type="text" id="memberName" name="name" required placeholder="Enter your name" data-editable="modal-placeholder-name" data-text="Enter your name">
+                </div>
+                <div class="form-group">
+                    <label for="memberEmail" data-editable="modal-label-email" data-text="Email">Email</label>
+                    <input type="email" id="memberEmail" name="email" required placeholder="Enter your email" data-editable="modal-placeholder-email" data-text="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="memberPhone" data-editable="modal-label-phone" data-text="Phone (Optional)">Phone (Optional)</label>
+                    <input type="tel" id="memberPhone" name="phone" placeholder="Enter your phone number" data-editable="modal-placeholder-phone" data-text="Enter your phone number">
+                </div>
+                <div class="form-group">
+                    <label for="memberMessage" data-editable="modal-label-message" data-text="Message">Message</label>
+                    <textarea id="memberMessage" name="message" placeholder="Tell us what you're interested in..." data-editable="modal-placeholder-message" data-text="Tell us what you're interested in..."></textarea>
+                </div>
+                <button type="submit" class="neon-btn" data-editable="modal-submit" data-text="SUBMIT APPLICATION">SUBMIT APPLICATION</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        function updateContent(editableId, newValue, type = 'text') {
+            const element = document.querySelector(`[data-editable="${editableId}"]`);
+            if (!element) return;
+            
+            if (type === 'src') {
+                element.src = newValue;
+                element.setAttribute('data-src', newValue);
+            } else if (type === 'href') {
+                element.href = newValue;
+                element.setAttribute('data-href', newValue);
+            } else if (type === 'html') {
+                element.innerHTML = newValue;
+            } else {
+                element.textContent = newValue;
+                element.setAttribute('data-text', newValue);
+            }
+        }
+
+        window.LiveGigsAdmin = {
+            update: updateContent,
+            
+            updateBanner: function(id, updates) {
+                if (updates.bg) updateContent(`partner-${id}-bg`, updates.bg, 'src');
+                if (updates.logo) updateContent(`partner-${id}-logo`, updates.logo, 'src');
+                if (updates.bgIcon) updateContent(`partner-${id}-bg-icon`, updates.bgIcon, 'src');
+                if (updates.phone) updateContent(`partner-${id}-phone`, updates.phone, 'src');
+                if (updates.icon) updateContent(`partner-${id}-icon`, updates.icon, 'src');
+                if (updates.title) updateContent(`partner-${id}-title`, updates.title, 'text');
+                if (updates.desc) updateContent(`partner-${id}-desc`, updates.desc, 'text');
+                if (updates.subtitle) updateContent(`partner-${id}-subtitle`, updates.subtitle, 'text');
+                if (updates.btnText) updateContent(`partner-${id}-btn`, updates.btnText, 'text');
+                if (updates.btnHref) {
+                    const btn = document.querySelector(`[data-editable="partner-${id}-btn"]`);
+                    if (btn) {
+                        btn.href = updates.btnHref;
+                        btn.setAttribute('data-href', updates.btnHref);
+                    }
+                }
+            },
+            
+            addCollabLogo: function(name, imgSrc, href) {
+                const container = document.getElementById('partnersLogoGrid');
+                const id = document.querySelectorAll('.partner-logo-item').length + 1;
+                
+                const item = document.createElement('a');
+                item.href = href || '#';
+                item.target = '_blank';
+                item.className = 'partner-logo-item';
+                item.setAttribute('data-editable', `collab-logo-${id}`);
+                item.setAttribute('data-href', href || '#');
+                item.setAttribute('data-name', name);
+                item.innerHTML = `<img src="${imgSrc}" alt="${name}" onerror="this.src='https://via.placeholder.com/180x110/333/fff?text=${encodeURIComponent(name)}'">`;
+                
+                container.appendChild(item);
+            },
+            
+            updateCollabLogo: function(id, updates) {
+                const item = document.querySelector(`[data-editable="collab-logo-${id}"]`);
+                if (!item) return;
+                
+                if (updates.name) item.setAttribute('data-name', updates.name);
+                if (updates.href) {
+                    item.href = updates.href;
+                    item.setAttribute('data-href', updates.href);
+                }
+                if (updates.imgSrc) {
+                    const img = item.querySelector('img');
+                    if (img) img.src = updates.imgSrc;
+                }
+            },
+            
+            removeCollabLogo: function(id) {
+                const item = document.querySelector(`[data-editable="collab-logo-${id}"]`);
+                if (item) item.remove();
+            }
+        };
+
+        function checkBackgroundImage() {
+            const img = new Image();
+            img.onerror = function() {
+                const heroBg = document.getElementById('heroBg');
+                if (heroBg) heroBg.style.background = 'linear-gradient(135deg, #1a0000 0%, #000 50%, #1a0000 100%)';
+            };
+            img.src = './image/hero%20bg.jpeg';
+        }
+        
+        window.addEventListener('load', checkBackgroundImage);
+
+        function openModal() {
+            document.getElementById('membershipModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('membershipModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        document.getElementById('membershipModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        function handleSubmit(e) {
+            e.preventDefault();
+            const formData = {
+                name: document.getElementById('memberName').value,
+                email: document.getElementById('memberEmail').value,
+                phone: document.getElementById('memberPhone').value,
+                message: document.getElementById('memberMessage').value,
+                timestamp: new Date().toISOString(),
+                source: 'LiveGigs Asia Partners Page'
+            };
+            let submissions = JSON.parse(localStorage.getItem('membershipSubmissions') || '[]');
+            submissions.push(formData);
+            localStorage.setItem('membershipSubmissions', JSON.stringify(submissions));
+            alert('Thank you for your application! We will contact you soon.');
+            closeModal();
+            document.getElementById('membershipForm').reset();
+        }
+
+        const logo = document.getElementById('logo');
+        if (logo) {
+            logo.addEventListener('error', function() {
+                this.style.display = 'none';
+            });
+        }
+    </script>
+
+</body>
+</html>
