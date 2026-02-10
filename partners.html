@@ -513,7 +513,7 @@
 
         .banner3-title {
             font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-            font-size: clamp(70px, 11vw, 160px);
+            font-size: clamp(60px, 10vw, 140px);
             font-weight: 400;
             letter-spacing: clamp(5px, 1.2vw, 12px);
             text-transform: uppercase;
@@ -730,8 +730,8 @@
         .partner-logo-item:hover {
             background: rgba(139, 0, 0, 0.2);
             border-color: var(--dark-red);
-            transform: translateY(-8px) scale(1.05);
-            box-shadow: 0 20px 40px rgba(139, 0, 0, 0.4), 0 0 30px rgba(139, 0, 0, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 0 30px rgba(139, 0, 0, 0.6), 0 0 60px rgba(139, 0, 0, 0.3);
         }
 
         .partner-logo-item img {
@@ -1163,242 +1163,335 @@
             box-shadow: 0 0 20px rgba(139, 0, 0, 0.5);
         }
 
-        /* ==================== 响应式优化 ==================== */
+        /* ==================== 响应式优化 - 固定比例缩放 ==================== */
+        /* 平板横屏/桌面小屏 */
         @media (max-width: 1200px) {
-            .partner-block-content.banner1-layout {
-                padding: 60px;
-                gap: 60px;
-            }
-            .banner1-phone {
-                flex: 0 0 300px;
-                height: 600px;
-            }
-            .banner1-info {
-                flex: 0 0 380px;
-            }
-            .banner3-bg-logo {
-                width: 450px;
-                height: 450px;
-                top: calc(50% - 50px);
-            }
-            .banner4-logo-container {
-                width: 700px;
-                height: 700px;
-                margin-top: -175px;
-            }
-            .careers-icon {
-                width: 110px;
-                height: 110px;
-            }
-            .careers-title {
-                font-size: clamp(26px, 4vw, 44px);
-            }
-            .careers-subtitle {
-                font-size: 17px;
-            }
+            .partner-block { height: 700px; min-height: 700px; }
+            .partner-block-content { padding: 50px 30px; }
+            .banner-logo { max-width: 450px; max-height: 320px; }
+            .banner4-logo { max-width: 500px; max-height: 380px; margin-top: 0; }
+            .banner-title { font-size: clamp(38px, 6vw, 90px); }
+            .banner-desc { font-size: clamp(14px, 1.5vw, 18px); max-width: 550px; }
+
+            .banner1-layout { gap: 40px; padding: 30px 50px; }
+            .banner1-phone { flex: 0 0 260px; height: 520px; }
+            .banner1-info { flex: 0 0 360px; }
         }
 
+        /* 平板竖屏 */
         @media (max-width: 1024px) {
             nav { padding: 0 30px; height: 70px; }
+            .hero-content { margin-top: 100px; }
+            .hero-title { font-size: clamp(70px, 13vw, 120px); }
+            .hero-subtitle { font-size: clamp(20px, 3vw, 32px); margin-top: 60px; }
             .logo-img { height: 40px; max-width: 150px; }
             .nav-links { gap: 25px; }
-            .hero-content { margin-top: 100px; }
-            .hero-title { font-size: clamp(60px, 12vw, 100px); }
-            .hero-subtitle { font-size: clamp(18px, 3vw, 28px); margin-top: 50px; }
-            
-            .partner-block-content.banner1-layout {
-                flex-direction: column;
-                padding: 40px;
-                gap: 30px;
-            }
-            .banner1-phone {
-                flex: 0 0 260px;
-                height: 520px;
+
+            .partner-block { height: 600px; min-height: 600px; }
+            .partner-block-content { padding: 40px 30px; }
+            .banner-logo { max-width: 350px; max-height: 260px; }
+            .banner4-logo { max-width: 400px; max-height: 300px; margin-top: 0; }
+            .banner-title { font-size: clamp(32px, 5vw, 70px); }
+            .banner-desc { font-size: clamp(13px, 1.4vw, 16px); max-width: 500px; line-height: 1.6; }
+            .partner-btn { padding: 12px 35px; font-size: 13px; }
+
+            .banner1-layout { 
+                flex-direction: row; 
+                gap: 30px; 
+                padding: 30px 40px;
+                justify-content: flex-start;
+                padding-left: 15%;
+                align-items: center;
             }
             .banner1-info {
-                flex: 0 0 auto;
-                align-items: center;
-                text-align: center;
-                max-width: 450px;
+                margin-left: -5%;
             }
-            
-            .partner-block-content.banner3-layout { 
-                padding: 40px 30px 80px;
+            .banner1-phone { flex: 0 0 180px; height: 360px; }
+            .banner1-info { 
+                flex: 0 0 320px; 
+                align-items: flex-start; 
+                text-align: left; 
             }
-            .banner3-bg-logo {
-                width: 400px;
-                height: 400px;
-                top: calc(50% - 40px);
+            .banner1-title { font-size: 24px; }
+            .banner1-desc { font-size: 13px; }
+            .banner1 .partner-btn {
+                margin-bottom: 0;
             }
-            .banner3-title { font-size: clamp(60px, 10vw, 100px); }
-            .banner3-subtitle { font-size: clamp(17px, 2vw, 22px); }
-            
-            .partner-block-content.banner4-layout { 
-                padding: 30px 30px 80px;
-            }
-            .banner4-logo-container {
-                width: 600px;
-                height: 600px;
-                margin-top: -150px;
-            }
-            
-            .partners-logo-grid { gap: 40px; }
-            .partner-logo-item { flex: 0 0 160px; height: 100px; }
-            
-            .careers-section { padding: 90px 0 70px; }
-            .careers-icon { width: 100px; height: 100px; margin-bottom: 35px; }
-            .careers-title { font-size: clamp(24px, 4vw, 40px); margin-bottom: 22px; }
-            .careers-subtitle { font-size: 16px; margin-bottom: 30px; }
-            .careers-btn { padding: 13px 38px; font-size: 14px; }
-            .footer-container { gap: 30px; }
         }
 
+        /* 手机横屏/大手机 */
         @media (max-width: 768px) {
             nav { padding: 0 20px; height: 65px; }
+            .hero-content { margin-top: 80px; }
+            .hero-title { font-size: clamp(55px, 14vw, 80px); letter-spacing: 5px; margin-bottom: 35px; }
+            .hero-subtitle { font-size: clamp(16px, 3.5vw, 22px); letter-spacing: 2.5px; margin-top: 50px; }
             .logo-img { height: 35px; max-width: 130px; }
             .nav-links a { font-size: 11px; letter-spacing: 2px; }
             .nav-links .neon-btn { padding: 8px 16px; font-size: 10px; }
-            
-            .hero-content { margin-top: 80px; }
-            .hero-title { font-size: clamp(45px, 12vw, 70px); letter-spacing: 4px; margin-bottom: 30px; }
-            .hero-subtitle { font-size: clamp(14px, 3vw, 20px); letter-spacing: 2px; margin-top: 40px; }
-            
-            .partner-block-content.banner1-layout {
-                padding: 50px 30px;
+
+            /* Banner固定高度，内容等比例缩放 */
+            .partner-block { height: 500px; min-height: 500px; }
+            .partner-block-content { padding: 30px 20px; }
+            .partner-block-content.mode-simple,
+            .partner-block-content.mode-full {
+                padding-bottom: 60px;
             }
-            .banner1-phone {
-                flex: 0 0 220px;
-                height: 440px;
+
+            /* Logo固定比例 */
+            .banner-logo { 
+                max-width: 280px; 
+                max-height: 200px; 
+                width: auto;
+                height: auto;
             }
-            .banner1-title { font-size: 26px; }
-            .banner1-desc { font-size: 15px; }
-            
-            .partner-block-content.banner3-layout { 
-                padding: 30px 20px 80px;
+            .banner4-logo {
+                max-width: 320px;
+                max-height: 240px;
             }
-            .banner3-bg-logo {
-                width: 280px;
-                height: 280px;
-                top: calc(50% - 20px);
+
+            .banner-title { 
+                font-size: clamp(28px, 6vw, 48px); 
+                letter-spacing: 2px; 
+                margin-bottom: 15px;
             }
-            .banner3-title { 
-                font-size: clamp(40px, 8vw, 60px); 
-                letter-spacing: 3px;
-                margin-bottom: 25px;
-            }
-            .banner3-subtitle { 
-                font-size: 14px;
-                line-height: 1.6;
-                max-width: 90%;
-                margin-bottom: 30px;
-            }
-            .banner3-btn-wrapper {
-                margin-top: 10px;
-            }
-            
-            .partner-block-content.banner4-layout { 
-                padding: 20px 20px 80px;
-            }
-            .banner4-logo-container {
-                width: 350px;
-                height: 350px;
-                margin-top: -88px;
+
+            .banner-desc { 
+                font-size: 13px; 
+                max-width: 85%; 
+                line-height: 1.5;
                 margin-bottom: 20px;
             }
-            .banner4-btn-wrapper {
-                margin-top: auto;
+            .banner-desc br { display: none; }
+
+            .partner-btn { 
+                padding: 10px 28px; 
+                font-size: 12px; 
+                letter-spacing: 1.5px;
+            }
+
+            .partner-block-content.mode-simple {
+                padding-bottom: 80px;
+            }
+
+            .partner-block-content.mode-full {
+                padding-bottom: 50px;
+                gap: 20px;
+            }
+
+            /* Banner1 手机 - 高度与其他 banner 统一为500px */
+            .partner-block.banner1 { height: 500px; min-height: 500px; }
+            .banner1-layout { 
+                flex-direction: row; 
+                gap: 15px; 
+                padding: 20px;
+                justify-content: flex-start;
+                padding-left: 10%;
+                align-items: center;
+            }
+            .banner1-phone { flex: 0 0 140px; height: 280px; margin-left: 5%; }
+            .banner1-info { 
+                flex: 0 0 220px; 
+                align-items: flex-start;
+                text-align: left;
+                margin-left: -3%;
+            }
+            .banner1-title { font-size: 18px; margin-bottom: 10px; }
+            .banner1-desc { font-size: 12px; line-height: 1.5; margin-bottom: 15px; }
+
+            /* Banner3 手机 - 固定布局 */
+            .banner3 .banner-title {
+                font-size: clamp(24px, 5vw, 40px);
+                margin-bottom: 15px;
+            }
+            .banner3 .banner-desc {
+                font-size: 13px;
+                line-height: 1.6;
+                margin-bottom: 20px;
+                min-height: auto;
+            }
+            .banner3 .banner-btn-wrapper {
+                margin-top: 5px;
+            }
+
+            /* Banner4 手机 - logo 位置统一 */
+            .banner4 .partner-block-content.mode-full {
+                padding-bottom: 100px;
+                gap: 20px;
+            }
+            .banner4 .banner4-logo {
+                margin-top: 0;
                 margin-bottom: 10px;
             }
-            
+
             .partners-logo-section { padding: 60px 0; }
             .partners-logo-grid { gap: 25px; }
             .partner-logo-item { flex: 0 0 140px; height: 90px; padding: 15px; }
-            
-            .careers-section { padding: 70px 0 55px; }
-            .careers-icon { width: 90px; height: 90px; margin-bottom: 30px; }
-            .careers-title { font-size: clamp(22px, 4vw, 32px); margin-bottom: 20px; }
-            .careers-subtitle { font-size: 15px; margin-bottom: 25px; }
-            .careers-btn { padding: 12px 35px; font-size: 13px; }
-            
-            .footer-gap { height: 80px; }
+
+            .careers-section { padding: 40px 0 40px; }
+            .careers-icon { width: 90px; height: 90px; margin-bottom: 25px; }
+            .careers-title { font-size: clamp(22px, 4vw, 32px); }
+            .careers-subtitle { font-size: 14px; }
+
+            .footer-gap { height: 100px; }
             .footer-main { padding: 30px 20px 25px; }
             .footer-container { flex-direction: column; gap: 25px; text-align: center; }
             .footer-contact-left, .footer-contact-right { text-align: center; flex: 1; width: 100%; }
-            .social-links { margin-bottom: 15px; }
-            .producer-section { text-align: center; }
-            .footer-bottom { flex-direction: column; gap: 12px; padding: 15px 20px; }
-            .footer-legal { flex-wrap: wrap; justify-content: center; gap: 15px; }
+            .footer-bottom { flex-direction: column; justify-content: center; gap: 12px; padding: 15px 20px; text-align: center; }
         }
 
+        /* 小手机 */
         @media (max-width: 480px) {
             nav { padding: 0 15px; height: 60px; background: rgba(0, 0, 0, 0.5); }
             .logo-img { height: 32px; max-width: 120px; }
             .nav-links { gap: 12px; }
             .nav-links a { font-size: 10px; letter-spacing: 1px; }
             .nav-links .neon-btn { padding: 6px 14px; font-size: 9px; }
-            
             .hero-content { margin-top: 60px; }
-            .hero-title { font-size: clamp(38px, 11vw, 55px); letter-spacing: 3px; margin-bottom: 25px; }
-            .hero-subtitle { font-size: clamp(12px, 3vw, 16px); letter-spacing: 1.5px; margin-top: 30px; line-height: 1.6; }
+            .hero-title { font-size: clamp(45px, 13vw, 65px); letter-spacing: 4px; margin-bottom: 30px; }
+            .hero-subtitle { font-size: clamp(13px, 3.5vw, 16px); letter-spacing: 2px; margin-top: 40px; line-height: 1.6; }
+            .hero-subtitle .line1 { margin-bottom: 5px; }
             .smoke-container { opacity: 0.35; }
-            
-            .partner-block-content.banner1-layout { padding: 40px 20px; }
-            .banner1-phone {
-                flex: 0 0 180px;
-                height: 360px;
+
+            /* Banner固定高度 */
+            .partner-block { height: 450px; min-height: 450px; }
+            .partner-block-content { padding: 25px 15px; }
+            .partner-block-content.mode-simple,
+            .partner-block-content.mode-full {
+                padding-bottom: 50px;
             }
-            .banner1-title { font-size: 22px; letter-spacing: 2px; }
-            .banner1-desc { font-size: 14px; line-height: 1.6; }
-            
-            .partner-block-content.banner3-layout { padding: 30px 20px 60px; }
-            .banner3-bg-logo {
-                width: 280px;
-                height: 280px;
-                top: calc(50% - 25px);
+
+            /* Logo固定比例 */
+            .banner-logo { 
+                max-width: 200px; 
+                max-height: 150px; 
+                width: auto;
+                height: auto;
             }
-            .banner3-title { font-size: clamp(40px, 8vw, 60px); letter-spacing: 3px; }
-            .banner3-subtitle { 
-                font-size: 14px;
-                line-height: 1.6;
+            .banner4-logo {
+                max-width: 240px;
+                max-height: 180px;
             }
-            
-            .partner-block-content.banner4-layout { 
-                padding: 20px 20px 60px;
+
+            .banner-title { 
+                font-size: clamp(22px, 5vw, 36px); 
+                letter-spacing: 1.5px;
+                margin-bottom: 12px;
             }
-            .banner4-logo-container {
-                width: 400px;
-                height: 400px;
-                margin-top: -100px;
+
+            .banner-desc { 
+                font-size: 12px; 
+                max-width: 90%;
+                line-height: 1.5;
+                margin-bottom: 18px;
             }
-            
-            .partners-logo-title { font-size: 22px; margin-bottom: 30px; }
+
+            .partner-btn { 
+                padding: 10px 24px; 
+                font-size: 11px; 
+                letter-spacing: 1.5px;
+            }
+
+            .partner-block-content.mode-simple {
+                padding-bottom: 70px;
+            }
+
+            .partner-block-content.mode-full {
+                padding-bottom: 40px;
+                gap: 15px;
+            }
+
+            /* Banner1 小手机 - 高度与其他 banner 统一为450px */
+            .partner-block.banner1 { height: 450px; min-height: 450px; }
+            .banner1-layout { 
+                flex-direction: row; 
+                gap: 12px; 
+                padding: 15px;
+                justify-content: flex-start;
+                padding-left: 8%;
+                align-items: center;
+            }
+            .banner1-phone { flex: 0 0 110px; height: 220px; margin-left: 3%; }
+            .banner1-info { 
+                flex: 0 0 200px; 
+                align-items: flex-start;
+                text-align: left;
+                margin-left: -2%;
+            }
+            .banner1-title { font-size: 16px; letter-spacing: 1.5px; margin-bottom: 8px; }
+            .banner1-desc { font-size: 11px; line-height: 1.5; margin-bottom: 12px; }
+
+            /* Banner3 小手机 - 固定布局 */
+            .banner3 .banner-title {
+                font-size: 22px;
+                margin-bottom: 12px;
+            }
+            .banner3 .banner-desc {
+                font-size: 12px;
+                line-height: 1.5;
+                margin-bottom: 15px;
+            }
+
+            /* Banner4 小手机 - logo 位置统一 */
+            .banner4 .partner-block-content.mode-full {
+                padding-bottom: 80px;
+                gap: 15px;
+            }
+            .banner4 .banner4-logo {
+                margin-top: 0;
+                margin-bottom: 8px;
+            }
+
+            .partners-logo-title { font-size: 20px; margin-bottom: 25px; }
             .partners-logo-grid { gap: 15px; }
-            .partner-logo-item { flex: 0 0 130px; height: 80px; }
-            
-            .careers-section { padding: 60px 0 45px; }
-            .careers-icon { width: 80px; height: 80px; margin-bottom: 25px; }
-            .careers-title { font-size: clamp(20px, 4vw, 28px); margin-bottom: 18px; }
-            .careers-subtitle { font-size: 14px; margin-bottom: 22px; }
-            .careers-btn { padding: 10px 30px; font-size: 12px; }
-            
-            .footer-gap { height: 60px; }
+            .partner-logo-item { flex: 0 0 120px; height: 75px; padding: 12px; }
+
+            .careers-section { padding: 40px 0 40px; }
+            .careers-icon { width: 70px; height: 70px; margin-bottom: 20px; }
+            .careers-title { font-size: clamp(18px, 4vw, 26px); }
+            .careers-subtitle { font-size: 13px; margin-bottom: 20px; }
+            .careers-btn { padding: 10px 28px; font-size: 11px; }
+
+            .footer-gap { height: 80px; }
             .footer-main { padding: 25px 15px 20px; }
-            .footer-logo { font-size: 26px; letter-spacing: 2px; margin-bottom: 12px; }
+            .footer-logo { font-size: 24px; }
             .social-links { gap: 10px; }
             .social-icon { width: 34px; height: 34px; }
-            .social-icon svg { width: 14px; height: 14px; }
-            .contact-item { font-size: 11px; margin-bottom: 6px; }
-            .producer-label { font-size: 8px; letter-spacing: 1px; }
+            .contact-item { font-size: 11px; }
             .producer-logo { height: 28px; }
-            .footer-bottom { padding: 12px 15px; gap: 10px; }
-            .footer-legal { gap: 12px; }
             .footer-legal a { font-size: 9px; }
             .copyright { font-size: 9px; }
-            
+
             .modal-content { padding: 30px 20px; }
             .modal-content h2 { font-size: 22px; }
         }
-    </style>
+
+        /* 超小手机 */
+        @media (max-width: 375px) {
+            .partner-block { height: 400px; min-height: 400px; }
+
+            .banner-logo { 
+                max-width: 160px; 
+                max-height: 120px; 
+            }
+
+            .banner-title { 
+                font-size: 20px;
+            }
+
+            .banner-desc { 
+                font-size: 11px;
+            }
+
+            .partner-btn { 
+                padding: 8px 20px; 
+                font-size: 10px;
+            }
+
+            .banner1-phone { flex: 0 0 110px; height: 220px; }
+            .banner1-title { font-size: 16px; }
+            .banner1-desc { font-size: 11px; }
+        }
+        </style>
 </head>
 <body>
 
@@ -1551,7 +1644,7 @@
                 <p class="careers-subtitle" data-editable="careers-subtitle" data-text="Send us your CV – there could be an opportunity for you!">
                     Send us your CV – there could be an opportunity for you!
                 </p>
-                <a href="mailto:careers@livegigsasia.com" class="careers-btn" data-editable="careers-btn" data-text="JOIN OUR TEAM" data-href="mailto:careers@livegigsasia.com">
+                <a href="mailto:xrebooking@hotmail.com" class="careers-btn" data-editable="careers-btn" data-text="JOIN OUR TEAM" data-href="mailto:xrebooking@hotmail.com">
                     JOIN OUR TEAM
                 </a>
             </div>
