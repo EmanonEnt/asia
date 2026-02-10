@@ -2,23 +2,8 @@ backend:
   name: github
   repo: EmanonEnt/asia
   branch: main
-  site_url: https://sensational-kangaroo-9944d9.netlify.app
+  base_url: https://sensational-kangaroo-9944d9.netlify.app
   auth_endpoint: /api/v1/auth
-
-media_folder: "static/images"
-public_folder: "/images"
-
-collections:
-  - name: "pages"
-    label: "Pages"
-    files:
-      - name: "home"
-        label: "Home Page"
-        file: "index.md"
-        fields:
-          - label: "Title"
-            name: "title"
-            widget: "string"
-          - label: "Content"
-            name: "body"
-            widget: "markdown"
+publish_mode: editorial_workflow
+media_folder: static/img
+public_folder: /img
