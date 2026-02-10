@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LiveGigs Asia - 后台管理</title>
+    <link rel="icon" type="image/png" href="../image/webtop.png">
+    <!-- Decap CMS -->
+    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+    <style>
+        /* 自定义后台样式 */
+        :root {
+            --dark-red: #8b0000;
+            --silver: #c0c0c0;
+            --black: #050505;
+        }
+
+        /* 加载动画 */
+        #nc-root {
+            background: linear-gradient(135deg, #0a0000 0%, #050505 100%) !important;
+            min-height: 100vh;
+        }
+
+        /* 自定义登录界面 */
+        .nc-githubAuthenticationPage {
+            background: linear-gradient(135deg, #1a0000 0%, #000 50%, #1a0000 100%) !important;
+            color: #fff !important;
+        }
+
+        .nc-githubAuthenticationPage-logo {
+            filter: drop-shadow(0 0 20px rgba(139, 0, 0, 0.8));
+        }
+
+        .nc-githubAuthenticationPage-button {
+            background: var(--dark-red) !important;
+            border: 2px solid var(--dark-red) !important;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif !important;
+            letter-spacing: 2px !important;
+            text-transform: uppercase !important;
+            transition: all 0.4s !important;
+        }
+
+        .nc-githubAuthenticationPage-button:hover {
+            background: #a00000 !important;
+            box-shadow: 0 0 30px rgba(139, 0, 0, 0.8) !important;
+            transform: scale(1.05) !important;
+        }
+
+        /* 侧边栏样式 */
+        .css-1gj57a0-SidebarContainer {
+            background: #0a0a0a !important;
+            border-right: 1px solid var(--dark-red) !important;
+        }
+
+        /* 导航项样式 */
+        .css-1hvrgvd-NavLink {
+            color: #c0c0c0 !important;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif !important;
+            letter-spacing: 1px !important;
+        }
+
+        .css-1hvrgvd-NavLink:hover {
+            color: var(--dark-red) !important;
+            background: rgba(139, 0, 0, 0.1) !important;
+        }
+
+        .css-1hvrgvd-NavLink.css-1q7qju0-NavLink-active {
+            color: var(--dark-red) !important;
+            background: rgba(139, 0, 0, 0.2) !important;
+            border-left: 3px solid var(--dark-red) !important;
+        }
+
+        /* 主内容区域 */
+        .css-1f3mf5k-MainContainer {
+            background: #050505 !important;
+        }
+
+        /* 卡片样式 */
+        .css-1h2eghs-Card {
+            background: #1a1a1a !important;
+            border: 1px solid #333 !important;
+            color: #fff !important;
+        }
+
+        .css-1h2eghs-Card:hover {
+            border-color: var(--dark-red) !important;
+            box-shadow: 0 0 20px rgba(139, 0, 0, 0.3) !important;
+        }
+
+        /* 按钮样式 */
+        .css-1hvrgvd-Button {
+            background: var(--dark-red) !important;
+            border-color: var(--dark-red) !important;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif !important;
+            letter-spacing: 1px !important;
+        }
+
+        .css-1hvrgvd-Button:hover {
+            background: #a00000 !important;
+            box-shadow: 0 0 20px rgba(139, 0, 0, 0.5) !important;
+        }
+
+        /* 输入框样式 */
+        .css-1hvrgvd-Input, .css-1hvrgvd-Textarea {
+            background: #0a0a0a !important;
+            border: 1px solid #333 !important;
+            color: #fff !important;
+            font-family: 'Arial', sans-serif !important;
+        }
+
+        .css-1hvrgvd-Input:focus, .css-1hvrgvd-Textarea:focus {
+            border-color: var(--dark-red) !important;
+            box-shadow: 0 0 10px rgba(139, 0, 0, 0.3) !important;
+        }
+
+        /* 标签样式 */
+        .css-1hvrgvd-Label {
+            color: var(--silver) !important;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif !important;
+            letter-spacing: 1px !important;
+            text-transform: uppercase !important;
+        }
+
+        /* 顶部栏 */
+        .css-1hvrgvd-AppHeader {
+            background: #0a0a0a !important;
+            border-bottom: 1px solid var(--dark-red) !important;
+        }
+
+        .css-1hvrgvd-AppHeaderButton {
+            color: var(--silver) !important;
+        }
+
+        .css-1hvrgvd-AppHeaderButton:hover {
+            color: var(--dark-red) !important;
+        }
+
+        /* 加载中文字 */
+        .loading-text {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--dark-red);
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: 24px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div id="loading" class="loading-text">Loading Admin Panel...</div>
+    <div id="nc-root"></div>
+
+    <script>
+        // 等待Decap CMS加载完成
+        window.addEventListener('load', function() {
+            document.getElementById('loading').style.display = 'none';
+        });
+
+        // 配置提示
+        console.log('%c LiveGigs Asia Admin ', 'background: #8b0000; color: #fff; font-size: 20px; font-family: Impact; padding: 10px;');
+        console.log('%c 后台管理系统已加载 ', 'color: #8b0000; font-size: 14px;');
+    </script>
+</body>
+</html>
