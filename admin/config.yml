@@ -1,8 +1,8 @@
 backend:
   name: github
-  repo: EmanonEnt/asia  # 你的仓库（用户名/仓库名）
-  branch: main  # 主分支
- site_domain: emanonent.github.io
+  repo: EmanonEnt/asia
+  branch: main
+  site_domain: emanonent.github.io
 
 media_folder: "static/images"
 public_folder: "/images"
@@ -14,10 +14,6 @@ collections:
       - name: "home"
         label: "Home Page"
         file: "index.md"
-fields:
-  - label: "Title"
-    name: "title"
-    widget: "string"
-  - label: "Content"
-    name: "body"
-    widget: "markdown"
+        fields:  # 这里必须严格缩进，且用冒号格式
+          - {label: "Title", name: "title", widget: "string"}
+          - {label: "Content", name: "body", widget: "markdown"}
