@@ -1,0 +1,24 @@
+{
+  "items": [
+    {
+      "title": "THE NONAME ANTI-MUSIC FESTIVAL",
+      "time": "Feb 15, 2026 | 8:00 PM",
+      "location": "Hong Kong",
+      "details": "The biggest anti-music event of the year",
+      "link": "events.html",
+      "image": "./image/thenonameanti-.jpg",
+      "order": 1,
+      "active": true
+    },
+    {
+      "title": "PUNK HEART FESTIVAL",
+      "time": "Mar 20, 2026 | 7:00 PM",
+      "location": "Beijing",
+      "details": "Punk rock all night long",
+      "link": "events.html",
+      "image": "./image/punkheartbanner.jpg",
+      "order": 2,
+      "active": true
+    }
+  ]
+}
