@@ -1,17 +1,19 @@
 backend:
   name: github
-  repo: EmanonEnt/asia  # 你的仓库名（用户名/仓库名）
-  branch: main  # 你的主分支名
+  repo: EmanonEnt/asia  # 你的仓库（用户名/仓库名）
+  branch: main  # 主分支
   site_domain: emanonent.github.io  # 你的GitHub Pages域名
 
-media_folder: "images"  # 媒体文件存储目录（可选）
+media_folder: "static/images"
 public_folder: "/images"
 
 collections:
-  - name: "posts"  # 示例：文章集合（可根据你的需求修改）
-    label: "Posts"
-    folder: "_posts"
-    create: true
-    fields:
-      - {label: "Title", name: "title", widget: "string"}
-      - {label: "Body", name: "body", widget: "markdown"}
+  - name: "pages"
+    label: "Pages"
+    files:
+      - name: "home"
+        label: "Home Page"
+        file: "index.md"
+        fields:
+          - {label: "Title", name: "title", widget: "string"}
+          - {label: "Content", name: "body", widget: "markdown"}
