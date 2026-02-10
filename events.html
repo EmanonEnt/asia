@@ -726,7 +726,7 @@
             border-right: none;
         }
 
-        /* ==================== 3海报区域 ==================== */
+        /* ==================== 3海报区域 - 满屏显示 ==================== */
         .posters-showcase {
             width: 100%;
             padding: 0;
@@ -735,18 +735,20 @@
         }
 
         .posters-container {
-            max-width: 1400px;
+            width: 100%;
+            max-width: none;
             margin: 0 auto;
             display: flex;
-            justify-content: center;
+            justify-content: stretch;
             align-items: stretch;
             gap: 0;
-            padding: 0 20px;
+            padding: 0;
         }
 
         .poster-item {
             flex: 1;
             min-width: 0;
+            max-width: none;
             position: relative;
             overflow: hidden;
             cursor: default;
@@ -814,12 +816,13 @@
         .poster-item-alt {
             flex: 1;
             min-width: 0;
+            max-width: none;
             position: relative;
             overflow: hidden;
             cursor: default;
             background: #000;
             transition: all 0.4s ease;
-            border: 2px solid transparent;
+            border: none;
         }
 
         .poster-item-alt:hover {
@@ -1438,9 +1441,6 @@
             .event-status { top: 15px; right: 15px; padding: 6px 12px; font-size: 11px; }
             .event-content { padding: 60px 20px 30px; }
             .auto-scroll-item { flex: 0 0 33.333%; min-width: 200px; }
-            .posters-container { padding: 0 15px; gap: 12px; }
-            .poster-item { border-radius: 6px; }
-            .poster-title { font-size: 14px; }
             .footer-gap { height: 100px; }
             .footer-main { padding: 40px 30px 30px; }
             .footer-container { flex-direction: column; gap: 30px; text-align: center; }
@@ -1803,7 +1803,7 @@
             </div>
         </section>
 
-        <!-- 3海报区域 -->
+        <!-- 3海报区域 - 满屏显示 -->
         <section class="posters-showcase">
             <div class="posters-container">
                 <!-- 海报1 -->
