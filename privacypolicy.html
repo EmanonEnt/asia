@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - LiveGigs Asia</title>
+    <link rel="icon" type="image/png" href="./image/webtop.png">
+    <link rel="shortcut icon" type="image/png" href="./image/webtop.png">
+    <style>
+        :root {
+            --dark-red: #8b0000;
+            --darker-red: #4a0000;
+            --silver: #c0c0c0;
+            --silver-bg: #d0d0d0;
+            --black: #050505;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100%;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            background-color: var(--black);
+            color: var(--silver);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* ==================== 导航栏 ==================== */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 80px;
+            padding: 0 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 9999;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .logo-img {
+            height: 45px;
+            width: auto;
+            max-width: 180px;
+            object-fit: contain;
+            cursor: pointer;
+            animation: logoBreathe 8s ease-in-out infinite, logoFlash 8s ease-in-out infinite;
+        }
+
+        @keyframes logoBreathe {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 5px rgba(139, 0, 0, 0.4)); }
+            50% { transform: scale(1.03); filter: drop-shadow(0 0 15px rgba(139, 0, 0, 0.8)); }
+        }
+
+        @keyframes logoFlash {
+            0%, 90%, 100% { filter: drop-shadow(0 0 5px rgba(139, 0, 0, 0.4)); }
+            95% { filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.8)) drop-shadow(0 0 15px rgba(139, 0, 0, 1)); }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .nav-links a:hover {
+            color: var(--dark-red);
+            text-shadow: 0 0 10px rgba(139, 0, 0, 0.8);
+        }
+
+        .nav-links .neon-btn {
+            background: rgba(139, 0, 0, 0.3);
+            color: #fff;
+            border: 2px solid var(--dark-red);
+            padding: 10px 25px;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-links .neon-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-links .neon-btn:hover::before {
+            left: 100%;
+        }
+
+        .nav-links .neon-btn:hover {
+            background: var(--dark-red);
+            border-color: var(--dark-red);
+            box-shadow: 0 0 30px rgba(139, 0, 0, 0.8), 0 0 60px rgba(139, 0, 0, 0.4);
+            transform: scale(1.05);
+            letter-spacing: 3px;
+        }
+
+        /* ==================== 页面标题区域 ==================== */
+        .page-header {
+            width: 100%;
+            padding: 140px 0 60px;
+            background: linear-gradient(180deg, rgba(5,5,5,0.98) 0%, rgba(10,10,10,0.95) 100%);
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .page-title {
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: clamp(36px, 6vw, 64px);
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--silver);
+            text-shadow: 0 0 30px rgba(139, 0, 0, 0.5);
+            animation: titleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { text-shadow: 0 0 20px rgba(192, 192, 192, 0.3), 0 0 40px rgba(139, 0, 0, 0.2); }
+            50% { text-shadow: 0 0 30px rgba(139, 0, 0, 0.6), 0 0 60px rgba(139, 0, 0, 0.3), 0 0 10px rgba(192, 192, 192, 0.5); }
+        }
+
+        .page-subtitle {
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: clamp(14px, 2vw, 18px);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(192, 192, 192, 0.7);
+            margin-top: 15px;
+        }
+
+        /* ==================== 隐私政策内容区域 ==================== */
+        .privacy-section {
+            width: 100%;
+            padding: 60px 0 80px;
+            background: linear-gradient(180deg, rgba(10,10,10,0.95) 0%, rgba(5,5,5,0.98) 50%, rgba(10,10,10,0.95) 100%);
+            position: relative;
+        }
+
+        .privacy-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .privacy-header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid rgba(139, 0, 0, 0.3);
+        }
+
+        .privacy-date {
+            font-size: 14px;
+            color: rgba(192, 192, 192, 0.7);
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .privacy-intro {
+            font-size: 16px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.85);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .privacy-block {
+            margin-bottom: 50px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid rgba(192, 192, 192, 0.1);
+        }
+
+        .privacy-block:last-child {
+            border-bottom: none;
+        }
+
+        .privacy-block h2 {
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: clamp(22px, 3vw, 28px);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dark-red);
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(139, 0, 0, 0.4);
+            animation: titleRedGlow 4s ease-in-out infinite;
+        }
+
+        @keyframes titleRedGlow {
+            0%, 100% { 
+                text-shadow: 0 0 20px rgba(139, 0, 0, 0.6), 0 0 40px rgba(139, 0, 0, 0.3);
+                color: var(--dark-red);
+            }
+            50% { 
+                text-shadow: 0 0 30px rgba(139, 0, 0, 1), 0 0 60px rgba(139, 0, 0, 0.6), 0 0 5px rgba(192, 192, 192, 0.8);
+                color: #a00000;
+            }
+        }
+
+        .privacy-block h3 {
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: 18px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--silver);
+            margin: 25px 0 15px;
+        }
+
+        .privacy-block p {
+            font-family: 'Arial', sans-serif;
+            font-size: 15px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 15px;
+        }
+
+        .privacy-block ul {
+            font-family: 'Arial', sans-serif;
+            font-size: 15px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.8);
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+
+        .privacy-block li {
+            margin-bottom: 10px;
+        }
+
+        .privacy-block strong {
+            color: var(--silver);
+            font-weight: bold;
+        }
+
+        .contact-box {
+            background: rgba(139, 0, 0, 0.1);
+            border: 1px solid rgba(139, 0, 0, 0.3);
+            padding: 30px;
+            margin-top: 30px;
+            border-radius: 8px;
+        }
+
+        .contact-box h3 {
+            color: var(--dark-red);
+            margin-top: 0;
+        }
+
+        .contact-box p {
+            margin-bottom: 8px;
+        }
+
+        .contact-box a {
+            color: var(--silver);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .contact-box a:hover {
+            color: var(--dark-red);
+        }
+
+        /* ==================== 间隙区域 ==================== */
+        .footer-gap {
+            height: 100px;
+            background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 50%, var(--silver-bg) 100%);
+            position: relative;
+        }
+
+        /* ==================== 底部区域 ==================== */
+        .site-footer {
+            background: var(--silver-bg);
+            color: #333;
+            position: relative;
+            z-index: 100;
+        }
+
+        .footer-main {
+            padding: 40px 40px 30px;
+            position: relative;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .footer-contact-left {
+            flex: 1;
+            text-align: left;
+            font-family: 'Courier New', monospace;
+        }
+
+        .contact-item {
+            margin-bottom: 8px;
+            color: #555;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+            line-height: 1.4;
+        }
+
+        .contact-item a {
+            color: #555;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .contact-item a:hover {
+            color: var(--dark-red);
+        }
+
+        .footer-brand {
+            flex: 0 0 auto;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-size: clamp(28px, 5vw, 42px);
+            font-weight: 400;
+            letter-spacing: 3px;
+            line-height: 1;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            animation: simpleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes simpleGlow {
+            0%, 100% { 
+                text-shadow: 0 0 10px rgba(139, 0, 0, 0.3);
+                opacity: 0.95;
+            }
+            50% { 
+                text-shadow: 0 0 20px rgba(139, 0, 0, 0.6), 0 0 30px rgba(139, 0, 0, 0.3);
+                opacity: 1;
+            }
+        }
+
+        .footer-logo .livegigs {
+            color: #222;
+        }
+
+        .footer-logo .asia {
+            color: var(--dark-red);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .social-icon {
+            width: 36px;
+            height: 36px;
+            border: 2px solid #666;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #555;
+            text-decoration: none;
+            transition: all 0.3s;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .social-icon:hover {
+            border-color: var(--dark-red);
+            color: var(--dark-red);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .producer-section {
+            text-align: center;
+        }
+
+        .producer-label {
+            font-size: 9px;
+            color: #777;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .producer-logo {
+            height: 32px;
+            width: auto;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .producer-logo:hover {
+            opacity: 1;
+        }
+
+        .footer-contact-right {
+            flex: 1;
+            text-align: right;
+            font-family: 'Courier New', monospace;
+        }
+
+        .footer-bottom {
+            background: #b8b8b8;
+            border-top: 1px solid #999;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .footer-legal {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-legal a {
+            color: #555;
+            text-decoration: none;
+            font-size: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .footer-legal a:hover {
+            color: var(--dark-red);
+        }
+
+        .copyright {
+            color: #666;
+            font-size: 10px;
+            letter-spacing: 1px;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* ==================== Membership弹窗 ==================== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal-content {
+            background: linear-gradient(135deg, #0a0000 0%, #050505 100%);
+            border: 1px solid var(--darker-red);
+            padding: 35px 30px;
+            max-width: 450px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 0 50px rgba(74, 0, 0, 0.5);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 12px;
+            right: 18px;
+            font-size: 26px;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover { color: var(--dark-red); transform: scale(1.2); }
+
+        .modal-content h2 {
+            font-size: 26px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            color: #fff;
+            text-align: center;
+        }
+
+        .modal-content p {
+            font-size: 12px;
+            color: var(--silver);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group { margin-bottom: 15px; }
+
+        .form-group label {
+            display: block;
+            font-size: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--silver);
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--darker-red);
+            color: #fff;
+            font-size: 13px;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--dark-red);
+            box-shadow: 0 0 15px rgba(139, 0, 0, 0.3);
+        }
+
+        .form-group textarea {
+            min-height: 70px;
+            resize: vertical;
+        }
+
+        .modal-content .neon-btn {
+            width: 100%;
+            margin-top: 8px;
+            padding: 12px;
+            font-size: 12px;
+            background: transparent;
+            color: #fff;
+            border: 2px solid var(--darker-red);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .modal-content .neon-btn:hover {
+            background: var(--dark-red);
+            box-shadow: 0 0 20px rgba(139, 0, 0, 0.5);
+        }
+
+        /* ==================== 响应式 ==================== */
+        @media (max-width: 1024px) {
+            nav { padding: 0 30px; height: 70px; }
+            .logo-img { height: 40px; max-width: 150px; }
+            .nav-links { gap: 25px; }
+            .page-header { padding: 120px 0 50px; }
+            .page-title { font-size: clamp(32px, 5.5vw, 52px); }
+            .privacy-container { padding: 0 30px; }
+            .footer-container { gap: 30px; }
+        }
+
+        @media (max-width: 768px) {
+            nav { padding: 0 20px; height: 65px; }
+            .logo-img { height: 35px; max-width: 130px; }
+            .nav-links a { font-size: 11px; letter-spacing: 2px; }
+            .nav-links .neon-btn { padding: 8px 16px; font-size: 10px; }
+            .page-header { padding: 100px 0 40px; }
+            .page-title { font-size: clamp(28px, 6vw, 42px); letter-spacing: 3px; }
+            .page-subtitle { font-size: 12px; letter-spacing: 2px; }
+            .privacy-section { padding: 40px 0 60px; }
+            .privacy-container { padding: 0 25px; }
+            .privacy-header { margin-bottom: 40px; padding-bottom: 30px; }
+            .privacy-intro { font-size: 14px; }
+            .privacy-block { margin-bottom: 40px; padding-bottom: 30px; }
+            .privacy-block h2 { font-size: clamp(18px, 2.5vw, 24px); }
+            .privacy-block h3 { font-size: 16px; }
+            .privacy-block p, .privacy-block ul { font-size: 14px; }
+            .contact-box { padding: 20px; }
+            .footer-gap { height: 80px; }
+            .footer-main { padding: 30px 20px 25px; }
+            .footer-container { flex-direction: column; gap: 25px; text-align: center; }
+            .footer-contact-left, .footer-contact-right { text-align: center; flex: 1; width: 100%; }
+            .social-links { margin-bottom: 15px; }
+            .producer-section { text-align: center; }
+            .footer-bottom { flex-direction: column; gap: 12px; padding: 15px 20px; }
+            .footer-legal { flex-wrap: wrap; justify-content: center; gap: 15px; }
+        }
+
+        @media (max-width: 480px) {
+            nav { padding: 0 15px; height: 60px; background: rgba(0, 0, 0, 0.5); }
+            .logo-img { height: 32px; max-width: 120px; }
+            .nav-links { gap: 12px; }
+            .nav-links a { font-size: 10px; letter-spacing: 1px; }
+            .nav-links .neon-btn { padding: 6px 14px; font-size: 9px; }
+            .page-header { padding: 90px 0 35px; }
+            .page-title { font-size: clamp(24px, 5.5vw, 36px); letter-spacing: 2px; }
+            .page-subtitle { font-size: 11px; letter-spacing: 1.5px; }
+            .privacy-section { padding: 35px 0 50px; }
+            .privacy-container { padding: 0 20px; }
+            .privacy-header { margin-bottom: 30px; padding-bottom: 20px; }
+            .privacy-date { font-size: 12px; }
+            .privacy-intro { font-size: 13px; line-height: 1.7; }
+            .privacy-block { margin-bottom: 30px; padding-bottom: 25px; }
+            .privacy-block h2 { font-size: 18px; letter-spacing: 1px; margin-bottom: 15px; }
+            .privacy-block h3 { font-size: 14px; margin: 20px 0 10px; }
+            .privacy-block p, .privacy-block ul { font-size: 13px; line-height: 1.7; }
+            .privacy-block ul { margin-left: 20px; }
+            .contact-box { padding: 15px; margin-top: 20px; }
+            .footer-gap { height: 60px; }
+            .footer-main { padding: 25px 15px 20px; }
+            .footer-logo { font-size: 26px; letter-spacing: 2px; margin-bottom: 12px; }
+            .social-links { gap: 10px; margin-bottom: 15px; }
+            .social-icon { width: 34px; height: 34px; }
+            .social-icon svg { width: 14px; height: 14px; }
+            .contact-item { font-size: 11px; margin-bottom: 6px; }
+            .producer-label { font-size: 8px; letter-spacing: 1px; }
+            .producer-logo { height: 28px; }
+            .footer-bottom { padding: 12px 15px; gap: 10px; }
+            .footer-legal { gap: 12px; }
+            .footer-legal a { font-size: 9px; }
+            .copyright { font-size: 9px; }
+            .modal-content { padding: 30px 20px; }
+            .modal-content h2 { font-size: 22px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 导航栏 -->
+    <nav>
+        <img src="./image/logo.png" alt="LiveGigs Asia" class="logo-img" id="logo" onclick="location.href='./index.html'" data-editable="logo" data-src="./image/logo.png">
+        <div class="nav-links">
+            <a href="events.html" data-editable="nav-events" data-text="Events" data-href="events.html">Events</a>
+            <a href="partners.html" data-editable="nav-partners" data-text="Partners" data-href="partners.html">Partners</a>
+            <button class="neon-btn" onclick="openModal()" data-editable="nav-membership" data-text="Membership">Membership</button>
+        </div>
+    </nav>
+
+    <!-- 页面标题区域（无Hero背景图） -->
+    <section class="page-header">
+        <h1 class="page-title" data-editable="privacy-page-title" data-text="Privacy Policy">Privacy Policy</h1>
+        <p class="page-subtitle" data-editable="privacy-page-subtitle" data-text="Your Data, Our Responsibility">Your Data, Our Responsibility</p>
+    </section>
+
+    <!-- 隐私政策内容区域 -->
+    <section class="privacy-section">
+        <div class="privacy-container">
+
+            <div class="privacy-header" data-editable="privacy-header">
+                <p class="privacy-date" data-editable="privacy-date" data-text="Effective Date: February 10, 2026">Effective Date: February 10, 2026</p>
+                <p class="privacy-intro" data-editable="privacy-intro" data-text="LiveGigs Asia is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website or use our services.">
+                    LiveGigs Asia is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website or use our services.
+                </p>
+            </div>
+
+            <!-- Data Collection -->
+            <div class="privacy-block" data-editable="privacy-block-1">
+                <h2 data-editable="privacy-title-1" data-text="1. Information We Collect">1. Information We Collect</h2>
+                <p data-editable="privacy-text-1-1" data-text="We may collect personal information that you voluntarily provide to us when you register for membership, purchase tickets, subscribe to our newsletter, or contact us. This may include:">
+                    We may collect personal information that you voluntarily provide to us when you register for membership, purchase tickets, subscribe to our newsletter, or contact us. This may include:
+                </p>
+                <ul>
+                    <li data-editable="privacy-list-1-1" data-text="Name and contact information (email address, phone number)">Name and contact information (email address, phone number)</li>
+                    <li data-editable="privacy-list-1-2" data-text="Billing and payment information">Billing and payment information</li>
+                    <li data-editable="privacy-list-1-3" data-text="Demographic information (age, location)">Demographic information (age, location)</li>
+                    <li data-editable="privacy-list-1-4" data-text="Preferences and interests related to live events">Preferences and interests related to live events</li>
+                </ul>
+                <p data-editable="privacy-text-1-2" data-text="We also automatically collect certain information when you visit our website, including your IP address, browser type, operating system, and browsing behavior.">
+                    We also automatically collect certain information when you visit our website, including your IP address, browser type, operating system, and browsing behavior.
+                </p>
+            </div>
+
+            <!-- Use of Data -->
+            <div class="privacy-block" data-editable="privacy-block-2">
+                <h2 data-editable="privacy-title-2" data-text="2. How We Use Your Information">2. How We Use Your Information</h2>
+                <p data-editable="privacy-text-2-1" data-text="We use the information we collect for various purposes, including:">
+                    We use the information we collect for various purposes, including:
+                </p>
+                <ul>
+                    <li data-editable="privacy-list-2-1" data-text="Processing ticket purchases and event registrations">Processing ticket purchases and event registrations</li>
+                    <li data-editable="privacy-list-2-2" data-text="Sending you event updates, newsletters, and promotional materials">Sending you event updates, newsletters, and promotional materials</li>
+                    <li data-editable="privacy-list-2-3" data-text="Responding to your inquiries and providing customer support">Responding to your inquiries and providing customer support</li>
+                    <li data-editable="privacy-list-2-4" data-text="Improving our website and services">Improving our website and services</li>
+                    <li data-editable="privacy-list-2-5" data-text="Complying with legal obligations">Complying with legal obligations</li>
+                </ul>
+            </div>
+
+            <!-- Data Protection -->
+            <div class="privacy-block" data-editable="privacy-block-3">
+                <h2 data-editable="privacy-title-3" data-text="3. Data Protection">3. Data Protection</h2>
+                <p data-editable="privacy-text-3-1" data-text="We implement appropriate technical and organizational measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. These measures include:">
+                    We implement appropriate technical and organizational measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. These measures include:
+                </p>
+                <ul>
+                    <li data-editable="privacy-list-3-1" data-text="Encryption of sensitive data during transmission">Encryption of sensitive data during transmission</li>
+                    <li data-editable="privacy-list-3-2" data-text="Secure servers and firewalls">Secure servers and firewalls</li>
+                    <li data-editable="privacy-list-3-3" data-text="Regular security assessments and updates">Regular security assessments and updates</li>
+                    <li data-editable="privacy-list-3-4" data-text="Limited access to personal information by authorized personnel only">Limited access to personal information by authorized personnel only</li>
+                </ul>
+            </div>
+
+            <!-- Data Sharing -->
+            <div class="privacy-block" data-editable="privacy-block-4">
+                <h2 data-editable="privacy-title-4" data-text="4. Sharing Your Information">4. Sharing Your Information</h2>
+                <p data-editable="privacy-text-4-1" data-text="We do not sell or rent your personal information to third parties. We may share your information with:">
+                    We do not sell or rent your personal information to third parties. We may share your information with:
+                </p>
+                <ul>
+                    <li data-editable="privacy-list-4-1" data-text="Event organizers and venue partners (only as necessary for event access)">Event organizers and venue partners (only as necessary for event access)</li>
+                    <li data-editable="privacy-list-4-2" data-text="Payment processors and service providers">Payment processors and service providers</li>
+                    <li data-editable="privacy-list-4-3" data-text="Legal authorities when required by law">Legal authorities when required by law</li>
+                </ul>
+            </div>
+
+            <!-- User Rights -->
+            <div class="privacy-block" data-editable="privacy-block-5">
+                <h2 data-editable="privacy-title-5" data-text="5. Your Rights">5. Your Rights</h2>
+                <p data-editable="privacy-text-5-1" data-text="Under applicable data protection laws, including the Hong Kong Personal Data (Privacy) Ordinance and GDPR, you have the right to:">
+                    Under applicable data protection laws, including the Hong Kong Personal Data (Privacy) Ordinance and GDPR, you have the right to:
+                </p>
+                <ul>
+                    <li data-editable="privacy-list-5-1" data-text="Access the personal information we hold about you">Access the personal information we hold about you</li>
+                    <li data-editable="privacy-list-5-2" data-text="Request correction of inaccurate information">Request correction of inaccurate information</li>
+                    <li data-editable="privacy-list-5-3" data-text="Request deletion of your personal data">Request deletion of your personal data</li>
+                    <li data-editable="privacy-list-5-4" data-text="Object to or restrict certain processing activities">Object to or restrict certain processing activities</li>
+                    <li data-editable="privacy-list-5-5" data-text="Withdraw consent at any time">Withdraw consent at any time</li>
+                </ul>
+            </div>
+
+            <!-- Cookies -->
+            <div class="privacy-block" data-editable="privacy-block-6">
+                <h2 data-editable="privacy-title-6" data-text="6. Cookies and Tracking">6. Cookies and Tracking</h2>
+                <p data-editable="privacy-text-6-1" data-text="We use cookies and similar tracking technologies to enhance your browsing experience, analyze website traffic, and personalize content. You can control cookie settings through your browser preferences.">
+                    We use cookies and similar tracking technologies to enhance your browsing experience, analyze website traffic, and personalize content. You can control cookie settings through your browser preferences.
+                </p>
+            </div>
+
+            <!-- Contact -->
+            <div class="privacy-block" data-editable="privacy-block-7">
+                <h2 data-editable="privacy-title-7" data-text="7. Contact Us">7. Contact Us</h2>
+                <p data-editable="privacy-text-7-1" data-text="If you have any questions about this Privacy Policy or wish to exercise your data protection rights, please contact us:">
+                    If you have any questions about this Privacy Policy or wish to exercise your data protection rights, please contact us:
+                </p>
+                <div class="contact-box" data-editable="privacy-contact-box">
+                    <h3 data-editable="privacy-contact-title" data-text="Data Controller">Data Controller</h3>
+                    <p data-editable="privacy-contact-company" data-text="LiveGigs Asia / EMANON ENT.">LiveGigs Asia / EMANON ENT.</p>
+                    <p data-editable="privacy-contact-address" data-text="#303 Terry Francine Street, Hong Kong, CN 999077">#303 Terry Francine Street,<br>Hong Kong, CN 999077</p>
+                    <p data-editable="privacy-contact-email" data-text="Email: LiveGigsCn@Hotmail.Com">
+                        Email: <a href="mailto:LiveGigsCn@Hotmail.Com">LiveGigsCn@Hotmail.Com</a>
+                    </p>
+                    <p data-editable="privacy-contact-phone" data-text="Phone: +852-456-7890">
+                        Phone: <a href="tel:+852-456-7890">+852-456-7890</a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Changes -->
+            <div class="privacy-block" data-editable="privacy-block-8">
+                <h2 data-editable="privacy-title-8" data-text="8. Changes to This Policy">8. Changes to This Policy</h2>
+                <p data-editable="privacy-text-8-1" data-text="We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the effective date.">
+                    We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the effective date.
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 间隙区域 -->
+    <div class="footer-gap"></div>
+
+    <!-- 底部区域 -->
+    <footer class="site-footer">
+        <div class="footer-main">
+            <div class="footer-container">
+                <div class="footer-contact-left">
+                    <div class="contact-item" data-editable="footer-email">
+                        <a href="mailto:LiveGigsCn@Hotmail.Com">LiveGigsCn@Hotmail.Com</a>
+                    </div>
+                    <div class="contact-item" data-editable="footer-phone">
+                        <a href="tel:+852-456-7890">+852-456-7890</a>
+                    </div>
+                </div>
+
+                <div class="footer-brand">
+                    <div class="footer-logo" data-editable="footer-logo">
+                        <span class="livegigs">LIVEGIGS</span><span class="asia">ASIA</span>
+                    </div>
+
+                    <div class="social-links" id="socialContainer">
+                        <a href="#" class="social-icon" data-editable="social-facebook" data-href="https://facebook.com" data-platform="facebook" title="Facebook">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                        </a>
+                        <a href="#" class="social-icon" data-editable="social-instagram" data-href="https://instagram.com" data-platform="instagram" title="Instagram">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        </a>
+                        <a href="#" class="social-icon" data-editable="social-youtube" data-href="https://youtube.com" data-platform="youtube" title="YouTube">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                        </a>
+                        <a href="#" class="social-icon" data-editable="social-x" data-href="https://x.com" data-platform="x" title="X">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        </a>
+                    </div>
+
+                    <div class="producer-section">
+                        <div class="producer-label">Produced by</div>
+                        <img src="./image/emanonent-logo.png" alt="EMANON ENT." class="producer-logo" 
+                             onerror="this.style.display='none'" 
+                             data-editable="producer-logo" data-src="./image/emanonent-logo.png">
+                    </div>
+                </div>
+
+                <div class="footer-contact-right">
+                    <div class="contact-item" data-editable="footer-address">
+                        #303 TERRY FRANCINE STREET,<br>
+                        HONGKONG, CN 999077
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="footer-legal">
+                <a href="#" class="active" data-editable="footer-privacy" data-href="#" data-text="Privacy Policy">Privacy Policy</a>
+                <a href="accessibilitystatement.html" data-editable="footer-accessibility" data-href="accessibilitystatement.html" data-text="Accessibility Statement">Accessibility Statement</a>
+            </div>
+            <div class="copyright" data-editable="footer-copyright" data-text="Copyright © 2001-2026 EMANON ENT. - All Rights Reserved.">
+                Copyright © 2001-2026 EMANON ENT. - All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Membership 弹窗 -->
+    <div class="modal-overlay" id="membershipModal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <h2 data-editable="modal-title" data-text="Join Membership">Join Membership</h2>
+            <p data-editable="modal-desc" data-text="Get exclusive access to presales and events">Get exclusive access to presales and events</p>
+            <form id="membershipForm" onsubmit="handleSubmit(event)">
+                <div class="form-group">
+                    <label for="memberName" data-editable="modal-label-name" data-text="Name">Name</label>
+                    <input type="text" id="memberName" name="name" required placeholder="Enter your name" data-editable="modal-placeholder-name" data-text="Enter your name">
+                </div>
+                <div class="form-group">
+                    <label for="memberEmail" data-editable="modal-label-email" data-text="Email">Email</label>
+                    <input type="email" id="memberEmail" name="email" required placeholder="Enter your email" data-editable="modal-placeholder-email" data-text="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="memberPhone" data-editable="modal-label-phone" data-text="Phone (Optional)">Phone (Optional)</label>
+                    <input type="tel" id="memberPhone" name="phone" placeholder="Enter your phone number" data-editable="modal-placeholder-phone" data-text="Enter your phone number">
+                </div>
+                <div class="form-group">
+                    <label for="memberMessage" data-editable="modal-label-message" data-text="Message">Message</label>
+                    <textarea id="memberMessage" name="message" placeholder="Tell us what you're interested in..." data-editable="modal-placeholder-message" data-text="Tell us what you're interested in..."></textarea>
+                </div>
+                <button type="submit" class="neon-btn" data-editable="modal-submit" data-text="SUBMIT APPLICATION">SUBMIT APPLICATION</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        function updateContent(editableId, newValue, type = 'text') {
+            const element = document.querySelector(`[data-editable="${editableId}"]`);
+            if (!element) return;
+
+            if (type === 'src') {
+                element.src = newValue;
+                element.setAttribute('data-src', newValue);
+            } else if (type === 'href') {
+                element.href = newValue;
+                element.setAttribute('data-href', newValue);
+                if (element.tagName === 'BUTTON') {
+                    element.onclick = function() { window.open(newValue, '_blank'); };
+                }
+            } else if (type === 'mailto') {
+                element.href = 'mailto:' + newValue;
+                const link = element.querySelector('a');
+                if (link) link.href = 'mailto:' + newValue;
+            } else if (type === 'tel') {
+                element.href = 'tel:' + newValue;
+                const link = element.querySelector('a');
+                if (link) link.href = 'tel:' + newValue;
+            } else {
+                element.textContent = newValue;
+                element.setAttribute('data-text', newValue);
+            }
+        }
+
+        function updateMultipleContent(updates) {
+            updates.forEach(update => updateContent(update.id, update.value, update.type));
+        }
+
+        function getAllEditableContent() {
+            const elements = document.querySelectorAll('[data-editable]');
+            const content = {};
+            elements.forEach(el => {
+                const id = el.getAttribute('data-editable');
+                let type = 'text';
+                if (el.hasAttribute('data-src')) type = 'image';
+                else if (el.hasAttribute('data-href')) type = 'link';
+
+                content[id] = {
+                    type: type,
+                    value: type === 'image' ? el.getAttribute('data-src') :
+                          type === 'link' ? el.getAttribute('data-href') :
+                          el.getAttribute('data-text'),
+                    element: el.tagName
+                };
+            });
+            return content;
+        }
+
+        const SocialManager = {
+            add: function(platform, href, svgPath) {
+                const container = document.getElementById('socialContainer');
+                const a = document.createElement('a');
+                a.href = href;
+                a.className = 'social-icon';
+                a.title = platform;
+                a.setAttribute('data-platform', platform);
+                a.setAttribute('data-editable', 'social-' + platform);
+                a.setAttribute('data-href', href);
+                a.innerHTML = svgPath;
+                container.appendChild(a);
+            },
+            update: function(platform, newHref) {
+                const icon = document.querySelector(`[data-platform="${platform}"]`);
+                if (icon) {
+                    icon.href = newHref;
+                    icon.setAttribute('data-href', newHref);
+                }
+            },
+            remove: function(platform) {
+                const icon = document.querySelector(`[data-platform="${platform}"]`);
+                if (icon) icon.remove();
+            }
+        };
+
+        const FooterAdmin = {
+            updateText: updateContent,
+            updateHref: function(id, href) { updateContent(id, href, 'href'); },
+            updateImage: function(id, src) { updateContent(id, src, 'src'); },
+            updateEmail: function(id, email) { updateContent(id, email, 'mailto'); },
+            updatePhone: function(id, phone) { updateContent(id, phone, 'tel'); }
+        };
+
+        const PrivacyAdmin = {
+            updateSection: function(blockId, title, content) {
+                updateContent(`privacy-title-${blockId}`, title, 'text');
+                updateContent(`privacy-text-${blockId}-1`, content, 'text');
+            },
+            updateListItem: function(blockId, itemId, text) {
+                updateContent(`privacy-list-${blockId}-${itemId}`, text, 'text');
+            },
+            updateContact: function(company, address, email, phone) {
+                updateContent('privacy-contact-company', company, 'text');
+                updateContent('privacy-contact-address', address, 'text');
+                updateContent('privacy-contact-email', email, 'mailto');
+                updateContent('privacy-contact-phone', phone, 'tel');
+            },
+            updateDate: function(date) {
+                updateContent('privacy-date', 'Effective Date: ' + date, 'text');
+            }
+        };
+
+        function openModal() {
+            document.getElementById('membershipModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('membershipModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        document.getElementById('membershipModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        function handleSubmit(e) {
+            e.preventDefault();
+            const formData = {
+                name: document.getElementById('memberName').value,
+                email: document.getElementById('memberEmail').value,
+                phone: document.getElementById('memberPhone').value,
+                message: document.getElementById('memberMessage').value,
+                timestamp: new Date().toISOString(),
+                source: 'LiveGigs Asia Privacy Policy Page'
+            };
+            let submissions = JSON.parse(localStorage.getItem('membershipSubmissions') || '[]');
+            submissions.push(formData);
+            localStorage.setItem('membershipSubmissions', JSON.stringify(submissions));
+            alert('Thank you for your application! We will contact you soon.');
+            closeModal();
+            document.getElementById('membershipForm').reset();
+        }
+
+        const logo = document.getElementById('logo');
+        if (logo) {
+            logo.addEventListener('error', function() {
+                this.style.display = 'none';
+            });
+        }
+
+        window.LiveGigsAdmin = {
+            update: updateContent,
+            updateMultiple: updateMultipleContent,
+            getAll: getAllEditableContent,
+            social: SocialManager,
+            footer: FooterAdmin,
+            privacy: PrivacyAdmin
+        };
+    </script>
+
+</body>
+</html>
