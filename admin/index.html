@@ -5,9 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LiveGigs Asia - 后台管理</title>
     <link rel="icon" type="image/png" href="../image/webtop.png">
-    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+    <style>
+        body { margin: 0; padding: 20px; font-family: sans-serif; background: #0a0a0a; color: #fff; }
+        #loading { text-align: center; padding: 50px; color: #8b0000; font-size: 18px; }
+        #error { display: none; background: #1a1a1a; border: 1px solid #8b0000; padding: 20px; margin: 20px; border-radius: 8px; }
+        #error h2 { color: #8b0000; margin-top: 0; }
+        .btn { display: inline-block; background: #8b0000; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 4px; margin: 10px 5px; }
+    </style>
 </head>
 <body>
+    <div id="loading">正在加载后台管理系统...</div>
+    <div id="error">
+        <h2>加载失败</h2>
+        <p>请检查GitHub OAuth和Netlify配置</p>
+        <pre id="error-msg"></pre>
+        <p><button class="btn" onclick="location.reload()">刷新页面</button></p>
+    </div>
     <div id="nc-root"></div>
+    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+    <script>
+        setTimeout(function() {
+            var ncRoot = document.getElementById('nc-root');
+            var loading = document.getElementById('loading');
+            var error = document.getElementById('error');
+            if (!ncRoot || ncRoot.children.length === 0) {
+                loading.style.display = 'none';
+                error.style.display = 'block';
+                document.getElementById('error-msg').textContent = window.CMS ? 'CMS加载但初始化失败' : 'CMS对象未创建';
+            }
+        }, 5000);
+    </script>
 </body>
 </html>
