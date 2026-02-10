@@ -1,9 +1,0 @@
-backend:
-  name: git-gateway
-  branch: main
-
-media_folder: "image"
-public_folder: "./image"
-
-site_url: https://emanonent.github.io/asia
-locale: 'zh_Hans'
