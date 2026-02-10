@@ -1,0 +1,11 @@
+{
+  "email": "LiveGigsCn@Hotmail.Com",
+  "phone": "+852-456-7890",
+  "address": "#303 TERRY FRANCINE STREET,\nHONGKONG, CN 999077",
+  "social": [
+    {"platform": "weibo", "url": "https://weibo.com", "active": true},
+    {"platform": "wechat", "url": "#", "active": true}
+  ],
+  "copyright": "Copyright © 2001-2026 EMANON ENT. - All Rights Reserved.",
+  "producer_logo": "./image/emanonent-logo.png"
+}
