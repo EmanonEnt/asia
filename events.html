@@ -1,0 +1,2649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events - LiveGigs Asia</title>
+    <link rel="icon" type="image/png" href="./image/webtop.png">
+    <style>
+        :root {
+            --dark-red: #8b0000;
+            --darker-red: #4a0000;
+            --silver: #c0c0c0;
+            --silver-bg: #d0d0d0;
+            --black: #050505;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100%;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            background-color: var(--black);
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* ==================== 导航栏 ==================== */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 80px;
+            padding: 0 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 9999;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .logo-img {
+            height: 45px;
+            width: auto;
+            max-width: 180px;
+            object-fit: contain;
+            cursor: pointer;
+            animation: logoBreathe 8s ease-in-out infinite, logoFlash 8s ease-in-out infinite;
+        }
+
+        @keyframes logoBreathe {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 5px rgba(139, 0, 0, 0.4)); }
+            50% { transform: scale(1.03); filter: drop-shadow(0 0 15px rgba(139, 0, 0, 0.8)); }
+        }
+
+        @keyframes logoFlash {
+            0%, 90%, 100% { filter: drop-shadow(0 0 5px rgba(139, 0, 0, 0.4)); }
+            95% { filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.8)) drop-shadow(0 0 15px rgba(139, 0, 0, 1)); }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .nav-links a:hover {
+            color: var(--dark-red);
+            text-shadow: 0 0 10px rgba(139, 0, 0, 0.8);
+        }
+
+        .nav-links a.active {
+            color: var(--dark-red);
+            border-bottom: 2px solid var(--dark-red);
+        }
+
+        .nav-links .neon-btn {
+            background: rgba(139, 0, 0, 0.3);
+            color: #fff;
+            border: 2px solid var(--dark-red);
+            padding: 10px 25px;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-links .neon-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-links .neon-btn:hover::before {
+            left: 100%;
+        }
+
+        .nav-links .neon-btn:hover {
+            background: var(--dark-red);
+            border-color: var(--dark-red);
+            box-shadow: 0 0 30px rgba(139, 0, 0, 0.8), 0 0 60px rgba(139, 0, 0, 0.4);
+            transform: scale(1.05);
+            letter-spacing: 3px;
+        }
+
+        /* ==================== Hero Section - 抽屉式滚动 ==================== */
+        .hero {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('./image/e-hero%20bg.jpg');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            filter: grayscale(100%) brightness(0.35);
+            z-index: 0;
+            animation: bgFlash 8s ease-in-out infinite;
+        }
+
+        @keyframes bgFlash {
+            0%, 85%, 100% { filter: grayscale(100%) brightness(0.35); }
+            90%, 95% { filter: grayscale(80%) brightness(0.5); }
+        }
+
+        .smoke-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 3;
+            overflow: hidden;
+            pointer-events: none;
+            opacity: 0.5;
+            animation: breathe 8s ease-in-out infinite;
+        }
+
+        .smoke {
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(ellipse at center, rgba(255,255,255,0.04) 0%, transparent 50%);
+            filter: blur(60px);
+        }
+
+        .smoke:nth-child(1) { top: -30%; left: -30%; animation: smokeFloat1 18s ease-in-out infinite; }
+        .smoke:nth-child(2) { top: 10%; right: -30%; animation: smokeFloat2 22s ease-in-out infinite; opacity: 0.6; }
+        .smoke:nth-child(3) { bottom: -30%; left: 10%; animation: smokeFloat3 20s ease-in-out infinite; opacity: 0.4; }
+
+        @keyframes breathe {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.02); }
+        }
+
+        @keyframes smokeFloat1 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(5%, 3%) scale(1.1); }
+        }
+
+        @keyframes smokeFloat2 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-5%, -3%) scale(1.05); }
+        }
+
+        @keyframes smokeFloat3 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(3%, -5%) scale(1.08); }
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 100%);
+            z-index: 2;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            width: 100%;
+            padding: 0 20px;
+            margin-top: 80px;
+        }
+
+        .hero-title {
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: clamp(80px, 14vw, 220px);
+            font-weight: 400;
+            letter-spacing: clamp(8px, 2vw, 20px);
+            line-height: 0.85;
+            margin-bottom: 40px;
+            max-width: 1900px;
+            margin-left: auto;
+            margin-right: auto;
+            text-transform: uppercase;
+            animation: textFlash 8s ease-in-out infinite;
+        }
+
+        @keyframes textFlash {
+            0%, 90%, 100% { opacity: 0.9; text-shadow: 0 0 30px rgba(139, 0, 0, 0.3); }
+            95% { opacity: 1; text-shadow: 0 0 60px rgba(139, 0, 0, 0.8), 0 0 100px rgba(255, 255, 255, 0.3); }
+        }
+
+        .hero-title .gray {
+            color: rgba(100, 100, 100, 0.95);
+        }
+
+        .hero-title .red {
+            color: rgba(139, 0, 0, 0.95);
+        }
+
+        .hero-subtitle {
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: clamp(22px, 3.5vw, 42px);
+            letter-spacing: clamp(4px, 1vw, 10px);
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 1400px;
+            margin: 80px auto 0;
+            padding: 0 20px;
+            line-height: 1.8;
+            animation: textFlash 8s ease-in-out infinite;
+            animation-delay: 0.3s;
+        }
+
+        .hero-subtitle .line1 {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .hero-subtitle .line2 {
+            display: block;
+            color: rgba(200, 200, 200, 0.9);
+            font-size: 0.95em;
+        }
+
+        /* ==================== 内容包装器 - 抽屉式滚动 ==================== */
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
+            margin-top: 100vh;
+            background: var(--black);
+            min-height: 100vh;
+        }
+
+        /* ==================== 自主活动区域 ==================== */
+        .managed-events {
+            width: 100%;
+            padding: 80px 0;
+            background: linear-gradient(180deg, rgba(5,5,5,0.9) 0%, rgba(10,10,10,0.85) 50%, rgba(5,5,5,0.9) 100%), 
+                        url('./image/2-e-b1.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: clamp(32px, 6vw, 56px);
+            letter-spacing: clamp(3px, 1vw, 8px);
+            text-transform: uppercase;
+            color: var(--dark-red);
+            margin-bottom: 20px;
+            animation: titleRedGlow 4s ease-in-out infinite;
+            position: relative;
+            display: inline-block;
+            text-shadow: 0 0 20px rgba(139, 0, 0, 0.6);
+        }
+
+        @keyframes titleRedGlow {
+            0%, 100% { 
+                text-shadow: 0 0 20px rgba(139, 0, 0, 0.6), 0 0 40px rgba(139, 0, 0, 0.3);
+                color: var(--dark-red);
+            }
+            50% { 
+                text-shadow: 0 0 30px rgba(139, 0, 0, 1), 0 0 60px rgba(139, 0, 0, 0.6), 0 0 5px rgba(192, 192, 192, 0.8);
+                color: #a00000;
+            }
+        }
+
+        .section-subtitle {
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: clamp(14px, 2vw, 18px);
+            letter-spacing: clamp(2px, 0.5vw, 4px);
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 900px;
+            margin: 0 auto;
+            line-height: 1.6;
+            animation: subtitlePulse 6s ease-in-out infinite;
+        }
+
+        @keyframes subtitlePulse {
+            0%, 100% { 
+                opacity: 0.7;
+                text-shadow: 0 0 10px rgba(139, 0, 0, 0.2);
+            }
+            50% { 
+                opacity: 1;
+                text-shadow: 0 0 20px rgba(139, 0, 0, 0.5), 0 0 5px rgba(192, 192, 192, 0.3);
+                color: rgba(192, 192, 192, 0.95);
+            }
+        }
+
+        /* 默认手机端：每行1个 */
+        .events-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            padding: 0 20px;
+        }
+
+        .event-card {
+            position: relative;
+            background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            border: 1px solid rgba(139, 0, 0, 0.3);
+            aspect-ratio: 3/4;
+            max-width: 400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .event-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(139, 0, 0, 0.8);
+            box-shadow: 0 0 30px rgba(139, 0, 0, 0.3), inset 0 0 20px rgba(139, 0, 0, 0.1);
+        }
+
+        .event-poster {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            filter: brightness(0.7);
+            transition: all 0.4s;
+            z-index: 1;
+        }
+
+        .event-card:hover .event-poster {
+            filter: brightness(0.4);
+            transform: scale(1.05);
+        }
+
+        .event-status {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 10;
+            padding: 8px 16px;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: bold;
+            border-radius: 4px;
+            animation: statusPulse 2s ease-in-out infinite;
+        }
+
+        .event-status.countdown {
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            border: 1px solid var(--dark-red);
+        }
+
+        .event-status.soldout {
+            background: var(--dark-red);
+            color: #fff;
+            border: 1px solid var(--dark-red);
+        }
+
+        .event-status.ontour {
+            background: rgba(139, 0, 0, 0.8);
+            color: #fff;
+            border: 1px solid var(--dark-red);
+        }
+
+        @keyframes statusPulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(139, 0, 0, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(139, 0, 0, 0.8); }
+        }
+
+        .event-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 80px 20px 40px;
+            z-index: 5;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0.6) 70%, rgba(0,0,0,0.8) 100%);
+        }
+
+        .event-name {
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: clamp(20px, 2.5vw, 28px);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #fff;
+            margin-bottom: 15px;
+            text-shadow: 0 0 30px rgba(139, 0, 0, 1), 0 2px 4px rgba(0,0,0,0.8);
+            line-height: 1.2;
+            text-align: center;
+        }
+
+        .event-details {
+            font-size: 14px;
+            color: var(--silver);
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            text-align: center;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .event-venue {
+            font-size: 13px;
+            color: rgba(255,255,255,0.8);
+            letter-spacing: 1px;
+            margin-bottom: auto;
+            text-align: center;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .event-btn {
+            display: inline-block;
+            background: rgba(139, 0, 0, 0.8);
+            color: #fff;
+            border: 2px solid var(--dark-red);
+            padding: 12px 30px;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: 13px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+            margin-top: auto;
+        }
+
+        .event-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .event-btn:hover::before {
+            left: 100%;
+        }
+
+        .event-btn:hover {
+            background: var(--dark-red);
+            border-color: #fff;
+            box-shadow: 0 0 30px rgba(139, 0, 0, 0.8), 0 0 60px rgba(139, 0, 0, 0.4);
+            transform: scale(1.05);
+            letter-spacing: 3px;
+        }
+
+        .event-card.hidden {
+            display: none;
+        }
+
+        .load-more-container {
+            text-align: center;
+            margin-top: 60px;
+            display: none;
+        }
+
+        .load-more-container.visible {
+            display: block;
+        }
+
+        .load-more-btn {
+            background: rgba(139, 0, 0, 0.3);
+            color: #fff;
+            border: 2px solid var(--dark-red);
+            padding: 15px 40px;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: 14px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .load-more-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .load-more-btn:hover::before {
+            left: 100%;
+        }
+
+        .load-more-btn:hover {
+            background: var(--dark-red);
+            border-color: var(--dark-red);
+            box-shadow: 0 0 30px rgba(139, 0, 0, 0.8), 0 0 60px rgba(139, 0, 0, 0.4);
+            transform: scale(1.05);
+            letter-spacing: 4px;
+        }
+
+        /* ==================== 自动滚动海报区域 ==================== */
+        .auto-scroll-section {
+            width: 100%;
+            background: var(--black);
+            position: relative;
+            overflow: hidden;
+            padding: 0;
+            margin: 0;
+        }
+
+        .auto-scroll-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .auto-scroll-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .auto-scroll-track {
+            display: flex;
+            gap: 0;
+            animation: autoScroll 40s linear infinite;
+            will-change: transform;
+        }
+
+        .auto-scroll-track.paused {
+            animation-play-state: paused;
+        }
+
+        @keyframes autoScroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .auto-scroll-item {
+            flex: 0 0 20%;
+            min-width: 250px;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.4s ease;
+        }
+
+        .auto-scroll-item:hover {
+            transform: scale(1.05);
+            z-index: 10;
+        }
+
+        .auto-scroll-item img {
+            width: 100%;
+            aspect-ratio: 3/4;
+            object-fit: cover;
+            filter: brightness(0.3);
+            transition: all 0.4s ease;
+        }
+
+        .auto-scroll-item:hover img {
+            filter: brightness(1);
+            transform: scale(1.1);
+        }
+
+        .auto-scroll-info {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            z-index: 2;
+            transition: opacity 0.4s ease;
+            padding: 0 20px;
+        }
+
+        .auto-scroll-item:hover .auto-scroll-info {
+            opacity: 0;
+        }
+
+        .auto-scroll-title {
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: clamp(16px, 2vw, 22px);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #fff;
+            margin-bottom: 8px;
+            text-shadow: 0 0 20px rgba(139, 0, 0, 0.8), 0 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .auto-scroll-meta {
+            font-size: 12px;
+            color: var(--silver);
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .auto-scroll-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.6);
+            transition: all 0.4s ease;
+        }
+
+        .auto-scroll-item:hover .auto-scroll-overlay {
+            background: rgba(0,0,0,0);
+        }
+
+        .scroll-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 80px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid var(--dark-red);
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            opacity: 0.7;
+        }
+
+        .scroll-arrow:hover {
+            background: var(--dark-red);
+            opacity: 1;
+            box-shadow: 0 0 20px rgba(139, 0, 0, 0.8);
+        }
+
+        .scroll-arrow.left {
+            left: 0;
+            border-radius: 0 8px 8px 0;
+            border-left: none;
+        }
+
+        .scroll-arrow.right {
+            right: 0;
+            border-radius: 8px 0 0 8px;
+            border-right: none;
+        }
+
+        /* ==================== 3海报区域 ==================== */
+        .posters-showcase {
+            width: 100%;
+            padding: 0;
+            background: linear-gradient(180deg, #050505 0%, #0a0a0a 50%, #050505 100%);
+            position: relative;
+        }
+
+        .posters-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            gap: 0;
+            padding: 0 20px;
+        }
+
+        .poster-item {
+            flex: 1;
+            min-width: 0;
+            position: relative;
+            overflow: hidden;
+            cursor: default;
+            background: #000;
+            transition: all 0.4s ease;
+        }
+
+        .poster-item:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 25px 60px rgba(139, 0, 0, 0.4);
+        }
+
+        .poster-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            transition: all 0.4s;
+        }
+
+        .poster-item:hover img {
+            filter: brightness(0.65);
+            transform: scale(1.08);
+        }
+
+        .poster-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 35px 20px 25px;
+            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 50%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .poster-item:hover .poster-overlay { opacity: 1; }
+
+        .poster-title {
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: 18px;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 8px;
+            text-shadow: 0 0 20px rgba(139, 0, 0, 0.8);
+        }
+
+        .poster-link {
+            display: inline-block;
+            color: var(--silver);
+            font-size: 12px;
+            text-decoration: none;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+            cursor: pointer;
+            padding: 5px 0;
+        }
+
+        .poster-link:hover { 
+            color: var(--dark-red); 
+        }
+
+        .poster-item-alt {
+            flex: 1;
+            min-width: 0;
+            position: relative;
+            overflow: hidden;
+            cursor: default;
+            background: #000;
+            transition: all 0.4s ease;
+            border: 2px solid transparent;
+        }
+
+        .poster-item-alt:hover {
+            border-color: rgba(139, 0, 0, 0.6);
+            box-shadow: 0 0 30px rgba(139, 0, 0, 0.3), inset 0 0 20px rgba(139, 0, 0, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .poster-item-alt img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            transition: filter 0.4s;
+        }
+
+        .poster-item-alt:hover img {
+            filter: brightness(0.7);
+        }
+
+        .poster-item-alt .poster-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 35px 20px 25px;
+            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 50%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .poster-item-alt:hover .poster-overlay { opacity: 1; }
+
+        /* 海报2 - 桌面端轮播 */
+        .poster-carousel {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .poster-carousel img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+        }
+
+        .poster-carousel img.active {
+            opacity: 1;
+        }
+
+        .carousel-dots {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .carousel-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .carousel-dot.active {
+            background: var(--dark-red);
+            border-color: var(--dark-red);
+            box-shadow: 0 0 10px rgba(139, 0, 0, 0.8);
+            transform: scale(1.2);
+        }
+
+        /* 手机端海报2 - 静态文字覆盖 */
+        .mobile-poster2-text {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 5;
+            width: 90%;
+        }
+
+        .mobile-poster2-text h3 {
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: clamp(18px, 4vw, 24px);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #fff;
+            text-shadow: 0 0 30px rgba(139, 0, 0, 0.8), 0 2px 10px rgba(0,0,0,0.8);
+            line-height: 1.3;
+        }
+
+        /* ==================== 底部区域 ==================== */
+        .footer-gap {
+            height: 150px;
+            background: linear-gradient(180deg, #050505 0%, #1a1a1a 30%, var(--silver-bg) 100%);
+            position: relative;
+        }
+
+        .site-footer {
+            background: var(--silver-bg);
+            color: #333;
+            position: relative;
+            z-index: 100;
+        }
+
+        .footer-main {
+            padding: 50px 40px 40px;
+            position: relative;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .footer-contact-left {
+            flex: 1;
+            text-align: left;
+            font-family: 'Courier New', monospace;
+        }
+
+        .contact-item {
+            margin-bottom: 10px;
+            color: #555;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+            line-height: 1.5;
+        }
+
+        .contact-item a {
+            color: #555;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .contact-item a:hover {
+            color: var(--dark-red);
+        }
+
+        .footer-brand {
+            flex: 0 0 auto;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-size: clamp(32px, 6vw, 48px);
+            font-weight: 400;
+            letter-spacing: 4px;
+            line-height: 1;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            animation: simpleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes simpleGlow {
+            0%, 100% { 
+                text-shadow: 0 0 10px rgba(139, 0, 0, 0.3);
+                opacity: 0.95;
+            }
+            50% { 
+                text-shadow: 0 0 20px rgba(139, 0, 0, 0.6), 0 0 30px rgba(139, 0, 0, 0.3);
+                opacity: 1;
+            }
+        }
+
+        .footer-logo .livegigs {
+            color: #222;
+        }
+
+        .footer-logo .asia {
+            color: var(--dark-red);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 25px;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #666;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #555;
+            text-decoration: none;
+            transition: all 0.3s;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .social-icon:hover {
+            border-color: var(--dark-red);
+            color: var(--dark-red);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .producer-section {
+            text-align: center;
+        }
+
+        .producer-label {
+            font-size: 10px;
+            color: #777;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .producer-logo {
+            height: 35px;
+            width: auto;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .producer-logo:hover {
+            opacity: 1;
+        }
+
+        .footer-contact-right {
+            flex: 1;
+            text-align: right;
+            font-family: 'Courier New', monospace;
+        }
+
+        .footer-bottom {
+            background: #b8b8b8;
+            border-top: 1px solid #999;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .footer-legal {
+            display: flex;
+            gap: 25px;
+        }
+
+        .footer-legal a {
+            color: #555;
+            text-decoration: none;
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .footer-legal a:hover {
+            color: var(--dark-red);
+        }
+
+        .copyright {
+            color: #666;
+            font-size: 11px;
+            letter-spacing: 1px;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* ==================== Membership弹窗 ==================== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal-content {
+            background: linear-gradient(135deg, #0a0000 0%, #050505 100%);
+            border: 1px solid var(--darker-red);
+            padding: 40px 35px;
+            max-width: 480px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 0 50px rgba(74, 0, 0, 0.5);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover { color: var(--dark-red); transform: scale(1.2); }
+
+        .modal-content h2 {
+            font-size: 28px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            color: #fff;
+            text-align: center;
+        }
+
+        .modal-content p {
+            font-size: 13px;
+            color: var(--silver);
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .form-group { margin-bottom: 18px; }
+
+        .form-group label {
+            display: block;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--silver);
+            margin-bottom: 6px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--darker-red);
+            color: #fff;
+            font-size: 14px;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--dark-red);
+            box-shadow: 0 0 15px rgba(139, 0, 0, 0.3);
+        }
+
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .modal-content .neon-btn {
+            width: 100%;
+            margin-top: 10px;
+            padding: 14px;
+            font-size: 13px;
+            background: transparent;
+            color: #fff;
+            border: 2px solid var(--darker-red);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .modal-content .neon-btn:hover {
+            background: var(--dark-red);
+            box-shadow: 0 0 20px rgba(139, 0, 0, 0.5);
+        }
+
+        /* ==================== 后台管理面板样式 ==================== */
+        .admin-panel {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 20000;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .admin-panel.active { display: block; }
+
+        .admin-header {
+            background: linear-gradient(135deg, var(--darker-red) 0%, var(--dark-red) 100%);
+            padding: 20px;
+            margin: -20px -20px 20px -20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .admin-title {
+            font-size: 24px;
+            color: #fff;
+            letter-spacing: 2px;
+        }
+
+        .admin-close {
+            background: none;
+            border: 2px solid #fff;
+            color: #fff;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .admin-close:hover {
+            background: #fff;
+            color: var(--dark-red);
+        }
+
+        .admin-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            border-bottom: 2px solid var(--dark-red);
+            padding-bottom: 10px;
+        }
+
+        .admin-tab {
+            background: rgba(139, 0, 0, 0.3);
+            border: 1px solid var(--dark-red);
+            color: #fff;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 12px;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+        }
+
+        .admin-tab.active, .admin-tab:hover {
+            background: var(--dark-red);
+        }
+
+        .admin-section {
+            display: none;
+            background: rgba(20, 20, 20, 0.9);
+            border: 1px solid var(--dark-red);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .admin-section.active { display: block; }
+
+        .admin-item {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #333;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+
+        .admin-item-label {
+            color: var(--silver);
+            font-size: 12px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .admin-item input[type="text"],
+        .admin-item input[type="url"],
+        .admin-item input[type="email"],
+        .admin-item textarea,
+        .admin-item select {
+            width: 100%;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--dark-red);
+            color: #fff;
+            font-family: inherit;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .admin-item input[type="file"] {
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .admin-preview {
+            max-width: 200px;
+            max-height: 150px;
+            margin: 10px 0;
+            border: 1px solid var(--dark-red);
+        }
+
+        .admin-save-btn {
+            background: var(--dark-red);
+            color: #fff;
+            border: none;
+            padding: 12px 30px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .admin-save-btn:hover {
+            background: #a00000;
+            box-shadow: 0 0 20px rgba(139, 0, 0, 0.5);
+        }
+
+        .admin-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--dark-red);
+            color: #fff;
+            border: none;
+            padding: 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 9998;
+            font-size: 20px;
+            width: 60px;
+            height: 60px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px rgba(139, 0, 0, 0.5);
+        }
+
+        /* ==================== 响应式 ==================== */
+        /* 平板：每行2个 */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .events-grid {
+                grid-template-columns: repeat(2, 1fr);
+                padding: 0 30px;
+            }
+            .event-card {
+                max-width: none;
+            }
+        }
+
+        /* 桌面：每行3个 */
+        @media (min-width: 1025px) {
+            .events-grid {
+                grid-template-columns: repeat(3, 1fr);
+                padding: 0 40px;
+            }
+            .event-card {
+                max-width: none;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            nav { padding: 0 30px; height: 70px; }
+            .logo-img { height: 40px; max-width: 150px; }
+            .nav-links { gap: 25px; }
+            .hero-content { margin-top: 60px; }
+            .hero-title { font-size: clamp(70px, 13vw, 120px); }
+            .hero-subtitle { font-size: clamp(20px, 3vw, 32px); margin-top: 60px; }
+            .event-content { padding: 70px 15px 35px; }
+            .event-name { font-size: clamp(18px, 3vw, 24px); }
+            .auto-scroll-item { flex: 0 0 25%; }
+            .footer-container { gap: 30px; }
+            .scroll-arrow { width: 40px; height: 60px; font-size: 20px; }
+        }
+
+        @media (max-width: 768px) {
+            nav { padding: 0 20px; height: 65px; }
+            .logo-img { height: 35px; max-width: 130px; }
+            .nav-links a { font-size: 11px; letter-spacing: 2px; }
+            .nav-links .neon-btn { padding: 8px 16px; font-size: 10px; }
+            .hero-content { margin-top: 50px; }
+            .hero-title { font-size: clamp(55px, 14vw, 80px); letter-spacing: 5px; margin-bottom: 35px; }
+            .hero-subtitle { font-size: clamp(16px, 3.5vw, 22px); letter-spacing: 2.5px; margin-top: 50px; }
+            .section-title { font-size: clamp(28px, 5vw, 40px); }
+            .event-status { top: 15px; right: 15px; padding: 6px 12px; font-size: 11px; }
+            .event-content { padding: 60px 20px 30px; }
+            .auto-scroll-item { flex: 0 0 33.333%; min-width: 200px; }
+            .posters-container { padding: 0 15px; gap: 12px; }
+            .poster-item { border-radius: 6px; }
+            .poster-title { font-size: 14px; }
+            .footer-gap { height: 100px; }
+            .footer-main { padding: 40px 30px 30px; }
+            .footer-container { flex-direction: column; gap: 30px; text-align: center; }
+            .footer-contact-left, .footer-contact-right { text-align: center; flex: 1; width: 100%; }
+            .social-links { margin-bottom: 20px; }
+            .producer-section { text-align: center; }
+            .footer-bottom { flex-direction: column; gap: 15px; padding: 20px 30px; text-align: center; }
+            .footer-legal { flex-wrap: wrap; justify-content: center; gap: 20px; }
+            .scroll-arrow { width: 35px; height: 50px; font-size: 18px; }
+            .admin-title { font-size: 18px; }
+            .admin-tabs { gap: 5px; }
+            .admin-tab { padding: 8px 12px; font-size: 11px; }
+            
+            /* 手机端海报2完全静态，只显示文字 */
+            .poster-carousel { display: none !important; }
+            .mobile-poster2-text { display: block; }
+        }
+
+        @media (max-width: 480px) {
+            nav { padding: 0 15px; height: 60px; background: rgba(0, 0, 0, 0.5); }
+            .logo-img { height: 32px; max-width: 120px; }
+            .nav-links { gap: 12px; }
+            .nav-links a { font-size: 10px; letter-spacing: 1px; }
+            .nav-links .neon-btn { padding: 6px 14px; font-size: 9px; }
+            .hero-content { margin-top: 40px; }
+            .hero-title { font-size: clamp(45px, 13vw, 65px); letter-spacing: 4px; margin-bottom: 30px; }
+            .hero-subtitle { font-size: clamp(13px, 3.5vw, 16px); letter-spacing: 2px; margin-top: 40px; line-height: 1.6; }
+            .hero-subtitle .line1 { margin-bottom: 5px; }
+            .smoke-container { opacity: 0.35; }
+            .managed-events { padding: 60px 0; }
+            .section-header { margin-bottom: 40px; }
+            .section-subtitle { font-size: 12px; }
+            .event-card { aspect-ratio: 2/3; }
+            .event-status { font-size: 10px; padding: 5px 10px; top: 10px; right: 10px; }
+            .event-content { padding: 50px 15px 25px; }
+            .event-name { font-size: 18px; margin-bottom: 10px; }
+            .event-details { font-size: 12px; }
+            .event-venue { font-size: 11px; }
+            .event-btn { padding: 10px 25px; font-size: 11px; margin-top: 20px; }
+            .load-more-btn { padding: 12px 30px; font-size: 12px; }
+            .auto-scroll-section { padding: 0; }
+            .auto-scroll-item { flex: 0 0 50%; min-width: 150px; }
+            .auto-scroll-title { font-size: 14px; }
+            .posters-showcase { padding: 0; }
+            .posters-container { padding: 0 20px; gap: 15px; justify-content: center; }
+            .poster-item-alt {
+                flex: 0 0 calc(33.333% - 10px);
+                max-width: calc(33.333% - 10px);
+                min-width: auto;
+                border-radius: 4px;
+                border: none;
+            }
+            .poster-item-alt:hover {
+                border-color: transparent;
+                box-shadow: 0 25px 60px rgba(139, 0, 0, 0.4);
+                transform: translateY(-12px);
+            }
+            .poster-item-alt img {
+                transition: all 0.4s;
+            }
+            .poster-item-alt:hover img {
+                filter: brightness(0.65);
+                transform: scale(1.08);
+            }
+            .poster-item-alt .poster-overlay {
+                padding: 12px 6px 10px;
+            }
+            .poster-title { font-size: 10px; letter-spacing: 1px; margin-bottom: 4px; }
+            .poster-link { font-size: 9px; letter-spacing: 0.5px; }
+            .poster-overlay { padding: 12px 6px 10px; }
+            .footer-gap { height: 80px; }
+            .footer-main { padding: 35px 25px 25px; }
+            .footer-logo { font-size: 28px; letter-spacing: 3px; margin-bottom: 15px; }
+            .social-links { gap: 12px; margin-bottom: 20px; }
+            .social-icon { width: 36px; height: 36px; }
+            .social-icon svg { width: 14px; height: 14px; }
+            .contact-item { font-size: 11px; margin-bottom: 8px; }
+            .producer-label { font-size: 9px; letter-spacing: 2px; }
+            .producer-logo { height: 30px; }
+            .footer-bottom { padding: 15px 20px; gap: 12px; }
+            .footer-legal { gap: 15px; }
+            .footer-legal a { font-size: 10px; }
+            .copyright { font-size: 10px; }
+            .scroll-arrow { width: 30px; height: 45px; font-size: 16px; }
+            .admin-toggle { width: 50px; height: 50px; font-size: 16px; bottom: 10px; right: 10px; }
+        }
+
+        @media (max-width: 375px) {
+            .hero-title { font-size: 38px; letter-spacing: 3px; }
+            .hero-subtitle { font-size: 11px; }
+            .events-grid { padding: 0 15px; }
+            .event-name { font-size: 16px; }
+            .posters-container { padding: 0 15px; gap: 12px; }
+            .poster-item-alt {
+                flex: 0 0 calc(33.333% - 8px);
+                max-width: calc(33.333% - 8px);
+            }
+            .poster-title { font-size: 9px; }
+            .poster-link { font-size: 8px; }
+            .footer-logo { font-size: 24px; letter-spacing: 2px; }
+            .social-icon { width: 34px; height: 34px; }
+            .contact-item { font-size: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 导航栏 -->
+    <nav>
+        <img src="./image/logo.png" alt="LiveGigs Asia" class="logo-img" id="logo" onclick="location.href='./index.html'" data-editable="logo" data-src="./image/logo.png">
+        <div class="nav-links">
+            <a href="#" class="active" data-editable="nav-events" data-text="Events" data-href="events.html">Events</a>
+            <a href="partners.html" data-editable="nav-partners" data-text="Partners" data-href="partners.html">Partners</a>
+            <button class="neon-btn" onclick="openModal()" data-editable="nav-membership" data-text="Membership">Membership</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section - 固定抽屉式 -->
+    <section class="hero">
+        <div class="hero-bg" id="heroBg" data-editable="events-hero-bg" data-src="./image/e-hero%20bg.jpg"></div>
+        
+        <div class="smoke-container">
+            <div class="smoke"></div>
+            <div class="smoke"></div>
+            <div class="smoke"></div>
+        </div>
+        
+        <div class="hero-overlay"></div>
+        
+        <div class="hero-content">
+            <h1 class="hero-title" data-editable="events-hero-title">
+                <span class="gray" data-editable="events-hero-title-gray" data-text="LIVEGIGS">LIVEGIGS</span><span class="red" data-editable="events-hero-title-red" data-text="ASIA">ASIA</span>
+            </h1>
+            <p class="hero-subtitle" data-editable="events-hero-subtitle">
+                <span class="line1" data-editable="events-hero-subtitle-line1" data-text="Concerts, Festivals, Tickets, Tour Dates">Concerts, Festivals, Tickets, Tour Dates</span>
+                <span class="line2" data-editable="events-hero-subtitle-line2" data-text="- Live Gigs">- Live Gigs</span>
+            </p>
+        </div>
+    </section>
+
+    <!-- 内容包装器 - 抽屉式滚动 -->
+    <div class="content-wrapper">
+
+        <!-- 自主活动区域 -->
+        <section class="managed-events">
+            <div class="section-header">
+                <h2 class="section-title" data-editable="managed-title" data-text="THE EVENTS WE'VE MANAGED">THE EVENTS WE'VE MANAGED</h2>
+                <p class="section-subtitle" data-editable="managed-subtitle" data-text="WE ALSO WELCOME COLLABORATION ON MORE GREAT EVENTS, AND MORE EXCITING EVENTS ARE ON THE WAY.">WE ALSO WELCOME COLLABORATION ON MORE GREAT EVENTS, AND MORE EXCITING EVENTS ARE ON THE WAY.</p>
+            </div>
+
+            <div class="events-grid" id="eventsGrid">
+                <!-- 活动1 - 倒计时状态 -->
+                <div class="event-card" data-editable="event-1" data-event-id="1">
+                    <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&h=800&fit=crop" alt="Noname Festival 2026" class="event-poster" 
+                         data-editable="event-1-image" data-src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&h=800&fit=crop">
+                    <div class="event-status countdown" data-editable="event-1-status" data-status-type="countdown" data-countdown-date="2026-10-10" id="status-1">242 DAYS</div>
+                    <div class="event-content">
+                        <h3 class="event-name" data-editable="event-1-name" data-text="NONAMEFEST 2026">NONAMEFEST 2026</h3>
+                        <div class="event-details" data-editable="event-1-details" data-text="10月10日週六 | 地點待定">10月10日週六 | 地點待定</div>
+                        <div class="event-venue" data-editable="event-1-venue" data-text="NONAMEFEST 2026">NONAMEFEST 2026</div>
+                        <a href="#" class="event-btn" target="_blank" data-editable="event-1-btn" data-text="購買票券" data-href="#">購買票券</a>
+                    </div>
+                </div>
+
+                <!-- 活动2 - Sold Out状态 -->
+                <div class="event-card" data-editable="event-2" data-event-id="2">
+                    <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop" alt="Punk Heart Festival 2026" class="event-poster" 
+                         data-editable="event-2-image" data-src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop">
+                    <div class="event-status soldout" data-editable="event-2-status" data-status-type="soldout" data-text="售完">售完</div>
+                    <div class="event-content">
+                        <h3 class="event-name" data-editable="event-2-name" data-text="PUNK HEART FESTIVAL 2026 WARM-UP Show">PUNK HEART FESTIVAL 2026<br>WARM-UP Show</h3>
+                        <div class="event-details" data-editable="event-2-details" data-text="1月17日週六 | 未來俱樂部">1月17日週六 | 未來俱樂部</div>
+                        <div class="event-venue" data-editable="event-2-venue" data-text="XI'AN">XI'AN</div>
+                        <a href="#" class="event-btn" target="_blank" data-editable="event-2-btn" data-text="詳細資料" data-href="#">詳細資料</a>
+                    </div>
+                </div>
+
+                <!-- 活动3 - On Tour状态 -->
+                <div class="event-card" data-editable="event-3" data-event-id="3">
+                    <img src="https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=600&h=800&fit=crop" alt="Punk Heart Festival 2025" class="event-poster" 
+                         data-editable="event-3-image" data-src="https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=600&h=800&fit=crop">
+                    <div class="event-status ontour" data-editable="event-3-status" data-status-type="ontour" data-text="ON TOUR">ON TOUR</div>
+                    <div class="event-content">
+                        <h3 class="event-name" data-editable="event-3-name" data-text="PUNK HEART FESTIVAL 2025">PUNK HEART FESTIVAL 2025</h3>
+                        <div class="event-details" data-editable="event-3-details" data-text="10月03日週五 | 回授俱樂部">10月03日週五 | 回授俱樂部</div>
+                        <div class="event-venue" data-editable="event-3-venue" data-text="PUNK HEART FESTIVAL 2025">PUNK HEART FESTIVAL 2025</div>
+                        <a href="#" class="event-btn" target="_blank" data-editable="event-3-btn" data-text="詳細資料" data-href="#">詳細資料</a>
+                    </div>
+                </div>
+
+                <!-- 活动4（默认隐藏） -->
+                <div class="event-card hidden" data-editable="event-4" data-event-id="4">
+                    <img src="https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=600&h=800&fit=crop" alt="Coming Soon" class="event-poster" 
+                         data-editable="event-4-image" data-src="https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=600&h=800&fit=crop">
+                    <div class="event-status countdown" data-editable="event-4-status" data-status-type="countdown" data-countdown-date="2026-12-31" id="status-4">COMING SOON</div>
+                    <div class="event-content">
+                        <h3 class="event-name" data-editable="event-4-name" data-text="COMING SOON">COMING SOON</h3>
+                        <div class="event-details" data-editable="event-4-details" data-text="Date TBA | Location TBA">Date TBA | Location TBA</div>
+                        <div class="event-venue" data-editable="event-4-venue" data-text="Stay Tuned">Stay Tuned</div>
+                        <a href="#" class="event-btn" target="_blank" data-editable="event-4-btn" data-text="LEARN MORE" data-href="#">LEARN MORE</a>
+                    </div>
+                </div>
+
+                <!-- 活动5（默认隐藏） -->
+                <div class="event-card hidden" data-editable="event-5" data-event-id="5">
+                    <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&h=800&fit=crop" alt="Special Guest" class="event-poster" 
+                         data-editable="event-5-image" data-src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&h=800&fit=crop">
+                    <div class="event-status soldout" data-editable="event-5-status" data-status-type="soldout" data-text="SOLD OUT">SOLD OUT</div>
+                    <div class="event-content">
+                        <h3 class="event-name" data-editable="event-5-name" data-text="SPECIAL GUEST">SPECIAL GUEST</h3>
+                        <div class="event-details" data-editable="event-5-details" data-text="Date TBA | Location TBA">Date TBA | Location TBA</div>
+                        <div class="event-venue" data-editable="event-5-venue" data-text="More Info Coming">More Info Coming</div>
+                        <a href="#" class="event-btn" target="_blank" data-editable="event-5-btn" data-text="NOTIFY ME" data-href="#">NOTIFY ME</a>
+                    </div>
+                </div>
+
+                <!-- 活动6（默认隐藏） -->
+                <div class="event-card hidden" data-editable="event-6" data-event-id="6">
+                    <img src="https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=600&h=800&fit=crop" alt="Stay Tuned" class="event-poster" 
+                         data-editable="event-6-image" data-src="https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=600&h=800&fit=crop">
+                    <div class="event-status ontour" data-editable="event-6-status" data-status-type="ontour" data-text="ON SALE">ON SALE</div>
+                    <div class="event-content">
+                        <h3 class="event-name" data-editable="event-6-name" data-text="STAY TUNED">STAY TUNED</h3>
+                        <div class="event-details" data-editable="event-6-details" data-text="Date TBA | Location TBA">Date TBA | Location TBA</div>
+                        <div class="event-venue" data-editable="event-6-venue" data-text="Asia Tour">Asia Tour</div>
+                        <a href="#" class="event-btn" target="_blank" data-editable="event-6-btn" data-text="STAY TUNED" data-href="#">STAY TUNED</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="load-more-container" id="loadMoreContainer">
+                <button class="load-more-btn" id="loadMoreBtn" onclick="loadMoreEvents()" data-editable="load-more-text" data-text="LOAD MORE">LOAD MORE</button>
+            </div>
+        </section>
+
+        <!-- 自动滚动海报区域 -->
+        <section class="auto-scroll-section">
+            <div class="auto-scroll-wrapper">
+                <button class="scroll-arrow left" onclick="scrollLeft()">❮</button>
+                <button class="scroll-arrow right" onclick="scrollRight()">❯</button>
+                
+                <div class="auto-scroll-container" id="autoScrollContainer">
+                    <div class="auto-scroll-track" id="autoScrollTrack">
+                        <!-- 滚动项 - 按日期排序（从早到晚，从左到右） -->
+                        <!-- 2026-01-15 -->
+                        <div class="auto-scroll-item" data-editable="auto-1" data-date="2026-01-15" data-time="20:00">
+                            <div class="auto-scroll-overlay"></div>
+                            <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&h=800&fit=crop" alt="Rock Storm 2026" 
+                                 data-editable="auto-1-image" data-src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&h=800&fit=crop">
+                            <div class="auto-scroll-info">
+                                <h4 class="auto-scroll-title" data-editable="auto-1-title" data-text="ROCK STORM 2026">ROCK STORM 2026</h4>
+                                <div class="auto-scroll-meta" data-editable="auto-1-meta" data-text="JAN 15, 2026 / TAIPEI">JAN 15, 2026 / TAIPEI</div>
+                            </div>
+                        </div>
+                        <!-- 2026-02-20 -->
+                        <div class="auto-scroll-item" data-editable="auto-2" data-date="2026-02-20" data-time="19:30">
+                            <div class="auto-scroll-overlay"></div>
+                            <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop" alt="Metal Storm" 
+                                 data-editable="auto-2-image" data-src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop">
+                            <div class="auto-scroll-info">
+                                <h4 class="auto-scroll-title" data-editable="auto-2-title" data-text="METAL STORM">METAL STORM</h4>
+                                <div class="auto-scroll-meta" data-editable="auto-2-meta" data-text="FEB 20, 2026 / KAOHSIUNG">FEB 20, 2026 / KAOHSIUNG</div>
+                            </div>
+                        </div>
+                        <!-- 2026-03-10 -->
+                        <div class="auto-scroll-item" data-editable="auto-3" data-date="2026-03-10" data-time="21:00">
+                            <div class="auto-scroll-overlay"></div>
+                            <img src="https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=600&h=800&fit=crop" alt="Punk Night" 
+                                 data-editable="auto-3-image" data-src="https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=600&h=800&fit=crop">
+                            <div class="auto-scroll-info">
+                                <h4 class="auto-scroll-title" data-editable="auto-3-title" data-text="PUNK NIGHT">PUNK NIGHT</h4>
+                                <div class="auto-scroll-meta" data-editable="auto-3-meta" data-text="MAR 10, 2026 / TAICHUNG">MAR 10, 2026 / TAICHUNG</div>
+                            </div>
+                        </div>
+                        <!-- 2026-04-05 -->
+                        <div class="auto-scroll-item" data-editable="auto-4" data-date="2026-04-05" data-time="18:00">
+                            <div class="auto-scroll-overlay"></div>
+                            <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&h=800&fit=crop" alt="Indie Music Fest" 
+                                 data-editable="auto-4-image" data-src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&h=800&fit=crop">
+                            <div class="auto-scroll-info">
+                                <h4 class="auto-scroll-title" data-editable="auto-4-title" data-text="INDIE MUSIC FEST">INDIE MUSIC FEST</h4>
+                                <div class="auto-scroll-meta" data-editable="auto-4-meta" data-text="APR 05, 2026 / HONG KONG">APR 05, 2026 / HONG KONG</div>
+                            </div>
+                        </div>
+                        <!-- 2026-05-18 -->
+                        <div class="auto-scroll-item" data-editable="auto-5" data-date="2026-05-18" data-time="20:00">
+                            <div class="auto-scroll-overlay"></div>
+                            <img src="https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=600&h=800&fit=crop" alt="Hard Rock Party" 
+                                 data-editable="auto-5-image" data-src="https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=600&h=800&fit=crop">
+                            <div class="auto-scroll-info">
+                                <h4 class="auto-scroll-title" data-editable="auto-5-title" data-text="HARD ROCK PARTY">HARD ROCK PARTY</h4>
+                                <div class="auto-scroll-meta" data-editable="auto-5-meta" data-text="MAY 18, 2026 / SINGAPORE">MAY 18, 2026 / SINGAPORE</div>
+                            </div>
+                        </div>
+                        <!-- 2026-06-22 -->
+                        <div class="auto-scroll-item" data-editable="auto-6" data-date="2026-06-22" data-time="19:00">
+                            <div class="auto-scroll-overlay"></div>
+                            <img src="https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=600&h=800&fit=crop" alt="Summer Music Fest" 
+                                 data-editable="auto-6-image" data-src="https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=600&h=800&fit=crop">
+                            <div class="auto-scroll-info">
+                                <h4 class="auto-scroll-title" data-editable="auto-6-title" data-text="SUMMER MUSIC FEST">SUMMER MUSIC FEST</h4>
+                                <div class="auto-scroll-meta" data-editable="auto-6-meta" data-text="JUN 22, 2026 / TOKYO">JUN 22, 2026 / TOKYO</div>
+                            </div>
+                        </div>
+                        <!-- 2026-07-30 -->
+                        <div class="auto-scroll-item" data-editable="auto-7" data-date="2026-07-30" data-time="20:30">
+                            <div class="auto-scroll-overlay"></div>
+                            <img src="https://images.unsplash.com/photo-1506157786151-b8491531f063?w=600&h=800&fit=crop" alt="Rock Marathon" 
+                                 data-editable="auto-7-image" data-src="https://images.unsplash.com/photo-1506157786151-b8491531f063?w=600&h=800&fit=crop">
+                            <div class="auto-scroll-info">
+                                <h4 class="auto-scroll-title" data-editable="auto-7-title" data-text="ROCK MARATHON">ROCK MARATHON</h4>
+                                <div class="auto-scroll-meta" data-editable="auto-7-meta" data-text="JUL 30, 2026 / SEOUL">JUL 30, 2026 / SEOUL</div>
+                            </div>
+                        </div>
+                        <!-- 2026-08-15 -->
+                        <div class="auto-scroll-item" data-editable="auto-8" data-date="2026-08-15" data-time="21:00">
+                            <div class="auto-scroll-overlay"></div>
+                            <img src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=600&h=800&fit=crop" alt="Asia Tour" 
+                                 data-editable="auto-8-image" data-src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=600&h=800&fit=crop">
+                            <div class="auto-scroll-info">
+                                <h4 class="auto-scroll-title" data-editable="auto-8-title" data-text="ASIA TOUR">ASIA TOUR</h4>
+                                <div class="auto-scroll-meta" data-editable="auto-8-meta" data-text="AUG 15, 2026 / BANGKOK">AUG 15, 2026 / BANGKOK</div>
+                            </div>
+                        </div>
+                        <!-- 复制一份实现无缝滚动 -->
+                        <div class="auto-scroll-item" data-editable="auto-1-clone" data-date="2026-01-15" data-time="20:00">
+                            <div class="auto-scroll-overlay"></div>
+                            <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&h=800&fit=crop" alt="Rock Storm 2026">
+                            <div class="auto-scroll-info">
+                                <h4 class="auto-scroll-title">ROCK STORM 2026</h4>
+                                <div class="auto-scroll-meta">JAN 15, 2026 / TAIPEI</div>
+                            </div>
+                        </div>
+                        <div class="auto-scroll-item" data-editable="auto-2-clone" data-date="2026-02-20" data-time="19:30">
+                            <div class="auto-scroll-overlay"></div>
+                            <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop" alt="Metal Storm">
+                            <div class="auto-scroll-info">
+                                <h4 class="auto-scroll-title">METAL STORM</h4>
+                                <div class="auto-scroll-meta">FEB 20, 2026 / KAOHSIUNG</div>
+                            </div>
+                        </div>
+                        <div class="auto-scroll-item" data-editable="auto-3-clone" data-date="2026-03-10" data-time="21:00">
+                            <div class="auto-scroll-overlay"></div>
+                            <img src="https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=600&h=800&fit=crop" alt="Punk Night">
+                            <div class="auto-scroll-info">
+                                <h4 class="auto-scroll-title">PUNK NIGHT</h4>
+                                <div class="auto-scroll-meta">MAR 10, 2026 / TAICHUNG</div>
+                            </div>
+                        </div>
+                        <div class="auto-scroll-item" data-editable="auto-4-clone" data-date="2026-04-05" data-time="18:00">
+                            <div class="auto-scroll-overlay"></div>
+                            <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&h=800&fit=crop" alt="Indie Music Fest">
+                            <div class="auto-scroll-info">
+                                <h4 class="auto-scroll-title">INDIE MUSIC FEST</h4>
+                                <div class="auto-scroll-meta">APR 05, 2026 / HONG KONG</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3海报区域 -->
+        <section class="posters-showcase">
+            <div class="posters-container">
+                <!-- 海报1 -->
+                <div class="poster-item" data-poster-id="1" data-link="https://wxaurl.cn/HMcAK6R7fou" data-editable="poster-1">
+                    <img src="./image/livegigscn1.png" alt="LiveGigs WeChat"
+                         onerror="this.src='https://via.placeholder.com/400x600/8b0000/000?text=LiveGigs+WeChat'" data-editable="poster-1-image" data-src="./image/livegigscn1.png">
+                    <div class="poster-overlay">
+                        <div class="poster-title" data-editable="poster-1-title" data-text="LiveGigs CN">LiveGigs CN</div>
+                        <a href="https://wxaurl.cn/HMcAK6R7fou" target="_blank" class="poster-link" data-editable="poster-1-link-text" data-text="Get on WeChat →" onclick="event.stopPropagation();">Get on WeChat →</a>
+                    </div>
+                </div>
+                
+                <!-- 海报2 - 桌面端轮播 / 手机端静态文字 -->
+                <div class="poster-item-alt" data-poster-id="2" data-editable="poster-2">
+                    <!-- 桌面端轮播 -->
+                    <div class="poster-carousel" id="posterCarousel">
+                        <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&h=800&fit=crop" alt="Past Event 1" class="active" data-editable="poster-2-image-1" data-src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&h=800&fit=crop">
+                        <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop" alt="Past Event 2" data-editable="poster-2-image-2" data-src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop">
+                        <img src="https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=600&h=800&fit=crop" alt="Past Event 3" data-editable="poster-2-image-3" data-src="https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=600&h=800&fit=crop">
+                        <div class="carousel-dots">
+                            <span class="carousel-dot active" onclick="goToSlide(0)"></span>
+                            <span class="carousel-dot" onclick="goToSlide(1)"></span>
+                            <span class="carousel-dot" onclick="goToSlide(2)"></span>
+                        </div>
+                        <div class="poster-overlay">
+                            <div class="poster-title" data-editable="poster-2-title" data-text="PAST HIGHLIGHTS">PAST HIGHLIGHTS</div>
+                            <span class="poster-link" data-editable="poster-2-link-text" data-text="View Gallery →">View Gallery →</span>
+                        </div>
+                    </div>
+                    <!-- 手机端静态文字 -->
+                    <div class="mobile-poster2-text">
+                        <h3 data-editable="poster-2-mobile-text" data-text="Legendary Live Events">Legendary Live Events</h3>
+                    </div>
+                </div>
+                
+                <!-- 海报3 - XRE Booking -->
+                <div class="poster-item-alt" data-poster-id="3" data-link="partners.html" data-editable="poster-3">
+                    <img src="./image/xrebookingad.jpg" alt="XRE Booking"
+                         onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=XRE+BOOKING'" data-editable="poster-3-image" data-src="./image/xrebookingad.jpg">
+                    <div class="poster-overlay">
+                        <div class="poster-title" data-editable="poster-3-title" data-text="XRE Booking">XRE Booking</div>
+                        <a href="partners.html" class="poster-link" data-editable="poster-3-link-text" data-text="Check Out More Partners →" onclick="event.stopPropagation();">Check Out More Partners →</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 底部区域 -->
+        <div class="footer-gap"></div>
+
+        <footer class="site-footer">
+            <div class="footer-main">
+                <div class="footer-container">
+                    <div class="footer-contact-left">
+                        <div class="contact-item" data-editable="footer-email">
+                            <a href="mailto:LiveGigsCn@Hotmail.Com">LiveGigsCn@Hotmail.Com</a>
+                        </div>
+                        <div class="contact-item" data-editable="footer-phone">
+                            <a href="tel:+852-456-7890">+852-456-7890</a>
+                        </div>
+                    </div>
+
+                    <div class="footer-brand">
+                        <div class="footer-logo" data-editable="footer-logo">
+                            <span class="livegigs">LIVEGIGS</span><span class="asia">ASIA</span>
+                        </div>
+                        
+                        <div class="social-links" id="socialContainer">
+                            <a href="#" class="social-icon" data-editable="social-facebook" data-href="https://facebook.com" data-platform="facebook" title="Facebook">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                            </a>
+                            <a href="#" class="social-icon" data-editable="social-instagram" data-href="https://instagram.com" data-platform="instagram" title="Instagram">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                            </a>
+                            <a href="#" class="social-icon" data-editable="social-youtube" data-href="https://youtube.com" data-platform="youtube" title="YouTube">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                            </a>
+                            <a href="#" class="social-icon" data-editable="social-x" data-href="https://x.com" data-platform="x" title="X">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                            </a>
+                        </div>
+
+                        <div class="producer-section">
+                            <div class="producer-label">Produced by</div>
+                            <img src="./image/emanonent-logo.png" alt="EMANON ENT." class="producer-logo" 
+                                 onerror="this.style.display='none'" 
+                                 data-editable="producer-logo" data-src="./image/emanonent-logo.png">
+                        </div>
+                    </div>
+
+                    <div class="footer-contact-right">
+                        <div class="contact-item" data-editable="footer-address">
+                            #303 TERRY FRANCINE STREET,<br>
+                            HONGKONG, CN 999077
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="footer-legal">
+                    <a href="#" data-editable="footer-privacy" data-href="#" data-text="Privacy Policy">Privacy Policy</a>
+                    <a href="#" data-editable="footer-accessibility" data-href="#" data-text="Accessibility Statement">Accessibility Statement</a>
+                </div>
+                <div class="copyright" data-editable="footer-copyright" data-text="Copyright © 2001-2026 EMANON ENT. - All Rights Reserved.">
+                    Copyright © 2001-2026 EMANON ENT. - All Rights Reserved.
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Membership 弹窗 -->
+    <div class="modal-overlay" id="membershipModal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <h2 data-editable="modal-title" data-text="Join Membership">Join Membership</h2>
+            <p data-editable="modal-desc" data-text="Get exclusive access to presales and events">Get exclusive access to presales and events</p>
+            <form id="membershipForm" onsubmit="handleSubmit(event)">
+                <div class="form-group">
+                    <label for="memberName" data-editable="modal-label-name" data-text="Name">Name</label>
+                    <input type="text" id="memberName" name="name" required placeholder="Enter your name" data-editable="modal-placeholder-name" data-text="Enter your name">
+                </div>
+                <div class="form-group">
+                    <label for="memberEmail" data-editable="modal-label-email" data-text="Email">Email</label>
+                    <input type="email" id="memberEmail" name="email" required placeholder="Enter your email" data-editable="modal-placeholder-email" data-text="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="memberPhone" data-editable="modal-label-phone" data-text="Phone (Optional)">Phone (Optional)</label>
+                    <input type="tel" id="memberPhone" name="phone" placeholder="Enter your phone number" data-editable="modal-placeholder-phone" data-text="Enter your phone number">
+                </div>
+                <div class="form-group">
+                    <label for="memberMessage" data-editable="modal-label-message" data-text="Message">Message</label>
+                    <textarea id="memberMessage" name="message" placeholder="Tell us what you're interested in..." data-editable="modal-placeholder-message" data-text="Tell us what you're interested in..."></textarea>
+                </div>
+                <button type="submit" class="neon-btn" data-editable="modal-submit" data-text="SUBMIT APPLICATION">SUBMIT APPLICATION</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 后台管理面板 -->
+    <div class="admin-panel" id="adminPanel">
+        <div class="admin-header">
+            <h2 class="admin-title">🔧 LIVEGIGS ADMIN PANEL</h2>
+            <button class="admin-close" onclick="toggleAdmin()">CLOSE</button>
+        </div>
+        
+        <div class="admin-tabs">
+            <button class="admin-tab active" onclick="showAdminTab('events')">Events</button>
+            <button class="admin-tab" onclick="showAdminTab('posters')">Posters</button>
+            <button class="admin-tab" onclick="showAdminTab('scroll')">Auto Scroll</button>
+            <button class="admin-tab" onclick="showAdminTab('text')">Text Content</button>
+            <button class="admin-tab" onclick="showAdminTab('footer')">Footer</button>
+        </div>
+
+        <!-- Events管理 -->
+        <div class="admin-section active" id="admin-events">
+            <h3 style="color: var(--dark-red); margin-bottom: 20px;">Manage Events</h3>
+            <div id="eventsAdminList"></div>
+            <button class="admin-save-btn" onclick="saveAllChanges()">SAVE ALL CHANGES</button>
+        </div>
+
+        <!-- Posters管理 -->
+        <div class="admin-section" id="admin-posters">
+            <h3 style="color: var(--dark-red); margin-bottom: 20px;">Manage Posters</h3>
+            <div class="admin-item">
+                <div class="admin-item-label">Poster 1 - Image URL or Upload</div>
+                <input type="text" id="admin-poster1-url" placeholder="Enter image URL or leave blank to use file upload">
+                <input type="file" id="admin-poster1-file" accept="image/*" onchange="previewImage(this, 'poster1-preview')">
+                <img id="poster1-preview" class="admin-preview" style="display:none;">
+                <input type="text" id="admin-poster1-title" placeholder="Title">
+                <input type="text" id="admin-poster1-link" placeholder="Link URL">
+            </div>
+            <div class="admin-item">
+                <div class="admin-item-label">Poster 2 - Desktop Carousel (3 slides)</div>
+                <input type="text" id="admin-poster2-url-1" placeholder="Slide 1 URL">
+                <input type="text" id="admin-poster2-url-2" placeholder="Slide 2 URL">
+                <input type="text" id="admin-poster2-url-3" placeholder="Slide 3 URL">
+                <input type="text" id="admin-poster2-title" placeholder="Desktop Title">
+                <input type="text" id="admin-poster2-link-text" placeholder="Desktop Link Text (e.g., View Gallery →)">
+                <input type="text" id="admin-poster2-mobile-text" placeholder="Mobile Text (e.g., Legendary Live Events)" value="Legendary Live Events">
+            </div>
+            <div class="admin-item">
+                <div class="admin-item-label">Poster 3 - Image URL</div>
+                <input type="text" id="admin-poster3-url" placeholder="Enter image URL">
+                <input type="text" id="admin-poster3-title" placeholder="Title">
+                <input type="text" id="admin-poster3-link" placeholder="Link URL">
+            </div>
+            <button class="admin-save-btn" onclick="saveAllChanges()">SAVE ALL CHANGES</button>
+        </div>
+
+        <!-- Auto Scroll管理 -->
+        <div class="admin-section" id="admin-scroll">
+            <h3 style="color: var(--dark-red); margin-bottom: 20px;">Manage Auto Scroll Items (Sorted by Date)</h3>
+            <div id="scrollAdminList"></div>
+            <button class="admin-save-btn" onclick="saveAllChanges()">SAVE ALL CHANGES</button>
+        </div>
+
+        <!-- Text Content管理 -->
+        <div class="admin-section" id="admin-text">
+            <h3 style="color: var(--dark-red); margin-bottom: 20px;">Manage Text Content</h3>
+            <div class="admin-item">
+                <div class="admin-item-label">Section Title</div>
+                <input type="text" id="admin-section-title" value="THE EVENTS WE'VE MANAGED">
+            </div>
+            <div class="admin-item">
+                <div class="admin-item-label">Section Subtitle</div>
+                <textarea id="admin-section-subtitle" rows="3">WE ALSO WELCOME COLLABORATION ON MORE GREAT EVENTS, AND MORE EXCITING EVENTS ARE ON THE WAY.</textarea>
+            </div>
+            <button class="admin-save-btn" onclick="saveAllChanges()">SAVE ALL CHANGES</button>
+        </div>
+
+        <!-- Footer管理 -->
+        <div class="admin-section" id="admin-footer">
+            <h3 style="color: var(--dark-red); margin-bottom: 20px;">Manage Footer</h3>
+            <div class="admin-item">
+                <div class="admin-item-label">Email</div>
+                <input type="email" id="admin-footer-email" value="LiveGigsCn@Hotmail.Com">
+            </div>
+            <div class="admin-item">
+                <div class="admin-item-label">Phone</div>
+                <input type="text" id="admin-footer-phone" value="+852-456-7890">
+            </div>
+            <div class="admin-item">
+                <div class="admin-item-label">Address</div>
+                <textarea id="admin-footer-address" rows="2">#303 TERRY FRANCINE STREET,&#10;HONGKONG, CN 999077</textarea>
+            </div>
+            <button class="admin-save-btn" onclick="saveAllChanges()">SAVE ALL CHANGES</button>
+        </div>
+    </div>
+
+    <!-- 后台管理按钮 (已隐藏，后续通过密码进入) -->
+    <button class="admin-toggle" onclick="toggleAdmin()" title="Open Admin Panel" style="display: none;">⚙️</button>
+
+    <!-- JavaScript -->
+    <script>
+        // 检查活动数量，控制载入更多按钮显示
+        function checkLoadMoreButton() {
+            const allEvents = document.querySelectorAll('.event-card');
+            const visibleEvents = document.querySelectorAll('.event-card:not(.hidden)');
+            const loadMoreContainer = document.getElementById('loadMoreContainer');
+            
+            // 如果有超过3个活动（即有隐藏的活动），显示Load More按钮
+            if (allEvents.length > 3) {
+                loadMoreContainer.classList.add('visible');
+            } else {
+                loadMoreContainer.classList.remove('visible');
+            }
+        }
+
+        // 载入更多活动
+        function loadMoreEvents() {
+            const hiddenEvents = document.querySelectorAll('.event-card.hidden');
+            
+            // 每次显示3个
+            for (let i = 0; i < 3 && i < hiddenEvents.length; i++) {
+                hiddenEvents[i].classList.remove('hidden');
+            }
+            
+            // 如果没有更多隐藏的活动，隐藏Load More按钮
+            if (document.querySelectorAll('.event-card.hidden').length === 0) {
+                document.getElementById('loadMoreContainer').classList.remove('visible');
+            }
+            
+            // 重新初始化倒计时
+            initCountdowns();
+        }
+
+        // 滚动控制 - 左箭头回翻，右箭头加速
+        let isScrolling = false;
+        let scrollPosition = 0;
+        const itemWidth = 250; // 每个项目宽度
+        
+        function scrollLeft() {
+            const track = document.getElementById('autoScrollTrack');
+            const container = document.getElementById('autoScrollContainer');
+            
+            // 暂停CSS动画
+            track.classList.add('paused');
+            
+            // 获取当前transform值
+            const style = window.getComputedStyle(track);
+            const matrix = new WebKitCSSMatrix(style.transform);
+            let currentX = matrix.m41;
+            
+            // 向后滚动（向右移动，显示左侧内容）
+            scrollPosition = currentX + itemWidth;
+            
+            // 如果超出范围，循环到末尾
+            const maxScroll = -(track.scrollWidth / 2);
+            if (scrollPosition > 0) {
+                scrollPosition = maxScroll + itemWidth;
+            }
+            
+            // 应用平滑过渡
+            track.style.transition = 'transform 0.5s ease-out';
+            track.style.transform = `translateX(${scrollPosition}px)`;
+            
+            // 清除之前的定时器
+            if (window.resumeScrollTimeout) {
+                clearTimeout(window.resumeScrollTimeout);
+            }
+        }
+
+        function scrollRight() {
+            const track = document.getElementById('autoScrollTrack');
+            
+            // 加速滚动
+            track.style.animationDuration = '10s';
+            
+            // 2秒后恢复正常速度
+            setTimeout(() => {
+                track.style.animationDuration = '40s';
+            }, 2000);
+        }
+
+        // 鼠标移出区域后继续正常滚播
+        document.getElementById('autoScrollContainer').addEventListener('mouseleave', function() {
+            const track = document.getElementById('autoScrollTrack');
+            
+            // 延迟恢复，让用户有时间看到效果
+            window.resumeScrollTimeout = setTimeout(() => {
+                track.classList.remove('paused');
+                track.style.transition = '';
+                
+                // 计算新的动画延迟以保持位置
+                const maxScroll = -(track.scrollWidth / 2);
+                const progress = Math.abs(scrollPosition) / Math.abs(maxScroll);
+                track.style.animationDelay = `-${progress * 40}s`;
+            }, 1000);
+        });
+
+        // 海报2轮播 - 仅桌面端
+        let currentSlide = 0;
+        let slides = document.querySelectorAll('#posterCarousel img');
+        let dots = document.querySelectorAll('.carousel-dot');
+
+        function goToSlide(index) {
+            if (window.innerWidth <= 768) return; // 手机端不执行
+            
+            slides[currentSlide].classList.remove('active');
+            dots[currentSlide].classList.remove('active');
+            currentSlide = index;
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+        }
+
+        function nextSlide() {
+            if (window.innerWidth <= 768) return; // 手机端不执行
+            
+            const next = (currentSlide + 1) % slides.length;
+            goToSlide(next);
+        }
+
+        // 自动轮播 - 仅桌面端
+        setInterval(nextSlide, 4000);
+
+        // 倒计时功能
+        function initCountdowns() {
+            document.querySelectorAll('.event-status[data-status-type="countdown"]').forEach(status => {
+                const targetDate = status.getAttribute('data-countdown-date');
+                if (!targetDate) return;
+                
+                const updateCountdown = () => {
+                    const now = new Date();
+                    const target = new Date(targetDate);
+                    const diff = target - now;
+                    
+                    if (diff <= 0) {
+                        status.textContent = 'STARTED';
+                        status.classList.remove('countdown');
+                        status.classList.add('ontour');
+                        return;
+                    }
+                    
+                    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                    status.textContent = days + ' DAYS';
+                };
+                
+                updateCountdown();
+                // 每分钟更新一次
+                setInterval(updateCountdown, 60000);
+            });
+        }
+
+        // 通用更新函数
+        function updateContent(editableId, newValue, type = 'text') {
+            const element = document.querySelector(`[data-editable="${editableId}"]`);
+            if (!element) return;
+            
+            if (type === 'src') {
+                element.src = newValue;
+                element.setAttribute('data-src', newValue);
+            } else if (type === 'href') {
+                element.href = newValue;
+                element.setAttribute('data-href', newValue);
+                if (element.tagName === 'BUTTON') {
+                    element.onclick = function() { window.open(newValue, '_blank'); };
+                }
+            } else if (type === 'link') {
+                element.setAttribute('data-link', newValue);
+                const linkElement = element.querySelector('.poster-link');
+                if (linkElement) linkElement.href = newLink;
+            } else if (type === 'mailto') {
+                element.href = 'mailto:' + newValue;
+                element.textContent = newValue;
+            } else if (type === 'tel') {
+                element.href = 'tel:' + newValue;
+                element.textContent = newValue;
+            } else if (type === 'status') {
+                element.textContent = newValue;
+                element.setAttribute('data-text', newValue);
+            } else {
+                element.textContent = newValue;
+                element.setAttribute('data-text', newValue);
+            }
+        }
+
+        function updateMultipleContent(updates) {
+            updates.forEach(update => updateContent(update.id, update.value, update.type));
+        }
+
+        function getAllEditableContent() {
+            const elements = document.querySelectorAll('[data-editable]');
+            const content = {};
+            elements.forEach(el => {
+                const id = el.getAttribute('data-editable');
+                let type = 'text';
+                if (el.hasAttribute('data-src')) type = 'image';
+                else if (el.hasAttribute('data-href')) type = 'link';
+                else if (el.hasAttribute('data-link')) type = 'poster-link';
+                else if (el.hasAttribute('data-date')) type = 'date';
+                else if (el.classList.contains('event-status')) type = 'status';
+                
+                content[id] = {
+                    type: type,
+                    value: type === 'image' ? el.getAttribute('data-src') :
+                          type === 'link' ? el.getAttribute('data-href') :
+                          type === 'poster-link' ? el.getAttribute('data-link') :
+                          type === 'date' ? el.getAttribute('data-date') :
+                          type === 'status' ? el.getAttribute('data-text') :
+                          el.getAttribute('data-text'),
+                    element: el.tagName
+                };
+            });
+            return content;
+        }
+
+        function updatePosterLink(posterId, newLink) {
+            const poster = document.querySelector(`[data-poster-id="${posterId}"]`);
+            if (poster) {
+                poster.setAttribute('data-link', newLink);
+                const linkElement = poster.querySelector('.poster-link');
+                if (linkElement) linkElement.href = newLink;
+            }
+        }
+
+        // 后台管理功能
+        function toggleAdmin() {
+            const panel = document.getElementById('adminPanel');
+            panel.classList.toggle('active');
+            if (panel.classList.contains('active')) {
+                loadAdminData();
+            }
+        }
+
+        function showAdminTab(tabName) {
+            document.querySelectorAll('.admin-tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.admin-section').forEach(section => section.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById('admin-' + tabName).classList.add('active');
+        }
+
+        function loadAdminData() {
+            // 加载Events数据
+            const eventsList = document.getElementById('eventsAdminList');
+            eventsList.innerHTML = '';
+            document.querySelectorAll('.event-card').forEach((card, index) => {
+                const id = card.getAttribute('data-event-id');
+                const name = card.querySelector('.event-name').textContent;
+                const img = card.querySelector('.event-poster').getAttribute('data-src');
+                const statusEl = card.querySelector('.event-status');
+                const statusType = statusEl.getAttribute('data-status-type');
+                const statusText = statusEl.getAttribute('data-text');
+                const countdownDate = statusEl.getAttribute('data-countdown-date') || '';
+                
+                eventsList.innerHTML += `
+                    <div class="admin-item">
+                        <div class="admin-item-label">Event ${id}: ${name}</div>
+                        <input type="text" id="admin-event-${id}-name" value="${name}" placeholder="Event Name">
+                        <input type="text" id="admin-event-${id}-image" value="${img}" placeholder="Image URL">
+                        <input type="text" id="admin-event-${id}-details" value="${card.querySelector('.event-details').textContent}" placeholder="Details (Date | Location)">
+                        <input type="text" id="admin-event-${id}-venue" value="${card.querySelector('.event-venue').textContent}" placeholder="Venue/Subtitle">
+                        <input type="text" id="admin-event-${id}-btn" value="${card.querySelector('.event-btn').textContent}" placeholder="Button Text">
+                        <input type="text" id="admin-event-${id}-link" value="${card.querySelector('.event-btn').getAttribute('data-href')}" placeholder="Button Link">
+                        <select id="admin-event-${id}-status-type" style="width:100%; margin-bottom:10px; padding:10px; background:rgba(0,0,0,0.8); border:1px solid var(--dark-red); color:#fff;">
+                            <option value="countdown" ${statusType === 'countdown' ? 'selected' : ''}>Countdown</option>
+                            <option value="soldout" ${statusType === 'soldout' ? 'selected' : ''}>Sold Out</option>
+                            <option value="ontour" ${statusType === 'ontour' ? 'selected' : ''}>On Tour</option>
+                            <option value="onsale" ${statusType === 'onsale' ? 'selected' : ''}>On Sale</option>
+                        </select>
+                        <input type="text" id="admin-event-${id}-status-text" value="${statusText}" placeholder="Status Text (e.g., 242 DAYS, 售完, ON TOUR)">
+                        <input type="date" id="admin-event-${id}-countdown-date" value="${countdownDate}" placeholder="Countdown Date (YYYY-MM-DD)" style="width:100%; margin-bottom:10px; padding:10px; background:rgba(0,0,0,0.8); border:1px solid var(--dark-red); color:#fff;">
+                    </div>
+                `;
+            });
+
+            // 加载Auto Scroll数据（按日期排序显示）
+            const scrollList = document.getElementById('scrollAdminList');
+            scrollList.innerHTML = '';
+            
+            // 获取所有非克隆项并排序
+            const scrollItems = Array.from(document.querySelectorAll('.auto-scroll-item:not([data-editable*="-clone"])'));
+            scrollItems.sort((a, b) => {
+                const dateA = a.getAttribute('data-date') || '';
+                const dateB = b.getAttribute('data-date') || '';
+                const timeA = a.getAttribute('data-time') || '00:00';
+                const timeB = b.getAttribute('data-time') || '00:00';
+                return (dateA + timeA).localeCompare(dateB + timeB);
+            });
+            
+            scrollItems.forEach((item, index) => {
+                const id = item.getAttribute('data-editable').replace('auto-', '');
+                const title = item.querySelector('.auto-scroll-title').textContent;
+                const img = item.querySelector('img').getAttribute('data-src');
+                const date = item.getAttribute('data-date') || '';
+                const time = item.getAttribute('data-time') || '';
+                
+                scrollList.innerHTML += `
+                    <div class="admin-item">
+                        <div class="admin-item-label">Scroll Item ${id}: ${title} (Date: ${date} ${time})</div>
+                        <input type="text" id="admin-scroll-${id}-title" value="${title}" placeholder="Title">
+                        <input type="text" id="admin-scroll-${id}-image" value="${img}" placeholder="Image URL">
+                        <input type="text" id="admin-scroll-${id}-meta" value="${item.querySelector('.auto-scroll-meta').textContent}" placeholder="Meta Info">
+                        <input type="date" id="admin-scroll-${id}-date" value="${date}" placeholder="Event Date" style="width:100%; margin-bottom:10px; padding:10px; background:rgba(0,0,0,0.8); border:1px solid var(--dark-red); color:#fff;">
+                        <input type="time" id="admin-scroll-${id}-time" value="${time}" placeholder="Event Time" style="width:100%; margin-bottom:10px; padding:10px; background:rgba(0,0,0,0.8); border:1px solid var(--dark-red); color:#fff;">
+                    </div>
+                `;
+            });
+        }
+
+        function previewImage(input, previewId) {
+            const preview = document.getElementById(previewId);
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function saveAllChanges() {
+            // 保存Events
+            document.querySelectorAll('.event-card').forEach(card => {
+                const id = card.getAttribute('data-event-id');
+                const newName = document.getElementById(`admin-event-${id}-name`)?.value;
+                const newImg = document.getElementById(`admin-event-${id}-image`)?.value;
+                const newStatusType = document.getElementById(`admin-event-${id}-status-type`)?.value;
+                const newStatusText = document.getElementById(`admin-event-${id}-status-text`)?.value;
+                const newCountdownDate = document.getElementById(`admin-event-${id}-countdown-date`)?.value;
+                
+                if (newName) updateContent(`event-${id}-name`, newName, 'text');
+                if (newImg) updateContent(`event-${id}-image`, newImg, 'src');
+                if (newStatusText) {
+                    const statusEl = card.querySelector('.event-status');
+                    statusEl.textContent = newStatusText;
+                    statusEl.setAttribute('data-text', newStatusText);
+                }
+                if (newStatusType) {
+                    const statusEl = card.querySelector('.event-status');
+                    statusEl.setAttribute('data-status-type', newStatusType);
+                    statusEl.className = 'event-status ' + newStatusType;
+                }
+                if (newCountdownDate) {
+                    const statusEl = card.querySelector('.event-status');
+                    statusEl.setAttribute('data-countdown-date', newCountdownDate);
+                }
+            });
+
+            // 保存Text Content
+            const newTitle = document.getElementById('admin-section-title')?.value;
+            const newSubtitle = document.getElementById('admin-section-subtitle')?.value;
+            if (newTitle) updateContent('managed-title', newTitle, 'text');
+            if (newSubtitle) updateContent('managed-subtitle', newSubtitle, 'text');
+
+            // 保存Footer
+            const newEmail = document.getElementById('admin-footer-email')?.value;
+            const newPhone = document.getElementById('admin-footer-phone')?.value;
+            if (newEmail) {
+                updateContent('footer-email', newEmail, 'mailto');
+                document.querySelector('.footer-contact-left a[href^="mailto"]').textContent = newEmail;
+            }
+            if (newPhone) {
+                updateContent('footer-phone', newPhone, 'tel');
+                document.querySelector('.footer-contact-left a[href^="tel"]').textContent = newPhone;
+            }
+
+            // 保存Poster2手机端文字
+            const mobileText = document.getElementById('admin-poster2-mobile-text')?.value;
+            if (mobileText) {
+                const mobileTextEl = document.querySelector('.mobile-poster2-text h3');
+                if (mobileTextEl) {
+                    mobileTextEl.textContent = mobileText;
+                    mobileTextEl.setAttribute('data-text', mobileText);
+                }
+            }
+
+            alert('Changes saved successfully! (Note: In a real implementation, this would save to a database)');
+            toggleAdmin();
+        }
+
+        const SocialManager = {
+            add: function(platform, href, svgPath) {
+                const container = document.getElementById('socialContainer');
+                const a = document.createElement('a');
+                a.href = href;
+                a.className = 'social-icon';
+                a.title = platform;
+                a.setAttribute('data-platform', platform);
+                a.setAttribute('data-editable', 'social-' + platform);
+                a.setAttribute('data-href', href);
+                a.innerHTML = svgPath;
+                container.appendChild(a);
+            },
+            update: function(platform, newHref) {
+                const icon = document.querySelector(`[data-platform="${platform}"]`);
+                if (icon) {
+                    icon.href = newHref;
+                    icon.setAttribute('data-href', newHref);
+                }
+            },
+            remove: function(platform) {
+                const icon = document.querySelector(`[data-platform="${platform}"]`);
+                if (icon) icon.remove();
+            }
+        };
+
+        const FooterAdmin = {
+            updateText: updateContent,
+            updateHref: function(id, href) { updateContent(id, href, 'href'); },
+            updateImage: function(id, src) { updateContent(id, src, 'src'); },
+            updateEmail: function(id, email) { updateContent(id, email, 'mailto'); },
+            updatePhone: function(id, phone) { updateContent(id, phone, 'tel'); }
+        };
+
+        const EventsAdmin = {
+            add: function(id, image, name, details, venue, btnText, btnLink, statusType, statusText, countdownDate) {
+                const grid = document.getElementById('eventsGrid');
+                const card = document.createElement('div');
+                card.className = 'event-card hidden';
+                card.setAttribute('data-editable', 'event-' + id);
+                card.setAttribute('data-event-id', id);
+                card.innerHTML = `
+                    <img src="${image}" alt="${name}" class="event-poster" data-editable="event-${id}-image" data-src="${image}">
+                    <div class="event-status ${statusType}" data-editable="event-${id}-status" data-status-type="${statusType}" data-text="${statusText}" ${countdownDate ? 'data-countdown-date="' + countdownDate + '"' : ''} id="status-${id}">${statusText}</div>
+                    <div class="event-content">
+                        <h3 class="event-name" data-editable="event-${id}-name" data-text="${name}">${name}</h3>
+                        <div class="event-details" data-editable="event-${id}-details" data-text="${details}">${details}</div>
+                        <div class="event-venue" data-editable="event-${id}-venue" data-text="${venue}">${venue}</div>
+                        <a href="${btnLink}" class="event-btn" target="_blank" data-editable="event-${id}-btn" data-text="${btnText}" data-href="${btnLink}">${btnText}</a>
+                    </div>
+                `;
+                grid.appendChild(card);
+                checkLoadMoreButton();
+                initCountdowns();
+            },
+            update: function(id, field, value) {
+                updateContent(`event-${id}-${field}`, value, field === 'image' ? 'src' : 'text');
+            },
+            remove: function(id) {
+                const card = document.querySelector(`[data-event-id="${id}"]`);
+                if (card) {
+                    card.remove();
+                    checkLoadMoreButton();
+                }
+            }
+        };
+
+        const AutoScrollAdmin = {
+            add: function(id, image, title, meta, date, time) {
+                const track = document.getElementById('autoScrollTrack');
+                const item = document.createElement('div');
+                item.className = 'auto-scroll-item';
+                item.setAttribute('data-editable', 'auto-' + id);
+                item.setAttribute('data-date', date);
+                item.setAttribute('data-time', time || '20:00');
+                item.innerHTML = `
+                    <div class="auto-scroll-overlay"></div>
+                    <img src="${image}" alt="${title}" data-editable="auto-${id}-image" data-src="${image}">
+                    <div class="auto-scroll-info">
+                        <h4 class="auto-scroll-title" data-editable="auto-${id}-title" data-text="${title}">${title}</h4>
+                        <div class="auto-scroll-meta" data-editable="auto-${id}-meta" data-text="${meta}">${meta}</div>
+                    </div>
+                `;
+                track.appendChild(item);
+                this.sortByDate();
+            },
+            update: function(id, field, value) {
+                updateContent(`auto-${id}-${field}`, value, field === 'image' ? 'src' : 'text');
+            },
+            remove: function(id) {
+                const item = document.querySelector(`[data-editable="auto-${id}"]`);
+                if (item) item.remove();
+            },
+            sortByDate: function() {
+                const track = document.getElementById('autoScrollTrack');
+                const items = Array.from(track.querySelectorAll('.auto-scroll-item:not([data-editable*="-clone"])'));
+                items.sort((a, b) => {
+                    const dateA = a.getAttribute('data-date') || '';
+                    const dateB = b.getAttribute('data-date') || '';
+                    const timeA = a.getAttribute('data-time') || '00:00';
+                    const timeB = b.getAttribute('data-time') || '00:00';
+                    return (dateA + timeA).localeCompare(dateB + timeB);
+                });
+                items.forEach(item => track.appendChild(item));
+            }
+        };
+
+        const PosterCarouselAdmin = {
+            updateImage: function(index, imageSrc) {
+                const img = document.querySelector(`[data-editable="poster-2-image-${index}"]`);
+                if (img) {
+                    img.src = imageSrc;
+                    img.setAttribute('data-src', imageSrc);
+                }
+            },
+            updateMobileText: function(text) {
+                const mobileTextEl = document.querySelector('.mobile-poster2-text h3');
+                if (mobileTextEl) {
+                    mobileTextEl.textContent = text;
+                    mobileTextEl.setAttribute('data-text', text);
+                }
+            },
+            addSlide: function(imageSrc) {
+                if (window.innerWidth <= 768) return;
+                
+                const carousel = document.getElementById('posterCarousel');
+                const img = document.createElement('img');
+                img.src = imageSrc;
+                img.setAttribute('data-editable', `poster-2-image-${slides.length + 1}`);
+                img.setAttribute('data-src', imageSrc);
+                carousel.insertBefore(img, carousel.querySelector('.carousel-dots'));
+                
+                const dot = document.createElement('span');
+                dot.className = 'carousel-dot';
+                dot.onclick = function() { goToSlide(slides.length); };
+                carousel.querySelector('.carousel-dots').appendChild(dot);
+                
+                // 更新slides和dots
+                slides = document.querySelectorAll('#posterCarousel img');
+                dots = document.querySelectorAll('.carousel-dot');
+            }
+        };
+
+        function checkBackgroundImage() {
+            const img = new Image();
+            img.onerror = function() {
+                document.getElementById('heroBg').style.background = 'linear-gradient(135deg, #1a0000 0%, #000 50%, #1a0000 100%)';
+            };
+            img.src = './image/e-hero%20bg.jpg';
+        }
+        checkBackgroundImage();
+
+        function openModal() {
+            document.getElementById('membershipModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('membershipModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        document.getElementById('membershipModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        function handleSubmit(e) {
+            e.preventDefault();
+            const formData = {
+                name: document.getElementById('memberName').value,
+                email: document.getElementById('memberEmail').value,
+                phone: document.getElementById('memberPhone').value,
+                message: document.getElementById('memberMessage').value,
+                timestamp: new Date().toISOString(),
+                source: 'LiveGigs Asia Events Page'
+            };
+            let submissions = JSON.parse(localStorage.getItem('membershipSubmissions') || '[]');
+            submissions.push(formData);
+            localStorage.setItem('membershipSubmissions', JSON.stringify(submissions));
+            alert('Thank you for your application! We will contact you soon.');
+            closeModal();
+            document.getElementById('membershipForm').reset();
+        }
+
+        document.getElementById('logo').addEventListener('error', function() {
+            this.style.display = 'none';
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLoadMoreButton();
+            initCountdowns();
+            
+            // 初始化滚播图排序
+            AutoScrollAdmin.sortByDate();
+        });
+
+        // 全局API
+        window.LiveGigsAdmin = {
+            update: updateContent,
+            updateMultiple: updateMultipleContent,
+            getAll: getAllEditableContent,
+            updatePosterLink: updatePosterLink,
+            updateBanner: function(index, image, title, buttonText, buttonLink) {
+                updateContent(`banner-${index}-image`, image, 'src');
+                updateContent(`banner-${index}-title`, title, 'text');
+                updateContent(`banner-${index}-btn`, buttonText, 'text');
+                const btn = document.querySelector(`[data-editable="banner-${index}-btn"]`);
+                if (btn) {
+                    btn.setAttribute('data-href', buttonLink);
+                    btn.onclick = function() { window.open(buttonLink, '_blank'); };
+                }
+            },
+            updatePoster: function(index, image, title, linkText, link) {
+                updateContent(`poster-${index}-image`, image, 'src');
+                updateContent(`poster-${index}-title`, title, 'text');
+                updateContent(`poster-${index}-link-text`, linkText, 'text');
+                updatePosterLink(index, link);
+            },
+            social: SocialManager,
+            footer: FooterAdmin,
+            events: EventsAdmin,
+            autoScroll: AutoScrollAdmin,
+            posterCarousel: PosterCarouselAdmin,
+            toggleAdmin: toggleAdmin
+        };
+    </script>
+
+</body>
+</html>
