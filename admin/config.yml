@@ -2,7 +2,7 @@ backend:
   name: github
   repo: EmanonEnt/asia  # 你的仓库（用户名/仓库名）
   branch: main  # 主分支
-  site_domain: emanonent.github.io  # 你的GitHub Pages域名
+ site_domain: emanonent.github.io
 
 media_folder: "static/images"
 public_folder: "/images"
