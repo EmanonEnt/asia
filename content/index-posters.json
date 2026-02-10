@@ -1,0 +1,22 @@
+{
+  "poster1": {
+    "image": "./image/1-b-2.jpg",
+    "title": "LiveGigs Asia",
+    "link_text": "View Details →",
+    "link": "events.html"
+  },
+  "poster2": {
+    "carousel": false,
+    "single_image": "./image/1-b-3.jpg",
+    "single_title": "Featured Event",
+    "single_link_text": "View Details →",
+    "single_link": "events.html",
+    "images": []
+  },
+  "poster3": {
+    "image": "./image/livegigscn1.png",
+    "title": "Upcoming Shows",
+    "link_text": "View Details →",
+    "link": "events.html"
+  }
+}
