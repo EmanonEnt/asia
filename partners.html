@@ -271,6 +271,11 @@
             line-height: 1.8;
             animation: textFlash 8s ease-in-out infinite;
             animation-delay: 0.3s;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
         }
 
         .hero-subtitle .line1 {
@@ -710,6 +715,23 @@
             position: relative;
             overflow: hidden;
             backdrop-filter: blur(10px);
+            text-decoration: none;
+        }
+
+        .partner-logo-item.no-link {
+            cursor: default;
+            pointer-events: none;
+        }
+
+        .partner-logo-item.no-link:hover {
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(139, 0, 0, 0.4);
+            transform: none;
+            box-shadow: none;
+        }
+
+        .partner-logo-item.no-link:hover::before {
+            display: none;
         }
 
         .partner-logo-item::before {
@@ -1521,8 +1543,9 @@
             <h1 class="hero-title" data-editable="partners-hero-title">
                 <span class="gray" data-editable="partners-hero-title-gray" data-text="LIVEGIGS">LIVEGIGS</span><span class="red" data-editable="partners-hero-title-red" data-text="ASIA">ASIA</span>
             </h1>
-            <p class="hero-subtitle" data-editable="partners-hero-subtitle" data-text="Partnered in a Spirit of Collaboration">
+            <p class="hero-subtitle" data-editable="partners-hero-subtitle">
                 <span class="line1" data-editable="partners-hero-subtitle-line1" data-text="Partnered in a Spirit of Collaboration">Partnered in a Spirit of Collaboration</span>
+                <span class="line2" data-editable="partners-hero-subtitle-line2" data-text="">&nbsp;</span>
             </p>
         </div>
     </section>
@@ -1873,9 +1896,6 @@
             });
         }
     </script>
-<script src="./js/data-loader.js"></script>
-<script>
-  DataLoader.init('partners');
-</script>
+
 </body>
 </html>

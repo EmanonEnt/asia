@@ -1454,9 +1454,9 @@
             .admin-tabs { gap: 5px; }
             .admin-tab { padding: 8px 12px; font-size: 11px; }
             
-            /* 手机端海报2完全静态，只显示文字 */
-            .poster-carousel { display: none !important; }
-            .mobile-poster2-text { display: block; }
+            /* 海报2 - 手机端显示轮播，文字与海报3一致 */
+            .poster-carousel { display: block !important; }
+            .mobile-poster2-text { display: none !important; }
         }
 
         @media (max-width: 480px) {
@@ -1828,7 +1828,7 @@
                             <span class="carousel-dot" onclick="goToSlide(2)"></span>
                         </div>
                         <div class="poster-overlay">
-                            <div class="poster-title" data-editable="poster-2-title" data-text="PAST HIGHLIGHTS">PAST HIGHLIGHTS</div>
+                            <div class="poster-title" data-editable="poster-2-title" data-text="Epic Past Gigs">Epic Past Gigs</div>
                             <span class="poster-link" data-editable="poster-2-link-text" data-text="View Gallery →">View Gallery →</span>
                         </div>
                     </div>
