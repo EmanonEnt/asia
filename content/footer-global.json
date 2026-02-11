@@ -1,0 +1,26 @@
+{
+  "copyright": "© 2026 LIVEGIGS ASIA. ALL RIGHTS RESERVED.",
+  "social": [
+    {
+      "name": "Facebook",
+      "url": "https://facebook.com/livegigsasia",
+      "icon": "facebook"
+    },
+    {
+      "name": "Instagram",
+      "url": "https://instagram.com/livegigsasia",
+      "icon": "instagram"
+    },
+    {
+      "name": "YouTube",
+      "url": "https://youtube.com/livegigsasia",
+      "icon": "youtube"
+    },
+    {
+      "name": "X",
+      "url": "https://x.com/livegigsasia",
+      "icon": "x"
+    }
+  ],
+  "producer": "./image/emanonent-logo.png"
+}

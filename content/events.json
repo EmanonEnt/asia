@@ -1,0 +1,38 @@
+[
+  {
+    "title": "THE NONAME LIVE IN SHANGHAI",
+    "date": "2026.03.15",
+    "location": "Modern Sky Lab",
+    "time": "20:00",
+    "image": "./image/event1.jpg",
+    "ticket": "$50",
+    "status": "ontour",
+    "description": "Punk rock night with special guests",
+    "button_text": "Get Tickets →",
+    "link": "./tickets.html"
+  },
+  {
+    "title": "PUNK HEART FESTIVAL 2026",
+    "date": "2026.04.20",
+    "location": "Beijing Omni Space",
+    "time": "18:00",
+    "image": "./image/event2.jpg",
+    "ticket": "$80",
+    "status": "soldout",
+    "description": "Annual punk music celebration",
+    "button_text": "View Details →",
+    "link": "./events.html"
+  },
+  {
+    "title": "UNDERGROUND SOUNDS",
+    "date": "2026.05.01",
+    "location": "Guangzhou SD Livehouse",
+    "time": "21:00",
+    "image": "./image/event3.jpg",
+    "ticket": "$40",
+    "status": "",
+    "description": "Indie and alternative bands showcase",
+    "button_text": "Buy Now →",
+    "link": "./tickets.html"
+  }
+]

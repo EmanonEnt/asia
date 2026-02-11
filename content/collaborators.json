@@ -1,0 +1,14 @@
+[
+  {
+    "logo": "./image/partner1.png",
+    "link": "https://partner1.com"
+  },
+  {
+    "logo": "./image/partner2.png",
+    "link": ""
+  },
+  {
+    "logo": "./image/partner3.png",
+    "link": "https://partner3.com"
+  }
+]

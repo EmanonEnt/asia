@@ -1,0 +1,21 @@
+{
+  "copyright": "© 2026 LIVEGIGS ASIA. 版权所有.",
+  "social": [
+    {
+      "name": "微信",
+      "url": "https://weixin.qq.com/livegigsasia",
+      "icon": "wechat"
+    },
+    {
+      "name": "微博",
+      "url": "https://weibo.com/livegigsasia",
+      "icon": "weibo"
+    },
+    {
+      "name": "抖音",
+      "url": "https://douyin.com/livegigsasia",
+      "icon": "douyin"
+    }
+  ],
+  "producer": "./image/emanonent-logo.png"
+}
