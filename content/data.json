@@ -1,36 +1,51 @@
 {
   "banners": [
     {
-      "title": "THE NONAME ANTI-MUSIC FESTIVAL",
+      "title": "THE NONAME ANTI-IPA",
       "image": "./image/thenonameanti-.jpg",
-      "button_text": "View Details →",
-      "link": "./events.html",
+      "button_text": "無名逆襲社交 IPA",
+      "link": "#",
       "order": 1,
       "active": true
     },
     {
-      "title": "PUNK HEART FESTIVAL",
+      "title": "朋克心音樂節 2026",
       "image": "./image/punkheartbanner.jpg",
-      "button_text": "Get Tickets →",
-      "link": "./events.html",
+      "button_text": "PUNK HEART FESTIVAL",
+      "link": "#",
       "order": 2,
       "active": true
     }
   ],
   "posters": {
     "index": [
-      {"title": "Event 1", "image": "./image/1-b-2.jpg", "link_text": "View Details →", "link": "./events.html"},
-      {"title": "Event 2", "image": "./image/1-b-3.jpg", "link_text": "View Details →", "link": "./events.html"},
-      {"title": "Event 3", "image": "./image/livegigscn1.png", "link_text": "View Details →", "link": "./events.html"}
+      {
+        "title": "LiveGigs CN",
+        "image": "./image/livegigscn1.png",
+        "link_text": "Get on WeChat →",
+        "link": "https://wxaurl.cn/HMcAK6R7fou"
+      },
+      {
+        "title": "Upcoming Event",
+        "image": "./image/1-b-2.jpg",
+        "link_text": "View Details →",
+        "link": "events.html"
+      },
+      {
+        "title": "Special Guest",
+        "image": "./image/1-b-3.jpg",
+        "link_text": "Learn More →",
+        "link": "events.html"
+      }
     ]
   },
   "footer": {
-    "copyright": "© 2026 LIVEGIGS ASIA. ALL RIGHTS RESERVED.",
+    "copyright": "Copyright © 2001-2026 EMANON ENT. - All Rights Reserved.",
     "social": [
-      {"name": "Facebook", "url": "https://facebook.com/livegigsasia"},
-      {"name": "Instagram", "url": "https://instagram.com/livegigsasia"},
-      {"name": "YouTube", "url": "https://youtube.com/livegigsasia"},
-      {"name": "X", "url": "https://x.com/livegigsasia"}
+      {"name": "Facebook", "url": "https://facebook.com"},
+      {"name": "Instagram", "url": "https://instagram.com"},
+      {"name": "YouTube", "url": "https://youtube.com"},
+      {"name": "X", "url": "https://x.com"}
     ],
     "producer": "./image/emanonent-logo.png"
   }
