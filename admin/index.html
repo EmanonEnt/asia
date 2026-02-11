@@ -5,54 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LiveGigs Asia - 后台管理</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
             background: #050505;
             color: #c0c0c0;
             min-height: 100vh;
         }
-
-        /* Header */
         .header {
             background: rgba(0, 0, 0, 0.95);
             border-bottom: 3px solid #8b0000;
             padding: 15px 30px;
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
+            top: 0; left: 0; right: 0;
             z-index: 1000;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-
         .header-left h1 {
             color: #8b0000;
             font-size: 28px;
             text-transform: uppercase;
-            letter-spacing: 2px;
         }
-
-        .header-left p {
-            color: #666;
-            font-size: 12px;
-            margin-top: 3px;
-            font-family: Arial, sans-serif;
-        }
-
         .header-right {
             display: flex;
             align-items: center;
             gap: 20px;
         }
-
         .sync-status {
             display: flex;
             align-items: center;
@@ -61,36 +41,16 @@
             color: #666;
             font-family: Arial, sans-serif;
         }
-
-        .sync-status.synced {
-            color: #00ff00;
-        }
-
-        .sync-status.syncing {
-            color: #ffaa00;
-        }
-
+        .sync-status.synced { color: #00ff00; }
+        .sync-status.syncing { color: #ffaa00; }
         .sync-dot {
-            width: 8px;
-            height: 8px;
+            width: 8px; height: 8px;
             border-radius: 50%;
             background: #666;
         }
-
-        .sync-status.synced .sync-dot {
-            background: #00ff00;
-        }
-
-        .sync-status.syncing .sync-dot {
-            background: #ffaa00;
-            animation: pulse 1s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
+        .sync-status.synced .sync-dot { background: #00ff00; }
+        .sync-status.syncing .sync-dot { background: #ffaa00; animation: pulse 1s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
         .btn-logout {
             padding: 8px 20px;
             background: transparent;
@@ -100,23 +60,13 @@
             font-size: 12px;
             text-transform: uppercase;
             border-radius: 4px;
-            transition: all 0.3s;
-            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
         }
-
-        .btn-logout:hover {
-            background: #8b0000;
-            color: #fff;
-        }
-
-        /* Main Container */
+        .btn-logout:hover { background: #8b0000; color: #fff; }
         .container {
             max-width: 1400px;
             margin: 0 auto;
             padding: 100px 20px 40px;
         }
-
-        /* Stats Bar */
         .stats-bar {
             background: #1a1a1a;
             border: 2px solid #333;
@@ -127,26 +77,9 @@
             gap: 40px;
             flex-wrap: wrap;
         }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 36px;
-            color: #8b0000;
-            font-weight: bold;
-        }
-
-        .stat-label {
-            font-size: 11px;
-            color: #666;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-top: 5px;
-        }
-
-        /* Navigation Tabs */
+        .stat-item { text-align: center; }
+        .stat-number { font-size: 36px; color: #8b0000; font-weight: bold; }
+        .stat-label { font-size: 11px; color: #666; text-transform: uppercase; margin-top: 5px; }
         .nav-tabs {
             display: flex;
             gap: 8px;
@@ -155,7 +88,6 @@
             border-bottom: 2px solid #333;
             padding-bottom: 12px;
         }
-
         .nav-tab {
             padding: 12px 22px;
             background: #1a1a1a;
@@ -164,37 +96,13 @@
             cursor: pointer;
             text-transform: uppercase;
             font-size: 13px;
-            transition: all 0.3s;
-            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
             border-radius: 4px;
         }
-
-        .nav-tab:hover {
-            border-color: #555;
-            color: #c0c0c0;
-        }
-
-        .nav-tab.active {
-            background: #8b0000;
-            border-color: #8b0000;
-            color: #fff;
-        }
-
-        /* Sections */
-        .section {
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .section.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
+        .nav-tab:hover { border-color: #555; color: #c0c0c0; }
+        .nav-tab.active { background: #8b0000; border-color: #8b0000; color: #fff; }
+        .section { display: none; }
+        .section.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .section-title {
             font-size: 26px;
             color: #8b0000;
@@ -203,8 +111,6 @@
             border-left: 5px solid #8b0000;
             padding-left: 15px;
         }
-
-        /* Cards */
         .card {
             background: #0a0a0a;
             border: 2px solid #333;
@@ -212,28 +118,20 @@
             padding: 25px;
             margin-bottom: 20px;
         }
-
         .card-title {
             color: #8b0000;
             font-size: 18px;
             margin-bottom: 20px;
             text-transform: uppercase;
         }
-
-        /* Form Elements */
-        .form-group {
-            margin-bottom: 20px;
-        }
-
+        .form-group { margin-bottom: 20px; }
         .form-group label {
             display: block;
             margin-bottom: 8px;
             color: #c0c0c0;
             font-size: 12px;
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
-
         .form-group input,
         .form-group textarea,
         .form-group select {
@@ -245,46 +143,18 @@
             font-size: 14px;
             font-family: Arial, sans-serif;
             border-radius: 4px;
-            transition: all 0.3s;
         }
-
         .form-group input:focus,
         .form-group textarea:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: #8b0000;
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-
-        .form-group input::placeholder,
-        .form-group textarea::placeholder {
-            color: #555;
-        }
-
+        .form-group select:focus { outline: none; border-color: #8b0000; }
         .help-text {
             font-size: 11px;
             color: #555;
             margin-top: 6px;
             font-family: Arial, sans-serif;
         }
-
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .grid-3 {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 20px;
-        }
-
-        /* Buttons */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
         .btn {
             padding: 12px 28px;
             background: #8b0000;
@@ -293,83 +163,26 @@
             cursor: pointer;
             text-transform: uppercase;
             font-size: 13px;
-            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
             border-radius: 4px;
-            transition: all 0.3s;
             margin-right: 10px;
             margin-bottom: 10px;
         }
-
-        .btn:hover {
-            background: #a00000;
-            transform: translateY(-2px);
-        }
-
-        .btn:disabled {
-            background: #444;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .btn-secondary {
-            background: #333;
-        }
-
-        .btn-secondary:hover {
-            background: #444;
-        }
-
-        .btn-success {
-            background: #006400;
-        }
-
-        .btn-success:hover {
-            background: #008000;
-        }
-
+        .btn:hover { background: #a00000; }
+        .btn-secondary { background: #333; }
+        .btn-secondary:hover { background: #444; }
+        .btn-success { background: #006400; }
+        .btn-success:hover { background: #008000; }
         .btn-small {
             padding: 8px 16px;
             font-size: 11px;
             border: none;
             cursor: pointer;
             text-transform: uppercase;
-            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
             border-radius: 4px;
-            transition: all 0.3s;
         }
-
-        .btn-edit {
-            background: #c0c0c0;
-            color: #000;
-        }
-
-        .btn-edit:hover {
-            background: #ddd;
-        }
-
-        .btn-delete {
-            background: #8b0000;
-            color: #fff;
-        }
-
-        .btn-delete:hover {
-            background: #a00000;
-        }
-
-        .btn-preview {
-            background: #444;
-            color: #fff;
-        }
-
-        .btn-preview:hover {
-            background: #555;
-        }
-
-        /* Item List */
-        .item-list {
-            margin-top: 20px;
-        }
-
+        .btn-edit { background: #c0c0c0; color: #000; }
+        .btn-delete { background: #8b0000; color: #fff; }
+        .item-list { margin-top: 20px; }
         .item-card {
             background: #1a1a1a;
             border: 2px solid #333;
@@ -379,13 +192,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: all 0.3s;
         }
-
-        .item-card:hover {
-            border-color: #8b0000;
-        }
-
+        .item-card:hover { border-color: #8b0000; }
         .item-info h4 {
             color: #fff;
             font-size: 16px;
@@ -394,20 +202,8 @@
             align-items: center;
             gap: 10px;
         }
-
-        .item-info p {
-            color: #666;
-            font-size: 12px;
-            font-family: Arial, sans-serif;
-            margin-bottom: 3px;
-        }
-
-        .item-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        /* Status Badges */
+        .item-info p { color: #666; font-size: 12px; font-family: Arial, sans-serif; }
+        .item-actions { display: flex; gap: 8px; }
         .status-badge {
             display: inline-block;
             padding: 3px 10px;
@@ -415,53 +211,10 @@
             font-size: 10px;
             text-transform: uppercase;
         }
-
-        .status-active {
-            background: rgba(0, 100, 0, 0.3);
-            color: #00ff00;
-            border: 1px solid #006400;
-        }
-
-        .status-inactive {
-            background: rgba(139, 0, 0, 0.3);
-            color: #ff6666;
-            border: 1px solid #8b0000;
-        }
-
-        .status-ontour {
-            background: rgba(255, 170, 0, 0.3);
-            color: #ffaa00;
-            border: 1px solid #ffaa00;
-        }
-
-        .status-soldout {
-            background: rgba(139, 0, 0, 0.3);
-            color: #ff6666;
-            border: 1px solid #8b0000;
-        }
-
-        /* Preview Box */
-        .preview-box {
-            background: #1a1a1a;
-            border: 2px solid #333;
-            border-radius: 6px;
-            padding: 20px;
-            margin-top: 15px;
-            text-align: center;
-            display: none;
-        }
-
-        .preview-box.show {
-            display: block;
-        }
-
-        .preview-box img {
-            max-width: 100%;
-            max-height: 300px;
-            border-radius: 4px;
-        }
-
-        /* Alerts */
+        .status-active { background: rgba(0, 100, 0, 0.3); color: #00ff00; border: 1px solid #006400; }
+        .status-inactive { background: rgba(139, 0, 0, 0.3); color: #ff6666; border: 1px solid #8b0000; }
+        .status-ontour { background: rgba(255, 170, 0, 0.3); color: #ffaa00; border: 1px solid #ffaa00; }
+        .status-soldout { background: rgba(139, 0, 0, 0.3); color: #ff6666; border: 1px solid #8b0000; }
         .alert {
             padding: 15px;
             border-radius: 6px;
@@ -469,144 +222,49 @@
             font-family: Arial, sans-serif;
             font-size: 14px;
         }
-
-        .alert-success {
-            background: rgba(0, 100, 0, 0.2);
-            border: 2px solid #006400;
-            color: #00ff00;
-        }
-
-        .alert-error {
-            background: rgba(139, 0, 0, 0.2);
-            border: 2px solid #8b0000;
-            color: #ff6666;
-        }
-
-        .alert-info {
-            background: rgba(0, 100, 200, 0.2);
-            border: 2px solid #0064c8;
-            color: #66aaff;
-        }
-
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #555;
-        }
-
-        .empty-state h3 {
-            color: #8b0000;
-            font-size: 22px;
-            margin-bottom: 10px;
-        }
-
-        .empty-state p {
-            font-family: Arial, sans-serif;
-            font-size: 14px;
-        }
-
-        /* Checkbox Group */
+        .alert-success { background: rgba(0, 100, 0, 0.2); border: 2px solid #006400; color: #00ff00; }
+        .alert-error { background: rgba(139, 0, 0, 0.2); border: 2px solid #8b0000; color: #ff6666; }
+        .alert-info { background: rgba(0, 100, 200, 0.2); border: 2px solid #0064c8; color: #66aaff; }
+        .empty-state { text-align: center; padding: 60px 20px; color: #555; }
+        .empty-state h3 { color: #8b0000; font-size: 22px; margin-bottom: 10px; }
         .checkbox-group {
             display: flex;
             align-items: center;
             gap: 10px;
             margin-top: 10px;
         }
-
         .checkbox-group input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            accent-color: #8b0000;
+            width: 18px; height: 18px; accent-color: #8b0000;
         }
-
         .checkbox-group label {
             margin: 0;
             font-size: 13px;
             color: #888;
             font-family: Arial, sans-serif;
             text-transform: none;
-            letter-spacing: 0;
         }
-
-        /* Collaborators */
-        .collab-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-top: 15px;
-        }
-
-        .collab-item {
-            position: relative;
-            display: inline-block;
-        }
-
-        .collab-item img {
-            width: 100px;
-            height: 60px;
-            object-fit: contain;
+        .carousel-item {
             background: #1a1a1a;
-            padding: 10px;
-            border-radius: 4px;
             border: 1px solid #333;
-        }
-
-        .collab-item .remove-btn {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background: #8b0000;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 22px;
-            height: 22px;
-            cursor: pointer;
-            font-size: 14px;
-            line-height: 1;
-        }
-
-        /* Loading */
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: #8b0000;
-        }
-
-        .loading-spinner {
-            display: inline-block;
-            width: 30px;
-            height: 30px;
-            border: 3px solid rgba(139, 0, 0, 0.3);
-            border-radius: 50%;
-            border-top-color: #8b0000;
-            animation: spin 0.8s linear infinite;
+            border-radius: 6px;
+            padding: 15px;
             margin-bottom: 15px;
         }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        .carousel-item h4 {
+            color: #8b0000;
+            font-size: 14px;
+            margin-bottom: 15px;
         }
-
-        /* Modal */
         .modal-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0, 0, 0, 0.8);
             display: none;
             align-items: center;
             justify-content: center;
             z-index: 2000;
         }
-
-        .modal-overlay.show {
-            display: flex;
-        }
-
+        .modal-overlay.show { display: flex; }
         .modal {
             background: #0a0a0a;
             border: 2px solid #8b0000;
@@ -615,96 +273,32 @@
             max-width: 500px;
             width: 90%;
         }
-
-        .modal h3 {
-            color: #8b0000;
-            margin-bottom: 15px;
-        }
-
-        .modal p {
-            color: #888;
-            font-family: Arial, sans-serif;
-            margin-bottom: 20px;
-            line-height: 1.5;
-        }
-
-        .modal-actions {
-            display: flex;
-            gap: 10px;
-            justify-content: flex-end;
-        }
-
-        /* Carousel Settings */
-        .carousel-settings {
-            background: #1a1a1a;
-            border: 1px solid #333;
-            border-radius: 6px;
-            padding: 15px;
-            margin-top: 15px;
-        }
-
-        .carousel-settings h4 {
-            color: #8b0000;
-            font-size: 14px;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-        }
-
-        /* Responsive */
+        .modal h3 { color: #8b0000; margin-bottom: 15px; }
+        .modal p { color: #888; font-family: Arial, sans-serif; margin-bottom: 20px; }
+        .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
         @media (max-width: 768px) {
-            .grid-2, .grid-3 {
-                grid-template-columns: 1fr;
-            }
-            
-            .header {
-                flex-direction: column;
-                gap: 10px;
-                padding: 15px;
-            }
-            
-            .header-left h1 {
-                font-size: 20px;
-            }
-            
-            .container {
-                padding-top: 130px;
-            }
-            
-            .item-card {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 15px;
-            }
-            
-            .nav-tab {
-                padding: 10px 15px;
-                font-size: 11px;
-            }
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+            .item-card { flex-direction: column; align-items: flex-start; gap: 15px; }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
     <div class="header">
         <div class="header-left">
             <h1>LiveGigs Asia - 后台管理</h1>
-            <p>数据管理控制台 v2.1</p>
         </div>
         <div class="header-right">
             <div class="sync-status" id="syncStatus">
                 <span class="sync-dot"></span>
                 <span id="syncText">未同步</span>
             </div>
-            <button class="btn-logout" onclick="logout()">退出登录</button>
+            <button class="btn-logout" onclick="logout()">退出</button>
         </div>
     </div>
 
-    <!-- Main Container -->
     <div class="container">
-        <!-- Alert Container -->
         <div id="alertContainer"></div>
 
-        <!-- Stats Bar -->
         <div class="stats-bar">
             <div class="stat-item">
                 <div class="stat-number" id="statBanners">0</div>
@@ -715,8 +309,8 @@
                 <div class="stat-label">Events</div>
             </div>
             <div class="stat-item">
-                <div class="stat-number" id="statCollabs">0</div>
-                <div class="stat-label">Partners</div>
+                <div class="stat-number" id="statCarousel">0</div>
+                <div class="stat-label">Carousel</div>
             </div>
             <div class="stat-item">
                 <div class="stat-number" id="statLoadMore">-</div>
@@ -724,147 +318,134 @@
             </div>
         </div>
 
-        <!-- Navigation Tabs -->
         <div class="nav-tabs">
-            <button class="nav-tab active" onclick="showSection('banners')">Banner管理</button>
-            <button class="nav-tab" onclick="showSection('posters')">海报区域</button>
-            <button class="nav-tab" onclick="showSection('events')">活动管理</button>
-            <button class="nav-tab" onclick="showSection('partners')">合作伙伴</button>
-            <button class="nav-tab" onclick="showSection('footer')">底部管理</button>
-            <button class="nav-tab" onclick="showSection('data')">数据导入/导出</button>
+            <button class="nav-tab active" onclick="showSection('banners')">Banner</button>
+            <button class="nav-tab" onclick="showSection('posters')">海报</button>
+            <button class="nav-tab" onclick="showSection('carousel')">轮播(活动页)</button>
+            <button class="nav-tab" onclick="showSection('events')">活动</button>
+            <button class="nav-tab" onclick="showSection('partners')">合作</button>
+            <button class="nav-tab" onclick="showSection('footer')">底部</button>
+            <button class="nav-tab" onclick="showSection('data')">数据</button>
         </div>
 
-        <!-- Banner Management -->
+        <!-- Banner -->
         <div id="banners" class="section active">
             <h2 class="section-title">Banner 管理</h2>
-            
             <div class="card">
                 <h3 class="card-title">添加/编辑 Banner</h3>
                 <form id="bannerForm">
                     <input type="hidden" id="bannerEditIndex" value="">
                     <div class="grid-2">
                         <div class="form-group">
-                            <label>标题（可选）</label>
-                            <input type="text" id="bannerTitle" placeholder="例如: THE NONAME FESTIVAL">
+                            <label>标题</label>
+                            <input type="text" id="bannerTitle" placeholder="标题">
                         </div>
                         <div class="form-group">
                             <label>排序</label>
                             <input type="number" id="bannerOrder" value="1" min="1" style="width: 100px;">
                         </div>
                     </div>
-                    
                     <div class="form-group">
-                        <label>图片地址（可选）</label>
+                        <label>图片</label>
                         <input type="text" id="bannerImage" placeholder="./image/banner.jpg 或 https://...">
-                        <p class="help-text">支持本地路径 (./image/xxx.jpg) 或外部链接 (https://...)</p>
                     </div>
-                    
                     <div class="grid-2">
                         <div class="form-group">
-                            <label>按钮文字（可选）</label>
+                            <label>按钮文字</label>
                             <input type="text" id="bannerButton" placeholder="View Details →">
                         </div>
                         <div class="form-group">
-                            <label>链接地址（可选）</label>
+                            <label>链接</label>
                             <input type="text" id="bannerLink" placeholder="./events.html 或 https://...">
-                            <p class="help-text">不写则按钮不可点击</p>
                         </div>
                     </div>
-                    
                     <div class="checkbox-group">
                         <input type="checkbox" id="bannerActive" checked>
-                        <label for="bannerActive">启用此 Banner</label>
+                        <label for="bannerActive">启用</label>
                     </div>
-                    
                     <div style="margin-top: 20px;">
-                        <button type="button" class="btn btn-success" onclick="saveBanner()">保存 Banner</button>
+                        <button type="button" class="btn btn-success" onclick="saveBanner()">保存</button>
                         <button type="button" class="btn btn-secondary" onclick="resetBannerForm()">重置</button>
-                        <button type="button" class="btn btn-preview" onclick="previewBanner()">预览图片</button>
-                    </div>
-                    
-                    <div id="bannerPreview" class="preview-box">
-                        <img id="bannerPreviewImg" src="" alt="预览">
                     </div>
                 </form>
             </div>
-            
             <div class="card">
-                <h3 class="card-title">现有 Banner 列表</h3>
-                <div id="bannerList">
-                    <div class="loading">
-                        <div class="loading-spinner"></div>
-                        <p>加载中...</p>
-                    </div>
-                </div>
+                <h3 class="card-title">Banner 列表</h3>
+                <div id="bannerList"></div>
             </div>
         </div>
 
-        <!-- Poster Management -->
+        <!-- Posters -->
         <div id="posters" class="section">
-            <h2 class="section-title">海报区域管理</h2>
-            
+            <h2 class="section-title">海报管理</h2>
             <div class="card">
                 <h3 class="card-title">选择页面</h3>
                 <div class="form-group">
                     <select id="posterPage" onchange="loadPosters()">
-                        <option value="index">首页 (index)</option>
-                        <option value="cn">国内站 (cn)</option>
-                        <option value="events">活动页 (events)</option>
+                        <option value="index">首页</option>
+                        <option value="cn">国内站</option>
+                        <option value="events">活动页</option>
                     </select>
                 </div>
-                <p class="help-text" id="posterHint">海报2可设置轮播（仅活动页）</p>
             </div>
-            
             <div id="posterSections"></div>
-            
-            <div class="card" style="margin-top: 20px;">
-                <button class="btn btn-success" onclick="savePosters()">保存所有海报</button>
+            <div class="card">
+                <button class="btn btn-success" onclick="savePosters()">保存海报</button>
             </div>
         </div>
 
-        <!-- Events Management -->
+        <!-- Carousel (Events Page Only) -->
+        <div id="carousel" class="section">
+            <h2 class="section-title">活动页轮播管理 (海报2位置)</h2>
+            <div class="card">
+                <h3 class="card-title">轮播设置</h3>
+                <p class="help-text">最多5个，至少1个，每个可独立设置</p>
+                <div id="carouselList"></div>
+                <button type="button" class="btn" onclick="addCarouselItem()" id="addCarouselBtn">添加轮播图</button>
+            </div>
+            <div class="card">
+                <button class="btn btn-success" onclick="saveCarousel()">保存轮播</button>
+            </div>
+        </div>
+
+        <!-- Events -->
         <div id="events" class="section">
-            <h2 class="section-title">Events 活动管理</h2>
-            
+            <h2 class="section-title">活动管理</h2>
             <div class="card">
                 <h3 class="card-title">添加/编辑活动</h3>
                 <form id="eventForm">
                     <input type="hidden" id="eventEditIndex" value="">
                     <div class="grid-2">
                         <div class="form-group">
-                            <label>活动标题（可选）</label>
+                            <label>活动标题</label>
                             <input type="text" id="eventTitle" placeholder="活动名称">
                         </div>
                         <div class="form-group">
-                            <label>日期（可选）</label>
-                            <input type="text" id="eventDate" placeholder="2026.03.15">
+                            <label>日期</label>
+                            <input type="date" id="eventDate">
                         </div>
                     </div>
-                    
                     <div class="grid-2">
                         <div class="form-group">
-                            <label>地点（可选）</label>
+                            <label>时间</label>
+                            <input type="time" id="eventTime">
+                        </div>
+                        <div class="form-group">
+                            <label>地点</label>
                             <input type="text" id="eventLocation" placeholder="演出地点">
                         </div>
-                        <div class="form-group">
-                            <label>时间（可选）</label>
-                            <input type="text" id="eventTime" placeholder="20:00">
-                        </div>
                     </div>
-                    
                     <div class="form-group">
-                        <label>海报图片（可选）</label>
+                        <label>海报图片</label>
                         <input type="text" id="eventImage" placeholder="./image/event.jpg 或 https://...">
-                        <p class="help-text">支持本地路径或外部链接，建议: 400x600px (2:3) 竖版</p>
                     </div>
-                    
                     <div class="grid-2">
                         <div class="form-group">
-                            <label>门票（可选）</label>
+                            <label>门票价格</label>
                             <input type="text" id="eventTicket" placeholder="$50">
                         </div>
                         <div class="form-group">
-                            <label>状态（可选）</label>
+                            <label>状态</label>
                             <select id="eventStatus">
                                 <option value="">正常</option>
                                 <option value="ontour">ON TOUR</option>
@@ -872,154 +453,110 @@
                             </select>
                         </div>
                     </div>
-                    
                     <div class="form-group">
-                        <label>详情（可选）</label>
+                        <label>详情</label>
                         <textarea id="eventDesc" rows="3" placeholder="活动描述..."></textarea>
                     </div>
-                    
                     <div class="grid-2">
                         <div class="form-group">
-                            <label>按钮文字（可选）</label>
+                            <label>按钮文字</label>
                             <input type="text" id="eventButton" value="Get Tickets →">
                         </div>
                         <div class="form-group">
-                            <label>链接（可选）</label>
-                            <input type="text" id="eventLink" placeholder="购票链接 (https://...)">
-                            <p class="help-text">不写则按钮不可点击</p>
+                            <label>按钮链接</label>
+                            <input type="text" id="eventLink" placeholder="https://...">
                         </div>
                     </div>
-                    
-                    <button type="button" class="btn btn-success" onclick="saveEvent()">保存活动</button>
-                    <button type="button" class="btn btn-secondary" onclick="resetEventForm()">重置</button>
+                    <div style="margin-top: 20px;">
+                        <button type="button" class="btn btn-success" onclick="saveEvent()">保存活动</button>
+                        <button type="button" class="btn btn-secondary" onclick="resetEventForm()">重置</button>
+                    </div>
                 </form>
             </div>
-            
             <div class="card">
                 <h3 class="card-title">活动列表</h3>
-                <div id="eventList">
-                    <div class="loading">
-                        <div class="loading-spinner"></div>
-                        <p>加载中...</p>
-                    </div>
-                </div>
+                <div id="eventList"></div>
             </div>
         </div>
 
-        <!-- Partners Management -->
+        <!-- Partners -->
         <div id="partners" class="section">
-            <h2 class="section-title">合作伙伴管理</h2>
-            
+            <h2 class="section-title">合作伙伴</h2>
             <div class="card">
-                <h3 class="card-title">Collaborators Logo</h3>
+                <h3 class="card-title">添加 Logo</h3>
                 <div class="form-group">
-                    <label>添加 Logo (图片地址)</label>
-                    <input type="text" id="collabLogo" placeholder="./image/partner-logo.png 或 https://...">
-                    <p class="help-text">支持本地路径或外部链接，建议: 180x110px</p>
+                    <label>Logo 地址</label>
+                    <input type="text" id="collabLogo" placeholder="./image/logo.png 或 https://...">
                 </div>
-                <button class="btn" onclick="addCollaborator()">添加 Logo</button>
-                
-                <div style="margin-top: 25px;">
-                    <p style="color: #888; font-size: 13px; margin-bottom: 15px;">
-                        现有 Logo (<span id="collabCount">0</span>个):
-                    </p>
-                    <div id="collabList" class="collab-grid">
-                        <p style="color: #555; font-family: Arial, sans-serif;">暂无 Logo</p>
-                    </div>
-                </div>
+                <button class="btn" onclick="addCollaborator()">添加</button>
+                <div id="collabList" style="margin-top: 20px; display: flex; flex-wrap: wrap; gap: 15px;"></div>
             </div>
         </div>
 
-        <!-- Footer Management -->
+        <!-- Footer -->
         <div id="footer" class="section">
-            <h2 class="section-title">底部区域管理</h2>
-            
+            <h2 class="section-title">底部管理</h2>
             <div class="card">
                 <h3 class="card-title">选择站点</h3>
                 <div class="form-group">
                     <select id="footerSite" onchange="loadFooter()">
-                        <option value="global">海外站 (Global)</option>
-                        <option value="cn">国内站 (CN)</option>
+                        <option value="global">海外站</option>
+                        <option value="cn">国内站</option>
                     </select>
                 </div>
             </div>
-            
             <div class="card">
-                <h3 class="card-title">编辑底部内容</h3>
+                <h3 class="card-title">编辑底部</h3>
                 <form id="footerForm">
                     <div class="form-group">
-                        <label>版权文字（可选）</label>
-                        <input type="text" id="footerCopyright" placeholder="© 2026 LIVEGIGS ASIA. ALL RIGHTS RESERVED.">
+                        <label>版权</label>
+                        <input type="text" id="footerCopyright" placeholder="© 2026 LIVEGIGS ASIA">
                     </div>
-                    
                     <div class="form-group">
-                        <label>社交链接 (JSON格式)</label>
-                        <textarea id="footerSocial" rows="10"></textarea>
-                        <p class="help-text">格式: [{"name": "显示名", "url": "链接", "icon": "图标"}]</p>
+                        <label>社交链接 (JSON)</label>
+                        <textarea id="footerSocial" rows="8"></textarea>
                     </div>
-                    
                     <div class="form-group">
-                        <label>制作单位 Logo（可选）</label>
-                        <input type="text" id="footerProducer" placeholder="./image/emanonent-logo.png 或 https://...">
-                        <p class="help-text">支持本地路径或外部链接</p>
+                        <label>制作单位 Logo</label>
+                        <input type="text" id="footerProducer" placeholder="./image/logo.png">
                     </div>
-                    
-                    <button type="button" class="btn btn-success" onclick="saveFooter()">保存底部设置</button>
+                    <button type="button" class="btn btn-success" onclick="saveFooter()">保存</button>
                 </form>
             </div>
         </div>
 
-        <!-- Data Import/Export -->
+        <!-- Data -->
         <div id="data" class="section">
-            <h2 class="section-title">数据导入/导出</h2>
-            
+            <h2 class="section-title">数据管理</h2>
             <div class="card">
-                <h3 class="card-title">从 GitHub 同步数据</h3>
-                <p style="color: #888; margin-bottom: 15px; font-family: Arial, sans-serif;">
-                    自动从 GitHub 仓库加载最新数据
-                </p>
-                <button class="btn btn-success" onclick="syncFromGitHub()">
-                    <span id="syncBtnText">立即同步</span>
-                </button>
+                <h3 class="card-title">从 GitHub 同步</h3>
+                <button class="btn btn-success" onclick="syncFromGitHub()">立即同步</button>
             </div>
-            
             <div class="card">
-                <h3 class="card-title">导出所有数据</h3>
-                <p style="color: #888; margin-bottom: 15px; font-family: Arial, sans-serif;">
-                    将所有数据导出为JSON文件，可备份或迁移
-                </p>
-                <button class="btn btn-success" onclick="exportAllData()">导出 JSON</button>
+                <h3 class="card-title">导出数据</h3>
+                <button class="btn btn-success" onclick="exportData()">导出 JSON</button>
             </div>
-            
             <div class="card">
                 <h3 class="card-title">导入数据</h3>
-                <p style="color: #888; margin-bottom: 15px; font-family: Arial, sans-serif;">
-                    粘贴之前导出的JSON数据恢复配置
-                </p>
                 <div class="form-group">
-                    <textarea id="importData" rows="10" placeholder="粘贴JSON数据..."></textarea>
+                    <textarea id="importData" rows="8" placeholder="粘贴 JSON..."></textarea>
                 </div>
-                <button class="btn" onclick="importAllData()">导入 JSON</button>
+                <button class="btn" onclick="importData()">导入</button>
             </div>
-            
             <div class="card">
-                <h3 class="card-title">重置所有数据</h3>
-                <p style="color: #888; margin-bottom: 15px; font-family: Arial, sans-serif;">
-                    清空所有数据，恢复默认设置
-                </p>
-                <button class="btn" onclick="resetAllData()" style="background: #8b0000;">重置数据</button>
+                <h3 class="card-title">重置数据</h3>
+                <button class="btn" onclick="resetData()" style="background: #8b0000;">重置</button>
             </div>
         </div>
     </div>
 
-    <!-- Modal -->
     <div class="modal-overlay" id="modal">
         <div class="modal">
             <h3 id="modalTitle">确认</h3>
-            <p id="modalMessage">确定要执行此操作吗？</p>
+            <p id="modalMessage">确定？</p>
             <div class="modal-actions">
                 <button class="btn btn-secondary" onclick="closeModal()">取消</button>
-                <button class="btn" id="modalConfirmBtn" onclick="confirmModal()">确定</button>
+                <button class="btn" onclick="confirmModal()">确定</button>
             </div>
         </div>
     </div>
@@ -1027,121 +564,72 @@
     <script src="config.js"></script>
     <script src="../js/data-loader.js"></script>
     <script>
-        // ============== 会话管理（30分钟无操作自动退出）=============
-        
+        // ========== 会话管理 ==========
         let activityTimer;
-        
-        function updateActivity() {
-            localStorage.setItem(ADMIN_CONFIG.storageKeys.lastActivity, Date.now().toString());
-        }
-        
+        let modalCallback = null;
+
         function checkSession() {
-            const session = localStorage.getItem(ADMIN_CONFIG.storageKeys.session);
+            const loggedIn = sessionStorage.getItem('lg_admin_logged_in');
+            const loginTime = sessionStorage.getItem('lg_admin_login_time');
             const lastActivity = localStorage.getItem(ADMIN_CONFIG.storageKeys.lastActivity);
             
-            if (!session || !lastActivity) {
+            if (!loggedIn || !loginTime) {
                 window.location.href = 'login.html';
                 return false;
             }
             
             const now = Date.now();
-            const lastTime = parseInt(lastActivity);
-            const timeout = ADMIN_CONFIG.auth.sessionTimeout;
+            const lastTime = parseInt(lastActivity || loginTime);
             
-            // 30分钟无操作才过期
-            if (now - lastTime > timeout) {
+            if (now - lastTime > ADMIN_CONFIG.auth.sessionTimeout) {
                 logout();
                 return false;
             }
-            
             return true;
         }
 
+        function updateActivity() {
+            localStorage.setItem(ADMIN_CONFIG.storageKeys.lastActivity, Date.now().toString());
+        }
+
         function logout() {
-            localStorage.removeItem(ADMIN_CONFIG.storageKeys.session);
+            sessionStorage.removeItem('lg_admin_logged_in');
+            sessionStorage.removeItem('lg_admin_login_time');
             localStorage.removeItem(ADMIN_CONFIG.storageKeys.lastActivity);
             window.location.href = 'login.html';
         }
 
-        // 监听用户活动
         function setupActivityTracking() {
-            const events = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'];
-            events.forEach(event => {
+            ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'].forEach(event => {
                 document.addEventListener(event, updateActivity, true);
             });
-            
-            // 每分钟检查一次会话
             setInterval(() => {
                 if (!checkSession()) {
-                    showAlert('登录已过期，请重新登录', 'error');
-                    setTimeout(() => {
-                        window.location.href = 'login.html';
-                    }, 2000);
+                    showAlert('登录已过期', 'error');
+                    setTimeout(() => window.location.href = 'login.html', 2000);
                 }
             }, 60000);
         }
 
-        // ============== 通用功能 ==============
-
+        // ========== 通用 ==========
         function showAlert(message, type = 'info') {
             const container = document.getElementById('alertContainer');
-            const alert = document.createElement('div');
-            alert.className = `alert alert-${type}`;
-            alert.textContent = message;
-            container.innerHTML = '';
-            container.appendChild(alert);
-            
-            setTimeout(() => {
-                alert.remove();
-            }, 5000);
+            container.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+            setTimeout(() => container.innerHTML = '', 5000);
         }
 
-        function showSection(sectionId) {
+        function showSection(id) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-            
-            document.getElementById(sectionId).classList.add('active');
+            document.getElementById(id).classList.add('active');
             event.target.classList.add('active');
-            
-            // 加载对应数据
-            if (sectionId === 'banners') loadBanners();
-            if (sectionId === 'events') loadEvents();
-            if (sectionId === 'partners') loadCollaborators();
-            if (sectionId === 'posters') loadPosters();
-            if (sectionId === 'footer') loadFooter();
+            if (id === 'banners') loadBanners();
+            if (id === 'events') loadEvents();
+            if (id === 'partners') loadCollaborators();
+            if (id === 'posters') loadPosters();
+            if (id === 'carousel') loadCarousel();
+            if (id === 'footer') loadFooter();
         }
-
-        function updateStats() {
-            const stats = dataLoader.getStats();
-            document.getElementById('statBanners').textContent = stats.banners;
-            document.getElementById('statEvents').textContent = stats.events;
-            document.getElementById('statCollabs').textContent = stats.collaborators;
-            
-            // 更新 Load More 状态（大于等于3个活动显示）
-            const shouldShowLoadMore = dataLoader.shouldShowLoadMore();
-            document.getElementById('statLoadMore').textContent = shouldShowLoadMore ? '显示' : '隐藏';
-            document.getElementById('statLoadMore').style.color = shouldShowLoadMore ? '#00ff00' : '#ff6666';
-            
-            // 更新同步状态
-            updateSyncStatus(stats.lastSync);
-        }
-
-        function updateSyncStatus(lastSync) {
-            const syncStatus = document.getElementById('syncStatus');
-            const syncText = document.getElementById('syncText');
-            
-            if (lastSync && lastSync !== '从未同步') {
-                syncStatus.classList.add('synced');
-                const date = new Date(lastSync);
-                syncText.textContent = `已同步 ${date.toLocaleDateString()}`;
-            } else {
-                syncText.textContent = '未同步';
-            }
-        }
-
-        // ============== Modal ==============
-
-        let modalCallback = null;
 
         function showModal(title, message, callback) {
             document.getElementById('modalTitle').textContent = title;
@@ -1156,89 +644,72 @@
         }
 
         function confirmModal() {
-            if (modalCallback) {
-                modalCallback();
-            }
+            if (modalCallback) modalCallback();
             closeModal();
         }
 
-        // ============== Banner 管理 ==============
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
 
+        function updateStats() {
+            const banners = dataLoader.getBanners().length;
+            const events = dataLoader.getEvents().length;
+            const carousel = dataLoader.getCarousel().length;
+            const loadMore = events >= ADMIN_CONFIG.events.minEventsForLoadMore ? '显示' : '隐藏';
+            
+            document.getElementById('statBanners').textContent = banners;
+            document.getElementById('statEvents').textContent = events;
+            document.getElementById('statCarousel').textContent = carousel;
+            document.getElementById('statLoadMore').textContent = loadMore;
+            document.getElementById('statLoadMore').style.color = loadMore === '显示' ? '#00ff00' : '#ff6666';
+        }
+
+        // ========== Banner ==========
         function loadBanners() {
             const list = document.getElementById('bannerList');
             const banners = dataLoader.getBanners();
-            
-            if (!banners || banners.length === 0) {
-                list.innerHTML = `
-                    <div class="empty-state">
-                        <h3>暂无 Banner</h3>
-                        <p>在上方表单添加第一个 Banner</p>
-                    </div>
-                `;
+            if (!banners.length) {
+                list.innerHTML = '<div class="empty-state"><h3>暂无 Banner</h3></div>';
                 return;
             }
-            
             banners.sort((a, b) => (a.order || 0) - (b.order || 0));
-            
-            list.innerHTML = banners.map((banner, index) => `
+            list.innerHTML = banners.map((b, i) => `
                 <div class="item-card">
                     <div class="item-info">
-                        <h4>
-                            ${escapeHtml(banner.title || '未命名')}
-                            <span class="status-badge ${banner.active !== false ? 'status-active' : 'status-inactive'}">
-                                ${banner.active !== false ? '启用' : '禁用'}
-                            </span>
-                        </h4>
-                        <p>排序: ${banner.order || '-'} | 按钮: ${escapeHtml(banner.button_text || '-')} | 链接: ${escapeHtml(banner.link || '不可点击')}</p>
-                        <p style="margin-top: 5px; color: #666;">图片: ${escapeHtml(banner.image || '无')}</p>
+                        <h4>${escapeHtml(b.title || '未命名')} <span class="status-badge ${b.active !== false ? 'status-active' : 'status-inactive'}">${b.active !== false ? '启用' : '禁用'}</span></h4>
+                        <p>排序: ${b.order || '-'} | 按钮: ${escapeHtml(b.button_text || '-')} | 链接: ${escapeHtml(b.link || '无')}</p>
                     </div>
                     <div class="item-actions">
-                        <button class="btn-small btn-edit" onclick="editBanner(${index})">编辑</button>
-                        <button class="btn-small btn-delete" onclick="deleteBanner(${index})">删除</button>
+                        <button class="btn-small btn-edit" onclick="editBanner(${i})">编辑</button>
+                        <button class="btn-small btn-delete" onclick="deleteBanner(${i})">删除</button>
                     </div>
                 </div>
             `).join('');
-            
             updateStats();
-        }
-
-        function previewBanner() {
-            const img = document.getElementById('bannerImage').value.trim();
-            const preview = document.getElementById('bannerPreview');
-            const previewImg = document.getElementById('bannerPreviewImg');
-            
-            if (img) {
-                previewImg.src = img;
-                preview.classList.add('show');
-                previewImg.onerror = () => {
-                    previewImg.alt = '图片加载失败';
-                    showAlert('图片加载失败，请检查地址', 'error');
-                };
-            } else {
-                showAlert('请先输入图片地址', 'error');
-            }
         }
 
         function saveBanner() {
             const editIndex = document.getElementById('bannerEditIndex').value;
-            const title = document.getElementById('bannerTitle').value.trim();
-            const image = document.getElementById('bannerImage').value.trim();
-            const buttonText = document.getElementById('bannerButton').value.trim();
-            const link = document.getElementById('bannerLink').value.trim();
-            const order = parseInt(document.getElementById('bannerOrder').value) || 1;
-            const active = document.getElementById('bannerActive').checked;
-            
+            const banner = {
+                title: document.getElementById('bannerTitle').value.trim(),
+                image: document.getElementById('bannerImage').value.trim(),
+                button_text: document.getElementById('bannerButton').value.trim(),
+                link: document.getElementById('bannerLink').value.trim(),
+                order: parseInt(document.getElementById('bannerOrder').value) || 1,
+                active: document.getElementById('bannerActive').checked
+            };
             let banners = dataLoader.getBanners();
-            const bannerData = { title, image, button_text: buttonText, link, order, active };
-            
             if (editIndex !== '') {
-                banners[parseInt(editIndex)] = bannerData;
-                showAlert('Banner 更新成功！', 'success');
+                banners[parseInt(editIndex)] = banner;
+                showAlert('更新成功', 'success');
             } else {
-                banners.push(bannerData);
-                showAlert('Banner 添加成功！', 'success');
+                banners.push(banner);
+                showAlert('添加成功', 'success');
             }
-            
             dataLoader.saveBanners(banners);
             resetBannerForm();
             loadBanners();
@@ -1247,222 +718,183 @@
         function resetBannerForm() {
             document.getElementById('bannerForm').reset();
             document.getElementById('bannerEditIndex').value = '';
-            document.getElementById('bannerPreview').classList.remove('show');
         }
 
         function editBanner(index) {
             const banners = dataLoader.getBanners();
-            if (index >= banners.length) return;
-            
-            const banner = banners[index];
+            const b = banners[index];
             document.getElementById('bannerEditIndex').value = index;
-            document.getElementById('bannerTitle').value = banner.title || '';
-            document.getElementById('bannerImage').value = banner.image || '';
-            document.getElementById('bannerButton').value = banner.button_text || '';
-            document.getElementById('bannerLink').value = banner.link || '';
-            document.getElementById('bannerOrder').value = banner.order || 1;
-            document.getElementById('bannerActive').checked = banner.active !== false;
-            
-            document.getElementById('bannerTitle').scrollIntoView({ behavior: 'smooth' });
-            showAlert('已加载到编辑区，修改后点击保存', 'info');
+            document.getElementById('bannerTitle').value = b.title || '';
+            document.getElementById('bannerImage').value = b.image || '';
+            document.getElementById('bannerButton').value = b.button_text || '';
+            document.getElementById('bannerLink').value = b.link || '';
+            document.getElementById('bannerOrder').value = b.order || 1;
+            document.getElementById('bannerActive').checked = b.active !== false;
         }
 
         function deleteBanner(index) {
-            showModal('确认删除', '确定要删除这个 Banner 吗？', () => {
+            showModal('确认删除', '确定删除此 Banner？', () => {
                 let banners = dataLoader.getBanners();
                 banners.splice(index, 1);
                 dataLoader.saveBanners(banners);
-                showAlert('删除成功！', 'success');
                 loadBanners();
             });
         }
 
-        // ============== 海报管理 ==============
-
+        // ========== Posters ==========
         function loadPosters() {
             const page = document.getElementById('posterPage').value;
             const container = document.getElementById('posterSections');
             const posters = dataLoader.getPosters(page);
-            const isEventsPage = page === 'events';
-            
-            // 更新提示文字
-            document.getElementById('posterHint').textContent = isEventsPage ? 
-                '海报2可设置轮播（活动页专用）' : '海报2轮播仅在活动页可用';
-            
-            container.innerHTML = [0, 1, 2].map((i) => {
-                const poster = posters[i] || {};
-                const isPoster2 = i === 1;
-                const canCarousel = isEventsPage && isPoster2;
-                
+            container.innerHTML = [0, 1, 2].map(i => {
+                const p = posters[i] || {};
                 return `
                     <div class="card">
                         <h3 class="card-title">海报 ${i + 1}</h3>
                         <div class="form-group">
-                            <label>标题（可选）</label>
-                            <input type="text" id="poster${i}_title" value="${escapeHtml(poster.title || '')}" placeholder="海报标题">
+                            <label>标题</label>
+                            <input type="text" id="poster${i}_title" value="${escapeHtml(p.title || '')}">
                         </div>
                         <div class="form-group">
-                            <label>图片地址（可选）</label>
-                            <input type="text" id="poster${i}_image" value="${escapeHtml(poster.image || '')}" placeholder="./image/poster.jpg 或 https://...">
+                            <label>图片</label>
+                            <input type="text" id="poster${i}_image" value="${escapeHtml(p.image || '')}">
                         </div>
                         <div class="grid-2">
                             <div class="form-group">
-                                <label>链接文字（可选）</label>
-                                <input type="text" id="poster${i}_linkText" value="${escapeHtml(poster.link_text || '')}" placeholder="View Details →">
+                                <label>链接文字</label>
+                                <input type="text" id="poster${i}_linkText" value="${escapeHtml(p.link_text || '')}">
                             </div>
                             <div class="form-group">
-                                <label>链接地址（可选）</label>
-                                <input type="text" id="poster${i}_link" value="${escapeHtml(poster.link || '')}" placeholder="./events.html 或 https://...">
+                                <label>链接</label>
+                                <input type="text" id="poster${i}_link" value="${escapeHtml(p.link || '')}">
                             </div>
                         </div>
-                        ${canCarousel ? `
-                        <div class="checkbox-group">
-                            <input type="checkbox" id="poster${i}_carousel" ${poster.carousel ? 'checked' : ''} onchange="toggleCarouselSettings(${i})">
-                            <label for="poster${i}_carousel">启用轮播（海报2专用）</label>
-                        </div>
-                        <div id="carouselSettings${i}" class="carousel-settings" style="${poster.carousel ? '' : 'display: none;'}">
-                            <h4>轮播设置</h4>
-                            <div class="grid-2">
-                                <div class="form-group">
-                                    <label>轮播图1标题</label>
-                                    <input type="text" id="poster${i}_carousel1_title" value="${escapeHtml(poster.carousel_items?.[0]?.title || '')}" placeholder="标题1">
-                                </div>
-                                <div class="form-group">
-                                    <label>轮播图1图片</label>
-                                    <input type="text" id="poster${i}_carousel1_image" value="${escapeHtml(poster.carousel_items?.[0]?.image || '')}" placeholder="./image/carousel1.jpg">
-                                </div>
-                            </div>
-                            <div class="grid-2">
-                                <div class="form-group">
-                                    <label>轮播图1链接文字</label>
-                                    <input type="text" id="poster${i}_carousel1_linkText" value="${escapeHtml(poster.carousel_items?.[0]?.link_text || '')}" placeholder="View →">
-                                </div>
-                                <div class="form-group">
-                                    <label>轮播图1链接</label>
-                                    <input type="text" id="poster${i}_carousel1_link" value="${escapeHtml(poster.carousel_items?.[0]?.link || '')}" placeholder="./events.html">
-                                </div>
-                            </div>
-                            <hr style="border-color: #333; margin: 15px 0;">
-                            <div class="grid-2">
-                                <div class="form-group">
-                                    <label>轮播图2标题</label>
-                                    <input type="text" id="poster${i}_carousel2_title" value="${escapeHtml(poster.carousel_items?.[1]?.title || '')}" placeholder="标题2">
-                                </div>
-                                <div class="form-group">
-                                    <label>轮播图2图片</label>
-                                    <input type="text" id="poster${i}_carousel2_image" value="${escapeHtml(poster.carousel_items?.[1]?.image || '')}" placeholder="./image/carousel2.jpg">
-                                </div>
-                            </div>
-                            <div class="grid-2">
-                                <div class="form-group">
-                                    <label>轮播图2链接文字</label>
-                                    <input type="text" id="poster${i}_carousel2_linkText" value="${escapeHtml(poster.carousel_items?.[1]?.link_text || '')}" placeholder="View →">
-                                </div>
-                                <div class="form-group">
-                                    <label>轮播图2链接</label>
-                                    <input type="text" id="poster${i}_carousel2_link" value="${escapeHtml(poster.carousel_items?.[1]?.link || '')}" placeholder="./events.html">
-                                </div>
-                            </div>
-                        </div>
-                        ` : ''}
                     </div>
                 `;
             }).join('');
         }
 
-        function toggleCarouselSettings(index) {
-            const checkbox = document.getElementById(`poster${index}_carousel`);
-            const settings = document.getElementById(`carouselSettings${index}`);
-            if (settings) {
-                settings.style.display = checkbox.checked ? 'block' : 'none';
-            }
-        }
-
         function savePosters() {
             const page = document.getElementById('posterPage').value;
-            const isEventsPage = page === 'events';
-            
-            const posters = [0, 1, 2].map(i => {
-                const poster = {
-                    title: document.getElementById(`poster${i}_title`).value,
-                    image: document.getElementById(`poster${i}_image`).value,
-                    link_text: document.getElementById(`poster${i}_linkText`).value,
-                    link: document.getElementById(`poster${i}_link`).value,
-                    carousel: false
-                };
-                
-                // 海报2在活动页可设置轮播
-                if (isEventsPage && i === 1) {
-                    const carouselCheckbox = document.getElementById(`poster${i}_carousel`);
-                    poster.carousel = carouselCheckbox ? carouselCheckbox.checked : false;
-                    
-                    if (poster.carousel) {
-                        poster.carousel_items = [
-                            {
-                                title: document.getElementById(`poster${i}_carousel1_title`)?.value || '',
-                                image: document.getElementById(`poster${i}_carousel1_image`)?.value || '',
-                                link_text: document.getElementById(`poster${i}_carousel1_linkText`)?.value || '',
-                                link: document.getElementById(`poster${i}_carousel1_link`)?.value || ''
-                            },
-                            {
-                                title: document.getElementById(`poster${i}_carousel2_title`)?.value || '',
-                                image: document.getElementById(`poster${i}_carousel2_image`)?.value || '',
-                                link_text: document.getElementById(`poster${i}_carousel2_linkText`)?.value || '',
-                                link: document.getElementById(`poster${i}_carousel2_link`)?.value || ''
-                            }
-                        ];
-                    }
-                }
-                
-                return poster;
-            });
-            
+            const posters = [0, 1, 2].map(i => ({
+                title: document.getElementById(`poster${i}_title`).value,
+                image: document.getElementById(`poster${i}_image`).value,
+                link_text: document.getElementById(`poster${i}_linkText`).value,
+                link: document.getElementById(`poster${i}_link`).value
+            }));
             dataLoader.savePosters(page, posters);
-            showAlert('海报保存成功！', 'success');
+            showAlert('保存成功', 'success');
         }
 
-        // ============== 活动管理 ==============
-
-        function loadEvents() {
-            const list = document.getElementById('eventList');
-            const events = dataLoader.getEvents();
+        // ========== Carousel (Events Page) ==========
+        function loadCarousel() {
+            const list = document.getElementById('carouselList');
+            const items = dataLoader.getCarousel();
+            const btn = document.getElementById('addCarouselBtn');
             
-            if (!events || events.length === 0) {
-                list.innerHTML = `
-                    <div class="empty-state">
-                        <h3>暂无活动</h3>
-                        <p>在上方表单添加第一个活动</p>
-                    </div>
-                `;
+            btn.style.display = items.length >= ADMIN_CONFIG.events.maxCarouselItems ? 'none' : 'inline-block';
+            
+            if (!items.length) {
+                list.innerHTML = '<p style="color: #666;">暂无轮播图，请添加</p>';
                 return;
             }
             
-            list.innerHTML = events.map((evt, index) => `
-                <div class="item-card">
-                    <div class="item-info">
-                        <h4>
-                            ${escapeHtml(evt.title || '未命名')}
-                            ${evt.status ? `<span class="status-badge status-${evt.status}">${evt.status.toUpperCase()}</span>` : ''}
-                        </h4>
-                        <p>${escapeHtml(evt.date || '-')} | ${escapeHtml(evt.location || '-')} | ${escapeHtml(evt.time || '-')} | ${escapeHtml(evt.ticket || '-')}</p>
+            list.innerHTML = items.map((item, i) => `
+                <div class="carousel-item" id="carouselItem${i}">
+                    <h4>轮播图 ${i + 1} ${items.length > 1 ? `<button class="btn-small btn-delete" onclick="deleteCarouselItem(${i})" style="float: right;">删除</button>` : ''}</h4>
+                    <div class="form-group">
+                        <label>标题</label>
+                        <input type="text" id="carousel${i}_title" value="${escapeHtml(item.title || '')}">
                     </div>
-                    <div class="item-actions">
-                        <button class="btn-small btn-edit" onclick="editEvent(${index})">编辑</button>
-                        <button class="btn-small btn-delete" onclick="deleteEvent(${index})">删除</button>
+                    <div class="form-group">
+                        <label>图片</label>
+                        <input type="text" id="carousel${i}_image" value="${escapeHtml(item.image || '')}">
+                    </div>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>链接文字</label>
+                            <input type="text" id="carousel${i}_linkText" value="${escapeHtml(item.link_text || '')}">
+                        </div>
+                        <div class="form-group">
+                            <label>链接</label>
+                            <input type="text" id="carousel${i}_link" value="${escapeHtml(item.link || '')}">
+                        </div>
                     </div>
                 </div>
             `).join('');
+            updateStats();
+        }
+
+        function addCarouselItem() {
+            const items = dataLoader.getCarousel();
+            if (items.length >= ADMIN_CONFIG.events.maxCarouselItems) {
+                showAlert('最多5个轮播图', 'error');
+                return;
+            }
+            items.push({ title: '', image: '', link_text: '', link: '' });
+            dataLoader.saveCarousel(items);
+            loadCarousel();
+        }
+
+        function deleteCarouselItem(index) {
+            const items = dataLoader.getCarousel();
+            if (items.length <= ADMIN_CONFIG.events.minCarouselItems) {
+                showAlert('至少保留1个轮播图', 'error');
+                return;
+            }
+            items.splice(index, 1);
+            dataLoader.saveCarousel(items);
+            loadCarousel();
+        }
+
+        function saveCarousel() {
+            const items = [];
+            const container = document.getElementById('carouselList');
+            const itemDivs = container.querySelectorAll('.carousel-item');
             
+            itemDivs.forEach((div, i) => {
+                items.push({
+                    title: document.getElementById(`carousel${i}_title`).value,
+                    image: document.getElementById(`carousel${i}_image`).value,
+                    link_text: document.getElementById(`carousel${i}_linkText`).value,
+                    link: document.getElementById(`carousel${i}_link`).value
+                });
+            });
+            
+            dataLoader.saveCarousel(items);
+            showAlert('保存成功', 'success');
+        }
+
+        // ========== Events ==========
+        function loadEvents() {
+            const list = document.getElementById('eventList');
+            const events = dataLoader.getEvents();
+            if (!events.length) {
+                list.innerHTML = '<div class="empty-state"><h3>暂无活动</h3></div>';
+                return;
+            }
+            list.innerHTML = events.map((e, i) => `
+                <div class="item-card">
+                    <div class="item-info">
+                        <h4>${escapeHtml(e.title || '未命名')} ${e.status ? `<span class="status-badge status-${e.status}">${e.status.toUpperCase()}</span>` : ''}</h4>
+                        <p>${e.date || '-'} ${e.time || ''} | ${e.location || '-'} | ${e.ticket || '-'}</p>
+                    </div>
+                    <div class="item-actions">
+                        <button class="btn-small btn-edit" onclick="editEvent(${i})">编辑</button>
+                        <button class="btn-small btn-delete" onclick="deleteEvent(${i})">删除</button>
+                    </div>
+                </div>
+            `).join('');
             updateStats();
         }
 
         function saveEvent() {
             const editIndex = document.getElementById('eventEditIndex').value;
-            const eventData = {
+            const event = {
                 title: document.getElementById('eventTitle').value.trim(),
-                date: document.getElementById('eventDate').value.trim(),
+                date: document.getElementById('eventDate').value,
+                time: document.getElementById('eventTime').value,
                 location: document.getElementById('eventLocation').value.trim(),
-                time: document.getElementById('eventTime').value.trim(),
                 image: document.getElementById('eventImage').value.trim(),
                 ticket: document.getElementById('eventTicket').value.trim(),
                 status: document.getElementById('eventStatus').value,
@@ -1470,17 +902,14 @@
                 button_text: document.getElementById('eventButton').value.trim(),
                 link: document.getElementById('eventLink').value.trim()
             };
-            
             let events = dataLoader.getEvents();
-            
             if (editIndex !== '') {
-                events[parseInt(editIndex)] = eventData;
-                showAlert('活动更新成功！', 'success');
+                events[parseInt(editIndex)] = event;
+                showAlert('更新成功', 'success');
             } else {
-                events.push(eventData);
-                showAlert('活动添加成功！', 'success');
+                events.push(event);
+                showAlert('添加成功', 'success');
             }
-            
             dataLoader.saveEvents(events);
             resetEventForm();
             loadEvents();
@@ -1493,71 +922,53 @@
 
         function editEvent(index) {
             const events = dataLoader.getEvents();
-            if (index >= events.length) return;
-            
-            const evt = events[index];
+            const e = events[index];
             document.getElementById('eventEditIndex').value = index;
-            document.getElementById('eventTitle').value = evt.title || '';
-            document.getElementById('eventDate').value = evt.date || '';
-            document.getElementById('eventLocation').value = evt.location || '';
-            document.getElementById('eventTime').value = evt.time || '';
-            document.getElementById('eventImage').value = evt.image || '';
-            document.getElementById('eventTicket').value = evt.ticket || '';
-            document.getElementById('eventStatus').value = evt.status || '';
-            document.getElementById('eventDesc').value = evt.description || '';
-            document.getElementById('eventButton').value = evt.button_text || '';
-            document.getElementById('eventLink').value = evt.link || '';
-            
-            document.getElementById('eventTitle').scrollIntoView({ behavior: 'smooth' });
-            showAlert('已加载到编辑区', 'info');
+            document.getElementById('eventTitle').value = e.title || '';
+            document.getElementById('eventDate').value = e.date || '';
+            document.getElementById('eventTime').value = e.time || '';
+            document.getElementById('eventLocation').value = e.location || '';
+            document.getElementById('eventImage').value = e.image || '';
+            document.getElementById('eventTicket').value = e.ticket || '';
+            document.getElementById('eventStatus').value = e.status || '';
+            document.getElementById('eventDesc').value = e.description || '';
+            document.getElementById('eventButton').value = e.button_text || '';
+            document.getElementById('eventLink').value = e.link || '';
         }
 
         function deleteEvent(index) {
-            showModal('确认删除', '确定删除此活动吗？', () => {
+            showModal('确认删除', '确定删除此活动？', () => {
                 let events = dataLoader.getEvents();
                 events.splice(index, 1);
                 dataLoader.saveEvents(events);
-                showAlert('删除成功', 'success');
                 loadEvents();
             });
         }
 
-        // ============== 合作伙伴管理 ==============
-
+        // ========== Partners ==========
         function loadCollaborators() {
             const list = document.getElementById('collabList');
-            const count = document.getElementById('collabCount');
             const collabs = dataLoader.getCollaborators();
-            
-            count.textContent = collabs.length;
-            
-            if (!collabs || collabs.length === 0) {
-                list.innerHTML = '<p style="color: #555; font-family: Arial, sans-serif;">暂无 Logo</p>';
+            if (!collabs.length) {
+                list.innerHTML = '<p style="color: #666;">暂无 Logo</p>';
                 return;
             }
-            
-            list.innerHTML = collabs.map((logo, index) => `
-                <div class="collab-item">
-                    <img src="${escapeHtml(logo)}" onerror="this.style.display='none'" alt="Logo ${index + 1}">
-                    <button class="remove-btn" onclick="deleteCollaborator(${index})">×</button>
+            list.innerHTML = collabs.map((logo, i) => `
+                <div style="position: relative;">
+                    <img src="${escapeHtml(logo)}" style="width: 100px; height: 60px; object-fit: contain; background: #1a1a1a; padding: 10px; border-radius: 4px; border: 1px solid #333;" onerror="this.style.display='none'">
+                    <button onclick="deleteCollaborator(${i})" style="position: absolute; top: -8px; right: -8px; background: #8b0000; color: white; border: none; border-radius: 50%; width: 22px; height: 22px; cursor: pointer;">×</button>
                 </div>
             `).join('');
-            
             updateStats();
         }
 
         function addCollaborator() {
             const logo = document.getElementById('collabLogo').value.trim();
-            if (!logo) {
-                showAlert('请输入 Logo 地址', 'error');
-                return;
-            }
-            
+            if (!logo) { showAlert('请输入 Logo 地址', 'error'); return; }
             let collabs = dataLoader.getCollaborators();
             collabs.push(logo);
             dataLoader.saveCollaborators(collabs);
             document.getElementById('collabLogo').value = '';
-            showAlert('Logo 添加成功', 'success');
             loadCollaborators();
         }
 
@@ -1568,12 +979,10 @@
             loadCollaborators();
         }
 
-        // ============== 底部管理 ==============
-
+        // ========== Footer ==========
         function loadFooter() {
             const site = document.getElementById('footerSite').value;
             const data = dataLoader.getFooter(site);
-            
             document.getElementById('footerCopyright').value = data.copyright || '';
             document.getElementById('footerSocial').value = JSON.stringify(data.social || [], null, 2);
             document.getElementById('footerProducer').value = data.producer || '';
@@ -1581,59 +990,51 @@
 
         function saveFooter() {
             const site = document.getElementById('footerSite').value;
-            
             try {
-                const social = JSON.parse(document.getElementById('footerSocial').value);
                 const data = {
                     copyright: document.getElementById('footerCopyright').value,
-                    social: social,
+                    social: JSON.parse(document.getElementById('footerSocial').value),
                     producer: document.getElementById('footerProducer').value
                 };
                 dataLoader.saveFooter(site, data);
-                showAlert('底部设置保存成功', 'success');
-            } catch (error) {
-                showAlert('保存失败: JSON 格式错误', 'error');
+                showAlert('保存成功', 'success');
+            } catch (e) {
+                showAlert('JSON 格式错误', 'error');
             }
         }
 
-        // ============== 数据导入/导出 ==============
-
+        // ========== Data Sync ==========
         async function syncFromGitHub() {
-            const syncStatus = document.getElementById('syncStatus');
-            const syncText = document.getElementById('syncText');
-            const btnText = document.getElementById('syncBtnText');
-            
-            syncStatus.classList.add('syncing');
-            btnText.textContent = '同步中...';
+            const status = document.getElementById('syncStatus');
+            status.classList.add('syncing');
+            document.getElementById('syncText').textContent = '同步中...';
             
             try {
-                const results = await dataLoader.loadAllFromGitHub();
-                
-                if (results.failed.length === 0) {
-                    showAlert('数据同步成功！', 'success');
+                const result = await dataLoader.syncFromGitHub();
+                if (result.success) {
+                    showAlert('同步成功', 'success');
+                    // 刷新所有数据
+                    loadBanners();
+                    loadEvents();
+                    loadPosters();
+                    loadCarousel();
+                    loadCollaborators();
+                    loadFooter();
+                    updateStats();
                 } else {
-                    showAlert(`同步完成: ${results.success.length} 成功, ${results.failed.length} 失败`, 'info');
+                    showAlert('同步失败: ' + result.error, 'error');
                 }
-                
-                // 刷新所有数据
-                updateStats();
-                loadBanners();
-                loadEvents();
-                loadCollaborators();
-                loadPosters();
-                loadFooter();
-                
-            } catch (error) {
-                showAlert('同步失败: ' + error.message, 'error');
+            } catch (e) {
+                showAlert('同步错误: ' + e.message, 'error');
             } finally {
-                syncStatus.classList.remove('syncing');
-                btnText.textContent = '立即同步';
+                status.classList.remove('syncing');
+                document.getElementById('syncText').textContent = '已同步';
+                status.classList.add('synced');
             }
         }
 
-        function exportAllData() {
+        function exportData() {
             const data = dataLoader.exportAll();
-            
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -1641,71 +1042,37 @@
             a.download = `livegigs-backup-${new Date().toISOString().split('T')[0]}.json`;
             a.click();
             URL.revokeObjectURL(url);
-            
-            showAlert('数据导出成功！', 'success');
+            showAlert('导出成功', 'success');
         }
 
-        function importAllData() {
+        function importData() {
             const json = document.getElementById('importData').value.trim();
-            if (!json) {
-                showAlert('请粘贴JSON数据', 'error');
-                return;
-            }
-            
+            if (!json) { showAlert('请输入 JSON', 'error'); return; }
             try {
                 const data = JSON.parse(json);
-                if (dataLoader.importAll(data)) {
-                    showAlert('数据导入成功！', 'success');
-                    updateStats();
-                    loadBanners();
-                    loadEvents();
-                    loadCollaborators();
-                    loadPosters();
-                    loadFooter();
-                    document.getElementById('importData').value = '';
-                } else {
-                    showAlert('导入失败', 'error');
-                }
-            } catch (error) {
-                showAlert('导入失败: ' + error.message, 'error');
+                dataLoader.importAll(data);
+                showAlert('导入成功', 'success');
+                loadBanners(); loadEvents(); loadPosters(); loadCarousel(); loadCollaborators(); loadFooter();
+                updateStats();
+            } catch (e) {
+                showAlert('JSON 格式错误', 'error');
             }
         }
 
-        function resetAllData() {
-            showModal('确认重置', '确定要清空所有数据吗？此操作不可恢复！', () => {
+        function resetData() {
+            showModal('确认重置', '确定重置所有数据？', () => {
                 dataLoader.resetAll();
-                showAlert('数据已重置', 'success');
+                showAlert('已重置', 'success');
+                loadBanners(); loadEvents(); loadPosters(); loadCarousel(); loadCollaborators(); loadFooter();
                 updateStats();
-                loadBanners();
-                loadEvents();
-                loadCollaborators();
-                loadPosters();
-                loadFooter();
             });
         }
 
-        // ============== 工具函数 ==============
-
-        function escapeHtml(text) {
-            if (!text) return '';
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
-        // ============== 页面初始化 ==============
-
+        // ========== Init ==========
         document.addEventListener('DOMContentLoaded', function() {
-            // 检查会话
             if (!checkSession()) return;
-            
-            // 设置活动追踪
             setupActivityTracking();
-            
-            // 初始化数据加载器
             initDataLoader();
-            
-            // 加载初始数据
             loadBanners();
             updateStats();
         });

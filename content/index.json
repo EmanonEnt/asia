@@ -1,6 +1,5 @@
 {
   "page": "index",
-  "name": "首页",
   "lastUpdated": "2026-02-12T00:00:00.000Z",
   "banners": [
     {
@@ -21,52 +20,17 @@
     }
   ],
   "posters": [
-    {
-      "title": "Event 1",
-      "image": "./image/1-b-2.jpg",
-      "link_text": "View Details →",
-      "link": "./events.html",
-      "carousel": false
-    },
-    {
-      "title": "Event 2",
-      "image": "./image/1-b-3.jpg",
-      "link_text": "View Details →",
-      "link": "./events.html",
-      "carousel": false
-    },
-    {
-      "title": "Event 3",
-      "image": "./image/livegigscn1.png",
-      "link_text": "View Details →",
-      "link": "./events.html",
-      "carousel": false
-    }
+    { "title": "Event 1", "image": "./image/1-b-2.jpg", "link_text": "View Details →", "link": "./events.html" },
+    { "title": "Event 2", "image": "./image/1-b-3.jpg", "link_text": "View Details →", "link": "./events.html" },
+    { "title": "Event 3", "image": "./image/livegigscn1.png", "link_text": "View Details →", "link": "./events.html" }
   ],
-  "collaborators": [],
   "footer": {
     "copyright": "© 2026 LIVEGIGS ASIA. ALL RIGHTS RESERVED.",
     "social": [
-      {
-        "name": "Facebook",
-        "url": "https://facebook.com/livegigsasia",
-        "icon": "facebook"
-      },
-      {
-        "name": "Instagram",
-        "url": "https://instagram.com/livegigsasia",
-        "icon": "instagram"
-      },
-      {
-        "name": "YouTube",
-        "url": "https://youtube.com/livegigsasia",
-        "icon": "youtube"
-      },
-      {
-        "name": "X",
-        "url": "https://x.com/livegigsasia",
-        "icon": "x"
-      }
+      { "name": "Facebook", "url": "https://facebook.com/livegigsasia", "icon": "facebook" },
+      { "name": "Instagram", "url": "https://instagram.com/livegigsasia", "icon": "instagram" },
+      { "name": "YouTube", "url": "https://youtube.com/livegigsasia", "icon": "youtube" },
+      { "name": "X", "url": "https://x.com/livegigsasia", "icon": "x" }
     ],
     "producer": "./image/emanonent-logo.png"
   }
