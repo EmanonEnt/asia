@@ -1,24 +1,24 @@
 {
-  "banners": [
-    {
-      "title": "THE NONAME ANTI-IPA",
-      "image": "./image/thenonameanti-.jpg",
-      "button_text": "無名逆襲社交 IPA",
-      "link": "#",
-      "order": 1,
-      "active": true
-    },
-    {
-      "title": "朋克心音樂節 2026",
-      "image": "./image/punkheartbanner.jpg",
-      "button_text": "PUNK HEART FESTIVAL",
-      "link": "#",
-      "order": 2,
-      "active": true
-    }
-  ],
-  "posters": {
-    "index": [
+  "index": {
+    "banners": [
+      {
+        "title": "THE NONAME ANTI-IPA",
+        "image": "./image/thenonameanti-.jpg",
+        "button_text": "無名逆襲社交 IPA",
+        "link": "#",
+        "order": 1,
+        "active": true
+      },
+      {
+        "title": "朋克心音樂節 2026",
+        "image": "./image/punkheartbanner.jpg",
+        "button_text": "PUNK HEART FESTIVAL",
+        "link": "#",
+        "order": 2,
+        "active": true
+      }
+    ],
+    "posters": [
       {
         "title": "LiveGigs CN",
         "image": "./image/livegigscn1.png",
@@ -39,14 +39,37 @@
       }
     ]
   },
+  "cn": {
+    "banners": [],
+    "posters": []
+  },
+  "events": {
+    "carousel": [],
+    "managed": []
+  },
+  "partners": {
+    "banners": [],
+    "collaborators": []
+  },
   "footer": {
-    "copyright": "Copyright © 2001-2026 EMANON ENT. - All Rights Reserved.",
-    "social": [
-      {"name": "Facebook", "url": "https://facebook.com"},
-      {"name": "Instagram", "url": "https://instagram.com"},
-      {"name": "YouTube", "url": "https://youtube.com"},
-      {"name": "X", "url": "https://x.com"}
-    ],
-    "producer": "./image/emanonent-logo.png"
-  }
+    "global": {
+      "copyright": "Copyright © 2001-2026 EMANON ENT. - All Rights Reserved.",
+      "social": [
+        {"name": "Facebook", "url": "https://facebook.com/livegigsasia"},
+        {"name": "Instagram", "url": "https://instagram.com/livegigsasia"},
+        {"name": "YouTube", "url": "https://youtube.com/livegigsasia"},
+        {"name": "X", "url": "https://x.com/livegigsasia"}
+      ],
+      "producer": "./image/emanonent-logo.png",
+      "email": "LiveGigsCn@Hotmail.Com",
+      "phone": "+852-456-7890",
+      "address": "#303 TERRY FRANCINE STREET,<br>HONGKONG, CN 999077"
+    },
+    "cn": {
+      "copyright": "Copyright © 2001-2026 EMANON ENT. - All Rights Reserved.",
+      "social": [],
+      "producer": "./image/emanonent-logo.png"
+    }
+  },
+  "lastUpdated": "2026-02-11"
 }
