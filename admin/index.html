@@ -5,141 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LiveGigs Asia - 后台管理</title>
     <link rel="icon" type="image/png" href="../image/webtop.png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-            background: #050505; color: #c0c0c0; min-height: 100vh;
-        }
-        .login-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, #050505 0%, #1a0000 100%);
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 10000;
-        }
-        .login-box {
-            background: rgba(139, 0, 0, 0.1); border: 2px solid #8b0000;
-            padding: 40px; border-radius: 10px; text-align: center; min-width: 350px;
-        }
+        body { font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; background: #050505; color: #c0c0c0; min-height: 100vh; }
+        .login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #050505 0%, #1a0000 100%); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10000; }
+        .login-box { background: rgba(139, 0, 0, 0.1); border: 2px solid #8b0000; padding: 40px; border-radius: 10px; text-align: center; min-width: 350px; }
         .login-box h1 { color: #8b0000; font-size: 32px; margin-bottom: 10px; letter-spacing: 2px; }
         .login-box p { color: #c0c0c0; margin-bottom: 30px; font-size: 14px; }
-        .login-box input {
-            width: 100%; padding: 12px; margin-bottom: 15px;
-            background: rgba(192, 192, 192, 0.1); border: 1px solid #c0c0c0;
-            color: #c0c0c0; font-family: inherit; font-size: 16px; border-radius: 5px;
-        }
+        .login-box input { width: 100%; padding: 12px; margin-bottom: 15px; background: rgba(192, 192, 192, 0.1); border: 1px solid #c0c0c0; color: #c0c0c0; font-family: inherit; font-size: 16px; border-radius: 5px; }
         .login-box input:focus { outline: none; border-color: #8b0000; }
-        .login-box button {
-            width: 100%; padding: 12px; background: #8b0000; color: white;
-            border: none; font-family: inherit; font-size: 16px; cursor: pointer;
-            border-radius: 5px; transition: all 0.3s;
-        }
+        .login-box button { width: 100%; padding: 12px; background: #8b0000; color: white; border: none; font-family: inherit; font-size: 16px; cursor: pointer; border-radius: 5px; transition: all 0.3s; }
         .login-box button:hover { background: #a00000; transform: translateY(-2px); }
-
         .admin-container { display: none; max-width: 1400px; margin: 0 auto; padding: 20px; }
-        .admin-header {
-            background: rgba(0, 0, 0, 0.8); border-bottom: 3px solid #8b0000;
-            padding: 20px; margin-bottom: 30px;
-            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;
-        }
+        .admin-header { background: rgba(0, 0, 0, 0.8); border-bottom: 3px solid #8b0000; padding: 20px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
         .admin-header h1 { color: #8b0000; font-size: 28px; letter-spacing: 2px; }
-
-        .btn {
-            padding: 10px 20px; background: #8b0000; color: white;
-            border: none; font-family: inherit; cursor: pointer;
-            border-radius: 5px; transition: all 0.3s;
-        }
+        .btn { padding: 10px 20px; background: #8b0000; color: white; border: none; font-family: inherit; cursor: pointer; border-radius: 5px; transition: all 0.3s; }
         .btn:hover { background: #a00000; transform: translateY(-2px); }
         .btn-secondary { background: #333; }
-        .btn-secondary:hover { background: #444; }
         .btn-success { background: #28a745; }
-        .btn-success:hover { background: #218838; }
         .btn-small { padding: 5px 12px; font-size: 12px; }
         .btn-danger { background: #dc3545; }
-        .btn-danger:hover { background: #c82333; }
-
-        .nav-tabs {
-            display: flex; gap: 10px; margin-bottom: 30px;
-            flex-wrap: wrap; border-bottom: 2px solid #333; padding-bottom: 10px;
-        }
-        .nav-tab {
-            padding: 12px 24px; background: transparent; border: 2px solid #333;
-            color: #c0c0c0; font-family: inherit; cursor: pointer;
-            transition: all 0.3s; border-radius: 5px 5px 0 0;
-        }
+        .nav-tabs { display: flex; gap: 10px; margin-bottom: 30px; flex-wrap: wrap; border-bottom: 2px solid #333; padding-bottom: 10px; }
+        .nav-tab { padding: 12px 24px; background: transparent; border: 2px solid #333; color: #c0c0c0; font-family: inherit; cursor: pointer; transition: all 0.3s; border-radius: 5px 5px 0 0; }
         .nav-tab:hover, .nav-tab.active { background: #8b0000; border-color: #8b0000; color: white; }
-
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-
-        .section {
-            background: rgba(255, 255, 255, 0.05); border: 1px solid #333;
-            border-radius: 10px; padding: 25px; margin-bottom: 25px;
-        }
-        .section h2 {
-            color: #8b0000; font-size: 22px; margin-bottom: 20px;
-            padding-bottom: 10px; border-bottom: 1px solid #333;
-        }
-
+        .section { background: rgba(255, 255, 255, 0.05); border: 1px solid #333; border-radius: 10px; padding: 25px; margin-bottom: 25px; }
+        .section h2 { color: #8b0000; font-size: 22px; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #333; }
         .form-group { margin-bottom: 20px; }
-        .form-group label {
-            display: block; margin-bottom: 8px; color: #c0c0c0;
-            font-size: 14px; text-transform: uppercase; letter-spacing: 1px;
-        }
-        .form-group input, .form-group textarea, .form-group select {
-            width: 100%; padding: 12px; background: rgba(192, 192, 192, 0.1);
-            border: 1px solid #555; color: #c0c0c0;
-            font-family: inherit; font-size: 14px; border-radius: 5px;
-        }
-        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
-            outline: none; border-color: #8b0000;
-        }
-
-        .item-card {
-            background: rgba(0, 0, 0, 0.3); border: 1px solid #444;
-            border-radius: 8px; padding: 20px; margin-bottom: 15px;
-        }
-        .item-card:hover { border-color: #8b0000; }
-        .item-header {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 15px;
-        }
+        .form-group label { display: block; margin-bottom: 8px; color: #c0c0c0; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+        .form-group input, .form-group textarea { width: 100%; padding: 12px; background: rgba(192, 192, 192, 0.1); border: 1px solid #555; color: #c0c0c0; font-family: inherit; font-size: 14px; border-radius: 5px; }
+        .item-card { background: rgba(0, 0, 0, 0.3); border: 1px solid #444; border-radius: 8px; padding: 20px; margin-bottom: 15px; }
+        .item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         .item-title { color: #8b0000; font-size: 16px; }
-        .item-actions { display: flex; gap: 10px; }
-
-        .preview-img {
-            max-width: 200px; max-height: 150px;
-            border: 1px solid #555; border-radius: 5px; margin-top: 10px;
-        }
-
+        .preview-img { max-width: 200px; max-height: 150px; border: 1px solid #555; border-radius: 5px; margin-top: 10px; }
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-
-        .status-bar {
-            position: fixed; bottom: 0; left: 0; right: 0;
-            background: rgba(0, 0, 0, 0.95); border-top: 2px solid #8b0000;
-            padding: 15px 20px; display: flex; justify-content: space-between;
-            align-items: center; z-index: 1000;
-        }
+        .status-bar { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(0, 0, 0, 0.95); border-top: 2px solid #8b0000; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; }
         .status-msg { color: #c0c0c0; }
         .status-msg.success { color: #28a745; }
         .status-msg.error { color: #dc3545; }
         .status-msg.loading { color: #ffc107; }
-
         .empty-state { text-align: center; padding: 40px; color: #666; }
-
-        .help-text {
-            background: rgba(139, 0, 0, 0.1); border-left: 3px solid #8b0000;
-            padding: 15px; margin-bottom: 20px; font-size: 13px; line-height: 1.6;
-        }
-
+        .help-text { background: rgba(139, 0, 0, 0.1); border-left: 3px solid #8b0000; padding: 15px; margin-bottom: 20px; font-size: 13px; line-height: 1.6; }
         .counter { color: #666; font-size: 14px; margin-left: 10px; }
-
-        @media (max-width: 768px) {
-            .grid-2 { grid-template-columns: 1fr; }
-            .admin-header { flex-direction: column; text-align: center; }
-            .login-box { min-width: 90%; margin: 0 20px; }
-        }
+        @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } .admin-header { flex-direction: column; text-align: center; } }
     </style>
 </head>
 <body>
@@ -172,21 +81,17 @@
             <button class="nav-tab" onclick="switchTab('footer')">底部管理</button>
         </div>
 
-        <!-- Banner管理 -->
         <div class="tab-content active" id="tab-banners">
             <div class="section">
                 <h2>首页 Banner <span class="counter">(最多10个)</span></h2>
-                <div class="help-text">尺寸: 1920×1080px (16:9) | 支持本地路径如 ./image/banner.jpg 或完整URL</div>
                 <div id="bannersList"></div>
                 <button class="btn" onclick="addBanner()" style="margin-top: 15px;">+ 添加Banner</button>
             </div>
         </div>
 
-        <!-- 海报管理 -->
         <div class="tab-content" id="tab-posters">
             <div class="section">
                 <h2>首页海报 <span class="counter">(3个)</span></h2>
-                <div class="help-text">尺寸: 400×600px (2:3)</div>
                 <div id="indexPostersList"></div>
             </div>
             <div class="section">
@@ -195,18 +100,10 @@
             </div>
             <div class="section">
                 <h2>活动页海报 <span class="counter">(3个)</span></h2>
-                <div class="help-text">海报2支持滚播，在下方"滚播设置"区域配置3张图片</div>
                 <div id="eventsPostersList"></div>
-            </div>
-            <!-- 海报2滚播设置 -->
-            <div class="section">
-                <h2>海报2滚播设置 <span class="counter">(3张图片)</span></h2>
-                <div class="help-text">配置活动页第2个海报的滚播图片（自动轮播）</div>
-                <div id="poster2CarouselList"></div>
             </div>
         </div>
 
-        <!-- 活动管理 -->
         <div class="tab-content" id="tab-events">
             <div class="section">
                 <h2>THE EVENTS WE'VE MANAGED</h2>
@@ -220,11 +117,9 @@
             </div>
         </div>
 
-        <!-- 合作伙伴 -->
         <div class="tab-content" id="tab-partners">
             <div class="section">
                 <h2>Partners Banner <span class="counter">(1-4个)</span></h2>
-                <div class="help-text">尺寸: 1920×800px | Logo: 180×110px</div>
                 <div id="partnersBannersList"></div>
             </div>
             <div class="section">
@@ -235,7 +130,6 @@
             </div>
         </div>
 
-        <!-- 底部管理 -->
         <div class="tab-content" id="tab-footer">
             <div class="section">
                 <h2>海外站底部 (统一)</h2>
@@ -268,18 +162,17 @@
 
     <div class="status-bar">
         <span class="status-msg" id="statusMsg">就绪</span>
-        <span style="color: #666;">LiveGigs Asia Admin v2.1</span>
+        <span style="color: #666;">LiveGigs Asia Admin v3.0</span>
     </div>
 
     <script>
         const CONFIG = { owner: 'EmanonEnt', repo: 'asia', branch: 'main' };
 
-        const defaultData = {
+        let adminData = {
             banners: { banners: [] },
             indexPosters: { posters: [{},{},{}] },
             cnPosters: { posters: [{},{},{}] },
             eventsPosters: { posters: [{},{},{}] },
-            poster2Carousel: { images: [] },
             eventsManaged: { events: [] },
             eventsCarousel: { slides: [] },
             partnersBanners: { banners: [{},{},{},{}] },
@@ -288,7 +181,6 @@
             footerCN: { copyright: '© 2025 LIVEGIGS ASIA. ALL RIGHTS RESERVED.', socialLinks: [] }
         };
 
-        let adminData = JSON.parse(JSON.stringify(defaultData));
         let githubToken = '';
 
         function login() {
@@ -336,7 +228,10 @@
                     const res = await fetch('../content/' + file + '.json?v=' + Date.now());
                     if (res.ok) {
                         const data = await res.json();
-                        if (data && Object.keys(data).length > 0) adminData[file] = data;
+                        if (data && Object.keys(data).length > 0) {
+                            adminData[file] = data;
+                            console.log('Loaded:', file, data);
+                        }
                     }
                 } catch (e) { console.warn('加载失败:', file); }
             }
@@ -348,19 +243,17 @@
         function renderAll() {
             renderBanners();
             renderPosters();
-            renderPoster2Carousel();
             renderEvents();
             renderPartners();
             renderFooter();
         }
 
-        // Banner渲染
         function renderBanners() {
             const container = document.getElementById('bannersList');
             const banners = adminData.banners.banners || [];
 
             if (banners.length === 0) {
-                container.innerHTML = '<div class="empty-state">暂无Banner，请添加</div>';
+                container.innerHTML = '<div class="empty-state">暂无Banner</div>';
                 return;
             }
 
@@ -373,7 +266,7 @@
                     <div class="grid-2">
                         <div class="form-group">
                             <label>背景图片</label>
-                            <input type="text" id="b-img-${i}" value="${b.image||''}" placeholder="./image/banner.jpg">
+                            <input type="text" id="b-img-${i}" value="${b.image||''}">
                             ${b.image?`<img src="${b.image}" class="preview-img">`:''}
                         </div>
                         <div class="form-group">
@@ -405,7 +298,6 @@
             renderBanners();
         }
 
-        // 海报渲染
         function renderPosters() {
             ['index','cn','events'].forEach(type => {
                 const key = type+'Posters';
@@ -439,29 +331,6 @@
             });
         }
 
-        // 海报2滚播渲染
-        function renderPoster2Carousel() {
-            const container = document.getElementById('poster2CarouselList');
-            const images = adminData.poster2Carousel.images || [];
-
-            // 确保有3个位置
-            while (images.length < 3) images.push('');
-
-            container.innerHTML = images.map((img, i) => `
-                <div class="item-card">
-                    <div class="item-header">
-                        <span class="item-title">滚播图片 #${i+1}</span>
-                    </div>
-                    <div class="form-group">
-                        <label>图片 URL</label>
-                        <input type="text" id="p2c-img-${i}" value="${img}" placeholder="图片地址">
-                        ${img?`<img src="${img}" class="preview-img">`:''}
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // 活动渲染
         function renderEvents() {
             const events = adminData.eventsManaged.events || [];
             const container = document.getElementById('eventsList');
@@ -497,12 +366,8 @@
                             <textarea id="e-desc-${i}" rows="2">${e.description||''}</textarea>
                         </div>
                         <div style="margin-top:10px;">
-                            <label style="display:inline;margin-right:20px;">
-                                <input type="checkbox" id="e-tour-${i}" ${e.onTour?'checked':''}> ON TOUR
-                            </label>
-                            <label style="display:inline;">
-                                <input type="checkbox" id="e-sold-${i}" ${e.soldOut?'checked':''}> SOLD OUT
-                            </label>
+                            <label style="display:inline;margin-right:20px;"><input type="checkbox" id="e-tour-${i}" ${e.onTour?'checked':''}> ON TOUR</label>
+                            <label style="display:inline;"><input type="checkbox" id="e-sold-${i}" ${e.soldOut?'checked':''}> SOLD OUT</label>
                         </div>
                     </div>
                 `).join('');
@@ -562,7 +427,6 @@
             renderEvents();
         }
 
-        // Partners渲染
         function renderPartners() {
             const banners = adminData.partnersBanners.banners || [{},{},{},{}];
             document.getElementById('partnersBannersList').innerHTML = banners.map((b,i) => `
@@ -587,12 +451,11 @@
                 </div>
             `).join('');
 
-            // Collaborators - 修复为0-10个
             const logos = adminData.collaborators.logos || [];
             const cContainer = document.getElementById('collaboratorsList');
 
             if (logos.length === 0) {
-                cContainer.innerHTML = '<div class="empty-state">暂无合作伙伴Logo，点击"添加Logo"按钮添加 (最多10个)</div>';
+                cContainer.innerHTML = '<div class="empty-state">暂无合作伙伴Logo，点击添加 (最多10个)</div>';
             } else {
                 cContainer.innerHTML = logos.map((l,i) => `
                     <div class="item-card">
@@ -603,16 +466,16 @@
                         <div class="grid-2">
                             <div class="form-group">
                                 <label>图片 URL</label>
-                                <input type="text" id="col-img-${i}" value="${l.image||''}" placeholder="./image/logo.png">
+                                <input type="text" id="col-img-${i}" value="${l.image||''}">
                                 ${l.image?`<img src="${l.image}" class="preview-img">`:''}
                             </div>
                             <div class="form-group">
                                 <label>名称</label>
-                                <input type="text" id="col-name-${i}" value="${l.name||''}" placeholder="合作伙伴名称">
+                                <input type="text" id="col-name-${i}" value="${l.name||''}">
                             </div>
                             <div class="form-group" style="grid-column:1/-1;">
-                                <label>链接地址 (留空则不点击，不新开窗口)</label>
-                                <input type="text" id="col-link-${i}" value="${l.link||''}" placeholder="https://...">
+                                <label>链接 (留空则不点击)</label>
+                                <input type="text" id="col-link-${i}" value="${l.link||''}">
                             </div>
                         </div>
                     </div>
@@ -627,12 +490,11 @@
         }
 
         function deleteCollaborator(i) {
-            if (!confirm('确定删除这个Logo吗?')) return;
+            if (!confirm('确定删除?')) return;
             adminData.collaborators.logos.splice(i,1);
             renderPartners();
         }
 
-        // Footer渲染
         function renderFooter() {
             document.getElementById('globalCopyright').value = adminData.footerGlobal.copyright || '';
             document.getElementById('cnCopyright').value = adminData.footerCN.copyright || '';
@@ -677,9 +539,7 @@
             renderFooter();
         }
 
-        // 收集数据
         function collectData() {
-            // Banners
             adminData.banners.banners = [];
             document.querySelectorAll('#bannersList .item-card').forEach((card,i) => {
                 adminData.banners.banners.push({
@@ -690,7 +550,6 @@
                 });
             });
 
-            // Posters
             ['index','cn','events'].forEach(type => {
                 const key = type+'Posters';
                 adminData[key].posters = [];
@@ -704,14 +563,6 @@
                 });
             });
 
-            // Poster2 Carousel (3张图片)
-            adminData.poster2Carousel.images = [];
-            for (let i=0; i<3; i++) {
-                const val = document.getElementById('p2c-img-'+i)?.value;
-                if (val) adminData.poster2Carousel.images.push(val);
-            }
-
-            // Events
             adminData.eventsManaged.events = [];
             document.querySelectorAll('#eventsList .item-card').forEach((card,i) => {
                 adminData.eventsManaged.events.push({
@@ -729,7 +580,6 @@
                 });
             });
 
-            // Carousel
             adminData.eventsCarousel.slides = [];
             document.querySelectorAll('#carouselList .item-card').forEach((card,i) => {
                 adminData.eventsCarousel.slides.push({
@@ -741,7 +591,6 @@
                 });
             });
 
-            // Partners
             adminData.partnersBanners.banners = [];
             document.querySelectorAll('#partnersBannersList .item-card').forEach((card,i) => {
                 adminData.partnersBanners.banners.push({
@@ -754,7 +603,6 @@
                 });
             });
 
-            // Collaborators - 收集0-10个
             adminData.collaborators.logos = [];
             document.querySelectorAll('#collaboratorsList .item-card').forEach((card,i) => {
                 adminData.collaborators.logos.push({
@@ -764,7 +612,6 @@
                 });
             });
 
-            // Footer
             adminData.footerGlobal.copyright = document.getElementById('globalCopyright')?.value||'© 2025 LIVEGIGS ASIA. ALL RIGHTS RESERVED.';
             adminData.footerCN.copyright = document.getElementById('cnCopyright')?.value||'© 2025 LIVEGIGS ASIA. ALL RIGHTS RESERVED.';
 
@@ -781,7 +628,6 @@
             });
         }
 
-        // 同步到GitHub
         async function syncToGitHub() {
             collectData();
 
@@ -799,7 +645,6 @@
                 'index-posters.json': adminData.indexPosters,
                 'cn-posters.json': adminData.cnPosters,
                 'events-posters.json': adminData.eventsPosters,
-                'poster2-carousel.json': adminData.poster2Carousel,
                 'events-managed.json': adminData.eventsManaged,
                 'events-carousel.json': adminData.eventsCarousel,
                 'partners-banners.json': adminData.partnersBanners,
