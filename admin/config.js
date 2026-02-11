@@ -1,22 +1,23 @@
 // LiveGigs Asia 后台管理系统配置
 const ADMIN_CONFIG = {
-    version: '3.0.0',
-    
+    version: '3.1.0',
+
     // GitHub 配置
     github: {
         owner: 'EmanonEnt',
         repo: 'asia',
         branch: 'main',
-        contentPath: 'content'
+        contentPath: 'content',
+        autoSync: true
     },
-    
+
     // 登录配置
     auth: {
         defaultUsername: 'admin',
         defaultPassword: 'livegigs2026',
-        sessionTimeout: 30 * 60 * 1000  // 30分钟无操作
+        sessionTimeout: 30 * 60 * 1000
     },
-    
+
     // 存储键名
     storageKeys: {
         session: 'lg_admin_session',
@@ -27,13 +28,13 @@ const ADMIN_CONFIG = {
         collaborators: 'lg_collaborators',
         footerGlobal: 'lg_footer_global',
         footerCN: 'lg_footer_cn',
-        githubToken: 'github_token'
+        githubToken: 'github_token',
+        dataVersion: 'lg_data_version'
     },
-    
-    // 活动配置
+
     events: {
-        minEventsForLoadMore: 4,  // 大于等于4个显示Load More
-        maxCarouselItems: 5,      // 轮播最多5个
-        minCarouselItems: 1       // 轮播至少1个
+        minEventsForLoadMore: 4,
+        maxCarouselItems: 5,
+        minCarouselItems: 1
     }
 };

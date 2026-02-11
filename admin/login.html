@@ -153,7 +153,7 @@
             </form>
             <div class="token-section">
                 <h3>GitHub Token（可选）</h3>
-                <p>用于从 GitHub 同步数据</p>
+                <p>用于自动同步数据到网站</p>
                 <div class="form-group">
                     <input type="password" id="githubToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
                 </div>
@@ -162,7 +162,6 @@
     </div>
     <script src="config.js"></script>
     <script>
-        // 显示提示
         function showAlert(message, type = 'error') {
             const alertBox = document.getElementById('alertBox');
             alertBox.className = `alert alert-${type} show`;
@@ -170,33 +169,28 @@
             setTimeout(() => alertBox.classList.remove('show'), 5000);
         }
 
-        // 登录
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value.trim();
             const token = document.getElementById('githubToken').value.trim();
-            
+
             if (!username || !password) {
                 showAlert('请输入用户名和密码');
                 return;
             }
-            
+
             if (username === ADMIN_CONFIG.auth.defaultUsername && 
                 password === ADMIN_CONFIG.auth.defaultPassword) {
-                
-                // 保存token
+
                 if (token) {
                     localStorage.setItem(ADMIN_CONFIG.storageKeys.githubToken, token);
                 }
-                
-                // 创建会话（使用sessionStorage，关闭浏览器自动清除）
+
                 sessionStorage.setItem('lg_admin_logged_in', 'true');
                 sessionStorage.setItem('lg_admin_login_time', Date.now().toString());
-                
-                // 同时记录最后活动时间（用于30分钟检测）
                 localStorage.setItem(ADMIN_CONFIG.storageKeys.lastActivity, Date.now().toString());
-                
+
                 showAlert('登录成功！', 'success');
                 setTimeout(() => window.location.href = 'index.html', 500);
             } else {

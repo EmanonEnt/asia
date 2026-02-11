@@ -43,6 +43,7 @@
         }
         .sync-status.synced { color: #00ff00; }
         .sync-status.syncing { color: #ffaa00; }
+        .sync-status.error { color: #ff0000; }
         .sync-dot {
             width: 8px; height: 8px;
             border-radius: 50%;
@@ -50,6 +51,7 @@
         }
         .sync-status.synced .sync-dot { background: #00ff00; }
         .sync-status.syncing .sync-dot { background: #ffaa00; animation: pulse 1s infinite; }
+        .sync-status.error .sync-dot { background: #ff0000; }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
         .btn-logout {
             padding: 8px 20px;
@@ -172,6 +174,7 @@
         .btn-secondary:hover { background: #444; }
         .btn-success { background: #006400; }
         .btn-success:hover { background: #008000; }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
         .btn-small {
             padding: 8px 16px;
             font-size: 11px;
@@ -297,6 +300,16 @@
         .modal h3 { color: #8b0000; margin-bottom: 15px; }
         .modal p { color: #888; font-family: Arial, sans-serif; margin-bottom: 20px; }
         .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+        .auto-sync-info {
+            background: rgba(0, 100, 0, 0.1);
+            border: 1px solid #006400;
+            border-radius: 4px;
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            font-size: 12px;
+            color: #00ff00;
+            font-family: Arial, sans-serif;
+        }
         @media (max-width: 768px) {
             .grid-2, .grid-3 { grid-template-columns: 1fr; }
             .item-card { flex-direction: column; align-items: flex-start; gap: 15px; }
@@ -311,7 +324,7 @@
         <div class="header-right">
             <div class="sync-status" id="syncStatus">
                 <span class="sync-dot"></span>
-                <span id="syncText">未同步</span>
+                <span id="syncText">就绪</span>
             </div>
             <button class="btn-logout" onclick="logout()">退出</button>
         </div>
@@ -351,6 +364,9 @@
         <!-- Banner -->
         <div id="banners" class="section active">
             <h2 class="section-title">Banner 管理</h2>
+            <div class="auto-sync-info">
+                ✓ 自动同步已启用 - 保存后自动更新到网站
+            </div>
             <div class="card">
                 <h3 class="card-title">添加/编辑 Banner</h3>
                 <form id="bannerForm">
@@ -384,7 +400,7 @@
                         <label for="bannerActive">启用</label>
                     </div>
                     <div style="margin-top: 20px;">
-                        <button type="button" class="btn btn-success" onclick="saveBanner()">保存</button>
+                        <button type="button" class="btn btn-success" onclick="saveBanner()">保存并同步</button>
                         <button type="button" class="btn btn-secondary" onclick="resetBannerForm()">重置</button>
                     </div>
                 </form>
@@ -395,9 +411,12 @@
             </div>
         </div>
 
-        <!-- Posters (合并轮播) -->
+        <!-- Posters -->
         <div id="posters" class="section">
             <h2 class="section-title">海报管理</h2>
+            <div class="auto-sync-info">
+                ✓ 自动同步已启用 - 保存后自动更新到网站
+            </div>
             <div class="card">
                 <h3 class="card-title">选择页面</h3>
                 <div class="form-group">
@@ -410,7 +429,6 @@
                 <p class="help-text" id="posterHint">海报1、海报3为普通海报，海报2可选择启用轮播</p>
             </div>
             <div id="posterSections"></div>
-            <!-- 轮播设置（仅在活动页显示） -->
             <div id="carouselSection" style="display: none;">
                 <div class="card">
                     <h3 class="card-title">海报2轮播设置</h3>
@@ -423,13 +441,16 @@
                 </div>
             </div>
             <div class="card">
-                <button class="btn btn-success" onclick="savePosters()">保存海报</button>
+                <button class="btn btn-success" onclick="savePosters()">保存并同步</button>
             </div>
         </div>
 
         <!-- Events -->
         <div id="events" class="section">
             <h2 class="section-title">活动管理</h2>
+            <div class="auto-sync-info">
+                ✓ 自动同步已启用 - 保存后自动更新到网站
+            </div>
             <div class="card">
                 <h3 class="card-title">添加/编辑活动</h3>
                 <form id="eventForm">
@@ -487,7 +508,7 @@
                         </div>
                     </div>
                     <div style="margin-top: 20px;">
-                        <button type="button" class="btn btn-success" onclick="saveEvent()">保存活动</button>
+                        <button type="button" class="btn btn-success" onclick="saveEvent()">保存并同步</button>
                         <button type="button" class="btn btn-secondary" onclick="resetEventForm()">重置</button>
                     </div>
                 </form>
@@ -501,11 +522,18 @@
         <!-- Partners -->
         <div id="partners" class="section">
             <h2 class="section-title">合作伙伴</h2>
+            <div class="auto-sync-info">
+                ✓ 自动同步已启用 - 保存后自动更新到网站
+            </div>
             <div class="card">
                 <h3 class="card-title">添加 Logo</h3>
                 <div class="form-group">
                     <label>Logo 地址</label>
                     <input type="text" id="collabLogo" placeholder="./image/logo.png 或 https://...">
+                </div>
+                <div class="form-group">
+                    <label>链接（可选）</label>
+                    <input type="text" id="collabLink" placeholder="https://...（不填则不可点击）">
                 </div>
                 <button class="btn" onclick="addCollaborator()">添加</button>
             </div>
@@ -518,6 +546,9 @@
         <!-- Footer -->
         <div id="footer" class="section">
             <h2 class="section-title">底部管理</h2>
+            <div class="auto-sync-info">
+                ✓ 自动同步已启用 - 保存后自动更新到网站
+            </div>
             <div class="card">
                 <h3 class="card-title">选择站点</h3>
                 <div class="form-group">
@@ -531,12 +562,12 @@
                 <h3 class="card-title">编辑底部</h3>
                 <form id="footerForm">
                     <div class="form-group">
-                        <label>版权</label>
+                        <label>版权文字</label>
                         <input type="text" id="footerCopyright" placeholder="© 2026 LIVEGIGS ASIA">
                     </div>
                     <div class="form-group">
                         <label>制作单位 Logo</label>
-                        <input type="text" id="footerProducer" placeholder="./image/logo.png">
+                        <input type="text" id="footerProducer" placeholder="./image/emanonent-logo.png">
                     </div>
                 </form>
             </div>
@@ -547,7 +578,7 @@
                 <button type="button" class="btn" onclick="addSocialItem()">添加社交链接</button>
             </div>
             <div class="card">
-                <button class="btn btn-success" onclick="saveFooter()">保存底部</button>
+                <button class="btn btn-success" onclick="saveFooter()">保存并同步</button>
             </div>
         </div>
 
@@ -555,12 +586,8 @@
         <div id="data" class="section">
             <h2 class="section-title">数据管理</h2>
             <div class="card">
-                <h3 class="card-title">从 GitHub 同步</h3>
-                <p class="help-text">同步后前端页面刷新即可看到更新</p>
-                <button class="btn btn-success" onclick="syncFromGitHub()">立即同步</button>
-            </div>
-            <div class="card">
                 <h3 class="card-title">导出数据</h3>
+                <p class="help-text">导出所有数据为JSON文件备份</p>
                 <button class="btn btn-success" onclick="exportData()">导出 JSON</button>
             </div>
             <div class="card">
@@ -568,11 +595,11 @@
                 <div class="form-group">
                     <textarea id="importData" rows="8" placeholder="粘贴 JSON..."></textarea>
                 </div>
-                <button class="btn" onclick="importData()">导入</button>
+                <button class="btn" onclick="importData()">导入并同步</button>
             </div>
             <div class="card">
                 <h3 class="card-title">重置数据</h3>
-                <button class="btn" onclick="resetData()" style="background: #8b0000;">重置</button>
+                <button class="btn" onclick="resetData()" style="background: #8b0000;">重置所有数据</button>
             </div>
         </div>
     </div>
@@ -589,23 +616,23 @@
     </div>
 
     <script src="config.js"></script>
-    <script src="../js/data-loader.js"></script>
+    <script src="data-loader.js"></script>
     <script>
-        // ========== 会话管理 ==========
         let modalCallback = null;
+        let isSyncing = false;
 
         function checkSession() {
             const loggedIn = sessionStorage.getItem('lg_admin_logged_in');
             const lastActivity = localStorage.getItem(ADMIN_CONFIG.storageKeys.lastActivity);
-            
+
             if (!loggedIn) {
                 window.location.href = 'login.html';
                 return false;
             }
-            
+
             const now = Date.now();
             const lastTime = parseInt(lastActivity || Date.now());
-            
+
             if (now - lastTime > ADMIN_CONFIG.auth.sessionTimeout) {
                 logout();
                 return false;
@@ -635,11 +662,12 @@
             }, 60000);
         }
 
-        // ========== 通用 ==========
-        function showAlert(message, type = 'info') {
+        function showAlert(message, type = 'info', duration = 5000) {
             const container = document.getElementById('alertContainer');
             container.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
-            setTimeout(() => container.innerHTML = '', 5000);
+            if (duration > 0) {
+                setTimeout(() => container.innerHTML = '', duration);
+            }
         }
 
         function showSection(id) {
@@ -683,7 +711,7 @@
             const events = dataLoader.getEvents().length;
             const carousel = dataLoader.getCarousel().length;
             const loadMore = events >= ADMIN_CONFIG.events.minEventsForLoadMore ? '显示' : '隐藏';
-            
+
             document.getElementById('statBanners').textContent = banners;
             document.getElementById('statEvents').textContent = events;
             document.getElementById('statCarousel').textContent = carousel;
@@ -691,7 +719,14 @@
             document.getElementById('statLoadMore').style.color = loadMore === '显示' ? '#00ff00' : '#ff6666';
         }
 
-        // ========== Banner ==========
+        function setSyncStatus(status, text) {
+            const el = document.getElementById('syncStatus');
+            const txt = document.getElementById('syncText');
+            el.className = 'sync-status ' + status;
+            txt.textContent = text;
+        }
+
+        // Banner Functions
         function loadBanners() {
             const list = document.getElementById('bannerList');
             const banners = dataLoader.getBanners();
@@ -715,7 +750,9 @@
             updateStats();
         }
 
-        function saveBanner() {
+        async function saveBanner() {
+            if (isSyncing) return;
+
             const editIndex = document.getElementById('bannerEditIndex').value;
             const banner = {
                 title: document.getElementById('bannerTitle').value.trim(),
@@ -725,17 +762,34 @@
                 order: parseInt(document.getElementById('bannerOrder').value) || 1,
                 active: document.getElementById('bannerActive').checked
             };
+
             let banners = dataLoader.getBanners();
             if (editIndex !== '') {
                 banners[parseInt(editIndex)] = banner;
-                showAlert('更新成功', 'success');
             } else {
                 banners.push(banner);
-                showAlert('添加成功', 'success');
             }
-            dataLoader.saveBanners(banners);
-            resetBannerForm();
-            loadBanners();
+
+            setSyncStatus('syncing', '同步中...');
+            isSyncing = true;
+
+            try {
+                const result = await dataLoader.saveBanners(banners);
+                if (result.success) {
+                    showAlert('保存并同步成功！网站已自动更新', 'success');
+                    resetBannerForm();
+                    loadBanners();
+                    setSyncStatus('synced', '已同步');
+                } else {
+                    showAlert('同步失败: ' + result.error, 'error');
+                    setSyncStatus('error', '同步失败');
+                }
+            } catch (e) {
+                showAlert('同步错误: ' + e.message, 'error');
+                setSyncStatus('error', '同步错误');
+            } finally {
+                isSyncing = false;
+            }
         }
 
         function resetBannerForm() {
@@ -755,32 +809,47 @@
             document.getElementById('bannerActive').checked = b.active !== false;
         }
 
-        function deleteBanner(index) {
-            showModal('确认删除', '确定删除此 Banner？', () => {
-                let banners = dataLoader.getBanners();
-                banners.splice(index, 1);
-                dataLoader.saveBanners(banners);
-                loadBanners();
+        async function deleteBanner(index) {
+            showModal('确认删除', '确定删除此 Banner？', async () => {
+                setSyncStatus('syncing', '同步中...');
+                isSyncing = true;
+
+                try {
+                    let banners = dataLoader.getBanners();
+                    banners.splice(index, 1);
+                    const result = await dataLoader.saveBanners(banners);
+                    if (result.success) {
+                        loadBanners();
+                        showAlert('删除并同步成功', 'success');
+                        setSyncStatus('synced', '已同步');
+                    } else {
+                        showAlert('同步失败: ' + result.error, 'error');
+                        setSyncStatus('error', '同步失败');
+                    }
+                } catch (e) {
+                    showAlert('同步错误: ' + e.message, 'error');
+                    setSyncStatus('error', '同步错误');
+                } finally {
+                    isSyncing = false;
+                }
             });
         }
 
-        // ========== Posters + Carousel ==========
+        // Posters & Carousel Functions
         function loadPosters() {
             const page = document.getElementById('posterPage').value;
             const container = document.getElementById('posterSections');
             const carouselSection = document.getElementById('carouselSection');
             const posters = dataLoader.getPosters(page);
             const isEventsPage = page === 'events';
-            
-            // 显示/隐藏轮播设置
+
             carouselSection.style.display = isEventsPage ? 'block' : 'none';
-            
-            // 渲染3个海报
+
             container.innerHTML = [0, 1, 2].map(i => {
                 const p = posters[i] || {};
                 const isPoster2 = i === 1;
                 const poster2Note = (isEventsPage && isPoster2) ? ' (可设为轮播)' : '';
-                
+
                 return `
                     <div class="card">
                         <h3 class="card-title">海报 ${i + 1}${poster2Note}</h3>
@@ -805,8 +874,7 @@
                     </div>
                 `;
             }).join('');
-            
-            // 如果是活动页，加载轮播设置
+
             if (isEventsPage) {
                 loadCarouselSettings();
             }
@@ -815,13 +883,8 @@
         function loadCarouselSettings() {
             const carousel = dataLoader.getCarousel();
             const enableCheckbox = document.getElementById('enableCarousel');
-            const carouselList = document.getElementById('carouselList');
-            const addBtn = document.getElementById('addCarouselBtn');
-            
-            // 检查是否启用了轮播（有多个轮播项或第一个有内容）
             const hasCarousel = carousel.length > 1 || (carousel.length === 1 && carousel[0].image);
             enableCheckbox.checked = hasCarousel;
-            
             toggleCarousel();
         }
 
@@ -829,10 +892,10 @@
             const enabled = document.getElementById('enableCarousel').checked;
             const carouselList = document.getElementById('carouselList');
             const addBtn = document.getElementById('addCarouselBtn');
-            
+
             carouselList.style.display = enabled ? 'block' : 'none';
             addBtn.style.display = enabled ? 'inline-block' : 'none';
-            
+
             if (enabled) {
                 renderCarouselItems();
             }
@@ -842,10 +905,9 @@
             const list = document.getElementById('carouselList');
             const items = dataLoader.getCarousel();
             const addBtn = document.getElementById('addCarouselBtn');
-            
-            // 最多5个
+
             addBtn.style.display = items.length >= 5 ? 'none' : 'inline-block';
-            
+
             list.innerHTML = items.map((item, i) => `
                 <div class="carousel-item">
                     <h4>
@@ -881,41 +943,40 @@
                 return;
             }
             items.push({ title: '', image: '', link_text: '', link: '' });
-            dataLoader.saveCarousel(items);
+            dataLoader.setCarousel(items);
             renderCarouselItems();
         }
 
-        function deleteCarouselItem(index) {
+        async function deleteCarouselItem(index) {
             const items = dataLoader.getCarousel();
             if (items.length <= 1) {
                 showAlert('至少保留1个轮播图', 'error');
                 return;
             }
             items.splice(index, 1);
-            dataLoader.saveCarousel(items);
+            dataLoader.setCarousel(items);
             renderCarouselItems();
         }
 
-        function savePosters() {
+        async function savePosters() {
+            if (isSyncing) return;
+
             const page = document.getElementById('posterPage').value;
             const isEventsPage = page === 'events';
             const enableCarousel = document.getElementById('enableCarousel').checked;
-            
-            // 保存海报
+
             const posters = [0, 1, 2].map(i => ({
                 title: document.getElementById(`poster${i}_title`).value,
                 image: document.getElementById(`poster${i}_image`).value,
                 link_text: document.getElementById(`poster${i}_linkText`).value,
                 link: document.getElementById(`poster${i}_link`).value
             }));
-            dataLoader.savePosters(page, posters);
-            
-            // 保存轮播（如果启用且是活动页）
+
             if (isEventsPage && enableCarousel) {
                 const items = [];
                 const container = document.getElementById('carouselList');
                 const itemDivs = container.querySelectorAll('.carousel-item');
-                
+
                 itemDivs.forEach((div, i) => {
                     items.push({
                         title: document.getElementById(`carousel${i}_title`).value,
@@ -924,17 +985,32 @@
                         link: document.getElementById(`carousel${i}_link`).value
                     });
                 });
-                dataLoader.saveCarousel(items);
+                await dataLoader.saveCarousel(items);
             } else if (isEventsPage && !enableCarousel) {
-                // 禁用轮播时清空
-                dataLoader.saveCarousel([{ title: '', image: '', link_text: '', link: '' }]);
+                await dataLoader.saveCarousel([{ title: '', image: '', link_text: '', link: '' }]);
             }
-            
-            showAlert('保存成功', 'success');
-            updateStats();
+
+            setSyncStatus('syncing', '同步中...');
+            isSyncing = true;
+
+            try {
+                const result = await dataLoader.savePosters(page, posters);
+                if (result.success) {
+                    showAlert('保存并同步成功！网站已自动更新', 'success');
+                    setSyncStatus('synced', '已同步');
+                } else {
+                    showAlert('同步失败: ' + result.error, 'error');
+                    setSyncStatus('error', '同步失败');
+                }
+            } catch (e) {
+                showAlert('同步错误: ' + e.message, 'error');
+                setSyncStatus('error', '同步错误');
+            } finally {
+                isSyncing = false;
+            }
         }
 
-        // ========== Events ==========
+        // Events Functions
         function loadEvents() {
             const list = document.getElementById('eventList');
             const events = dataLoader.getEvents();
@@ -957,7 +1033,9 @@
             updateStats();
         }
 
-        function saveEvent() {
+        async function saveEvent() {
+            if (isSyncing) return;
+
             const editIndex = document.getElementById('eventEditIndex').value;
             const event = {
                 title: document.getElementById('eventTitle').value.trim(),
@@ -971,17 +1049,34 @@
                 button_text: document.getElementById('eventButton').value.trim(),
                 link: document.getElementById('eventLink').value.trim()
             };
+
             let events = dataLoader.getEvents();
             if (editIndex !== '') {
                 events[parseInt(editIndex)] = event;
-                showAlert('更新成功', 'success');
             } else {
                 events.push(event);
-                showAlert('添加成功', 'success');
             }
-            dataLoader.saveEvents(events);
-            resetEventForm();
-            loadEvents();
+
+            setSyncStatus('syncing', '同步中...');
+            isSyncing = true;
+
+            try {
+                const result = await dataLoader.saveEvents(events);
+                if (result.success) {
+                    showAlert('保存并同步成功！网站已自动更新', 'success');
+                    resetEventForm();
+                    loadEvents();
+                    setSyncStatus('synced', '已同步');
+                } else {
+                    showAlert('同步失败: ' + result.error, 'error');
+                    setSyncStatus('error', '同步失败');
+                }
+            } catch (e) {
+                showAlert('同步错误: ' + e.message, 'error');
+                setSyncStatus('error', '同步错误');
+            } finally {
+                isSyncing = false;
+            }
         }
 
         function resetEventForm() {
@@ -1005,16 +1100,33 @@
             document.getElementById('eventLink').value = e.link || '';
         }
 
-        function deleteEvent(index) {
-            showModal('确认删除', '确定删除此活动？', () => {
-                let events = dataLoader.getEvents();
-                events.splice(index, 1);
-                dataLoader.saveEvents(events);
-                loadEvents();
+        async function deleteEvent(index) {
+            showModal('确认删除', '确定删除此活动？', async () => {
+                setSyncStatus('syncing', '同步中...');
+                isSyncing = true;
+
+                try {
+                    let events = dataLoader.getEvents();
+                    events.splice(index, 1);
+                    const result = await dataLoader.saveEvents(events);
+                    if (result.success) {
+                        loadEvents();
+                        showAlert('删除并同步成功', 'success');
+                        setSyncStatus('synced', '已同步');
+                    } else {
+                        showAlert('同步失败: ' + result.error, 'error');
+                        setSyncStatus('error', '同步失败');
+                    }
+                } catch (e) {
+                    showAlert('同步错误: ' + e.message, 'error');
+                    setSyncStatus('error', '同步错误');
+                } finally {
+                    isSyncing = false;
+                }
             });
         }
 
-        // ========== Partners ==========
+        // Partners Functions
         function loadCollaborators() {
             const list = document.getElementById('collabList');
             const collabs = dataLoader.getCollaborators();
@@ -1022,34 +1134,73 @@
                 list.innerHTML = '<p style="color: #666;">暂无 Logo</p>';
                 return;
             }
-            list.innerHTML = collabs.map((logo, i) => `
+            list.innerHTML = collabs.map((item, i) => `
                 <div style="position: relative;">
-                    <img src="${escapeHtml(logo)}" class="logo-preview" onerror="this.src='./image/placeholder.png'">
+                    <img src="${escapeHtml(item.logo || item)}" class="logo-preview" onerror="this.src='./image/placeholder.png'">
+                    ${item.link ? '<span style="position: absolute; top: -5px; right: -5px; background: #006400; color: white; font-size: 10px; padding: 2px 5px; border-radius: 3px;">LINK</span>' : ''}
                     <button onclick="deleteCollaborator(${i})" style="position: absolute; top: -8px; right: -8px; background: #8b0000; color: white; border: none; border-radius: 50%; width: 22px; height: 22px; cursor: pointer;">×</button>
                 </div>
             `).join('');
             updateStats();
         }
 
-        function addCollaborator() {
+        async function addCollaborator() {
             const logo = document.getElementById('collabLogo').value.trim();
+            const link = document.getElementById('collabLink').value.trim();
+
             if (!logo) { showAlert('请输入 Logo 地址', 'error'); return; }
+
             let collabs = dataLoader.getCollaborators();
-            collabs.push(logo);
-            dataLoader.saveCollaborators(collabs);
-            document.getElementById('collabLogo').value = '';
-            loadCollaborators();
-            showAlert('添加成功', 'success');
+            collabs.push({ logo: logo, link: link });
+
+            setSyncStatus('syncing', '同步中...');
+            isSyncing = true;
+
+            try {
+                const result = await dataLoader.saveCollaborators(collabs);
+                if (result.success) {
+                    document.getElementById('collabLogo').value = '';
+                    document.getElementById('collabLink').value = '';
+                    loadCollaborators();
+                    showAlert('添加并同步成功', 'success');
+                    setSyncStatus('synced', '已同步');
+                } else {
+                    showAlert('同步失败: ' + result.error, 'error');
+                    setSyncStatus('error', '同步失败');
+                }
+            } catch (e) {
+                showAlert('同步错误: ' + e.message, 'error');
+                setSyncStatus('error', '同步错误');
+            } finally {
+                isSyncing = false;
+            }
         }
 
-        function deleteCollaborator(index) {
-            let collabs = dataLoader.getCollaborators();
-            collabs.splice(index, 1);
-            dataLoader.saveCollaborators(collabs);
-            loadCollaborators();
+        async function deleteCollaborator(index) {
+            setSyncStatus('syncing', '同步中...');
+            isSyncing = true;
+
+            try {
+                let collabs = dataLoader.getCollaborators();
+                collabs.splice(index, 1);
+                const result = await dataLoader.saveCollaborators(collabs);
+                if (result.success) {
+                    loadCollaborators();
+                    showAlert('删除并同步成功', 'success');
+                    setSyncStatus('synced', '已同步');
+                } else {
+                    showAlert('同步失败: ' + result.error, 'error');
+                    setSyncStatus('error', '同步失败');
+                }
+            } catch (e) {
+                showAlert('同步错误: ' + e.message, 'error');
+                setSyncStatus('error', '同步错误');
+            } finally {
+                isSyncing = false;
+            }
         }
 
-        // ========== Footer (Social with icon) ==========
+        // Footer Functions
         let socialItems = [];
 
         function loadFooter() {
@@ -1057,8 +1208,6 @@
             const data = dataLoader.getFooter(site);
             document.getElementById('footerCopyright').value = data.copyright || '';
             document.getElementById('footerProducer').value = data.producer || '';
-            
-            // 加载社交链接
             socialItems = data.social || [];
             renderSocialItems();
         }
@@ -1103,10 +1252,11 @@
             renderSocialItems();
         }
 
-        function saveFooter() {
+        async function saveFooter() {
+            if (isSyncing) return;
+
             const site = document.getElementById('footerSite').value;
-            
-            // 收集社交链接
+
             const social = [];
             for (let i = 0; i < socialItems.length; i++) {
                 social.push({
@@ -1115,44 +1265,34 @@
                     url: document.getElementById(`social${i}_url`)?.value || ''
                 });
             }
-            
+
             const data = {
                 copyright: document.getElementById('footerCopyright').value,
                 social: social,
                 producer: document.getElementById('footerProducer').value
             };
-            dataLoader.saveFooter(site, data);
-            showAlert('保存成功', 'success');
-        }
 
-        // ========== Data Sync ==========
-        async function syncFromGitHub() {
-            const status = document.getElementById('syncStatus');
-            status.classList.add('syncing');
-            document.getElementById('syncText').textContent = '同步中...';
-            
+            setSyncStatus('syncing', '同步中...');
+            isSyncing = true;
+
             try {
-                const result = await dataLoader.syncFromGitHub();
+                const result = await dataLoader.saveFooter(site, data);
                 if (result.success) {
-                    showAlert('同步成功！前端页面刷新即可看到更新', 'success');
-                    loadBanners();
-                    loadEvents();
-                    loadPosters();
-                    loadCollaborators();
-                    loadFooter();
-                    updateStats();
+                    showAlert('保存并同步成功！网站已自动更新', 'success');
+                    setSyncStatus('synced', '已同步');
                 } else {
                     showAlert('同步失败: ' + result.error, 'error');
+                    setSyncStatus('error', '同步失败');
                 }
             } catch (e) {
                 showAlert('同步错误: ' + e.message, 'error');
+                setSyncStatus('error', '同步错误');
             } finally {
-                status.classList.remove('syncing');
-                document.getElementById('syncText').textContent = '已同步';
-                status.classList.add('synced');
+                isSyncing = false;
             }
         }
 
+        // Data Management
         function exportData() {
             const data = dataLoader.exportAll();
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -1165,36 +1305,66 @@
             showAlert('导出成功', 'success');
         }
 
-        function importData() {
+        async function importData() {
             const json = document.getElementById('importData').value.trim();
             if (!json) { showAlert('请输入 JSON', 'error'); return; }
+
+            setSyncStatus('syncing', '同步中...');
+            isSyncing = true;
+
             try {
                 const data = JSON.parse(json);
-                dataLoader.importAll(data);
-                showAlert('导入成功', 'success');
-                loadBanners(); loadEvents(); loadPosters(); loadCollaborators(); loadFooter();
-                updateStats();
+                const result = await dataLoader.importAll(data);
+                if (result.success) {
+                    showAlert('导入并同步成功！网站已自动更新', 'success');
+                    loadBanners(); loadEvents(); loadPosters(); loadCollaborators(); loadFooter();
+                    updateStats();
+                    setSyncStatus('synced', '已同步');
+                } else {
+                    showAlert('同步失败: ' + result.error, 'error');
+                    setSyncStatus('error', '同步失败');
+                }
             } catch (e) {
-                showAlert('JSON 格式错误', 'error');
+                showAlert('JSON 格式错误: ' + e.message, 'error');
+                setSyncStatus('error', '格式错误');
+            } finally {
+                isSyncing = false;
             }
         }
 
-        function resetData() {
-            showModal('确认重置', '确定重置所有数据？', () => {
-                dataLoader.resetAll();
-                showAlert('已重置', 'success');
-                loadBanners(); loadEvents(); loadPosters(); loadCollaborators(); loadFooter();
-                updateStats();
+        async function resetData() {
+            showModal('确认重置', '确定重置所有数据？', async () => {
+                setSyncStatus('同步中...', true);
+                isSyncing = true;
+
+                try {
+                    const result = await dataLoader.resetAll();
+                    if (result.success) {
+                        showAlert('已重置并同步', 'success');
+                        loadBanners(); loadEvents(); loadPosters(); loadCollaborators(); loadFooter();
+                        updateStats();
+                        setSyncStatus('synced', '已同步');
+                    } else {
+                        showAlert('同步失败: ' + result.error, 'error');
+                        setSyncStatus('error', '同步失败');
+                    }
+                } catch (e) {
+                    showAlert('同步错误: ' + e.message, 'error');
+                    setSyncStatus('error', '同步错误');
+                } finally {
+                    isSyncing = false;
+                }
             });
         }
 
-        // ========== Init ==========
+        // Init
         document.addEventListener('DOMContentLoaded', function() {
             if (!checkSession()) return;
             setupActivityTracking();
             initDataLoader();
             loadBanners();
             updateStats();
+            setSyncStatus('synced', '就绪');
         });
     </script>
 </body>
