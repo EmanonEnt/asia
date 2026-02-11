@@ -2,33 +2,45 @@
   "logos": [
     {
       "name": "Partner 1",
-      "image": "./image/partner1.png",
-      "link": "#"
+      "logo": "./image/logo1.png",
+      "link": "#",
+      "order": 1,
+      "active": true
     },
     {
       "name": "Partner 2",
-      "image": "./image/partner2.png",
-      "link": "#"
+      "logo": "./image/logo2.png",
+      "link": "#",
+      "order": 2,
+      "active": true
     },
     {
       "name": "Partner 3",
-      "image": "./image/partner3.png",
-      "link": "#"
+      "logo": "./image/logo3.png",
+      "link": "#",
+      "order": 3,
+      "active": true
     },
     {
       "name": "Partner 4",
-      "image": "./image/partner4.png",
-      "link": "#"
+      "logo": "./image/logo4.png",
+      "link": "#",
+      "order": 4,
+      "active": true
     },
     {
       "name": "Partner 5",
-      "image": "./image/partner5.png",
-      "link": "#"
+      "logo": "./image/logo5.png",
+      "link": "#",
+      "order": 5,
+      "active": true
     },
     {
       "name": "Partner 6",
-      "image": "./image/partner6.png",
-      "link": "#"
+      "logo": "./image/logo6.png",
+      "link": "#",
+      "order": 6,
+      "active": true
     }
   ]
 }

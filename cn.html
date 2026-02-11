@@ -285,7 +285,7 @@
             z-index: 10;
             margin-top: 100vh;
             background: var(--black);
-            min-height: auto;
+            min-height: 100vh;
         }
 
         /* ==================== Banner ==================== */
@@ -879,7 +879,7 @@
             .posters-container { padding: 0 15px; gap: 12px; }
             .poster-item { border-radius: 6px; }
             .poster-title { font-size: 14px; }
-            .footer-gap { height: 60px; }
+            .footer-gap { height: 100px; }
             .footer-main { padding: 40px 30px 30px; }
             .footer-container { flex-direction: column; gap: 30px; text-align: center; }
             .footer-contact-left, .footer-contact-right { text-align: center; flex: 1; width: 100%; }
@@ -908,7 +908,6 @@
             .posters-container { padding: 0 20px; gap: 15px; justify-content: center; }
             
             /* 手机端海报2和3恢复放大效果 */
-            .poster-item,
             .poster-item-alt {
                 flex: 0 0 calc(33.333% - 10px);
                 max-width: calc(33.333% - 10px);
@@ -939,7 +938,7 @@
             .poster-title { font-size: 10px; letter-spacing: 1px; margin-bottom: 4px; }
             .poster-link { font-size: 9px; letter-spacing: 0.5px; }
             .poster-overlay { padding: 12px 6px 10px; }
-            .footer-gap { height: 40px; }
+            .footer-gap { height: 80px; }
             .footer-main { padding: 35px 25px 25px; }
             .footer-logo { font-size: 28px; letter-spacing: 3px; margin-bottom: 15px; }
             .social-links { gap: 12px; margin-bottom: 20px; }
@@ -1346,20 +1345,9 @@
             footer: FooterAdmin
         };
     </script>
-    <!-- Data Loader - 从JSON加载后台数据 -->
-    <script src="./js/data-loader.js"></script>
-    <script>
-        // 初始化数据加载器（带错误处理）
-        if (typeof DataLoader !== 'undefined') {
-            try {
-                DataLoader.init('cn');
-                console.log('✓ DataLoader initialized for CN page');
-            } catch (e) {
-                console.log('✗ DataLoader init error:', e);
-            }
-        } else {
-            console.log('! DataLoader not loaded - using default content');
-        }
-    </script>
+<script src="./js/data-loader.js"></script>
+<script>
+  DataLoader.init('cn');
+</script>
 </body>
 </html>

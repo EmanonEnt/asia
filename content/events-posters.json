@@ -1,27 +1,22 @@
 {
-  "posters": [
-    {
-      "image": "./image/livegigscn1.png",
-      "title": "LiveGigs CN",
-      "linkText": "Get on WeChat →",
-      "link": "https://wxaurl.cn/HMcAK6R7fou"
-    },
-    {
-      "image": "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&h=800&fit=crop",
-      "title": "Epic Past Gigs",
-      "linkText": "View Gallery →",
-      "link": "#",
-      "carousel": [
-        "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&h=800&fit=crop",
-        "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop",
-        "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=600&h=800&fit=crop"
-      ]
-    },
-    {
-      "image": "./image/xrebookingad.jpg",
-      "title": "XRE Booking",
-      "linkText": "Check Out More Partners →",
-      "link": "partners.html"
-    }
-  ]
+  "poster1": {
+    "image": "./image/e-poster1.jpg",
+    "title": "Featured",
+    "link_text": "View Details →",
+    "link": "#"
+  },
+  "poster2": {
+    "carousel": false,
+    "single_image": "./image/e-poster2.jpg",
+    "single_title": "Special",
+    "single_link_text": "View Details →",
+    "single_link": "#",
+    "images": []
+  },
+  "poster3": {
+    "image": "./image/e-poster3.jpg",
+    "title": "More Events",
+    "link_text": "View Details →",
+    "link": "#"
+  }
 }

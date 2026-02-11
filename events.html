@@ -1543,30 +1543,6 @@
             .social-icon { width: 34px; height: 34px; }
             .contact-item { font-size: 10px; }
         }
-    
-        /* 保护性样式 - 防止底部乱码 */
-        .site-footer {
-            display: block !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-        }
-        .footer-main, .footer-bottom {
-            display: block !important;
-            visibility: visible !important;
-        }
-        .footer-container {
-            display: flex !important;
-        }
-        .contact-item, .footer-logo, .social-links, .producer-section {
-            display: block !important;
-            visibility: visible !important;
-        }
-        /* 防止空元素显示 */
-        .contact-item:empty,
-        .footer-logo:empty,
-        .social-links:empty {
-            display: none !important;
-        }
     </style>
 </head>
 <body>
@@ -2667,18 +2643,9 @@
             toggleAdmin: toggleAdmin
         };
     </script>
-
-    <!-- Data Loader - Fixed -->
-    <script src="./js/data-loader.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            if (typeof DataLoader !== 'undefined') {
-                try {
-                    DataLoader.init('events');
-                } catch(e) {
-                    console.error('DataLoader init failed:', e);
-                }
-            }
-        });
-    </script>
+<script src="./js/data-loader.js"></script>
+<script>
+  DataLoader.init('events');
+</script>
 </body>
+</html>

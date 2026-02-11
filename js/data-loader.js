@@ -1,227 +1,335 @@
 /**
- * LiveGigs Data Loader - Ultimate Fix
- * 原则：只更新已有元素的数据，不创建/删除任何DOM元素
+ * LiveGigs Asia - Data Loader
+ * 从JSON文件加载内容到页面
  */
 
-(function() {
-    'use strict';
-
-    const CONFIG = {
-        contentPath: './content/',
-        debug: true
-    };
-
-    function log(...args) {
-        if (CONFIG.debug) console.log('[DataLoader]', ...args);
-    }
-
-    // 安全地更新元素文本
-    function safeUpdateText(selector, value) {
-        if (!value || value === 'undefined' || value === 'null') {
-            log('Skipping invalid value for', selector);
-            return;
-        }
-
-        const elements = document.querySelectorAll(selector);
-        elements.forEach(el => {
-            if (el && el.textContent !== value) {
-                el.textContent = value;
-                log('Updated text:', selector, '->', value);
-            }
-        });
-    }
-
-    // 安全地更新图片
-    function safeUpdateImage(selector, src) {
-        if (!src || src === 'undefined' || src === 'null') {
-            log('Skipping invalid image for', selector);
-            return;
-        }
-
-        const elements = document.querySelectorAll(selector);
-        elements.forEach(el => {
-            if (el && el.src !== src) {
-                el.src = src;
-                log('Updated image:', selector, '->', src);
-            }
-        });
-    }
-
-    // 安全地更新链接
-    function safeUpdateLink(selector, href) {
-        if (!href || href === 'undefined' || href === 'null') {
-            log('Skipping invalid link for', selector);
-            return;
-        }
-
-        const elements = document.querySelectorAll(selector);
-        elements.forEach(el => {
-            if (el && el.href !== href) {
-                el.href = href;
-                log('Updated link:', selector, '->', href);
-            }
-        });
-    }
-
-    // 加载JSON - 不处理错误，让页面保持原样
-    async function loadJSON(filename) {
+const DataLoader = {
+    basePath: './content',
+    cache: {},
+    
+    async loadJSON(filename) {
         try {
-            const url = `${CONFIG.contentPath}${filename}.json?t=${Date.now()}`;
-            log('Loading:', url);
-
-            const response = await fetch(url);
-            if (!response.ok) {
-                log('File not found or error:', filename, response.status);
-                return null;
-            }
-
+            if (this.cache[filename]) return this.cache[filename];
+            const response = await fetch(`${this.basePath}/${filename}`);
+            if (!response.ok) throw new Error('Failed to load');
             const data = await response.json();
-            log('Loaded successfully:', filename);
+            this.cache[filename] = data;
             return data;
-
-        } catch (e) {
-            log('Error loading', filename, ':', e.message);
+        } catch (error) {
+            console.warn(`Failed to load ${filename}:`, error);
             return null;
         }
-    }
-
-    // 更新底部 - 只更新文本，不改变结构
-    function updateFooter(data) {
+    },
+    
+    async loadBanners() {
+        const data = await this.loadJSON('banners.json');
+        if (!data || !data.banners) return [];
+        return data.banners.filter(b => b.active).sort((a, b) => a.order - b.order);
+    },
+    
+    async loadPosters(type) {
+        const filename = type === 'cn' ? 'cn-posters.json' : 
+                        type === 'events' ? 'events-posters.json' : 
+                        'index-posters.json';
+        return await this.loadJSON(filename);
+    },
+    
+    async loadEventsCarousel() {
+        const data = await this.loadJSON('events-carousel.json');
+        if (!data || !data.items) return [];
+        return data.items.filter(i => i.active).sort((a, b) => a.order - b.order);
+    },
+    
+    async loadEventsManaged() {
+        const data = await this.loadJSON('events-managed.json');
+        if (!data || !data.events) return [];
+        return data.events.filter(e => e.active).sort((a, b) => a.order - b.order);
+    },
+    
+    async loadPartnersBanners() {
+        return await this.loadJSON('partners-banners.json');
+    },
+    
+    async loadCollaborators() {
+        const data = await this.loadJSON('collaborators.json');
+        if (!data || !data.logos) return [];
+        return data.logos.filter(l => l.active).sort((a, b) => a.order - b.order);
+    },
+    
+    async loadFooter(isCN) {
+        const filename = isCN ? 'footer-cn.json' : 'footer-global.json';
+        return await this.loadJSON(filename);
+    },
+    
+    renderBanners(banners, containerId) {
+        const container = document.getElementById(containerId);
+        if (!container || !banners.length) return;
+        
+        container.innerHTML = banners.map((banner, index) => `
+            <div class="banner-slide ${index === 0 ? 'active' : ''}" data-index="${index}">
+                <img src="${banner.image}" alt="${banner.title}">
+                <div class="banner-content">
+                    <h2>${banner.title}</h2>
+                    <a href="${banner.link}" class="neon-btn">${banner.button_text}</a>
+                </div>
+            </div>
+        `).join('');
+        
+        if (banners.length > 1) {
+            this.initCarousel(container, banners.length);
+        }
+    },
+    
+    renderPosters(posters, containerId) {
+        const container = document.getElementById(containerId);
+        if (!container || !posters) return;
+        
+        let html = '';
+        
+        if (posters.poster1) {
+            html += this.createPosterHTML(posters.poster1, 1);
+        }
+        
+        if (posters.poster2) {
+            if (posters.poster2.carousel && posters.poster2.images && posters.poster2.images.length) {
+                html += this.createCarouselHTML(posters.poster2.images, 2);
+            } else {
+                html += this.createPosterHTML({
+                    image: posters.poster2.single_image,
+                    title: posters.poster2.single_title,
+                    link_text: posters.poster2.single_link_text,
+                    link: posters.poster2.single_link
+                }, 2);
+            }
+        }
+        
+        if (posters.poster3) {
+            html += this.createPosterHTML(posters.poster3, 3);
+        }
+        
+        container.innerHTML = html;
+    },
+    
+    createPosterHTML(poster, index) {
+        if (!poster || !poster.image) return '';
+        return `
+            <div class="poster-item poster-${index}">
+                <img src="${poster.image}" alt="${poster.title || ''}">
+                <div class="poster-overlay">
+                    <h3>${poster.title || ''}</h3>
+                    <a href="${poster.link || '#'}" class="poster-link">${poster.link_text || 'View Details →'}</a>
+                </div>
+            </div>
+        `;
+    },
+    
+    createCarouselHTML(images, index) {
+        const slides = images.map((img, i) => `
+            <div class="carousel-slide ${i === 0 ? 'active' : ''}">
+                <img src="${img.image}" alt="${img.title || ''}">
+                <div class="carousel-overlay">
+                    <h3>${img.title || ''}</h3>
+                    <a href="${img.link || '#'}" class="poster-link">View Details →</a>
+                </div>
+            </div>
+        `).join('');
+        
+        return `
+            <div class="poster-item poster-${index} carousel-poster">
+                <div class="carousel-container">${slides}</div>
+            </div>
+        `;
+    },
+    
+    renderEvents(events, containerId, limit = 3) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        
+        const displayEvents = events.slice(0, limit);
+        const hasMore = events.length > limit;
+        
+        container.innerHTML = displayEvents.map(event => `
+            <div class="event-card">
+                <div class="event-image">
+                    <img src="${event.image}" alt="${event.title}">
+                    ${event.ontour ? '<span class="badge ontour">ON TOUR</span>' : ''}
+                    ${event.soldout ? '<span class="badge soldout">SOLD OUT</span>' : ''}
+                </div>
+                <div class="event-info">
+                    <h3>${event.title}</h3>
+                    <p class="event-date">${event.date}</p>
+                    <p class="event-location">${event.location}</p>
+                    <p class="event-time">${event.time}</p>
+                    ${event.ticket ? `<p class="event-ticket">${event.ticket}</p>` : ''}
+                    <p class="event-desc">${event.description}</p>
+                    <a href="${event.button_link}" class="event-btn">${event.button_text}</a>
+                </div>
+            </div>
+        `).join('');
+        
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+        if (loadMoreBtn) {
+            loadMoreBtn.style.display = hasMore ? 'block' : 'none';
+            loadMoreBtn.onclick = () => {
+                this.renderEvents(events, containerId, limit + 3);
+            };
+        }
+    },
+    
+    renderPartnersBanners(banners) {
+        if (!banners) return;
+        
+        Object.keys(banners).forEach(key => {
+            const banner = banners[key];
+            if (!banner.active) return;
+            
+            const container = document.getElementById(key);
+            if (!container) return;
+            
+            let html = '';
+            if (banner.bg_image) {
+                html += `<div class="banner-bg" style="background-image: url('${banner.bg_image}')"></div>`;
+            }
+            if (banner.logo) {
+                html += `<img src="${banner.logo}" class="banner-logo" alt="">`;
+            }
+            if (banner.product_image) {
+                html += `<img src="${banner.product_image}" class="banner-product" alt="">`;
+            }
+            if (banner.title) {
+                html += `<h2>${banner.title}</h2>`;
+            }
+            if (banner.description) {
+                html += `<p>${banner.description}</p>`;
+            }
+            if (banner.button_text) {
+                html += `<a href="${banner.button_link}" class="neon-btn">${banner.button_text}</a>`;
+            }
+            
+            container.innerHTML = html;
+        });
+    },
+    
+    renderCollaborators(logos, containerId) {
+        const container = document.getElementById(containerId);
+        if (!container || !logos.length) return;
+        
+        container.innerHTML = logos.map(logo => `
+            <a href="${logo.link || '#'}" class="collaborator-logo" title="${logo.name}">
+                <img src="${logo.logo}" alt="${logo.name}">
+            </a>
+        `).join('');
+    },
+    
+    renderFooter(data, isCN) {
         if (!data) return;
-
-        log('Updating footer...');
-
-        // 邮箱
-        if (data.email) {
-            const emailLink = document.querySelector('a[href^="mailto"]');
-            if (emailLink) {
-                emailLink.href = `mailto:${data.email}`;
-                emailLink.textContent = data.email;
-            }
+        
+        const emailEl = document.querySelector('.footer-email a');
+        if (emailEl) {
+            emailEl.href = `mailto:${data.email}`;
+            emailEl.textContent = data.email;
         }
-
-        // 电话
-        if (data.phone) {
-            const phoneLink = document.querySelector('a[href^="tel"]');
-            if (phoneLink) {
-                phoneLink.href = `tel:${data.phone}`;
-                phoneLink.textContent = data.phone;
-            }
+        
+        const phoneEl = document.querySelector('.footer-phone a');
+        if (phoneEl) {
+            phoneEl.href = `tel:${data.phone}`;
+            phoneEl.textContent = data.phone;
         }
-
-        // 地址
-        if (data.address) {
-            const addressEl = document.querySelector('.footer-contact-right .contact-item');
-            if (addressEl) {
-                addressEl.innerHTML = data.address.replace(/\n/g, '<br>');
-            }
+        
+        const addressEl = document.querySelector('.footer-address');
+        if (addressEl) {
+            addressEl.innerHTML = data.address.replace(/\n/g, '<br>');
         }
-
-        // 社交链接
-        if (data.social && Array.isArray(data.social)) {
-            data.social.forEach(social => {
-                if (social.platform && social.url) {
-                    const icon = document.querySelector(`[data-platform="${social.platform}"]`);
-                    if (icon) {
-                        icon.href = social.url;
-                    }
+        
+        if (data.social) {
+            data.social.forEach(s => {
+                if (!s.active) return;
+                const icon = document.querySelector(`[data-platform="${s.platform}"]`);
+                if (icon) {
+                    icon.href = s.url;
                 }
             });
         }
-
-        log('Footer updated');
+        
+        const copyrightEl = document.querySelector('.footer-copyright');
+        if (copyrightEl) {
+            copyrightEl.textContent = data.copyright;
+        }
+        
+        const producerEl = document.querySelector('.producer-logo');
+        if (producerEl && data.producer_logo) {
+            producerEl.src = data.producer_logo;
+        }
+    },
+    
+    initCarousel(container, total) {
+        let current = 0;
+        const slides = container.querySelectorAll('.banner-slide');
+        if (slides.length <= 1) return;
+        
+        setInterval(() => {
+            slides[current].classList.remove('active');
+            current = (current + 1) % total;
+            slides[current].classList.add('active');
+        }, 5000);
+    },
+    
+    async init(pageType) {
+        try {
+            switch(pageType) {
+                case 'index':
+                    const [banners, posters, footer] = await Promise.all([
+                        this.loadBanners(),
+                        this.loadPosters('index'),
+                        this.loadFooter(false)
+                    ]);
+                    this.renderBanners(banners, 'bannerContainer');
+                    this.renderPosters(posters, 'postersContainer');
+                    this.renderFooter(footer, false);
+                    break;
+                    
+                case 'cn':
+                    const [cnBanners, cnPosters, cnFooter] = await Promise.all([
+                        this.loadBanners(),
+                        this.loadPosters('cn'),
+                        this.loadFooter(true)
+                    ]);
+                    this.renderBanners(cnBanners, 'bannerContainer');
+                    this.renderPosters(cnPosters, 'postersContainer');
+                    this.renderFooter(cnFooter, true);
+                    break;
+                    
+                case 'events':
+                    const [evPosters, evCarousel, evManaged, evFooter] = await Promise.all([
+                        this.loadPosters('events'),
+                        this.loadEventsCarousel(),
+                        this.loadEventsManaged(),
+                        this.loadFooter(false)
+                    ]);
+                    this.renderPosters(evPosters, 'postersContainer');
+                    this.renderEvents(evManaged, 'eventsContainer', 3);
+                    this.renderFooter(evFooter, false);
+                    break;
+                    
+                case 'partners':
+                    const [pBanners, collaborators, pFooter] = await Promise.all([
+                        this.loadPartnersBanners(),
+                        this.loadCollaborators(),
+                        this.loadFooter(false)
+                    ]);
+                    this.renderPartnersBanners(pBanners);
+                    this.renderCollaborators(collaborators, 'collaboratorsContainer');
+                    this.renderFooter(pFooter, false);
+                    break;
+                    
+                default:
+                    const defaultFooter = await this.loadFooter(pageType === 'cn');
+                    this.renderFooter(defaultFooter, pageType === 'cn');
+            }
+        } catch (e) {
+            console.error('DataLoader error:', e);
+        }
     }
+};
 
-    // 更新海报 - 只更新已有海报
-    function updatePosters(posters) {
-        if (!posters || !Array.isArray(posters)) return;
-
-        log('Updating posters...');
-
-        posters.forEach((poster, index) => {
-            const id = index + 1;
-            const posterEl = document.querySelector(`[data-poster-id="${id}"]`);
-
-            if (!posterEl) {
-                log('Poster not found:', id);
-                return;
-            }
-
-            // 更新图片
-            if (poster.image) {
-                const img = posterEl.querySelector('img');
-                if (img) img.src = poster.image;
-            }
-
-            // 更新标题
-            if (poster.title) {
-                const title = posterEl.querySelector('.poster-title');
-                if (title) title.textContent = poster.title;
-            }
-
-            // 更新链接文字
-            if (poster.linkText) {
-                const link = posterEl.querySelector('.poster-link');
-                if (link) link.textContent = poster.linkText;
-            }
-
-            // 更新链接地址
-            if (poster.link) {
-                posterEl.setAttribute('data-link', poster.link);
-                const link = posterEl.querySelector('.poster-link');
-                if (link) link.href = poster.link;
-            }
-        });
-
-        log('Posters updated');
-    }
-
-    // 页面初始化 - 不修改任何DOM结构
-    async function init(pageType) {
-        log('Initializing for page:', pageType);
-
-        // 加载底部数据（所有页面共用）
-        const isCN = pageType === 'cn';
-        const footerFile = isCN ? 'footer-cn' : 'footer-global';
-        const footerData = await loadJSON(footerFile);
-        if (footerData) {
-            updateFooter(footerData);
-        }
-
-        // 根据页面类型加载其他数据
-        if (pageType === 'events') {
-            const postersData = await loadJSON('events-posters');
-            if (postersData && postersData.posters) {
-                updatePosters(postersData.posters);
-            }
-        }
-        else if (pageType === 'index') {
-            const postersData = await loadJSON('index-posters');
-            if (postersData && postersData.posters) {
-                updatePosters(postersData.posters);
-            }
-        }
-        else if (pageType === 'cn') {
-            const postersData = await loadJSON('cn-posters');
-            if (postersData && postersData.posters) {
-                updatePosters(postersData.posters);
-            }
-        }
-        else if (pageType === 'partners') {
-            // Partners页面特殊处理
-            log('Partners page - minimal updates');
-        }
-
-        log('Initialization complete');
-    }
-
-    // 暴露到全局
-    window.DataLoader = {
-        init: init,
-        loadJSON: loadJSON,
-        updateFooter: updateFooter,
-        updatePosters: updatePosters
-    };
-
-    log('DataLoader loaded successfully');
-})();
+window.DataLoader = DataLoader;

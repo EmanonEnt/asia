@@ -1,35 +1,49 @@
 {
   "events": [
     {
-      "name": "NONAMEFEST 2026",
-      "image": "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&h=800&fit=crop",
-      "status": "242 DAYS",
-      "statusType": "countdown",
-      "countdownDate": "2026-10-10",
-      "details": "10月10日週六 | 地點待定",
-      "venue": "NONAMEFEST 2026",
-      "btnText": "購買票券",
-      "btnLink": "#"
+      "title": "THE NONAME ANTI-MUSIC FESTIVAL",
+      "date": "Feb 15, 2026",
+      "location": "Hong Kong",
+      "time": "8:00 PM",
+      "ticket": "$50 / $80 / $120",
+      "ontour": true,
+      "soldout": false,
+      "description": "The biggest anti-music event featuring top artists",
+      "image": "./image/event1.jpg",
+      "button_text": "Buy Tickets",
+      "button_link": "#",
+      "order": 1,
+      "active": true
     },
     {
-      "name": "PUNK HEART FESTIVAL 2026 WARM-UP Show",
-      "image": "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop",
-      "status": "售完",
-      "statusType": "soldout",
-      "details": "1月17日週六 | 未來俱樂部",
-      "venue": "XI'AN",
-      "btnText": "詳細資料",
-      "btnLink": "#"
+      "title": "PUNK HEART FESTIVAL",
+      "date": "Mar 20, 2026",
+      "location": "Beijing",
+      "time": "7:00 PM",
+      "ticket": "$40 / $60 / $100",
+      "ontour": false,
+      "soldout": true,
+      "description": "Pure punk rock energy all night",
+      "image": "./image/event2.jpg",
+      "button_text": "Sold Out",
+      "button_link": "#",
+      "order": 2,
+      "active": true
     },
     {
-      "name": "PUNK HEART FESTIVAL 2025",
-      "image": "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=600&h=800&fit=crop",
-      "status": "ON TOUR",
-      "statusType": "ontour",
-      "details": "10月03日週五 | 回授俱樂部",
-      "venue": "PUNK HEART FESTIVAL 2025",
-      "btnText": "詳細資料",
-      "btnLink": "#"
+      "title": "INDIE NIGHT",
+      "date": "Apr 5, 2026",
+      "location": "Shanghai",
+      "time": "9:00 PM",
+      "ticket": "$30 / $50",
+      "ontour": false,
+      "soldout": false,
+      "description": "Best indie bands in one night",
+      "image": "./image/event3.jpg",
+      "button_text": "Buy Tickets",
+      "button_link": "#",
+      "order": 3,
+      "active": true
     }
   ]
 }
