@@ -4,22 +4,22 @@
     {
       "name": "Facebook",
       "url": "https://facebook.com/livegigsasia",
-      "icon": "facebook"
+      "icon": "./image/icon-facebook.png"
     },
     {
       "name": "Instagram",
       "url": "https://instagram.com/livegigsasia",
-      "icon": "instagram"
+      "icon": "./image/icon-instagram.png"
     },
     {
       "name": "YouTube",
       "url": "https://youtube.com/livegigsasia",
-      "icon": "youtube"
+      "icon": "./image/icon-youtube.png"
     },
     {
       "name": "X",
       "url": "https://x.com/livegigsasia",
-      "icon": "x"
+      "icon": "./image/icon-x.png"
     }
   ],
   "producer": "./image/emanonent-logo.png"

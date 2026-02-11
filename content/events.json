@@ -7,7 +7,7 @@
     "image": "./image/event1.jpg",
     "ticket": "$50",
     "status": "ontour",
-    "description": "Punk rock night with special guests",
+    "description": "Punk rock night",
     "button_text": "Get Tickets →",
     "link": "./tickets.html"
   },
@@ -19,7 +19,7 @@
     "image": "./image/event2.jpg",
     "ticket": "$80",
     "status": "soldout",
-    "description": "Annual punk music celebration",
+    "description": "Annual celebration",
     "button_text": "View Details →",
     "link": "./events.html"
   },
@@ -31,7 +31,7 @@
     "image": "./image/event3.jpg",
     "ticket": "$40",
     "status": "",
-    "description": "Indie and alternative bands showcase",
+    "description": "",
     "button_text": "Buy Now →",
     "link": "./tickets.html"
   }

@@ -4,17 +4,12 @@
     {
       "name": "微信",
       "url": "https://weixin.qq.com/livegigsasia",
-      "icon": "wechat"
+      "icon": "./image/icon-wechat.png"
     },
     {
       "name": "微博",
       "url": "https://weibo.com/livegigsasia",
-      "icon": "weibo"
-    },
-    {
-      "name": "抖音",
-      "url": "https://douyin.com/livegigsasia",
-      "icon": "douyin"
+      "icon": "./image/icon-weibo.png"
     }
   ],
   "producer": "./image/emanonent-logo.png"

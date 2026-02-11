@@ -1,0 +1,38 @@
+[
+  {
+    "image": "./image/p-p-1.jpg",
+    "logo": "./image/p-p-1logo.png",
+    "title": "",
+    "description": "",
+    "button_text": "Learn More →",
+    "link": "./partners.html",
+    "active": true
+  },
+  {
+    "image": "./image/p-p-2.jpg",
+    "logo": "./image/p-p-2logo.png",
+    "title": "小子联盟唱片",
+    "description": "",
+    "button_text": "Visit Site →",
+    "link": "https://kids-union.com",
+    "active": true
+  },
+  {
+    "image": "./image/p-p-3.png",
+    "logo": "./image/p-p-3logo.png",
+    "title": "XRE BOOKING",
+    "description": "Professional booking agency for Asia tours",
+    "button_text": "Contact Us →",
+    "link": "./contact.html",
+    "active": true
+  },
+  {
+    "image": "./image/p-p-4.jpg",
+    "logo": "./image/p-p-4logo.png",
+    "title": "",
+    "description": "",
+    "button_text": "Explore →",
+    "link": "./partners.html",
+    "active": true
+  }
+]

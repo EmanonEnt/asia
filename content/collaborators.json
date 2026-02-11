@@ -1,14 +1,17 @@
 [
   {
     "logo": "./image/partner1.png",
-    "link": "https://partner1.com"
+    "link": "https://partner1.com",
+    "name": "Partner 1"
   },
   {
     "logo": "./image/partner2.png",
-    "link": ""
+    "link": "",
+    "name": "Partner 2"
   },
   {
     "logo": "./image/partner3.png",
-    "link": "https://partner3.com"
+    "link": "https://partner3.com",
+    "name": "Partner 3"
   }
 ]
