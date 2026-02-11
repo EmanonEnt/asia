@@ -20,17 +20,10 @@
   "posters": {
     "index": [
       {"title": "Event 1", "image": "./image/1-b-2.jpg", "link_text": "View Details →", "link": "./events.html"},
-      {"title": "Event 2", "image": "./image/1-b-3.jpg", "link_text": "View Details →", "link": "./events.html", "carousel": false},
+      {"title": "Event 2", "image": "./image/1-b-3.jpg", "link_text": "View Details →", "link": "./events.html"},
       {"title": "Event 3", "image": "./image/livegigscn1.png", "link_text": "View Details →", "link": "./events.html"}
-    ],
-    "cn": [
-      {"title": "活动 1", "image": "./image/cn-asiaad.jpg", "link_text": "查看详情 →", "link": "./events.html"},
-      {"title": "活动 2", "image": "./image/1-b-2.jpg", "link_text": "查看详情 →", "link": "./events.html", "carousel": true},
-      {"title": "活动 3", "image": "./image/1-b-3.jpg", "link_text": "查看详情 →", "link": "./events.html"}
     ]
   },
-  "events": [],
-  "collaborators": [],
   "footer": {
     "copyright": "© 2026 LIVEGIGS ASIA. ALL RIGHTS RESERVED.",
     "social": [
@@ -40,6 +33,5 @@
       {"name": "X", "url": "https://x.com/livegigsasia"}
     ],
     "producer": "./image/emanonent-logo.png"
-  },
-  "lastUpdated": "2026-02-11"
+  }
 }
