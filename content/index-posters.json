@@ -1,21 +1,5 @@
 [
-  {
-    "title": "Event 1",
-    "image": "./image/1-b-2.jpg",
-    "link_text": "View Details →",
-    "link": "./events.html"
-  },
-  {
-    "title": "Event 2",
-    "image": "./image/1-b-3.jpg",
-    "link_text": "View Details →",
-    "link": "./events.html",
-    "carousel": false
-  },
-  {
-    "title": "Event 3",
-    "image": "./image/livegigscn1.png",
-    "link_text": "View Details →",
-    "link": "./events.html"
-  }
+  {},
+  {},
+  {}
 ]

@@ -1,21 +1,5 @@
 [
-  {
-    "title": "活动 1",
-    "image": "./image/cn-asiaad.jpg",
-    "link_text": "查看详情 →",
-    "link": "./events.html"
-  },
-  {
-    "title": "活动 2",
-    "image": "./image/1-b-2.jpg",
-    "link_text": "查看详情 →",
-    "link": "./events.html",
-    "carousel": false
-  },
-  {
-    "title": "活动 3",
-    "image": "./image/1-b-3.jpg",
-    "link_text": "查看详情 →",
-    "link": "./events.html"
-  }
+  {},
+  {},
+  {}
 ]
