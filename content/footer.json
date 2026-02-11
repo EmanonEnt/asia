@@ -1,0 +1,44 @@
+{
+  "global": {
+    "copyright": "© 2026 LIVEGIGS ASIA. ALL RIGHTS RESERVED.",
+    "social": [
+      {
+        "name": "Facebook",
+        "url": "https://facebook.com/livegigsasia",
+        "icon": "facebook"
+      },
+      {
+        "name": "Instagram",
+        "url": "https://instagram.com/livegigsasia",
+        "icon": "instagram"
+      },
+      {
+        "name": "YouTube",
+        "url": "https://youtube.com/livegigsasia",
+        "icon": "youtube"
+      },
+      {
+        "name": "X",
+        "url": "https://x.com/livegigsasia",
+        "icon": "x"
+      }
+    ],
+    "producer": "./image/emanonent-logo.png"
+  },
+  "cn": {
+    "copyright": "© 2026 LIVEGIGS ASIA. 版权所有.",
+    "social": [
+      {
+        "name": "微信",
+        "url": "https://weixin.qq.com/livegigsasia",
+        "icon": "wechat"
+      },
+      {
+        "name": "微博",
+        "url": "https://weibo.com/livegigsasia",
+        "icon": "weibo"
+      }
+    ],
+    "producer": "./image/emanonent-logo.png"
+  }
+}

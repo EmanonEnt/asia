@@ -1,22 +1,26 @@
-{
-  "poster1": {
-    "image": "./image/e-poster1.jpg",
-    "title": "Featured",
+[
+  {
+    "title": "Past Gig 1",
+    "image": "./image/1-b-2.jpg",
     "link_text": "View Details →",
-    "link": "#"
+    "link": "./events.html"
   },
-  "poster2": {
-    "carousel": false,
-    "single_image": "./image/e-poster2.jpg",
-    "single_title": "Special",
-    "single_link_text": "View Details →",
-    "single_link": "#",
-    "images": []
+  {
+    "title": "Epic Past Gigs",
+    "carousel": true,
+    "carousel_images": [
+      {
+        "title": "Gig 1",
+        "image": "./image/gig1.jpg",
+        "link_text": "View →",
+        "link": "./event1.html"
+      }
+    ]
   },
-  "poster3": {
-    "image": "./image/e-poster3.jpg",
-    "title": "More Events",
+  {
+    "title": "Past Gig 3",
+    "image": "./image/livegigscn1.png",
     "link_text": "View Details →",
-    "link": "#"
+    "link": "./events.html"
   }
-}
+]
