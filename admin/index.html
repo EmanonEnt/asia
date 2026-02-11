@@ -640,11 +640,11 @@
     <div id="syncStatus" class="sync-status"></div>
 
     <script>
-        // 简化的JavaScript代码
+        // 配置 - 使用你的旧密码
         const CONFIG = {
             repoOwner: 'EmanonEnt',
             repoName: 'asia',
-            adminPassword: 'livegigs2026',
+            adminPassword: '00123456a',  // 你的旧密码
             sessionDuration: 30 * 60 * 1000
         };
 
@@ -742,8 +742,9 @@
             const token = localStorage.getItem('lg_github_token');
             showAlert('正在同步...', 'info');
 
-            // 更新版本号，强制前端刷新
-            localStorage.setItem('lg_data_version', Date.now().toString());
+            // 更新版本号
+            const version = Date.now().toString();
+            localStorage.setItem('lg_data_version', version);
 
             const files = [
                 { name: 'banners.json', content: appData.banners },
