@@ -1,15 +1,21 @@
 {
-  "copyright": "© 2025 LIVEGIGS ASIA. ALL RIGHTS RESERVED.",
-  "socialLinks": [
+  "copyright": "© 2026 LIVEGIGS ASIA. 版权所有.",
+  "social": [
     {
-      "icon": "weibo",
-      "url": "https://weibo.com/livegigsasia",
-      "title": "微博"
+      "name": "微信",
+      "url": "https://weixin.qq.com/livegigsasia",
+      "icon": "./image/icon-wechat.png"
     },
     {
-      "icon": "wechat",
-      "url": "#",
-      "title": "微信"
+      "name": "微博",
+      "url": "https://weibo.com/livegigsasia",
+      "icon": "./image/icon-weibo.png"
+    },
+    {
+      "name": "抖音",
+      "url": "https://douyin.com/livegigsasia",
+      "icon": "./image/icon-douyin.png"
     }
-  ]
+  ],
+  "producer": "./image/emanonent-logo.png"
 }
