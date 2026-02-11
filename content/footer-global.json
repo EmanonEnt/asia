@@ -1,26 +1,4 @@
 {
-  "copyright": "© 2026 LIVEGIGS ASIA. ALL RIGHTS RESERVED.",
-  "social": [
-    {
-      "name": "Facebook",
-      "url": "https://facebook.com/livegigsasia",
-      "icon": "./image/icon-facebook.png"
-    },
-    {
-      "name": "Instagram",
-      "url": "https://instagram.com/livegigsasia",
-      "icon": "./image/icon-instagram.png"
-    },
-    {
-      "name": "YouTube",
-      "url": "https://youtube.com/livegigsasia",
-      "icon": "./image/icon-youtube.png"
-    },
-    {
-      "name": "X",
-      "url": "https://x.com/livegigsasia",
-      "icon": "./image/icon-x.png"
-    }
-  ],
-  "producer": "./image/emanonent-logo.png"
+  "copyright": "Copyright © 2001-2026 EMANON ENT. - All Rights Reserved.",
+  "socialLinks": []
 }
