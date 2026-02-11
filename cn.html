@@ -285,7 +285,7 @@
             z-index: 10;
             margin-top: 100vh;
             background: var(--black);
-            min-height: 100vh;
+            min-height: auto;
         }
 
         /* ==================== Banner ==================== */
@@ -908,6 +908,7 @@
             .posters-container { padding: 0 20px; gap: 15px; justify-content: center; }
             
             /* 手机端海报2和3恢复放大效果 */
+            .poster-item,
             .poster-item-alt {
                 flex: 0 0 calc(33.333% - 10px);
                 max-width: calc(33.333% - 10px);
@@ -922,15 +923,18 @@
                 transform: translateY(-12px);
             }
             
+            .poster-item img,
             .poster-item-alt img {
                 transition: all 0.4s;
             }
             
+            .poster-item:hover img,
             .poster-item-alt:hover img {
                 filter: brightness(0.65);
                 transform: scale(1.08);
             }
             
+            .poster-item .poster-overlay,
             .poster-item-alt .poster-overlay {
                 padding: 12px 6px 10px;
             }
@@ -957,6 +961,7 @@
             .hero-title { font-size: 38px; letter-spacing: 3px; }
             .hero-subtitle { font-size: 11px; }
             .posters-container { padding: 0 15px; gap: 12px; }
+            .poster-item,
             .poster-item-alt {
                 flex: 0 0 calc(33.333% - 8px);
                 max-width: calc(33.333% - 8px);
@@ -1346,6 +1351,8 @@
         };
     </script>
 <script src="./js/data-loader.js"></script>
+<script>
+  DataLoader.init('cn');
+</script>
 </body>
 </html>
-
