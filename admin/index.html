@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LiveGigs Asia - 后台管理</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            background: #050505;
+            color: #c0c0c0;
+            min-height: 100vh;
+        }
+        .login-screen {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, #1a0000 0%, #050505 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        .login-box {
+            background: rgba(0,0,0,0.8);
+            border: 2px solid #8b0000;
+            padding: 40px;
+            border-radius: 8px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+        .login-box h1 {
+            color: #8b0000;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        .login-box p {
+            color: #888;
+            font-size: 12px;
+            margin-bottom: 30px;
+            font-family: Arial, sans-serif;
+        }
+        .login-box input {
+            width: 100%;
+            padding: 12px;
+            background: #1a1a1a;
+            border: 2px solid #333;
+            color: #fff;
+            font-size: 16px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .login-box button {
+            width: 100%;
+            padding: 12px;
+            background: #8b0000;
+            color: #fff;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        }
+        .login-box button:hover { background: #a00000; }
+        .error-msg {
+            color: #ff6666;
+            font-size: 12px;
+            margin-top: 10px;
+            display: none;
+        }
+        .header {
+            background: rgba(0,0,0,0.9);
+            border-bottom: 3px solid #8b0000;
+            padding: 20px;
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            display: none;
+        }
+        .header h1 {
+            color: #8b0000;
+            font-size: 24px;
+            text-transform: uppercase;
+        }
+        .header p {
+            color: #888;
+            font-size: 12px;
+            margin-top: 5px;
+            font-family: Arial, sans-serif;
+        }
+        .logout-btn {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #333;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 100px 20px 40px;
+            display: none;
+        }
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+        }
+        .nav-tab {
+            padding: 10px 20px;
+            background: #1a1a1a;
+            border: 2px solid #333;
+            color: #c0c0c0;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 14px;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        }
+        .nav-tab:hover, .nav-tab.active {
+            background: #8b0000;
+            border-color: #8b0000;
+            color: #fff;
+        }
+        .section { display: none; }
+        .section.active { display: block; }
+        .card {
+            background: #0a0a0a;
+            border: 2px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .card h3 {
+            color: #8b0000;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #c0c0c0;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            background: #1a1a1a;
+            border: 2px solid #333;
+            color: #fff;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+        }
+        .btn {
+            padding: 10px 20px;
+            background: #8b0000;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 14px;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        .btn:hover { background: #a00000; }
+        .btn-secondary { background: #333; }
+        .btn-secondary:hover { background: #444; }
+        .btn-success { background: #006400; }
+        .item-list { margin-top: 20px; }
+        .item-card {
+            background: #1a1a1a;
+            border: 2px solid #333;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .item-info h4 {
+            color: #fff;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        .item-info p {
+            color: #888;
+            font-size: 12px;
+            font-family: Arial, sans-serif;
+        }
+        .item-actions { display: flex; gap: 10px; }
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 12px;
+            border: none;
+            cursor: pointer;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        }
+        .btn-edit { background: #c0c0c0; color: #000; }
+        .btn-delete { background: #8b0000; color: #fff; }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+    <!-- 登录界面 -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-box">
+            <h1>LIVEGIGS ASIA</h1>
+            <p>后台管理系统</p>
+            <input type="password" id="password" placeholder="输入密码" onkeypress="if(event.key==='Enter')doLogin()">
+            <button onclick="doLogin()">登录</button>
+            <div class="error-msg" id="errorMsg">密码错误</div>
+        </div>
+    </div>
+
+    <!-- 主界面 -->
+    <div class="header" id="header">
+        <h1>后台管理</h1>
+        <p>数据管理面板</p>
+        <button class="logout-btn" onclick="doLogout()">退出</button>
+    </div>
+
+    <div class="container" id="mainContainer">
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('banners')">Banner</button>
+            <button class="nav-tab" onclick="showTab('events')">活动</button>
+            <button class="nav-tab" onclick="showTab('posters')">海报</button>
+            <button class="nav-tab" onclick="showTab('footer')">底部</button>
+            <button class="nav-tab" onclick="showTab('export')">导出</button>
+        </div>
+
+        <!-- Banner管理 -->
+        <div id="banners" class="section active">
+            <div class="card">
+                <h3>添加/编辑 Banner</h3>
+                <div class="form-group">
+                    <label>标题</label>
+                    <input type="text" id="bannerTitle" placeholder="Banner标题">
+                </div>
+                <div class="form-group">
+                    <label>图片地址（支持 ./ 或 https://）</label>
+                    <input type="text" id="bannerImage" placeholder="./image/banner.jpg">
+                </div>
+                <div class="form-group">
+                    <label>按钮文字</label>
+                    <input type="text" id="bannerBtn" placeholder="View Details →">
+                </div>
+                <div class="form-group">
+                    <label>链接地址（支持 ./ 或 https://）</label>
+                    <input type="text" id="bannerLink" placeholder="./events.html">
+                </div>
+                <button class="btn" onclick="saveBanner()">保存</button>
+                <button class="btn btn-secondary" onclick="resetBanner()">重置</button>
+            </div>
+            <div class="card">
+                <h3>Banner列表</h3>
+                <div id="bannerList"></div>
+            </div>
+        </div>
+
+        <!-- 活动管理 -->
+        <div id="events" class="section">
+            <div class="card">
+                <h3>添加/编辑活动</h3>
+                <input type="hidden" id="eventEditId" value="">
+                <div class="form-group">
+                    <label>活动标题 *</label>
+                    <input type="text" id="eventTitle" placeholder="活动名称">
+                </div>
+                <div class="form-group">
+                    <label>日期（用于倒计时，格式：2026-03-15）</label>
+                    <input type="text" id="eventDate" placeholder="2026-03-15">
+                </div>
+                <div class="form-group">
+                    <label>地点</label>
+                    <input type="text" id="eventLocation" placeholder="演出地点">
+                </div>
+                <div class="form-group">
+                    <label>时间</label>
+                    <input type="text" id="eventTime" placeholder="20:00">
+                </div>
+                <div class="form-group">
+                    <label>海报图片 *（支持 ./ 或 https://）</label>
+                    <input type="text" id="eventImage" placeholder="./image/event.jpg">
+                </div>
+                <div class="form-group">
+                    <label>门票</label>
+                    <input type="text" id="eventTicket" placeholder="$50">
+                </div>
+                <div class="form-group">
+                    <label>状态</label>
+                    <select id="eventStatus">
+                        <option value="">正常</option>
+                        <option value="ontour">ON TOUR</option>
+                        <option value="soldout">SOLD OUT</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>详情</label>
+                    <textarea id="eventDesc" rows="2" placeholder="活动描述"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>按钮文字</label>
+                    <input type="text" id="eventBtn" value="Get Tickets →">
+                </div>
+                <div class="form-group">
+                    <label>链接地址（支持 ./ 或 https://）</label>
+                    <input type="text" id="eventLink" placeholder="./events.html">
+                </div>
+                <button class="btn" onclick="saveEvent()">保存</button>
+                <button class="btn btn-secondary" onclick="resetEvent()">重置</button>
+            </div>
+            <div class="card">
+                <h3>活动列表</h3>
+                <div id="eventList"></div>
+            </div>
+        </div>
+
+        <!-- 海报管理 -->
+        <div id="posters" class="section">
+            <div class="card">
+                <h3>选择页面</h3>
+                <select id="posterPage" onchange="loadPosters()">
+                    <option value="index">首页</option>
+                    <option value="cn">国内站</option>
+                    <option value="events">活动页</option>
+                </select>
+            </div>
+            <div id="posterForms"></div>
+            <button class="btn btn-success" onclick="savePosters()">保存所有海报</button>
+        </div>
+
+        <!-- 底部管理 -->
+        <div id="footer" class="section">
+            <div class="card">
+                <h3>选择站点</h3>
+                <select id="footerSite" onchange="loadFooter()">
+                    <option value="global">海外站</option>
+                    <option value="cn">国内站</option>
+                </select>
+            </div>
+            <div class="card">
+                <h3>编辑底部</h3>
+                <div class="form-group">
+                    <label>邮箱</label>
+                    <input type="text" id="footerEmail" placeholder="email@example.com">
+                </div>
+                <div class="form-group">
+                    <label>电话</label>
+                    <input type="text" id="footerPhone" placeholder="+852-123-4567">
+                </div>
+                <div class="form-group">
+                    <label>地址（用\n换行）</label>
+                    <textarea id="footerAddress" rows="2" placeholder="地址第一行\n地址第二行"></textarea>
+                </div>
+                <button class="btn" onclick="saveFooter()">保存</button>
+            </div>
+        </div>
+
+        <!-- 导出 -->
+        <div id="export" class="section">
+            <div class="card">
+                <h3>导出数据</h3>
+                <p style="color:#888;margin-bottom:15px;font-family:Arial,sans-serif;font-size:12px;">点击导出后，下载JSON文件并上传到GitHub的content文件夹</p>
+                <button class="btn btn-success" onclick="exportData()">导出所有数据</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const PASSWORD = '00123456a';
+        const SESSION_KEY = 'lg_admin_session';
+        const SESSION_DURATION = 30 * 60 * 1000; // 30分钟
+
+        // 检查登录状态
+        function checkSession() {
+            const session = localStorage.getItem(SESSION_KEY);
+            if (session) {
+                const data = JSON.parse(session);
+                if (Date.now() - data.time < SESSION_DURATION) {
+                    showMain();
+                    return;
+                }
+            }
+            showLogin();
+        }
+
+        function showLogin() {
+            document.getElementById('loginScreen').classList.remove('hidden');
+            document.getElementById('header').style.display = 'none';
+            document.getElementById('mainContainer').style.display = 'none';
+        }
+
+        function showMain() {
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('header').style.display = 'block';
+            document.getElementById('mainContainer').style.display = 'block';
+            loadAllData();
+        }
+
+        function doLogin() {
+            const pwd = document.getElementById('password').value;
+            if (pwd === PASSWORD) {
+                localStorage.setItem(SESSION_KEY, JSON.stringify({time: Date.now()}));
+                document.getElementById('errorMsg').style.display = 'none';
+                showMain();
+            } else {
+                document.getElementById('errorMsg').style.display = 'block';
+            }
+        }
+
+        function doLogout() {
+            localStorage.removeItem(SESSION_KEY);
+            showLogin();
+        }
+
+        function showTab(tab) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(tab).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // 数据存储
+        let data = {
+            banners: [],
+            events: [],
+            posters: {index: [{},{},{}], cn: [{},{},{}], events: [{},{},{}]},
+            footer: {global: {}, cn: {}}
+        };
+
+        function loadAllData() {
+            const saved = localStorage.getItem('lg_data');
+            if (saved) {
+                data = JSON.parse(saved);
+            }
+            renderBanners();
+            renderEvents();
+            loadPosters();
+            loadFooter();
+        }
+
+        function saveToStorage() {
+            localStorage.setItem('lg_data', JSON.stringify(data));
+        }
+
+        // Banner管理
+        function saveBanner() {
+            const title = document.getElementById('bannerTitle').value;
+            const image = document.getElementById('bannerImage').value;
+            const btn = document.getElementById('bannerBtn').value;
+            const link = document.getElementById('bannerLink').value;
+
+            if (!title || !image) {
+                alert('请填写标题和图片');
+                return;
+            }
+
+            data.banners.push({title, image, btn, link});
+            saveToStorage();
+            resetBanner();
+            renderBanners();
+        }
+
+        function resetBanner() {
+            document.getElementById('bannerTitle').value = '';
+            document.getElementById('bannerImage').value = '';
+            document.getElementById('bannerBtn').value = '';
+            document.getElementById('bannerLink').value = '';
+        }
+
+        function renderBanners() {
+            const list = document.getElementById('bannerList');
+            if (data.banners.length === 0) {
+                list.innerHTML = '<p style="color:#666">暂无Banner</p>';
+                return;
+            }
+            list.innerHTML = data.banners.map((b, i) => `
+                <div class="item-card">
+                    <div class="item-info">
+                        <h4>${b.title}</h4>
+                        <p>${b.image}</p>
+                    </div>
+                    <div class="item-actions">
+                        <button class="btn-small btn-delete" onclick="deleteBanner(${i})">删除</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function deleteBanner(i) {
+            if (confirm('确定删除？')) {
+                data.banners.splice(i, 1);
+                saveToStorage();
+                renderBanners();
+            }
+        }
+
+        // 活动管理
+        function saveEvent() {
+            const id = document.getElementById('eventEditId').value;
+            const event = {
+                title: document.getElementById('eventTitle').value,
+                date: document.getElementById('eventDate').value,
+                location: document.getElementById('eventLocation').value,
+                time: document.getElementById('eventTime').value,
+                image: document.getElementById('eventImage').value,
+                ticket: document.getElementById('eventTicket').value,
+                status: document.getElementById('eventStatus').value,
+                desc: document.getElementById('eventDesc').value,
+                btn: document.getElementById('eventBtn').value,
+                link: document.getElementById('eventLink').value
+            };
+
+            if (!event.title || !event.image) {
+                alert('请填写标题和图片');
+                return;
+            }
+
+            if (id) {
+                data.events[parseInt(id)] = event;
+            } else {
+                data.events.push(event);
+            }
+
+            saveToStorage();
+            resetEvent();
+            renderEvents();
+        }
+
+        function resetEvent() {
+            document.getElementById('eventEditId').value = '';
+            document.getElementById('eventTitle').value = '';
+            document.getElementById('eventDate').value = '';
+            document.getElementById('eventLocation').value = '';
+            document.getElementById('eventTime').value = '';
+            document.getElementById('eventImage').value = '';
+            document.getElementById('eventTicket').value = '';
+            document.getElementById('eventStatus').value = '';
+            document.getElementById('eventDesc').value = '';
+            document.getElementById('eventBtn').value = 'Get Tickets →';
+            document.getElementById('eventLink').value = '';
+        }
+
+        function renderEvents() {
+            const list = document.getElementById('eventList');
+            if (data.events.length === 0) {
+                list.innerHTML = '<p style="color:#666">暂无活动</p>';
+                return;
+            }
+            list.innerHTML = data.events.map((e, i) => `
+                <div class="item-card">
+                    <div class="item-info">
+                        <h4>${e.title} ${e.status ? '('+e.status+')' : ''}</h4>
+                        <p>${e.date || '-'} | ${e.location || '-'}</p>
+                    </div>
+                    <div class="item-actions">
+                        <button class="btn-small btn-edit" onclick="editEvent(${i})">编辑</button>
+                        <button class="btn-small btn-delete" onclick="deleteEvent(${i})">删除</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function editEvent(i) {
+            const e = data.events[i];
+            document.getElementById('eventEditId').value = i;
+            document.getElementById('eventTitle').value = e.title;
+            document.getElementById('eventDate').value = e.date;
+            document.getElementById('eventLocation').value = e.location;
+            document.getElementById('eventTime').value = e.time;
+            document.getElementById('eventImage').value = e.image;
+            document.getElementById('eventTicket').value = e.ticket;
+            document.getElementById('eventStatus').value = e.status;
+            document.getElementById('eventDesc').value = e.desc;
+            document.getElementById('eventBtn').value = e.btn;
+            document.getElementById('eventLink').value = e.link;
+        }
+
+        function deleteEvent(i) {
+            if (confirm('确定删除？')) {
+                data.events.splice(i, 1);
+                saveToStorage();
+                renderEvents();
+            }
+        }
+
+        // 海报管理
+        function loadPosters() {
+            const page = document.getElementById('posterPage').value;
+            const container = document.getElementById('posterForms');
+            const posters = data.posters[page];
+
+            container.innerHTML = [0, 1, 2].map(i => {
+                const p = posters[i] || {};
+                const isPoster2 = i === 1;
+                return `
+                    <div class="card">
+                        <h3>海报 ${i + 1}${isPoster2 ? ' (Events页面可设5个滚播)' : ''}</h3>
+                        <div class="form-group">
+                            <label>标题</label>
+                            <input type="text" id="poster${i}_title" value="${p.title || ''}" placeholder="标题">
+                        </div>
+                        <div class="form-group">
+                            <label>图片地址（支持 ./ 或 https://）</label>
+                            <input type="text" id="poster${i}_image" value="${p.image || ''}" placeholder="./image/poster.jpg">
+                        </div>
+                        <div class="form-group">
+                            <label>链接文字</label>
+                            <input type="text" id="poster${i}_linkText" value="${p.linkText || ''}" placeholder="View Details →">
+                        </div>
+                        <div class="form-group">
+                            <label>链接地址（支持 ./ 或 https://）</label>
+                            <input type="text" id="poster${i}_link" value="${p.link || ''}" placeholder="./events.html">
+                        </div>
+                        ${isPoster2 && page === 'events' ? `
+                        <div class="form-group">
+                            <label>滚播模式（最多5张图，用逗号分隔）</label>
+                            <textarea id="poster${i}_carousel" rows="2" placeholder="./image/1.jpg,./image/2.jpg,./image/3.jpg">${p.carousel || ''}</textarea>
+                        </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function savePosters() {
+            const page = document.getElementById('posterPage').value;
+            data.posters[page] = [0, 1, 2].map(i => ({
+                title: document.getElementById(`poster${i}_title`).value,
+                image: document.getElementById(`poster${i}_image`).value,
+                linkText: document.getElementById(`poster${i}_linkText`).value,
+                link: document.getElementById(`poster${i}_link`).value,
+                carousel: i === 1 ? document.getElementById(`poster${i}_carousel`)?.value || '' : ''
+            }));
+            saveToStorage();
+            alert('保存成功');
+        }
+
+        // 底部管理
+        function loadFooter() {
+            const site = document.getElementById('footerSite').value;
+            const f = data.footer[site] || {};
+            document.getElementById('footerEmail').value = f.email || '';
+            document.getElementById('footerPhone').value = f.phone || '';
+            document.getElementById('footerAddress').value = f.address || '';
+        }
+
+        function saveFooter() {
+            const site = document.getElementById('footerSite').value;
+            data.footer[site] = {
+                email: document.getElementById('footerEmail').value,
+                phone: document.getElementById('footerPhone').value,
+                address: document.getElementById('footerAddress').value
+            };
+            saveToStorage();
+            alert('保存成功');
+        }
+
+        // 导出
+        function exportData() {
+            const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'livegigs-data.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // 初始化
+        checkSession();
+    </script>
+</body>
+</html>
