@@ -1102,7 +1102,7 @@
 
         async function deleteEvent(index) {
             showModal('确认删除', '确定删除此活动？', async () => {
-                setSyncStatus('syncing', '同步中...');
+                setSyncStatus('同步中...', true);
                 isSyncing = true;
 
                 try {
