@@ -1,25 +1,26 @@
 {
-  "copyright": "© 2025 LIVEGIGS ASIA. ALL RIGHTS RESERVED.",
-  "socialLinks": [
+  "copyright": "© 2026 LIVEGIGS ASIA. ALL RIGHTS RESERVED.",
+  "social": [
     {
-      "icon": "facebook",
+      "name": "Facebook",
       "url": "https://facebook.com/livegigsasia",
-      "title": "Facebook"
+      "icon": "./image/icon-facebook.png"
     },
     {
-      "icon": "instagram",
+      "name": "Instagram",
       "url": "https://instagram.com/livegigsasia",
-      "title": "Instagram"
+      "icon": "./image/icon-instagram.png"
     },
     {
-      "icon": "youtube",
+      "name": "YouTube",
       "url": "https://youtube.com/livegigsasia",
-      "title": "YouTube"
+      "icon": "./image/icon-youtube.png"
     },
     {
-      "icon": "x",
+      "name": "X",
       "url": "https://x.com/livegigsasia",
-      "title": "X"
+      "icon": "./image/icon-x.png"
     }
-  ]
+  ],
+  "producer": "./image/emanonent-logo.png"
 }
