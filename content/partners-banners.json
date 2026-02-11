@@ -1,0 +1,36 @@
+{
+  "banners": [
+    {
+      "image": "./image/p-p-1.jpg",
+      "logo": "",
+      "title": "",
+      "description": "",
+      "buttonText": "LEARN MORE",
+      "link": "#"
+    },
+    {
+      "image": "./image/p-p-2.jpg",
+      "logo": "./image/p-p-2logo.png",
+      "title": "",
+      "description": "",
+      "buttonText": "小子联盟唱片",
+      "link": "https://kids-union.com"
+    },
+    {
+      "image": "./image/p-p-3.png",
+      "logo": "",
+      "title": "XRE BOOKING",
+      "description": "",
+      "buttonText": "CONTACT US",
+      "link": "#"
+    },
+    {
+      "image": "./image/p-p-4.jpg",
+      "logo": "./image/p-p-4logo.png",
+      "title": "",
+      "description": "",
+      "buttonText": "VISIT SITE",
+      "link": "#"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "posters": [
+    {
+      "image": "./image/1-b-2.jpg",
+      "title": "",
+      "linkText": "查看详情 →",
+      "link": "#"
+    },
+    {
+      "image": "./image/cn-asiaad.jpg",
+      "title": "LiveGigs Asia",
+      "linkText": "查看详情 →",
+      "link": "livegigsasia"
+    },
+    {
+      "image": "./image/1-b-3.jpg",
+      "title": "",
+      "linkText": "查看详情 →",
+      "link": "#"
+    }
+  ]
+}

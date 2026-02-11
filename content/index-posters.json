@@ -1,0 +1,22 @@
+{
+  "posters": [
+    {
+      "image": "./image/1-b-2.jpg",
+      "title": "",
+      "linkText": "View Details →",
+      "link": "#"
+    },
+    {
+      "image": "./image/1-b-3.jpg",
+      "title": "",
+      "linkText": "View Details →",
+      "link": "#"
+    },
+    {
+      "image": "./image/livegigscn1.png",
+      "title": "",
+      "linkText": "View Details →",
+      "link": "#"
+    }
+  ]
+}

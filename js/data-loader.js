@@ -1,297 +1,229 @@
-// LiveGigs Asia - Data Loader v3
-// 兼容现有网站结构，自动渲染数据
-
+// LiveGigs Data Loader - 修复版 v2.0
 (function() {
     'use strict';
 
-    const CONFIG = {
-        githubRaw: 'https://raw.githubusercontent.com/EmanonEnt/asia/main/content/',
-        cacheTime: 30000
-    };
+    // 数据缓存
+    let dataCache = {};
 
-    // 检查值是否有效
-    function hasValue(value) {
-        if (value === null || value === undefined) return false;
-        if (typeof value === 'string' && value.trim() === '') return false;
-        return true;
+    // 安全获取文本
+    function safeText(obj, key, defaultValue) {
+        if (!obj || typeof obj !== 'object') return defaultValue;
+        const value = obj[key];
+        if (value === undefined || value === null || value === '') return defaultValue;
+        return String(value);
     }
 
-    // 处理URL
-    function processUrl(url) {
-        if (!url) return '';
-        if (url.startsWith('http://') || url.startsWith('https://')) return url;
-        if (!url.startsWith('./') && !url.startsWith('/')) url = './' + url;
-        return url;
+    // 安全获取数组
+    function safeArray(obj, key) {
+        if (!obj || typeof obj !== 'object') return [];
+        const value = obj[key];
+        if (!Array.isArray(value)) return [];
+        return value.filter(item => item !== null && item !== undefined);
     }
 
-    // HTML转义
-    function escapeHtml(text) {
-        if (!text) return '';
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-    }
-
-    // 加载JSON
+    // 加载 JSON
     async function loadJSON(filename) {
         try {
-            const version = localStorage.getItem('lg_data_version') || Date.now();
-            const url = `${CONFIG.githubRaw}${filename}?v=${version}&t=${Date.now()}`;
-            const response = await fetch(url, { headers: { 'Cache-Control': 'no-cache' } });
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const response = await fetch('./content/' + filename + '.json?v=' + Date.now());
+            if (!response.ok) throw new Error('Not found');
             return await response.json();
-        } catch (error) {
-            console.error('Failed to load', filename, error);
+        } catch (e) {
+            console.warn('Failed to load ' + filename + ':', e);
             return null;
         }
     }
 
-    // 渲染Banner
-    function renderBanners(banners) {
-        if (!Array.isArray(banners)) return;
+    // 渲染底部 - 修复版
+    async function renderFooter() {
+        const isCN = window.location.pathname.includes('cn') || window.location.href.includes('cn.html');
+        const filename = isCN ? 'footer-cn' : 'footer-global';
 
-        const container = document.querySelector('.banner-slider, .hero-slider, #hero-slider');
-        if (!container) return;
+        const data = await loadJSON(filename);
+        if (!data) return;
 
-        const activeBanners = banners.filter(b => b.active !== false).sort((a, b) => (a.order || 0) - (b.order || 0));
-        if (activeBanners.length === 0) return;
+        // 查找底部区域
+        const footer = document.querySelector('.footer') || document.querySelector('footer') || document.querySelector('#footer');
+        if (!footer) return;
 
-        const html = activeBanners.map(banner => {
-            const imageUrl = processUrl(banner.image);
-            const linkUrl = processUrl(banner.link);
-            const title = banner.title || '';
-            const buttonText = banner.button_text || '';
+        // 更新版权文字
+        const copyrightEl = footer.querySelector('.footer-copyright') || footer.querySelector('.copyright') || footer.querySelector('[data-field="copyright"]');
+        if (copyrightEl) {
+            copyrightEl.textContent = safeText(data, 'copyright', '© 2025 LIVEGIGS ASIA. ALL RIGHTS RESERVED.');
+        }
 
-            let contentHtml = '';
-            if (hasValue(title)) contentHtml += `<h2 class="banner-title">${escapeHtml(title)}</h2>`;
-            if (hasValue(buttonText) && linkUrl) contentHtml += `<a href="${linkUrl}" class="banner-btn">${escapeHtml(buttonText)}</a>`;
-
-            if (!hasValue(imageUrl)) return '';
-
-            return `<div class="banner-slide" style="background-image: url('${imageUrl}');">${contentHtml ? `<div class="banner-content">${contentHtml}</div>` : ''}</div>`;
-        }).join('');
-
-        if (html) container.innerHTML = html;
-    }
-
-    // 渲染海报
-    function renderPosters(posters, pageType) {
-        if (!posters || !posters[pageType]) return;
-
-        const pagePosters = posters[pageType];
-
-        for (let i = 0; i < 3; i++) {
-            const poster = pagePosters[i] || {};
-            const container = document.querySelector(`#poster-${i+1}, .poster-item-${i+1}, [data-poster="${i+1}"]`);
-            if (!container) continue;
-
-            const imageUrl = processUrl(poster.image);
-            const linkUrl = processUrl(poster.link);
-            const title = poster.title || '';
-            const linkText = poster.link_text || '';
-
+        // 更新社交链接
+        const socialContainer = footer.querySelector('.footer-social') || footer.querySelector('.social-links') || footer.querySelector('[data-field="social"]');
+        if (socialContainer && data.socialLinks) {
+            const links = safeArray(data, 'socialLinks');
             let html = '';
-            if (hasValue(imageUrl)) html += `<div class="poster-image-wrapper"><img src="${imageUrl}" alt="${escapeHtml(title)}" class="poster-image"></div>`;
-            if (hasValue(title)) html += `<h3 class="poster-title">${escapeHtml(title)}</h3>`;
-            if (hasValue(linkText) && linkUrl) html += `<a href="${linkUrl}" class="poster-link">${escapeHtml(linkText)}</a>`;
 
-            container.innerHTML = html;
+            links.forEach(function(link) {
+                if (!link || !link.url) return;
+                const icon = safeText(link, 'icon', 'globe');
+                const url = safeText(link, 'url', '#');
+                const title = safeText(link, 'title', '');
+
+                // Font Awesome 图标映射
+                let iconClass = 'fas fa-globe';
+                if (icon.includes('facebook') || icon === 'fb') iconClass = 'fab fa-facebook-f';
+                else if (icon.includes('instagram') || icon === 'ig') iconClass = 'fab fa-instagram';
+                else if (icon.includes('youtube') || icon === 'yt') iconClass = 'fab fa-youtube';
+                else if (icon.includes('twitter') || icon === 'x') iconClass = 'fab fa-twitter';
+                else if (icon.includes('weibo') || icon === 'wb') iconClass = 'fab fa-weibo';
+                else if (icon.includes('wechat') || icon === 'wx') iconClass = 'fab fa-weixin';
+                else if (icon.includes('tiktok')) iconClass = 'fab fa-tiktok';
+
+                html += '<a href="' + url + '" class="social-icon" target="_blank" title="' + title + '"><i class="' + iconClass + '"></i></a>';
+            });
+
+            if (html) {
+                socialContainer.innerHTML = html;
+            }
         }
     }
 
-    // 渲染活动
-    function renderEvents(events) {
-        if (!Array.isArray(events)) return;
+    // 渲染 Banner
+    async function renderBanners() {
+        const data = await loadJSON('banners');
+        if (!data || !data.banners) return;
 
-        const container = document.querySelector('#events-grid, .events-container, .events-grid');
+        const banners = safeArray(data, 'banners');
+        const container = document.querySelector('.hero-slider') || document.querySelector('.banner-container') || document.querySelector('[data-section="banners"]');
         if (!container) return;
 
-        window.allEventsData = events;
-        const initialCount = 3;
-        const visibleEvents = events.slice(0, initialCount);
+        container.innerHTML = '';
 
-        renderEventGrid(container, visibleEvents);
+        banners.forEach(function(banner, index) {
+            if (!banner) return;
+            const image = safeText(banner, 'image', '');
+            const title = safeText(banner, 'title', '');
+            const buttonText = safeText(banner, 'buttonText', 'VIEW DETAILS');
+            const link = safeText(banner, 'link', '#');
 
-        if (events.length > 3) addLoadMoreButton(container, events, initialCount);
+            if (!image) return;
+
+            const slide = document.createElement('div');
+            slide.className = 'hero-slide';
+            slide.innerHTML = '<img src="' + image + '" alt="' + title + '" loading="' + (index === 0 ? 'eager' : 'lazy') + '">' +
+                '<div class="hero-content">' +
+                (title ? '<h2>' + title + '</h2>' : '') +
+                '<a href="' + link + '" class="btn-primary">' + buttonText + '</a>' +
+                '</div>';
+            container.appendChild(slide);
+        });
+
+        if (window.initSlider) window.initSlider();
     }
 
-    function renderEventGrid(container, events) {
-        const html = events.map(event => {
-            const imageUrl = processUrl(event.image);
-            const linkUrl = processUrl(event.link);
+    // 渲染海报
+    async function renderPosters() {
+        const page = window.location.pathname;
+        let filename = 'index-posters';
+        if (page.includes('cn')) filename = 'cn-posters';
+        else if (page.includes('events')) filename = 'events-posters';
 
-            let fieldsHtml = '';
-            if (hasValue(event.date)) fieldsHtml += `<div class="event-date">${escapeHtml(event.date)}</div>`;
-            if (hasValue(event.location)) fieldsHtml += `<div class="event-location">${escapeHtml(event.location)}</div>`;
-            if (hasValue(event.time)) fieldsHtml += `<div class="event-time">${escapeHtml(event.time)}</div>`;
-            if (hasValue(event.ticket)) fieldsHtml += `<div class="event-ticket">${escapeHtml(event.ticket)}</div>`;
-            if (hasValue(event.description)) fieldsHtml += `<div class="event-desc">${escapeHtml(event.description)}</div>`;
+        const data = await loadJSON(filename);
+        if (!data || !data.posters) return;
 
-            let statusHtml = '';
-            if (event.status === 'ontour') statusHtml = '<span class="event-status ontour">ON TOUR</span>';
-            else if (event.status === 'soldout') statusHtml = '<span class="event-status soldout">SOLD OUT</span>';
+        const posters = safeArray(data, 'posters');
+        const containers = document.querySelectorAll('.poster-item, .poster-card, [data-section="poster"]');
 
-            let buttonHtml = '';
-            if (hasValue(event.button_text) && linkUrl) buttonHtml = `<a href="${linkUrl}" class="event-btn">${escapeHtml(event.button_text)}</a>`;
+        containers.forEach(function(container, index) {
+            const poster = posters[index];
+            if (!poster) return;
 
-            let imageHtml = '';
-            if (hasValue(imageUrl)) imageHtml = `<div class="event-image-wrapper"><img src="${imageUrl}" alt="${escapeHtml(event.title || '')}" class="event-image">${statusHtml}</div>`;
+            const image = safeText(poster, 'image', '');
+            const title = safeText(poster, 'title', '');
+            const linkText = safeText(poster, 'linkText', 'View Details →');
+            const link = safeText(poster, 'link', '#');
 
-            let titleHtml = '';
-            if (hasValue(event.title)) titleHtml = `<h3 class="event-title">${escapeHtml(event.title)}</h3>`;
+            if (image) {
+                const imgEl = container.querySelector('img');
+                if (imgEl) imgEl.src = image;
+            }
 
-            return `<div class="event-card">${imageHtml}<div class="event-info">${titleHtml}${fieldsHtml}${buttonHtml}</div></div>`;
-        }).join('');
+            if (title) {
+                const titleEl = container.querySelector('.poster-title, h3, [data-field="title"]');
+                if (titleEl) titleEl.textContent = title;
+            }
+
+            const linkEl = container.querySelector('a');
+            if (linkEl) {
+                linkEl.href = link;
+                const linkTextEl = linkEl.querySelector('.link-text') || linkEl;
+                if (linkText) linkTextEl.textContent = linkText;
+            }
+        });
+    }
+
+    // 渲染 Events
+    async function renderEvents() {
+        const data = await loadJSON('events-managed');
+        if (!data || !data.events) return;
+
+        const events = safeArray(data, 'events');
+        const container = document.querySelector('.events-grid') || document.querySelector('.events-container') || document.querySelector('[data-section="events"]');
+        if (!container) return;
+
+        const displayEvents = events.slice(0, 6);
+        const hasMore = events.length > 6;
+
+        let html = '';
+        displayEvents.forEach(function(event) {
+            if (!event) return;
+
+            const image = safeText(event, 'image', './image/placeholder.jpg');
+            const title = safeText(event, 'title', 'Untitled Event');
+            const date = safeText(event, 'date', '');
+            const venue = safeText(event, 'venue', '');
+            const time = safeText(event, 'time', '');
+            const ticket = safeText(event, 'ticket', '');
+            const onTour = event.onTour === true || event.onTour === 'true';
+            const soldOut = event.soldOut === true || event.soldOut === 'true';
+            const description = safeText(event, 'description', '');
+            const buttonText = safeText(event, 'buttonText', 'BUY TICKETS');
+            const link = safeText(event, 'link', '#');
+
+            let tags = '';
+            if (onTour) tags += '<span class="tag on-tour">ON TOUR</span>';
+            if (soldOut) tags += '<span class="tag sold-out">SOLD OUT</span>';
+
+            let details = [];
+            if (date) details.push('<span class="date">' + date + '</span>');
+            if (venue) details.push('<span class="venue">' + venue + '</span>');
+            if (time) details.push('<span class="time">' + time + '</span>');
+            if (ticket) details.push('<span class="ticket">' + ticket + '</span>');
+
+            html += '<div class="event-card">' +
+                '<div class="event-image">' +
+                '<img src="' + image + '" alt="' + title + '" loading="lazy">' +
+                (tags ? '<div class="event-tags">' + tags + '</div>' : '') +
+                '</div>' +
+                '<div class="event-info">' +
+                '<h3 class="event-title">' + title + '</h3>' +
+                (details.length ? '<div class="event-details">' + details.join(' | ') + '</div>' : '') +
+                (description ? '<p class="event-desc">' + description + '</p>' : '') +
+                '<a href="' + link + '" class="btn-event" target="_blank">' + buttonText + '</a>' +
+                '</div></div>';
+        });
+
+        if (hasMore) {
+            html += '<div class="load-more-container"><button class="btn-load-more" onclick="loadMoreEvents()">LOAD MORE</button></div>';
+        }
 
         container.innerHTML = html;
     }
 
-    function addLoadMoreButton(container, allEvents, initialCount) {
-        let btn = container.parentNode.querySelector('.load-more-btn');
-        if (btn) btn.remove();
-
-        btn = document.createElement('button');
-        btn.className = 'load-more-btn';
-        btn.textContent = 'Load More';
-        btn.style.cssText = 'display: block; margin: 30px auto; padding: 12px 40px; background: #8b0000; color: #fff; border: none; cursor: pointer; font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif; font-size: 16px; text-transform: uppercase;';
-
-        let currentCount = initialCount;
-        btn.addEventListener('click', () => {
-            currentCount += 3;
-            const visibleEvents = allEvents.slice(0, currentCount);
-            renderEventGrid(container, visibleEvents);
-            if (currentCount >= allEvents.length) btn.style.display = 'none';
-        });
-
-        container.parentNode.appendChild(btn);
-    }
-
-    // 渲染Partners Banners
-    function renderPartnerBanners(banners) {
-        if (!Array.isArray(banners)) return;
-
-        for (let i = 0; i < 4; i++) {
-            const banner = banners[i] || {};
-            if (banner.active === false) continue;
-
-            const container = document.querySelector(`#partner-banner-${i+1}, .partner-banner-${i+1}, [data-partner-banner="${i+1}"]`);
-            if (!container) continue;
-
-            const imageUrl = processUrl(banner.image);
-            const logoUrl = processUrl(banner.logo);
-            const linkUrl = processUrl(banner.link);
-
-            let html = '';
-            if (hasValue(imageUrl)) html += `<div class="pb-bg" style="background-image: url('${imageUrl}');"></div>`;
-            if (hasValue(logoUrl)) html += `<img src="${logoUrl}" class="pb-logo" alt="Logo">`;
-
-            let contentHtml = '';
-            if (hasValue(banner.title)) contentHtml += `<h3 class="pb-title">${escapeHtml(banner.title)}</h3>`;
-            if (hasValue(banner.description)) contentHtml += `<p class="pb-desc">${escapeHtml(banner.description)}</p>`;
-            if (hasValue(banner.button_text) && linkUrl) contentHtml += `<a href="${linkUrl}" class="pb-btn">${escapeHtml(banner.button_text)}</a>`;
-
-            if (contentHtml) html += `<div class="pb-content">${contentHtml}</div>`;
-            container.innerHTML = html;
-        }
-    }
-
-    // 渲染Collaborators
-    function renderCollaborators(collaborators) {
-        if (!Array.isArray(collaborators)) return;
-
-        const container = document.querySelector('#collaborators-grid, .collaborators-container, .collab-grid');
-        if (!container) return;
-
-        const html = collaborators.map(item => {
-            const logoUrl = processUrl(item.logo || item);
-            const linkUrl = processUrl(item.link);
-            const name = item.name || '';
-
-            if (!hasValue(logoUrl)) return '';
-
-            const imgHtml = `<img src="${logoUrl}" alt="${escapeHtml(name)}" class="collab-logo" style="width: 180px; height: 110px; object-fit: contain;" onerror="this.style.display='none'">`;
-
-            if (linkUrl) return `<a href="${linkUrl}" class="collab-item" target="_blank" rel="noopener" title="${escapeHtml(name)}">${imgHtml}</a>`;
-            else return `<div class="collab-item" title="${escapeHtml(name)}">${imgHtml}</div>`;
-        }).filter(Boolean).join('');
-
-        container.innerHTML = html || '<p style="color: #666;">暂无合作伙伴</p>';
-    }
-
-    // 渲染底部
-    function renderFooter(footerData, isCN) {
-        if (!footerData) return;
-
-        const container = document.querySelector('footer, .footer, #footer');
-        if (!container) return;
-
-        // 版权文字
-        const copyrightEl = container.querySelector('.copyright, .footer-copyright, .copyright-text');
-        if (copyrightEl && hasValue(footerData.copyright)) {
-            copyrightEl.textContent = footerData.copyright;
-        }
-
-        // 社交链接
-        const socialContainer = container.querySelector('.social-links, .footer-social, .social-icons');
-        if (socialContainer && Array.isArray(footerData.social)) {
-            const socialHtml = footerData.social.map(social => {
-                if (!hasValue(social.url)) return '';
-
-                const url = processUrl(social.url);
-                const iconUrl = processUrl(social.icon);
-                const name = social.name || '';
-
-                if (hasValue(iconUrl)) {
-                    return `<a href="${url}" class="social-link" target="_blank" rel="noopener" title="${escapeHtml(name)}">
-                        <img src="${iconUrl}" alt="${escapeHtml(name)}" style="width: 40px; height: 40px; border-radius: 50%;" onerror="this.style.display='none'; this.parentNode.textContent='${escapeHtml(name)}';">
-                    </a>`;
-                } else {
-                    return `<a href="${url}" class="social-link" target="_blank" rel="noopener">${escapeHtml(name)}</a>`;
-                }
-            }).filter(Boolean).join('');
-
-            if (socialHtml) socialContainer.innerHTML = socialHtml;
-        }
-
-        // 制作单位Logo
-        const producerEl = container.querySelector('.producer-logo img, .footer-producer img, .emanon-logo');
-        if (producerEl) {
-            const logoUrl = processUrl(footerData.producer);
-            if (hasValue(logoUrl)) producerEl.src = logoUrl;
-        }
-    }
-
-    // 主初始化
+    // 初始化
     async function init() {
-        const files = ['banners', 'posters', 'events', 'partner-banners', 'collaborators', 'footer-global', 'footer-cn'];
-        const data = {};
-
-        for (const file of files) {
-            data[file] = await loadJSON(`${file}.json`);
-        }
-
-        const path = window.location.pathname;
-        const pageName = path.split('/').pop().replace('.html', '') || 'index';
-        const isCN = pageName === 'cn' || pageName === 'livegigscn';
-
-        if (data.banners) renderBanners(data.banners);
-
-        if (data.posters) {
-            let pageType = 'index';
-            if (isCN) pageType = 'cn';
-            else if (pageName === 'events') pageType = 'events';
-            renderPosters(data.posters, pageType);
-        }
-
-        if (pageName === 'events' && data.events) renderEvents(data.events);
-
-        if (pageName === 'partners') {
-            if (data['partner-banners']) renderPartnerBanners(data['partner-banners']);
-            if (data.collaborators) renderCollaborators(data.collaborators);
-        }
-
-        const footerData = isCN ? data['footer-cn'] : data['footer-global'];
-        if (footerData) renderFooter(footerData, isCN);
+        console.log('[LiveGigs] Loading data...');
+        await Promise.all([
+            renderFooter(),
+            renderBanners(),
+            renderPosters(),
+            renderEvents()
+        ]);
+        console.log('[LiveGigs] Data loaded');
     }
 
     if (document.readyState === 'loading') {

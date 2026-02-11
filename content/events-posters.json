@@ -1,0 +1,23 @@
+{
+  "posters": [
+    {
+      "image": "./image/1-b-2.jpg",
+      "title": "",
+      "linkText": "View Details →",
+      "link": "#"
+    },
+    {
+      "image": "./image/1-b-3.jpg",
+      "title": "Epic Past Gigs",
+      "linkText": "View Details →",
+      "link": "#",
+      "carousel": []
+    },
+    {
+      "image": "./image/livegigscn1.png",
+      "title": "",
+      "linkText": "View Details →",
+      "link": "#"
+    }
+  ]
+}
