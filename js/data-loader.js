@@ -1,10 +1,11 @@
 /**
- * LiveGigs Data Loader
+ * LiveGigs Data Loader - Fixed Version
  * 功能：
  * 1. 从GitHub自动加载JSON数据
  * 2. 会话管理（30分钟或关闭浏览器失效）
  * 3. 空字段自动隐藏
  * 4. 动态内容渲染
+ * 5. 错误回退：JSON不存在时保留原有内容
  */
 
 const DataLoader = (function() {
@@ -14,28 +15,37 @@ const DataLoader = (function() {
     const CONFIG = {
         sessionTimeout: 30 * 60 * 1000, // 30分钟
         contentPath: './content/',
-        cacheBuster: true
+        cacheBuster: true,
+        debug: true // 开启调试日志
     };
+
+    // 调试日志
+    function log(...args) {
+        if (CONFIG.debug) {
+            console.log('[DataLoader]', ...args);
+        }
+    }
+
+    function warn(...args) {
+        console.warn('[DataLoader]', ...args);
+    }
+
+    function error(...args) {
+        console.error('[DataLoader]', ...args);
+    }
 
     // 会话管理
     const SessionManager = {
         startTime: null,
 
         init() {
-            // 检查是否有现有会话
             const session = this.getSession();
             if (session && this.isValid(session)) {
                 this.startTime = session.startTime;
-                console.log('[DataLoader] Session restored, expires in:', this.getRemainingTime());
+                log('Session restored, expires in:', Math.floor(this.getRemainingTime()/1000), 's');
             } else {
                 this.createNewSession();
             }
-
-            // 监听页面关闭
-            window.addEventListener('beforeunload', () => {
-                // 可选：关闭浏览器时清除会话
-                // this.clearSession();
-            });
         },
 
         createNewSession() {
@@ -45,7 +55,7 @@ const DataLoader = (function() {
                 expiresAt: this.startTime + CONFIG.sessionTimeout
             };
             sessionStorage.setItem('lg_session', JSON.stringify(session));
-            console.log('[DataLoader] New session created');
+            log('New session created');
         },
 
         getSession() {
@@ -69,14 +79,13 @@ const DataLoader = (function() {
 
         clearSession() {
             sessionStorage.removeItem('lg_session');
-            console.log('[DataLoader] Session cleared');
+            log('Session cleared');
         },
 
-        // 检查是否需要重新登录
         checkSession() {
             const session = this.getSession();
             if (!session || !this.isValid(session)) {
-                console.log('[DataLoader] Session expired, clearing...');
+                log('Session expired');
                 this.clearSession();
                 return false;
             }
@@ -84,7 +93,7 @@ const DataLoader = (function() {
         }
     };
 
-    // 数据加载器
+    // 数据加载器 - 带错误回退
     const DataFetcher = {
         cache: {},
 
@@ -93,24 +102,31 @@ const DataLoader = (function() {
                 const cacheBuster = CONFIG.cacheBuster ? `?t=${Date.now()}` : '';
                 const url = `${CONFIG.contentPath}${filename}.json${cacheBuster}`;
 
-                console.log(`[DataLoader] Loading: ${url}`);
+                log('Loading:', url);
 
                 const response = await fetch(url);
+
+                // 如果文件不存在(404)，返回null而不是抛出错误
+                if (response.status === 404) {
+                    warn(`JSON file not found: ${filename}.json - Using default content`);
+                    return null;
+                }
+
                 if (!response.ok) {
                     throw new Error(`HTTP ${response.status}: ${response.statusText}`);
                 }
 
                 const data = await response.json();
                 this.cache[filename] = data;
+                log(`Loaded ${filename}.json successfully`);
                 return data;
 
-            } catch (error) {
-                console.warn(`[DataLoader] Failed to load ${filename}:`, error);
+            } catch (err) {
+                warn(`Failed to load ${filename}:`, err.message);
                 return null;
             }
         },
 
-        // 批量加载
         async loadMultiple(filenames) {
             const results = {};
             await Promise.all(
@@ -122,22 +138,8 @@ const DataLoader = (function() {
         }
     };
 
-    // 内容渲染器 - 带空字段检查
+    // 内容渲染器
     const ContentRenderer = {
-        // 安全获取嵌套属性
-        getValue(obj, path, defaultValue = '') {
-            const keys = path.split('.');
-            let value = obj;
-            for (const key of keys) {
-                if (value == null || typeof value !== 'object') {
-                    return defaultValue;
-                }
-                value = value[key];
-            }
-            return value !== undefined && value !== null ? value : defaultValue;
-        },
-
-        // 检查值是否为空
         isEmpty(value) {
             if (value === null || value === undefined) return true;
             if (typeof value === 'string' && value.trim() === '') return true;
@@ -146,20 +148,16 @@ const DataLoader = (function() {
             return false;
         },
 
-        // 更新元素内容，如果为空则隐藏
-        updateElement(selector, value, type = 'text') {
+        // 安全更新元素 - 如果数据为空则保留原有内容
+        safeUpdate(selector, value, type = 'text') {
             const elements = document.querySelectorAll(selector);
 
             elements.forEach(el => {
-                // 如果值为空，隐藏元素
+                // 如果值为空，保留原有内容，不做任何修改
                 if (this.isEmpty(value)) {
-                    el.style.display = 'none';
-                    console.log(`[DataLoader] Hidden empty element: ${selector}`);
+                    log(`Skipping empty value for ${selector}, keeping existing content`);
                     return;
                 }
-
-                // 否则显示并更新内容
-                el.style.display = '';
 
                 switch(type) {
                     case 'text':
@@ -171,8 +169,7 @@ const DataLoader = (function() {
                     case 'src':
                         el.src = value;
                         el.onerror = function() {
-                            console.warn(`[DataLoader] Image failed to load: ${value}`);
-                            this.style.display = 'none';
+                            warn(`Image failed to load: ${value}`);
                         };
                         break;
                     case 'href':
@@ -190,13 +187,21 @@ const DataLoader = (function() {
             });
         },
 
-        // 渲染活动卡片
+        // 渲染活动卡片 - 只有当数据存在时才渲染
         renderEvents(events, containerSelector = '#eventsGrid') {
             const container = document.querySelector(containerSelector);
-            if (!container || !events || !Array.isArray(events)) {
-                console.warn('[DataLoader] Cannot render events: container or data missing');
+            if (!container) {
+                warn('Events container not found');
                 return;
             }
+
+            // 如果没有数据或数据为空，保留原有HTML内容
+            if (!events || !Array.isArray(events) || events.length === 0) {
+                log('No events data, keeping existing HTML content');
+                return;
+            }
+
+            log('Rendering', events.length, 'events');
 
             // 清空现有内容
             container.innerHTML = '';
@@ -204,7 +209,7 @@ const DataLoader = (function() {
             events.forEach((event, index) => {
                 // 跳过完全为空的活动
                 if (this.isEmpty(event.name) && this.isEmpty(event.image)) {
-                    console.log(`[DataLoader] Skipping empty event at index ${index}`);
+                    log(`Skipping empty event at index ${index}`);
                     return;
                 }
 
@@ -244,7 +249,7 @@ const DataLoader = (function() {
                 container.insertAdjacentHTML('beforeend', cardHTML);
             });
 
-            // 更新Load More按钮显示
+            // 更新Load More按钮
             this.updateLoadMoreButton(events.length);
 
             // 重新初始化倒计时
@@ -253,59 +258,54 @@ const DataLoader = (function() {
             }
         },
 
-        // 更新Load More按钮
         updateLoadMoreButton(totalEvents) {
             const loadMoreContainer = document.getElementById('loadMoreContainer');
             if (!loadMoreContainer) return;
 
-            // 如果活动数量<=3，隐藏Load More按钮
             if (totalEvents <= 3) {
                 loadMoreContainer.style.display = 'none';
                 loadMoreContainer.classList.remove('visible');
-                console.log('[DataLoader] Load More button hidden (<=3 events)');
             } else {
                 loadMoreContainer.style.display = 'block';
                 loadMoreContainer.classList.add('visible');
             }
         },
 
-        // 渲染海报
+        // 渲染海报 - 安全更新
         renderPosters(posters) {
-            if (!posters || !Array.isArray(posters)) return;
+            if (!posters || !Array.isArray(posters)) {
+                log('No posters data, keeping existing content');
+                return;
+            }
 
             posters.forEach((poster, index) => {
                 const id = index + 1;
 
-                // 海报图片
                 if (!this.isEmpty(poster.image)) {
-                    this.updateElement(`[data-poster-id="${id}"] img`, poster.image, 'src');
+                    this.safeUpdate(`[data-poster-id="${id}"] img`, poster.image, 'src');
                 }
-
-                // 海报标题
                 if (!this.isEmpty(poster.title)) {
-                    this.updateElement(`[data-poster-id="${id}"] .poster-title`, poster.title, 'text');
+                    this.safeUpdate(`[data-poster-id="${id}"] .poster-title`, poster.title, 'text');
+                }
+                if (!this.isEmpty(poster.linkText)) {
+                    this.safeUpdate(`[data-poster-id="${id}"] .poster-link`, poster.linkText, 'text');
                 }
 
-                // 海报链接
                 const posterEl = document.querySelector(`[data-poster-id="${id}"]`);
                 if (posterEl && !this.isEmpty(poster.link)) {
                     posterEl.setAttribute('data-link', poster.link);
                     const linkEl = posterEl.querySelector('.poster-link');
-                    if (linkEl) {
-                        linkEl.href = poster.link;
-                    }
-                }
-
-                // 链接文字
-                if (!this.isEmpty(poster.linkText)) {
-                    this.updateElement(`[data-poster-id="${id}"] .poster-link`, poster.linkText, 'text');
+                    if (linkEl) linkEl.href = poster.link;
                 }
             });
         },
 
-        // 渲染底部
+        // 渲染底部 - 安全更新
         renderFooter(footerData) {
-            if (!footerData) return;
+            if (!footerData) {
+                log('No footer data, keeping existing content');
+                return;
+            }
 
             // 邮箱
             if (!this.isEmpty(footerData.email)) {
@@ -348,15 +348,17 @@ const DataLoader = (function() {
         }
     };
 
-    // 页面特定加载器
+    // 页面加载器 - 带错误处理
     const PageLoaders = {
         async events() {
-            console.log('[DataLoader] Loading events page data...');
+            log('Loading events page data...');
 
             // 加载活动数据
             const eventsData = await DataFetcher.loadJSON('events-managed');
-            if (eventsData && eventsData.events) {
+            if (eventsData && eventsData.events && eventsData.events.length > 0) {
                 ContentRenderer.renderEvents(eventsData.events);
+            } else {
+                log('No events data loaded, using default HTML content');
             }
 
             // 加载海报数据
@@ -379,21 +381,18 @@ const DataLoader = (function() {
         },
 
         async index() {
-            console.log('[DataLoader] Loading index page data...');
+            log('Loading index page data...');
 
-            // 加载Banner数据
             const bannerData = await DataFetcher.loadJSON('banners');
             if (bannerData && bannerData.banners) {
                 this.renderBanners(bannerData.banners);
             }
 
-            // 加载海报数据
             const postersData = await DataFetcher.loadJSON('index-posters');
             if (postersData && postersData.posters) {
                 ContentRenderer.renderPosters(postersData.posters);
             }
 
-            // 加载底部数据
             const footerData = await DataFetcher.loadJSON('footer-global');
             if (footerData) {
                 ContentRenderer.renderFooter(footerData);
@@ -401,21 +400,18 @@ const DataLoader = (function() {
         },
 
         async cn() {
-            console.log('[DataLoader] Loading CN page data...');
+            log('Loading CN page data...');
 
-            // 加载Banner数据（与index同步）
             const bannerData = await DataFetcher.loadJSON('banners');
             if (bannerData && bannerData.banners) {
                 this.renderBanners(bannerData.banners);
             }
 
-            // 加载海报数据
             const postersData = await DataFetcher.loadJSON('cn-posters');
             if (postersData && postersData.posters) {
                 ContentRenderer.renderPosters(postersData.posters);
             }
 
-            // 加载底部数据（单独）
             const footerData = await DataFetcher.loadJSON('footer-cn');
             if (footerData) {
                 ContentRenderer.renderFooter(footerData);
@@ -423,87 +419,74 @@ const DataLoader = (function() {
         },
 
         async partners() {
-            console.log('[DataLoader] Loading partners page data...');
+            log('Loading partners page data...');
 
-            // 加载Banner数据
             const bannerData = await DataFetcher.loadJSON('partners-banners');
             if (bannerData && bannerData.banners) {
                 this.renderPartnerBanners(bannerData.banners);
             }
 
-            // 加载合作伙伴Logo
             const collaboratorsData = await DataFetcher.loadJSON('collaborators');
             if (collaboratorsData && collaboratorsData.logos) {
                 this.renderCollaborators(collaboratorsData.logos);
             }
 
-            // 加载底部数据
             const footerData = await DataFetcher.loadJSON('footer-global');
             if (footerData) {
                 ContentRenderer.renderFooter(footerData);
             }
         },
 
-        // 渲染方法...
+        // 渲染方法占位
         renderBanners(banners) {
-            // 实现Banner渲染
-            console.log('[DataLoader] Rendering banners:', banners.length);
+            log('Rendering banners:', banners.length);
         },
 
         renderAutoScroll(items) {
-            // 实现滚播渲染
-            console.log('[DataLoader] Rendering auto scroll items:', items.length);
+            log('Rendering auto scroll items:', items.length);
         },
 
         renderPartnerBanners(banners) {
-            console.log('[DataLoader] Rendering partner banners:', banners.length);
+            log('Rendering partner banners:', banners.length);
         },
 
         renderCollaborators(logos) {
-            console.log('[DataLoader] Rendering collaborators:', logos.length);
+            log('Rendering collaborators:', logos.length);
         }
     };
 
     // 公共API
     return {
-        // 初始化
         init(pageType) {
-            console.log(`[DataLoader] Initializing for page: ${pageType}`);
+            log(`Initializing for page: ${pageType}`);
 
-            // 初始化会话管理
             SessionManager.init();
+            SessionManager.checkSession();
 
-            // 检查会话有效性
-            if (!SessionManager.checkSession()) {
-                console.log('[DataLoader] Session invalid, data will still load but admin features may be limited');
-            }
-
-            // 加载页面数据
-            if (PageLoaders[pageType]) {
-                PageLoaders[pageType]().catch(err => {
-                    console.error('[DataLoader] Error loading page data:', err);
-                });
-            } else {
-                console.warn(`[DataLoader] No loader found for page type: ${pageType}`);
-            }
-
-            // 设置定期检查会话
-            setInterval(() => {
-                if (!SessionManager.checkSession()) {
-                    console.log('[DataLoader] Session expired during use');
+            // 延迟加载数据，确保页面先渲染完成
+            setTimeout(() => {
+                if (PageLoaders[pageType]) {
+                    PageLoaders[pageType]().catch(err => {
+                        error('Error loading page data:', err);
+                    });
+                } else {
+                    warn(`No loader found for page type: ${pageType}`);
                 }
-            }, 60000); // 每分钟检查一次
+            }, 100);
+
+            // 定期检查会话
+            setInterval(() => {
+                SessionManager.checkSession();
+            }, 60000);
         },
 
-        // 手动重新加载数据
         async reload(pageType) {
-            DataFetcher.cache = {}; // 清除缓存
+            DataFetcher.cache = {};
             if (PageLoaders[pageType]) {
                 await PageLoaders[pageType]();
             }
         },
 
-        // 获取会话信息
         getSessionInfo() {
             return {
                 isValid: SessionManager.checkSession(),
@@ -512,20 +495,15 @@ const DataLoader = (function() {
             };
         },
 
-        // 登出（清除会话）
         logout() {
             SessionManager.clearSession();
         },
 
-        // 检查元素是否为空（供外部使用）
-        isEmpty: ContentRenderer.isEmpty.bind(ContentRenderer),
-
-        // 安全获取值
-        getValue: ContentRenderer.getValue.bind(ContentRenderer)
+        isEmpty: ContentRenderer.isEmpty.bind(ContentRenderer)
     };
 })();
 
-// 自动初始化（如果页面有data-page属性）
+// 自动初始化
 document.addEventListener('DOMContentLoaded', function() {
     const pageType = document.body.getAttribute('data-page') || 
                      document.documentElement.getAttribute('data-page');
@@ -535,5 +513,4 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// 全局暴露
 window.DataLoader = DataLoader;
