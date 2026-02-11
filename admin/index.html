@@ -255,6 +255,27 @@
             font-size: 14px;
             margin-bottom: 15px;
         }
+        .social-item {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .social-item h4 {
+            color: #8b0000;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        .logo-preview {
+            width: 100px;
+            height: 60px;
+            object-fit: contain;
+            background: #1a1a1a;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #333;
+        }
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -321,7 +342,6 @@
         <div class="nav-tabs">
             <button class="nav-tab active" onclick="showSection('banners')">Banner</button>
             <button class="nav-tab" onclick="showSection('posters')">海报</button>
-            <button class="nav-tab" onclick="showSection('carousel')">轮播(活动页)</button>
             <button class="nav-tab" onclick="showSection('events')">活动</button>
             <button class="nav-tab" onclick="showSection('partners')">合作</button>
             <button class="nav-tab" onclick="showSection('footer')">底部</button>
@@ -375,7 +395,7 @@
             </div>
         </div>
 
-        <!-- Posters -->
+        <!-- Posters (合并轮播) -->
         <div id="posters" class="section">
             <h2 class="section-title">海报管理</h2>
             <div class="card">
@@ -387,24 +407,23 @@
                         <option value="events">活动页</option>
                     </select>
                 </div>
+                <p class="help-text" id="posterHint">海报1、海报3为普通海报，海报2可选择启用轮播</p>
             </div>
             <div id="posterSections"></div>
+            <!-- 轮播设置（仅在活动页显示） -->
+            <div id="carouselSection" style="display: none;">
+                <div class="card">
+                    <h3 class="card-title">海报2轮播设置</h3>
+                    <div class="checkbox-group" style="margin-bottom: 20px;">
+                        <input type="checkbox" id="enableCarousel" onchange="toggleCarousel()">
+                        <label for="enableCarousel">启用轮播（最多5个，至少1个）</label>
+                    </div>
+                    <div id="carouselList" style="display: none;"></div>
+                    <button type="button" class="btn" onclick="addCarouselItem()" id="addCarouselBtn" style="display: none;">添加轮播图</button>
+                </div>
+            </div>
             <div class="card">
                 <button class="btn btn-success" onclick="savePosters()">保存海报</button>
-            </div>
-        </div>
-
-        <!-- Carousel (Events Page Only) -->
-        <div id="carousel" class="section">
-            <h2 class="section-title">活动页轮播管理 (海报2位置)</h2>
-            <div class="card">
-                <h3 class="card-title">轮播设置</h3>
-                <p class="help-text">最多5个，至少1个，每个可独立设置</p>
-                <div id="carouselList"></div>
-                <button type="button" class="btn" onclick="addCarouselItem()" id="addCarouselBtn">添加轮播图</button>
-            </div>
-            <div class="card">
-                <button class="btn btn-success" onclick="saveCarousel()">保存轮播</button>
             </div>
         </div>
 
@@ -489,7 +508,10 @@
                     <input type="text" id="collabLogo" placeholder="./image/logo.png 或 https://...">
                 </div>
                 <button class="btn" onclick="addCollaborator()">添加</button>
-                <div id="collabList" style="margin-top: 20px; display: flex; flex-wrap: wrap; gap: 15px;"></div>
+            </div>
+            <div class="card">
+                <h3 class="card-title">现有 Logo</h3>
+                <div id="collabList" style="display: flex; flex-wrap: wrap; gap: 15px;"></div>
             </div>
         </div>
 
@@ -513,15 +535,19 @@
                         <input type="text" id="footerCopyright" placeholder="© 2026 LIVEGIGS ASIA">
                     </div>
                     <div class="form-group">
-                        <label>社交链接 (JSON)</label>
-                        <textarea id="footerSocial" rows="8"></textarea>
-                    </div>
-                    <div class="form-group">
                         <label>制作单位 Logo</label>
                         <input type="text" id="footerProducer" placeholder="./image/logo.png">
                     </div>
-                    <button type="button" class="btn btn-success" onclick="saveFooter()">保存</button>
                 </form>
+            </div>
+            <div class="card">
+                <h3 class="card-title">社交链接</h3>
+                <p class="help-text">图标名称: facebook, instagram, youtube, x, weibo, wechat, douyin, bilibili</p>
+                <div id="socialList"></div>
+                <button type="button" class="btn" onclick="addSocialItem()">添加社交链接</button>
+            </div>
+            <div class="card">
+                <button class="btn btn-success" onclick="saveFooter()">保存底部</button>
             </div>
         </div>
 
@@ -530,6 +556,7 @@
             <h2 class="section-title">数据管理</h2>
             <div class="card">
                 <h3 class="card-title">从 GitHub 同步</h3>
+                <p class="help-text">同步后前端页面刷新即可看到更新</p>
                 <button class="btn btn-success" onclick="syncFromGitHub()">立即同步</button>
             </div>
             <div class="card">
@@ -565,21 +592,19 @@
     <script src="../js/data-loader.js"></script>
     <script>
         // ========== 会话管理 ==========
-        let activityTimer;
         let modalCallback = null;
 
         function checkSession() {
             const loggedIn = sessionStorage.getItem('lg_admin_logged_in');
-            const loginTime = sessionStorage.getItem('lg_admin_login_time');
             const lastActivity = localStorage.getItem(ADMIN_CONFIG.storageKeys.lastActivity);
             
-            if (!loggedIn || !loginTime) {
+            if (!loggedIn) {
                 window.location.href = 'login.html';
                 return false;
             }
             
             const now = Date.now();
-            const lastTime = parseInt(lastActivity || loginTime);
+            const lastTime = parseInt(lastActivity || Date.now());
             
             if (now - lastTime > ADMIN_CONFIG.auth.sessionTimeout) {
                 logout();
@@ -594,7 +619,6 @@
 
         function logout() {
             sessionStorage.removeItem('lg_admin_logged_in');
-            sessionStorage.removeItem('lg_admin_login_time');
             localStorage.removeItem(ADMIN_CONFIG.storageKeys.lastActivity);
             window.location.href = 'login.html';
         }
@@ -627,7 +651,6 @@
             if (id === 'events') loadEvents();
             if (id === 'partners') loadCollaborators();
             if (id === 'posters') loadPosters();
-            if (id === 'carousel') loadCarousel();
             if (id === 'footer') loadFooter();
         }
 
@@ -741,16 +764,26 @@
             });
         }
 
-        // ========== Posters ==========
+        // ========== Posters + Carousel ==========
         function loadPosters() {
             const page = document.getElementById('posterPage').value;
             const container = document.getElementById('posterSections');
+            const carouselSection = document.getElementById('carouselSection');
             const posters = dataLoader.getPosters(page);
+            const isEventsPage = page === 'events';
+            
+            // 显示/隐藏轮播设置
+            carouselSection.style.display = isEventsPage ? 'block' : 'none';
+            
+            // 渲染3个海报
             container.innerHTML = [0, 1, 2].map(i => {
                 const p = posters[i] || {};
+                const isPoster2 = i === 1;
+                const poster2Note = (isEventsPage && isPoster2) ? ' (可设为轮播)' : '';
+                
                 return `
                     <div class="card">
-                        <h3 class="card-title">海报 ${i + 1}</h3>
+                        <h3 class="card-title">海报 ${i + 1}${poster2Note}</h3>
                         <div class="form-group">
                             <label>标题</label>
                             <input type="text" id="poster${i}_title" value="${escapeHtml(p.title || '')}">
@@ -772,36 +805,53 @@
                     </div>
                 `;
             }).join('');
+            
+            // 如果是活动页，加载轮播设置
+            if (isEventsPage) {
+                loadCarouselSettings();
+            }
         }
 
-        function savePosters() {
-            const page = document.getElementById('posterPage').value;
-            const posters = [0, 1, 2].map(i => ({
-                title: document.getElementById(`poster${i}_title`).value,
-                image: document.getElementById(`poster${i}_image`).value,
-                link_text: document.getElementById(`poster${i}_linkText`).value,
-                link: document.getElementById(`poster${i}_link`).value
-            }));
-            dataLoader.savePosters(page, posters);
-            showAlert('保存成功', 'success');
+        function loadCarouselSettings() {
+            const carousel = dataLoader.getCarousel();
+            const enableCheckbox = document.getElementById('enableCarousel');
+            const carouselList = document.getElementById('carouselList');
+            const addBtn = document.getElementById('addCarouselBtn');
+            
+            // 检查是否启用了轮播（有多个轮播项或第一个有内容）
+            const hasCarousel = carousel.length > 1 || (carousel.length === 1 && carousel[0].image);
+            enableCheckbox.checked = hasCarousel;
+            
+            toggleCarousel();
         }
 
-        // ========== Carousel (Events Page) ==========
-        function loadCarousel() {
+        function toggleCarousel() {
+            const enabled = document.getElementById('enableCarousel').checked;
+            const carouselList = document.getElementById('carouselList');
+            const addBtn = document.getElementById('addCarouselBtn');
+            
+            carouselList.style.display = enabled ? 'block' : 'none';
+            addBtn.style.display = enabled ? 'inline-block' : 'none';
+            
+            if (enabled) {
+                renderCarouselItems();
+            }
+        }
+
+        function renderCarouselItems() {
             const list = document.getElementById('carouselList');
             const items = dataLoader.getCarousel();
-            const btn = document.getElementById('addCarouselBtn');
+            const addBtn = document.getElementById('addCarouselBtn');
             
-            btn.style.display = items.length >= ADMIN_CONFIG.events.maxCarouselItems ? 'none' : 'inline-block';
-            
-            if (!items.length) {
-                list.innerHTML = '<p style="color: #666;">暂无轮播图，请添加</p>';
-                return;
-            }
+            // 最多5个
+            addBtn.style.display = items.length >= 5 ? 'none' : 'inline-block';
             
             list.innerHTML = items.map((item, i) => `
-                <div class="carousel-item" id="carouselItem${i}">
-                    <h4>轮播图 ${i + 1} ${items.length > 1 ? `<button class="btn-small btn-delete" onclick="deleteCarouselItem(${i})" style="float: right;">删除</button>` : ''}</h4>
+                <div class="carousel-item">
+                    <h4>
+                        轮播图 ${i + 1}
+                        ${items.length > 1 ? `<button class="btn-small btn-delete" onclick="deleteCarouselItem(${i})" style="float: right;">删除</button>` : ''}
+                    </h4>
                     <div class="form-group">
                         <label>标题</label>
                         <input type="text" id="carousel${i}_title" value="${escapeHtml(item.title || '')}">
@@ -822,47 +872,66 @@
                     </div>
                 </div>
             `).join('');
-            updateStats();
         }
 
         function addCarouselItem() {
             const items = dataLoader.getCarousel();
-            if (items.length >= ADMIN_CONFIG.events.maxCarouselItems) {
+            if (items.length >= 5) {
                 showAlert('最多5个轮播图', 'error');
                 return;
             }
             items.push({ title: '', image: '', link_text: '', link: '' });
             dataLoader.saveCarousel(items);
-            loadCarousel();
+            renderCarouselItems();
         }
 
         function deleteCarouselItem(index) {
             const items = dataLoader.getCarousel();
-            if (items.length <= ADMIN_CONFIG.events.minCarouselItems) {
+            if (items.length <= 1) {
                 showAlert('至少保留1个轮播图', 'error');
                 return;
             }
             items.splice(index, 1);
             dataLoader.saveCarousel(items);
-            loadCarousel();
+            renderCarouselItems();
         }
 
-        function saveCarousel() {
-            const items = [];
-            const container = document.getElementById('carouselList');
-            const itemDivs = container.querySelectorAll('.carousel-item');
+        function savePosters() {
+            const page = document.getElementById('posterPage').value;
+            const isEventsPage = page === 'events';
+            const enableCarousel = document.getElementById('enableCarousel').checked;
             
-            itemDivs.forEach((div, i) => {
-                items.push({
-                    title: document.getElementById(`carousel${i}_title`).value,
-                    image: document.getElementById(`carousel${i}_image`).value,
-                    link_text: document.getElementById(`carousel${i}_linkText`).value,
-                    link: document.getElementById(`carousel${i}_link`).value
+            // 保存海报
+            const posters = [0, 1, 2].map(i => ({
+                title: document.getElementById(`poster${i}_title`).value,
+                image: document.getElementById(`poster${i}_image`).value,
+                link_text: document.getElementById(`poster${i}_linkText`).value,
+                link: document.getElementById(`poster${i}_link`).value
+            }));
+            dataLoader.savePosters(page, posters);
+            
+            // 保存轮播（如果启用且是活动页）
+            if (isEventsPage && enableCarousel) {
+                const items = [];
+                const container = document.getElementById('carouselList');
+                const itemDivs = container.querySelectorAll('.carousel-item');
+                
+                itemDivs.forEach((div, i) => {
+                    items.push({
+                        title: document.getElementById(`carousel${i}_title`).value,
+                        image: document.getElementById(`carousel${i}_image`).value,
+                        link_text: document.getElementById(`carousel${i}_linkText`).value,
+                        link: document.getElementById(`carousel${i}_link`).value
+                    });
                 });
-            });
+                dataLoader.saveCarousel(items);
+            } else if (isEventsPage && !enableCarousel) {
+                // 禁用轮播时清空
+                dataLoader.saveCarousel([{ title: '', image: '', link_text: '', link: '' }]);
+            }
             
-            dataLoader.saveCarousel(items);
             showAlert('保存成功', 'success');
+            updateStats();
         }
 
         // ========== Events ==========
@@ -955,7 +1024,7 @@
             }
             list.innerHTML = collabs.map((logo, i) => `
                 <div style="position: relative;">
-                    <img src="${escapeHtml(logo)}" style="width: 100px; height: 60px; object-fit: contain; background: #1a1a1a; padding: 10px; border-radius: 4px; border: 1px solid #333;" onerror="this.style.display='none'">
+                    <img src="${escapeHtml(logo)}" class="logo-preview" onerror="this.src='./image/placeholder.png'">
                     <button onclick="deleteCollaborator(${i})" style="position: absolute; top: -8px; right: -8px; background: #8b0000; color: white; border: none; border-radius: 50%; width: 22px; height: 22px; cursor: pointer;">×</button>
                 </div>
             `).join('');
@@ -970,6 +1039,7 @@
             dataLoader.saveCollaborators(collabs);
             document.getElementById('collabLogo').value = '';
             loadCollaborators();
+            showAlert('添加成功', 'success');
         }
 
         function deleteCollaborator(index) {
@@ -979,28 +1049,80 @@
             loadCollaborators();
         }
 
-        // ========== Footer ==========
+        // ========== Footer (Social with icon) ==========
+        let socialItems = [];
+
         function loadFooter() {
             const site = document.getElementById('footerSite').value;
             const data = dataLoader.getFooter(site);
             document.getElementById('footerCopyright').value = data.copyright || '';
-            document.getElementById('footerSocial').value = JSON.stringify(data.social || [], null, 2);
             document.getElementById('footerProducer').value = data.producer || '';
+            
+            // 加载社交链接
+            socialItems = data.social || [];
+            renderSocialItems();
+        }
+
+        function renderSocialItems() {
+            const list = document.getElementById('socialList');
+            if (!socialItems.length) {
+                list.innerHTML = '<p style="color: #666;">暂无社交链接</p>';
+                return;
+            }
+            list.innerHTML = socialItems.map((item, i) => `
+                <div class="social-item">
+                    <h4>
+                        社交链接 ${i + 1}
+                        <button class="btn-small btn-delete" onclick="deleteSocialItem(${i})" style="float: right;">删除</button>
+                    </h4>
+                    <div class="grid-3">
+                        <div class="form-group">
+                            <label>图标</label>
+                            <input type="text" id="social${i}_icon" value="${escapeHtml(item.icon || '')}" placeholder="facebook">
+                        </div>
+                        <div class="form-group">
+                            <label>名称</label>
+                            <input type="text" id="social${i}_name" value="${escapeHtml(item.name || '')}" placeholder="Facebook">
+                        </div>
+                        <div class="form-group">
+                            <label>链接</label>
+                            <input type="text" id="social${i}_url" value="${escapeHtml(item.url || '')}" placeholder="https://...">
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addSocialItem() {
+            socialItems.push({ icon: '', name: '', url: '' });
+            renderSocialItems();
+        }
+
+        function deleteSocialItem(index) {
+            socialItems.splice(index, 1);
+            renderSocialItems();
         }
 
         function saveFooter() {
             const site = document.getElementById('footerSite').value;
-            try {
-                const data = {
-                    copyright: document.getElementById('footerCopyright').value,
-                    social: JSON.parse(document.getElementById('footerSocial').value),
-                    producer: document.getElementById('footerProducer').value
-                };
-                dataLoader.saveFooter(site, data);
-                showAlert('保存成功', 'success');
-            } catch (e) {
-                showAlert('JSON 格式错误', 'error');
+            
+            // 收集社交链接
+            const social = [];
+            for (let i = 0; i < socialItems.length; i++) {
+                social.push({
+                    icon: document.getElementById(`social${i}_icon`)?.value || '',
+                    name: document.getElementById(`social${i}_name`)?.value || '',
+                    url: document.getElementById(`social${i}_url`)?.value || ''
+                });
             }
+            
+            const data = {
+                copyright: document.getElementById('footerCopyright').value,
+                social: social,
+                producer: document.getElementById('footerProducer').value
+            };
+            dataLoader.saveFooter(site, data);
+            showAlert('保存成功', 'success');
         }
 
         // ========== Data Sync ==========
@@ -1012,12 +1134,10 @@
             try {
                 const result = await dataLoader.syncFromGitHub();
                 if (result.success) {
-                    showAlert('同步成功', 'success');
-                    // 刷新所有数据
+                    showAlert('同步成功！前端页面刷新即可看到更新', 'success');
                     loadBanners();
                     loadEvents();
                     loadPosters();
-                    loadCarousel();
                     loadCollaborators();
                     loadFooter();
                     updateStats();
@@ -1052,7 +1172,7 @@
                 const data = JSON.parse(json);
                 dataLoader.importAll(data);
                 showAlert('导入成功', 'success');
-                loadBanners(); loadEvents(); loadPosters(); loadCarousel(); loadCollaborators(); loadFooter();
+                loadBanners(); loadEvents(); loadPosters(); loadCollaborators(); loadFooter();
                 updateStats();
             } catch (e) {
                 showAlert('JSON 格式错误', 'error');
@@ -1063,7 +1183,7 @@
             showModal('确认重置', '确定重置所有数据？', () => {
                 dataLoader.resetAll();
                 showAlert('已重置', 'success');
-                loadBanners(); loadEvents(); loadPosters(); loadCarousel(); loadCollaborators(); loadFooter();
+                loadBanners(); loadEvents(); loadPosters(); loadCollaborators(); loadFooter();
                 updateStats();
             });
         }

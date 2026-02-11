@@ -72,28 +72,37 @@ class DataLoader {
             });
         }
 
+        if (!this.get(keys.carousel)) {
+            this.set(keys.carousel, [
+                { title: "Carousel 1", image: "./image/carousel1.jpg", link_text: "View →", link: "./events.html" },
+                { title: "Carousel 2", image: "./image/carousel2.jpg", link_text: "View →", link: "./events.html" }
+            ]);
+        }
+
         if (!this.get(keys.events)) this.set(keys.events, []);
         if (!this.get(keys.collaborators)) this.set(keys.collaborators, []);
+        
         if (!this.get(keys.footerGlobal)) {
             this.set(keys.footerGlobal, {
                 copyright: "© 2026 LIVEGIGS ASIA. ALL RIGHTS RESERVED.",
                 social: [
-                    { name: "Facebook", url: "https://facebook.com/livegigsasia", icon: "facebook" },
-                    { name: "Instagram", url: "https://instagram.com/livegigsasia", icon: "instagram" },
-                    { name: "YouTube", url: "https://youtube.com/livegigsasia", icon: "youtube" },
-                    { name: "X", url: "https://x.com/livegigsasia", icon: "x" }
+                    { icon: "facebook", name: "Facebook", url: "https://facebook.com/livegigsasia" },
+                    { icon: "instagram", name: "Instagram", url: "https://instagram.com/livegigsasia" },
+                    { icon: "youtube", name: "YouTube", url: "https://youtube.com/livegigsasia" },
+                    { icon: "x", name: "X", url: "https://x.com/livegigsasia" }
                 ],
                 producer: "./image/emanonent-logo.png"
             });
         }
+        
         if (!this.get(keys.footerCN)) {
             this.set(keys.footerCN, {
                 copyright: "© 2026 LIVEGIGS ASIA. 版权所有.",
                 social: [
-                    { name: "微博", url: "https://weibo.com/livegigsasia", icon: "weibo" },
-                    { name: "微信", url: "#", icon: "wechat" },
-                    { name: "抖音", url: "https://douyin.com/livegigsasia", icon: "douyin" },
-                    { name: "B站", url: "https://bilibili.com/livegigsasia", icon: "bilibili" }
+                    { icon: "weibo", name: "微博", url: "https://weibo.com/livegigsasia" },
+                    { icon: "wechat", name: "微信", url: "#" },
+                    { icon: "douyin", name: "抖音", url: "https://douyin.com/livegigsasia" },
+                    { icon: "bilibili", name: "B站", url: "https://bilibili.com/livegigsasia" }
                 ],
                 producer: "./image/emanonent-logo.png"
             });
@@ -117,9 +126,7 @@ class DataLoader {
 
     // Carousel (Events page)
     getCarousel() {
-        return this.get(this.config.storageKeys.carousel) || [
-            { title: "", image: "", link_text: "", link: "" }
-        ];
+        return this.get(this.config.storageKeys.carousel) || [{ title: '', image: '', link_text: '', link: '' }];
     }
     saveCarousel(data) { this.set(this.config.storageKeys.carousel, data); }
 
@@ -190,8 +197,8 @@ class DataLoader {
                         all[page] = data.posters;
                         this.set(this.config.storageKeys.posters, all);
                     }
-                    if (data.events) this.saveEvents(data.events);
                     if (data.carousel) this.saveCarousel(data.carousel);
+                    if (data.events) this.saveEvents(data.events);
                     if (data.footer) {
                         this.saveFooter(page === 'cn' ? 'cn' : 'global', data.footer);
                     }
