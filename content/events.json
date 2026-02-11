@@ -34,5 +34,17 @@
     "description": "",
     "button_text": "Buy Now →",
     "link": "./tickets.html"
+  },
+  {
+    "title": "THE NONAME TOUR 2026",
+    "date": "2026.07.01",
+    "location": "Thailand",
+    "time": "",
+    "image": "",
+    "ticket": "",
+    "status": "ontour",
+    "description": "TBA",
+    "button_text": "",
+    "link": ""
   }
 ]
