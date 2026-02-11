@@ -1,139 +1,412 @@
-// LiveGigs Data Loader v3.0
-(function() {
-    function safeText(obj, key, defaultVal) {
-        if (!obj || typeof obj !== 'object') return defaultVal;
-        const val = obj[key];
-        return (val === undefined || val === null || val === '') ? defaultVal : String(val);
+/**
+ * LiveGigs Asia 数据加载器
+ * 支持从 GitHub 自动加载数据，本地缓存，以及数据同步
+ */
+
+class DataLoader {
+    constructor(config) {
+        this.config = config;
+        this.cache = {};
+        this.lastFetch = {};
+        this.isLoading = false;
     }
 
-    function safeArray(obj, key) {
-        if (!obj || typeof obj !== 'object') return [];
-        const val = obj[key];
-        return Array.isArray(val) ? val.filter(item => item !== null && item !== undefined) : [];
+    /**
+     * 获取 GitHub Raw 内容 URL
+     */
+    getGitHubRawUrl(path) {
+        const { owner, repo, branch } = this.config.github;
+        return `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${path}`;
     }
 
-    async function loadJSON(filename) {
+    /**
+     * 获取 GitHub API URL
+     */
+    getGitHubApiUrl(path) {
+        const { owner, repo } = this.config.github;
+        return `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+    }
+
+    /**
+     * 从 GitHub 获取文件内容
+     */
+    async fetchFromGitHub(path) {
+        const url = this.getGitHubRawUrl(path);
+        const headers = {};
+        
+        const token = localStorage.getItem(this.config.storageKeys.githubToken);
+        if (token) {
+            headers['Authorization'] = `token ${token}`;
+        }
+
         try {
-            const res = await fetch('./content/' + filename + '.json?v=' + Date.now());
-            if (!res.ok) throw new Error('Not found');
-            return await res.json();
-        } catch (e) { return null; }
+            const response = await fetch(url, { headers });
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+            return await response.json();
+        } catch (error) {
+            console.error(`Failed to fetch ${path}:`, error);
+            throw error;
+        }
     }
 
-    const icons = {
-        facebook: '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>',
-        instagram: '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069z"/></svg>',
-        youtube: '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>',
-        twitter: '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>',
-        x: '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>',
-        weibo: '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M10.098 20.323c-3.977.391-7.414-1.406-7.672-4.02-.259-2.609 2.759-5.047 6.74-5.441 3.979-.394 7.413 1.404 7.671 4.018.259 2.6-2.759 5.049-6.737 5.439z"/></svg>',
-        wechat: '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05z"/></svg>'
-    };
+    /**
+     * 从本地存储加载数据
+     */
+    loadFromLocal(key) {
+        try {
+            const data = localStorage.getItem(key);
+            return data ? JSON.parse(data) : null;
+        } catch (error) {
+            console.error(`Failed to load ${key} from local:`, error);
+            return null;
+        }
+    }
 
-    async function renderFooter() {
-        const isCN = window.location.href.includes('cn');
-        const data = await loadJSON(isCN ? 'footer-cn' : 'footer-global');
-        if (!data) return;
+    /**
+     * 保存数据到本地存储
+     */
+    saveToLocal(key, data) {
+        try {
+            localStorage.setItem(key, JSON.stringify(data));
+            return true;
+        } catch (error) {
+            console.error(`Failed to save ${key} to local:`, error);
+            return false;
+        }
+    }
 
-        const footer = document.querySelector('.footer, footer, #footer');
-        if (!footer) return;
+    /**
+     * 初始化默认数据
+     */
+    initDefaultData() {
+        const { storageKeys, defaults } = this.config;
+        
+        // Banner
+        if (!localStorage.getItem(storageKeys.banners)) {
+            this.saveToLocal(storageKeys.banners, defaults.banners);
+        }
+        
+        // Posters
+        if (!localStorage.getItem(storageKeys.posters)) {
+            this.saveToLocal(storageKeys.posters, defaults.posters);
+        }
+        
+        // Events
+        if (!localStorage.getItem(storageKeys.events)) {
+            this.saveToLocal(storageKeys.events, defaults.events);
+        }
+        
+        // Collaborators
+        if (!localStorage.getItem(storageKeys.collaborators)) {
+            this.saveToLocal(storageKeys.collaborators, defaults.collaborators);
+        }
+        
+        // Footer Global
+        if (!localStorage.getItem(storageKeys.footerGlobal)) {
+            this.saveToLocal(storageKeys.footerGlobal, defaults.footerGlobal);
+        }
+        
+        // Footer CN
+        if (!localStorage.getItem(storageKeys.footerCN)) {
+            this.saveToLocal(storageKeys.footerCN, defaults.footerCN);
+        }
+    }
 
-        // 查找copyright
-        let copyrightEl = footer.querySelector('.footer-copyright, .copyright, .footer-bottom p');
-        if (!copyrightEl) {
-            const all = footer.querySelectorAll('p, div, span');
-            for (const el of all) {
-                if (el.textContent.includes('©') || el.textContent.includes('RIGHTS') || el.className.includes('copy')) {
-                    copyrightEl = el; break;
+    /**
+     * 从 GitHub 加载所有数据
+     */
+    async loadAllFromGitHub() {
+        if (this.isLoading) return;
+        this.isLoading = true;
+
+        const { storageKeys, pages, github } = this.config;
+        const results = { success: [], failed: [] };
+
+        try {
+            // 加载各页面数据
+            for (const [pageKey, pageConfig] of Object.entries(pages)) {
+                try {
+                    const filePath = `${github.contentPath}/${pageConfig.file}`;
+                    const data = await this.fetchFromGitHub(filePath);
+                    
+                    // 根据页面类型保存到相应的存储键
+                    if (data.banners) {
+                        this.saveToLocal(storageKeys.banners, data.banners);
+                    }
+                    if (data.posters) {
+                        const posters = this.loadFromLocal(storageKeys.posters) || {};
+                        posters[pageKey] = data.posters;
+                        this.saveToLocal(storageKeys.posters, posters);
+                    }
+                    if (data.events) {
+                        this.saveToLocal(storageKeys.events, data.events);
+                    }
+                    if (data.collaborators) {
+                        this.saveToLocal(storageKeys.collaborators, data.collaborators);
+                    }
+                    if (data.footer) {
+                        const isCN = pageKey === 'cn';
+                        this.saveToLocal(
+                            isCN ? storageKeys.footerCN : storageKeys.footerGlobal,
+                            data.footer
+                        );
+                    }
+                    
+                    results.success.push(pageKey);
+                } catch (error) {
+                    console.warn(`Failed to load ${pageKey}:`, error);
+                    results.failed.push({ page: pageKey, error: error.message });
+                }
+            }
+
+            // 记录最后更新时间
+            localStorage.setItem('lg_last_sync', new Date().toISOString());
+            
+        } catch (error) {
+            console.error('Failed to load data from GitHub:', error);
+        } finally {
+            this.isLoading = false;
+        }
+
+        return results;
+    }
+
+    /**
+     * 获取 Banner 数据
+     */
+    getBanners() {
+        return this.loadFromLocal(this.config.storageKeys.banners) || [];
+    }
+
+    /**
+     * 保存 Banner 数据
+     */
+    saveBanners(banners) {
+        return this.saveToLocal(this.config.storageKeys.banners, banners);
+    }
+
+    /**
+     * 获取海报数据
+     */
+    getPosters(page = 'index') {
+        const allPosters = this.loadFromLocal(this.config.storageKeys.posters) || {};
+        return allPosters[page] || [];
+    }
+
+    /**
+     * 保存海报数据
+     */
+    savePosters(page, posters) {
+        const allPosters = this.loadFromLocal(this.config.storageKeys.posters) || {};
+        allPosters[page] = posters;
+        return this.saveToLocal(this.config.storageKeys.posters, allPosters);
+    }
+
+    /**
+     * 获取活动数据
+     */
+    getEvents() {
+        return this.loadFromLocal(this.config.storageKeys.events) || [];
+    }
+
+    /**
+     * 保存活动数据
+     */
+    saveEvents(events) {
+        return this.saveToLocal(this.config.storageKeys.events, events);
+    }
+
+    /**
+     * 获取合作伙伴数据
+     */
+    getCollaborators() {
+        return this.loadFromLocal(this.config.storageKeys.collaborators) || [];
+    }
+
+    /**
+     * 保存合作伙伴数据
+     */
+    saveCollaborators(collaborators) {
+        return this.saveToLocal(this.config.storageKeys.collaborators, collaborators);
+    }
+
+    /**
+     * 获取底部数据
+     */
+    getFooter(site = 'global') {
+        const key = site === 'cn' ? 
+            this.config.storageKeys.footerCN : 
+            this.config.storageKeys.footerGlobal;
+        return this.loadFromLocal(key) || {};
+    }
+
+    /**
+     * 保存底部数据
+     */
+    saveFooter(site, footer) {
+        const key = site === 'cn' ? 
+            this.config.storageKeys.footerCN : 
+            this.config.storageKeys.footerGlobal;
+        return this.saveToLocal(key, footer);
+    }
+
+    /**
+     * 导出所有数据
+     */
+    exportAll() {
+        const { storageKeys } = this.config;
+        return {
+            banners: this.getBanners(),
+            posters: this.loadFromLocal(storageKeys.posters) || {},
+            events: this.getEvents(),
+            collaborators: this.getCollaborators(),
+            footerGlobal: this.getFooter('global'),
+            footerCN: this.getFooter('cn'),
+            exportTime: new Date().toISOString(),
+            version: this.config.version
+        };
+    }
+
+    /**
+     * 导入所有数据
+     */
+    importAll(data) {
+        try {
+            if (data.banners) this.saveBanners(data.banners);
+            if (data.posters) this.saveToLocal(this.config.storageKeys.posters, data.posters);
+            if (data.events) this.saveEvents(data.events);
+            if (data.collaborators) this.saveCollaborators(data.collaborators);
+            if (data.footerGlobal) this.saveFooter('global', data.footerGlobal);
+            if (data.footerCN) this.saveFooter('cn', data.footerCN);
+            return true;
+        } catch (error) {
+            console.error('Import failed:', error);
+            return false;
+        }
+    }
+
+    /**
+     * 重置所有数据
+     */
+    resetAll() {
+        const { storageKeys } = this.config;
+        Object.values(storageKeys).forEach(key => {
+            if (!key.includes('session') && !key.includes('token')) {
+                localStorage.removeItem(key);
+            }
+        });
+        this.initDefaultData();
+        return true;
+    }
+
+    /**
+     * 获取统计数据
+     */
+    getStats() {
+        return {
+            banners: this.getBanners().length,
+            events: this.getEvents().length,
+            collaborators: this.getCollaborators().length,
+            lastSync: localStorage.getItem('lg_last_sync') || '从未同步'
+        };
+    }
+
+    /**
+     * 检查是否需要显示 Load More 按钮
+     */
+    shouldShowLoadMore() {
+        const eventCount = this.getEvents().length;
+        return eventCount >= this.config.events.minEventsForLoadMore;
+    }
+
+    /**
+     * 过滤空字段
+     */
+    filterEmptyFields(obj) {
+        if (typeof obj !== 'object' || obj === null) {
+            return obj;
+        }
+
+        if (Array.isArray(obj)) {
+            return obj.map(item => this.filterEmptyFields(item));
+        }
+
+        const filtered = {};
+        for (const [key, value] of Object.entries(obj)) {
+            if (value !== '' && value !== null && value !== undefined) {
+                if (typeof value === 'object') {
+                    const filteredValue = this.filterEmptyFields(value);
+                    if (Object.keys(filteredValue).length > 0) {
+                        filtered[key] = filteredValue;
+                    }
+                } else {
+                    filtered[key] = value;
                 }
             }
         }
+        return filtered;
+    }
 
-        if (copyrightEl) {
-            copyrightEl.textContent = safeText(data, 'copyright', '© 2025 LIVEGIGS ASIA. ALL RIGHTS RESERVED.');
+    /**
+     * 验证图片地址
+     */
+    validateImageUrl(url) {
+        if (!url) return false;
+        
+        const { externalProtocols, formats } = this.config.images;
+        
+        // 检查是否是外部链接
+        const isExternal = externalProtocols.some(protocol => 
+            url.toLowerCase().startsWith(protocol)
+        );
+        
+        if (isExternal) {
+            return true;
         }
+        
+        // 检查本地图片格式
+        const ext = url.split('.').pop().toLowerCase();
+        return formats.includes(ext);
+    }
 
-        // 社交链接
-        const socialContainer = footer.querySelector('.footer-social, .social-links, .social-icons');
-        if (socialContainer && data.socialLinks) {
-            const links = safeArray(data, 'socialLinks');
-            let html = '';
-            links.forEach(function(link) {
-                if (!link || !link.url) return;
-                const iconKey = safeText(link, 'icon', '').toLowerCase();
-                const iconHtml = icons[iconKey] || icons[iconKey.replace(/\d/g, '')] || '<span style="font-weight:bold;font-size:12px;">' + (link.title || link.icon || '?').charAt(0).toUpperCase() + '</span>';
-                html += '<a href="' + link.url + '" target="_blank" title="' + safeText(link, 'title', '') + '" style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;margin:0 5px;color:#c0c0c0;text-decoration:none;">' + iconHtml + '</a>';
-            });
-            if (html) socialContainer.innerHTML = html;
+    /**
+     * 验证链接地址
+     */
+    validateLinkUrl(url) {
+        if (!url) return true; // 空链接是允许的
+        
+        const { externalProtocols } = this.config.images;
+        
+        // 检查是否是外部链接
+        const isExternal = externalProtocols.some(protocol => 
+            url.toLowerCase().startsWith(protocol)
+        );
+        
+        if (isExternal) {
+            return true;
         }
+        
+        // 检查是否是本地页面链接
+        return url.startsWith('./') || url.startsWith('/') || url.startsWith('#');
     }
+}
 
-    async function renderEvents() {
-        const data = await loadJSON('events-managed');
-        if (!data || !data.events) return;
+// 创建全局实例
+let dataLoader;
 
-        const container = document.querySelector('.events-grid, .events-container');
-        if (!container) return;
-
-        const events = safeArray(data, 'events');
-        let html = '';
-
-        events.slice(0, 6).forEach(function(event) {
-            if (!event) return;
-            const onTour = event.onTour === true || event.onTour === 'true';
-            const soldOut = event.soldOut === true || event.soldOut === 'true';
-            let tags = '';
-            if (onTour) tags += '<span class="tag on-tour">ON TOUR</span>';
-            if (soldOut) tags += '<span class="tag sold-out">SOLD OUT</span>';
-
-            html += '<div class="event-card">' +
-                '<div class="event-image"><img src="' + (event.image || './image/placeholder.jpg') + '" alt="" loading="lazy">' + (tags ? '<div class="event-tags">' + tags + '</div>' : '') + '</div>' +
-                '<div class="event-info">' +
-                '<h3>' + (event.title || 'Untitled') + '</h3>' +
-                (event.date || event.venue ? '<div>' + [event.date, event.venue, event.time].filter(Boolean).join(' | ') + '</div>' : '') +
-                (event.description ? '<p>' + event.description + '</p>' : '') +
-                '<a href="' + (event.link || '#') + '" target="_blank">' + (event.buttonText || 'BUY TICKETS') + '</a>' +
-                '</div></div>';
-        });
-
-        if (events.length > 6) {
-            html += '<div style="grid-column:1/-1;text-align:center;margin-top:20px;"><button onclick="loadMoreEvents()">LOAD MORE</button></div>';
-        }
-
-        container.innerHTML = html;
+function initDataLoader() {
+    if (typeof ADMIN_CONFIG !== 'undefined') {
+        dataLoader = new DataLoader(ADMIN_CONFIG);
+        dataLoader.initDefaultData();
+        return dataLoader;
     }
+    console.error('ADMIN_CONFIG not found');
+    return null;
+}
 
-    async function renderCollaborators() {
-        const data = await loadJSON('collaborators');
-        if (!data || !data.logos) return;
-
-        const container = document.querySelector('.collaborators-grid, .partners-logos');
-        if (!container) return;
-
-        const logos = safeArray(data, 'logos');
-        let html = '';
-
-        logos.forEach(function(logo) {
-            if (!logo || !logo.image) return;
-            if (logo.link && logo.link !== '#' && logo.link !== '') {
-                html += '<a href="' + logo.link + '" target="_blank"><img src="' + logo.image + '" alt="' + (logo.name || '') + '" loading="lazy"></a>';
-            } else {
-                html += '<div><img src="' + logo.image + '" alt="' + (logo.name || '') + '" loading="lazy"></div>';
-            }
-        });
-
-        container.innerHTML = html;
-    }
-
-    async function init() {
-        await Promise.all([renderFooter(), renderEvents(), renderCollaborators()]);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
-    } else {
-        init();
-    }
-
-    window.LiveGigsData = { refresh: init };
-})();
+// 页面加载时初始化
+document.addEventListener('DOMContentLoaded', function() {
+    initDataLoader();
+});

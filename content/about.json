@@ -1,31 +1,12 @@
 {
-  "page": "events",
-  "name": "活动页",
+  "page": "about",
+  "name": "关于页",
   "lastUpdated": "2026-02-12T00:00:00.000Z",
-  "posters": [
-    {
-      "title": "Past Gig 1",
-      "image": "./image/1-b-2.jpg",
-      "link_text": "View Details →",
-      "link": "./events.html",
-      "carousel": false
-    },
-    {
-      "title": "Past Gig 2",
-      "image": "./image/1-b-3.jpg",
-      "link_text": "View Details →",
-      "link": "./events.html",
-      "carousel": false
-    },
-    {
-      "title": "Past Gig 3",
-      "image": "./image/livegigscn1.png",
-      "link_text": "View Details →",
-      "link": "./events.html",
-      "carousel": false
-    }
-  ],
-  "events": [],
+  "content": {
+    "title": "About LiveGigs Asia",
+    "description": "LiveGigs Asia is a premier live music platform connecting artists with audiences across Asia.",
+    "image": "./image/about-banner.jpg"
+  },
   "footer": {
     "copyright": "© 2026 LIVEGIGS ASIA. ALL RIGHTS RESERVED.",
     "social": [

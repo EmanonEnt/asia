@@ -1,31 +1,49 @@
 {
-  "page": "events",
-  "name": "活动页",
+  "page": "index",
+  "name": "首页",
   "lastUpdated": "2026-02-12T00:00:00.000Z",
+  "banners": [
+    {
+      "title": "THE NONAME ANTI-MUSIC FESTIVAL",
+      "image": "./image/thenonameanti-.jpg",
+      "button_text": "View Details →",
+      "link": "./events.html",
+      "order": 1,
+      "active": true
+    },
+    {
+      "title": "PUNK HEART FESTIVAL",
+      "image": "./image/punkheartbanner.jpg",
+      "button_text": "Get Tickets →",
+      "link": "./events.html",
+      "order": 2,
+      "active": true
+    }
+  ],
   "posters": [
     {
-      "title": "Past Gig 1",
+      "title": "Event 1",
       "image": "./image/1-b-2.jpg",
       "link_text": "View Details →",
       "link": "./events.html",
       "carousel": false
     },
     {
-      "title": "Past Gig 2",
+      "title": "Event 2",
       "image": "./image/1-b-3.jpg",
       "link_text": "View Details →",
       "link": "./events.html",
       "carousel": false
     },
     {
-      "title": "Past Gig 3",
+      "title": "Event 3",
       "image": "./image/livegigscn1.png",
       "link_text": "View Details →",
       "link": "./events.html",
       "carousel": false
     }
   ],
-  "events": [],
+  "collaborators": [],
   "footer": {
     "copyright": "© 2026 LIVEGIGS ASIA. ALL RIGHTS RESERVED.",
     "social": [
