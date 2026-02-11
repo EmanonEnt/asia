@@ -1,842 +1,1342 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LiveGigs Asia - 后台管理</title>
+    <title>LiveGigs Asia</title>
+    <!-- Tab图标 -->
+    <link rel="icon" type="image/png" href="./image/webtop.png">
+    <link rel="shortcut icon" type="image/png" href="./image/webtop.png">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --dark-red: #8b0000;
+            --darker-red: #4a0000;
+            --silver: #c0c0c0;
+            --silver-bg: #d0d0d0;
+            --black: #050505;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
+            min-height: 100%;
             font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-            background: #050505;
-            color: #c0c0c0;
-            min-height: 100vh;
+            background-color: var(--black);
+            color: #fff;
+            overflow-x: hidden;
         }
-        .header {
-            background: rgba(0,0,0,0.9);
-            border-bottom: 3px solid #8b0000;
-            padding: 20px;
+
+        /* ==================== 导航栏 ==================== */
+        nav {
             position: fixed;
-            top: 0; left: 0; right: 0;
-            z-index: 1000;
-        }
-        .header h1 {
-            color: #8b0000;
-            font-size: 32px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-        .header p {
-            color: #c0c0c0;
-            font-size: 14px;
-            margin-top: 5px;
-            font-family: Arial, sans-serif;
-        }
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 120px 20px 40px;
-        }
-        .stats-bar {
-            background: #1a1a1a;
-            border: 2px solid #333;
-            border-radius: 6px;
-            padding: 15px;
-            margin-bottom: 20px;
-            display: flex;
-            gap: 30px;
-            flex-wrap: wrap;
-        }
-        .stat-item { text-align: center; }
-        .stat-number {
-            font-size: 32px;
-            color: #8b0000;
-            font-weight: bold;
-        }
-        .stat-label {
-            font-size: 12px;
-            color: #888;
-            text-transform: uppercase;
-            font-family: Arial, sans-serif;
-        }
-        .nav-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-            border-bottom: 2px solid #333;
-            padding-bottom: 10px;
-        }
-        .nav-tab {
-            padding: 12px 24px;
-            background: #1a1a1a;
-            border: 2px solid #333;
-            color: #c0c0c0;
-            cursor: pointer;
-            text-transform: uppercase;
-            font-size: 14px;
-            transition: all 0.3s;
-            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-        }
-        .nav-tab:hover, .nav-tab.active {
-            background: #8b0000;
-            border-color: #8b0000;
-            color: #fff;
-        }
-        .section { display: none; animation: fadeIn 0.3s; }
-        .section.active { display: block; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .section-title {
-            font-size: 28px;
-            color: #8b0000;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            border-left: 5px solid #8b0000;
-            padding-left: 15px;
-        }
-        .card {
-            background: #0a0a0a;
-            border: 2px solid #333;
-            border-radius: 8px;
-            padding: 25px;
-            margin-bottom: 20px;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #c0c0c0;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .form-group input,
-        .form-group textarea,
-        .form-group select {
+            top: 0;
             width: 100%;
-            padding: 12px;
-            background: #1a1a1a;
-            border: 2px solid #333;
-            color: #fff;
-            font-size: 14px;
-            font-family: Arial, sans-serif;
-            border-radius: 4px;
-        }
-        .form-group input:focus,
-        .form-group textarea:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: #8b0000;
-        }
-        .btn {
-            padding: 12px 30px;
-            background: #8b0000;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            text-transform: uppercase;
-            font-size: 14px;
-            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-            border-radius: 4px;
-            margin-right: 10px;
-            margin-bottom: 10px;
-        }
-        .btn:hover { background: #a00000; }
-        .btn-secondary { background: #333; }
-        .btn-secondary:hover { background: #444; }
-        .btn-success { background: #006400; }
-        .btn-success:hover { background: #008000; }
-        .btn-warning { background: #b8860b; }
-        .btn-warning:hover { background: #daa520; }
-        .item-list { margin-top: 20px; }
-        .item-card {
-            background: #1a1a1a;
-            border: 2px solid #333;
-            border-radius: 6px;
-            padding: 20px;
-            margin-bottom: 15px;
+            height: 80px;
+            padding: 0 50px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            z-index: 9999;
+            background: rgba(0, 0, 0, 0.5);
         }
-        .item-card:hover { border-color: #8b0000; }
-        .item-info h4 {
-            color: #fff;
-            font-size: 18px;
-            margin-bottom: 5px;
-        }
-        .item-info p {
-            color: #888;
-            font-size: 13px;
-            font-family: Arial, sans-serif;
-        }
-        .item-actions { display: flex; gap: 10px; }
-        .btn-small {
-            padding: 8px 16px;
-            font-size: 12px;
-            border: none;
+
+        .logo-img {
+            height: 45px;
+            width: auto;
+            max-width: 180px;
+            object-fit: contain;
             cursor: pointer;
-            text-transform: uppercase;
-            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-            border-radius: 4px;
+            animation: logoBreathe 8s ease-in-out infinite, logoFlash 8s ease-in-out infinite;
         }
-        .btn-edit { background: #c0c0c0; color: #000; }
-        .btn-delete { background: #8b0000; color: #fff; }
-        .alert {
-            padding: 15px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            font-family: Arial, sans-serif;
+
+        @keyframes logoBreathe {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 5px rgba(139, 0, 0, 0.4)); }
+            50% { transform: scale(1.03); filter: drop-shadow(0 0 15px rgba(139, 0, 0, 0.8)); }
         }
-        .alert-success {
-            background: rgba(0,100,0,0.2);
-            border: 2px solid #006400;
-            color: #00ff00;
+
+        @keyframes logoFlash {
+            0%, 90%, 100% { filter: drop-shadow(0 0 5px rgba(139, 0, 0, 0.4)); }
+            95% { filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.8)) drop-shadow(0 0 15px rgba(139, 0, 0, 1)); }
         }
-        .alert-error {
-            background: rgba(139,0,0,0.2);
-            border: 2px solid #8b0000;
-            color: #ff6666;
-        }
-        .alert-info {
-            background: rgba(192,192,192,0.1);
-            border: 2px solid #c0c0c0;
-            color: #c0c0c0;
-        }
-        .json-output {
-            background: #1a1a1a;
-            border: 2px solid #333;
-            border-radius: 6px;
-            padding: 20px;
-            margin-top: 20px;
-            font-family: 'Courier New', monospace;
-            font-size: 12px;
-            color: #0f0;
-            white-space: pre-wrap;
-            word-break: break-all;
-            max-height: 400px;
-            overflow-y: auto;
-        }
-        .help-text {
-            font-size: 12px;
-            color: #666;
-            margin-top: 5px;
-            font-family: Arial, sans-serif;
-        }
-        .checkbox-group {
+
+        .nav-links {
             display: flex;
+            gap: 40px;
             align-items: center;
-            gap: 10px;
-            margin-top: 10px;
         }
-        .checkbox-group input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            accent-color: #8b0000;
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
         }
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
+
+        .nav-links a:hover {
+            color: var(--dark-red);
+            text-shadow: 0 0 10px rgba(139, 0, 0, 0.8);
         }
-        @media (max-width: 768px) {
-            .grid-2 { grid-template-columns: 1fr; }
-            .item-card {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 15px;
+
+        .nav-links .neon-btn {
+            background: rgba(139, 0, 0, 0.3);
+            color: #fff;
+            border: 2px solid var(--dark-red);
+            padding: 10px 25px;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-links .neon-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-links .neon-btn:hover::before {
+            left: 100%;
+        }
+
+        .nav-links .neon-btn:hover {
+            background: var(--dark-red);
+            border-color: var(--dark-red);
+            box-shadow: 0 0 30px rgba(139, 0, 0, 0.8), 0 0 60px rgba(139, 0, 0, 0.4);
+            transform: scale(1.05);
+            letter-spacing: 3px;
+        }
+
+        /* ==================== Hero Section ==================== */
+        .hero {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('./image/hero%20bg.jpeg');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            filter: grayscale(100%) brightness(0.35);
+            z-index: 0;
+            animation: bgFlash 8s ease-in-out infinite;
+        }
+
+        @keyframes bgFlash {
+            0%, 85%, 100% { filter: grayscale(100%) brightness(0.35); }
+            90%, 95% { filter: grayscale(80%) brightness(0.5); }
+        }
+
+        .smoke-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 3;
+            overflow: hidden;
+            pointer-events: none;
+            opacity: 0.5;
+            animation: breathe 8s ease-in-out infinite;
+        }
+
+        .smoke {
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(ellipse at center, rgba(255,255,255,0.04) 0%, transparent 50%);
+            filter: blur(60px);
+        }
+
+        .smoke:nth-child(1) { top: -30%; left: -30%; animation: smokeFloat1 18s ease-in-out infinite; }
+        .smoke:nth-child(2) { top: 10%; right: -30%; animation: smokeFloat2 22s ease-in-out infinite; opacity: 0.6; }
+        .smoke:nth-child(3) { bottom: -30%; left: 10%; animation: smokeFloat3 20s ease-in-out infinite; opacity: 0.4; }
+
+        @keyframes breathe {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.02); }
+        }
+
+        @keyframes smokeFloat1 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(5%, 3%) scale(1.1); }
+        }
+
+        @keyframes smokeFloat2 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-5%, -3%) scale(1.05); }
+        }
+
+        @keyframes smokeFloat3 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(3%, -5%) scale(1.08); }
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 100%);
+            z-index: 2;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            width: 100%;
+            padding: 0 20px;
+            margin-top: 120px;
+        }
+
+        .hero-title {
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: clamp(80px, 14vw, 220px);
+            font-weight: 400;
+            letter-spacing: clamp(8px, 2vw, 20px);
+            line-height: 0.85;
+            margin-bottom: 40px;
+            max-width: 1900px;
+            margin-left: auto;
+            margin-right: auto;
+            text-transform: uppercase;
+            animation: textFlash 8s ease-in-out infinite;
+        }
+
+        @keyframes textFlash {
+            0%, 90%, 100% { opacity: 0.9; text-shadow: 0 0 30px rgba(139, 0, 0, 0.3); }
+            95% { opacity: 1; text-shadow: 0 0 60px rgba(139, 0, 0, 0.8), 0 0 100px rgba(255, 255, 255, 0.3); }
+        }
+
+        .hero-title .gray {
+            color: rgba(100, 100, 100, 0.95);
+        }
+
+        .hero-title .red {
+            color: rgba(139, 0, 0, 0.95);
+        }
+
+        .hero-subtitle {
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: clamp(22px, 3.5vw, 42px);
+            letter-spacing: clamp(4px, 1vw, 10px);
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 1400px;
+            margin: 80px auto 0;
+            padding: 0 20px;
+            line-height: 1.8;
+            animation: textFlash 8s ease-in-out infinite;
+            animation-delay: 0.3s;
+        }
+
+        .hero-subtitle .line1 {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .hero-subtitle .line2 {
+            display: block;
+            color: rgba(200, 200, 200, 0.9);
+            font-size: 0.95em;
+        }
+
+        /* ==================== 内容包装器 ==================== */
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
+            margin-top: 100vh;
+            background: var(--black);
+            min-height: 100vh;
+        }
+
+        /* ==================== Banner ==================== */
+        .banner-section {
+            position: relative;
+            width: 100%;
+            background: var(--black);
+            padding-top: 0;
+        }
+
+        .rebel-banner {
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            height: auto;
+            min-height: 400px;
+            background: #000;
+        }
+
+        .rebel-slider {
+            display: flex;
+            height: 100%;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .rebel-slide {
+            min-width: 100%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: inset 0 0 0 2px rgba(192, 192, 192, 0.3), inset 0 0 20px rgba(192, 192, 192, 0.1);
+        }
+
+        .rebel-slide::before,
+        .rebel-slide::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(192, 192, 192, 0.6), transparent);
+            z-index: 5;
+        }
+
+        .rebel-slide::before { top: 0; }
+        .rebel-slide::after { bottom: 0; }
+
+        .rebel-poster {
+            width: 100%;
+            height: auto;
+            display: block;
+            filter: brightness(0.7);
+            transition: filter 0.5s;
+        }
+
+        .rebel-slide:hover .rebel-poster { filter: brightness(0.5); }
+
+        .rebel-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            text-align: center;
+            padding: 20px;
+            opacity: 0;
+            transition: all 0.6s ease;
+            width: 90%;
+            max-width: 800px;
+        }
+
+        .rebel-slide:hover .rebel-content {
+            opacity: 1;
+        }
+
+        .rebel-content h2 {
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: clamp(24px, 5vw, 56px);
+            letter-spacing: clamp(2px, 1vw, 5px);
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            color: #fff;
+            text-shadow: 0 0 30px rgba(139, 0, 0, 0.8);
+            line-height: 1.2;
+            word-wrap: break-word;
+        }
+
+        .rebel-content .neon-btn {
+            background: rgba(192, 192, 192, 0.2);
+            color: #fff;
+            border: 2px solid rgba(192, 192, 192, 0.5);
+            padding: 12px 30px;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: clamp(11px, 2vw, 13px);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .rebel-content .neon-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .rebel-content .neon-btn:hover::before {
+            left: 100%;
+        }
+
+        .rebel-content .neon-btn:hover {
+            background: var(--dark-red);
+            border-color: var(--dark-red);
+            box-shadow: 0 0 30px rgba(139, 0, 0, 0.8), 0 0 60px rgba(139, 0, 0, 0.4);
+            transform: scale(1.05);
+            letter-spacing: 3px;
+        }
+
+        /* ==================== 海报区域 - 满屏显示 ==================== */
+        .posters-showcase {
+            width: 100%;
+            padding: 0;
+            background: linear-gradient(180deg, #050505 0%, #0a0a0a 50%, #050505 100%);
+            position: relative;
+        }
+
+        .posters-container {
+            width: 100%;
+            max-width: none;
+            margin: 0 auto;
+            display: flex;
+            justify-content: stretch;
+            align-items: stretch;
+            gap: 0;
+            padding: 0;
+        }
+
+        /* 海报1 - 保持原有效果 */
+        .poster-item {
+            flex: 1;
+            min-width: 0;
+            max-width: none;
+            position: relative;
+            overflow: hidden;
+            cursor: default;
+            background: #000;
+            transition: all 0.4s ease;
+        }
+
+        .poster-item:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 25px 60px rgba(139, 0, 0, 0.4);
+        }
+
+        .poster-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            transition: all 0.4s;
+        }
+
+        .poster-item:hover img {
+            filter: brightness(0.65);
+            transform: scale(1.08);
+        }
+
+        .poster-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 35px 20px 25px;
+            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 50%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .poster-item:hover .poster-overlay { opacity: 1; }
+
+        .poster-title {
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: 18px;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 8px;
+            text-shadow: 0 0 20px rgba(139, 0, 0, 0.8);
+        }
+
+        .poster-link {
+            display: inline-block;
+            color: var(--silver);
+            font-size: 12px;
+            text-decoration: none;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+            cursor: pointer;
+            padding: 5px 0;
+        }
+
+        .poster-link:hover { 
+            color: var(--dark-red); 
+        }
+
+        /* 海报2和3 - 桌面端边框发光效果（无放大） */
+        .poster-item-alt {
+            flex: 1;
+            min-width: 0;
+            max-width: none;
+            position: relative;
+            overflow: hidden;
+            cursor: default;
+            background: #000;
+            transition: all 0.4s ease;
+            border: none;
+        }
+
+        .poster-item-alt:hover {
+            border-color: rgba(139, 0, 0, 0.6);
+            box-shadow: 0 0 30px rgba(139, 0, 0, 0.3), inset 0 0 20px rgba(139, 0, 0, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .poster-item-alt img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            transition: filter 0.4s;
+        }
+
+        .poster-item-alt:hover img {
+            filter: brightness(0.7);
+        }
+
+        .poster-item-alt .poster-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 35px 20px 25px;
+            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 50%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .poster-item-alt:hover .poster-overlay { opacity: 1; }
+
+        /* ==================== 间隙区域 ==================== */
+        .footer-gap {
+            height: 150px;
+            background: linear-gradient(180deg, #050505 0%, #1a1a1a 30%, var(--silver-bg) 100%);
+            position: relative;
+        }
+
+        /* ==================== 底部区域 ==================== */
+        .site-footer {
+            background: var(--silver-bg);
+            color: #333;
+            position: relative;
+            z-index: 100;
+        }
+
+        .footer-main {
+            padding: 50px 40px 40px;
+            position: relative;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .footer-contact-left {
+            flex: 1;
+            text-align: left;
+            font-family: 'Courier New', monospace;
+        }
+
+        .contact-item {
+            margin-bottom: 10px;
+            color: #555;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+            line-height: 1.5;
+        }
+
+        .contact-item a {
+            color: #555;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .contact-item a:hover {
+            color: var(--dark-red);
+        }
+
+        .footer-brand {
+            flex: 0 0 auto;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-size: clamp(32px, 6vw, 48px);
+            font-weight: 400;
+            letter-spacing: 4px;
+            line-height: 1;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            animation: simpleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes simpleGlow {
+            0%, 100% { 
+                text-shadow: 0 0 10px rgba(139, 0, 0, 0.3);
+                opacity: 0.95;
+            }
+            50% { 
+                text-shadow: 0 0 20px rgba(139, 0, 0, 0.6), 0 0 30px rgba(139, 0, 0, 0.3);
+                opacity: 1;
             }
         }
-        .status-badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
+
+        .footer-logo .livegigs {
+            color: #222;
+        }
+
+        .footer-logo .asia {
+            color: var(--dark-red);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 25px;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #666;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #555;
+            text-decoration: none;
+            transition: all 0.3s;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .social-icon:hover {
+            border-color: var(--dark-red);
+            color: var(--dark-red);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .producer-section {
+            text-align: center;
+        }
+
+        .producer-label {
+            font-size: 10px;
+            color: #777;
             text-transform: uppercase;
-            margin-left: 10px;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+            font-family: 'Courier New', monospace;
         }
-        .status-active {
-            background: rgba(0,100,0,0.3);
-            color: #00ff00;
-            border: 1px solid #006400;
+
+        .producer-logo {
+            height: 35px;
+            width: auto;
+            opacity: 0.8;
+            transition: opacity 0.3s;
         }
-        .status-inactive {
-            background: rgba(139,0,0,0.3);
-            color: #ff6666;
-            border: 1px solid #8b0000;
+
+        .producer-logo:hover {
+            opacity: 1;
+        }
+
+        .footer-contact-right {
+            flex: 1;
+            text-align: right;
+            font-family: 'Courier New', monospace;
+        }
+
+        .footer-bottom {
+            background: #b8b8b8;
+            border-top: 1px solid #999;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .footer-legal {
+            display: flex;
+            gap: 25px;
+        }
+
+        .footer-legal a {
+            color: #555;
+            text-decoration: none;
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .footer-legal a:hover {
+            color: var(--dark-red);
+        }
+
+        .copyright {
+            color: #666;
+            font-size: 11px;
+            letter-spacing: 1px;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* ==================== Membership弹窗 ==================== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal-content {
+            background: linear-gradient(135deg, #0a0000 0%, #050505 100%);
+            border: 1px solid var(--darker-red);
+            padding: 40px 35px;
+            max-width: 480px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 0 50px rgba(74, 0, 0, 0.5);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover { color: var(--dark-red); transform: scale(1.2); }
+
+        .modal-content h2 {
+            font-size: 28px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            color: #fff;
+            text-align: center;
+        }
+
+        .modal-content p {
+            font-size: 13px;
+            color: var(--silver);
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .form-group { margin-bottom: 18px; }
+
+        .form-group label {
+            display: block;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--silver);
+            margin-bottom: 6px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--darker-red);
+            color: #fff;
+            font-size: 14px;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--dark-red);
+            box-shadow: 0 0 15px rgba(139, 0, 0, 0.3);
+        }
+
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .modal-content .neon-btn {
+            width: 100%;
+            margin-top: 10px;
+            padding: 14px;
+            font-size: 13px;
+            background: transparent;
+            color: #fff;
+            border: 2px solid var(--darker-red);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .modal-content .neon-btn:hover {
+            background: var(--dark-red);
+            box-shadow: 0 0 20px rgba(139, 0, 0, 0.5);
+        }
+
+        /* ==================== 响应式 ==================== */
+        @media (max-width: 1024px) {
+            nav { padding: 0 30px; height: 70px; }
+            .logo-img { height: 40px; max-width: 150px; }
+            .nav-links { gap: 25px; }
+            .hero-content { margin-top: 100px; }
+            .hero-title { font-size: clamp(70px, 13vw, 120px); }
+            .hero-subtitle { font-size: clamp(20px, 3vw, 32px); margin-top: 60px; }
+            .rebel-banner { min-height: 350px; }
+            .rebel-content h2 { font-size: clamp(22px, 5vw, 48px); }
+            .footer-container { gap: 30px; }
+        }
+
+        @media (max-width: 768px) {
+            nav { padding: 0 20px; height: 65px; }
+            .logo-img { height: 35px; max-width: 130px; }
+            .nav-links a { font-size: 11px; letter-spacing: 2px; }
+            .nav-links .neon-btn { padding: 8px 16px; font-size: 10px; }
+            .hero-content { margin-top: 80px; }
+            .hero-title { font-size: clamp(55px, 14vw, 80px); letter-spacing: 5px; margin-bottom: 35px; }
+            .hero-subtitle { font-size: clamp(16px, 3.5vw, 22px); letter-spacing: 2.5px; margin-top: 50px; }
+            .rebel-banner { min-height: 300px; }
+            .rebel-content { opacity: 1; transform: translate(-50%, -50%); padding: 15px; }
+            .rebel-content h2 { font-size: clamp(20px, 6vw, 40px); letter-spacing: 3px; margin-bottom: 15px; }
+            .rebel-content .neon-btn { padding: 10px 20px; font-size: 11px; }
+            .poster-title { font-size: 14px; }
+            .footer-gap { height: 100px; }
+            .footer-main { padding: 40px 30px 30px; }
+            .footer-container { flex-direction: column; gap: 30px; text-align: center; }
+            .footer-contact-left, .footer-contact-right { text-align: center; flex: 1; width: 100%; }
+            .social-links { margin-bottom: 20px; }
+            .producer-section { text-align: center; }
+            .footer-bottom { flex-direction: column; gap: 15px; padding: 20px 30px; text-align: center; }
+            .footer-legal { flex-wrap: wrap; justify-content: center; gap: 20px; }
+        }
+
+        @media (max-width: 480px) {
+            nav { padding: 0 15px; height: 60px; background: rgba(0, 0, 0, 0.5); }
+            .logo-img { height: 32px; max-width: 120px; }
+            .nav-links { gap: 12px; }
+            .nav-links a { font-size: 10px; letter-spacing: 1px; }
+            .nav-links .neon-btn { padding: 6px 14px; font-size: 9px; }
+            .hero-content { margin-top: 60px; }
+            .hero-title { font-size: clamp(45px, 13vw, 65px); letter-spacing: 4px; margin-bottom: 30px; }
+            .hero-subtitle { font-size: clamp(13px, 3.5vw, 16px); letter-spacing: 2px; margin-top: 40px; line-height: 1.6; }
+            .hero-subtitle .line1 { margin-bottom: 5px; }
+            .smoke-container { opacity: 0.35; }
+            .rebel-banner { min-height: 250px; }
+            .rebel-content { width: 95%; padding: 10px; }
+            .rebel-content h2 { font-size: clamp(18px, 5.5vw, 28px); letter-spacing: 2px; margin-bottom: 12px; line-height: 1.3; }
+            .rebel-content .neon-btn { padding: 8px 16px; font-size: 10px; letter-spacing: 1px; }
+            
+            /* 手机端海报恢复有间距的显示 */
+            .posters-container { padding: 0 20px; gap: 15px; justify-content: center; }
+            
+            .poster-item,
+            .poster-item-alt {
+                flex: 0 0 calc(33.333% - 10px);
+                max-width: calc(33.333% - 10px);
+                min-width: auto;
+                border-radius: 4px;
+            }
+            
+            .poster-item:hover,
+            .poster-item-alt:hover {
+                transform: translateY(-12px);
+                box-shadow: 0 25px 60px rgba(139, 0, 0, 0.4);
+            }
+            
+            .poster-item img,
+            .poster-item-alt img {
+                transition: all 0.4s;
+            }
+            
+            .poster-item:hover img,
+            .poster-item-alt:hover img {
+                filter: brightness(0.65);
+                transform: scale(1.08);
+            }
+            
+            .poster-overlay,
+            .poster-item-alt .poster-overlay {
+                padding: 12px 6px 10px;
+            }
+            
+            .poster-title { font-size: 10px; letter-spacing: 1px; margin-bottom: 4px; }
+            .poster-link { font-size: 9px; letter-spacing: 0.5px; }
+            .footer-gap { height: 80px; }
+            .footer-main { padding: 35px 25px 25px; }
+            .footer-logo { font-size: 28px; letter-spacing: 3px; margin-bottom: 15px; }
+            .social-links { gap: 12px; margin-bottom: 20px; }
+            .social-icon { width: 36px; height: 36px; }
+            .social-icon svg { width: 14px; height: 14px; }
+            .contact-item { font-size: 11px; margin-bottom: 8px; }
+            .producer-label { font-size: 9px; letter-spacing: 2px; }
+            .producer-logo { height: 30px; }
+            .footer-bottom { padding: 15px 20px; gap: 12px; }
+            .footer-legal { gap: 15px; }
+            .footer-legal a { font-size: 10px; }
+            .copyright { font-size: 10px; }
+        }
+
+        @media (max-width: 375px) {
+            .hero-title { font-size: 38px; letter-spacing: 3px; }
+            .hero-subtitle { font-size: 11px; }
+            .posters-container { padding: 0 15px; gap: 12px; }
+            .poster-item,
+            .poster-item-alt {
+                flex: 0 0 calc(33.333% - 8px);
+                max-width: calc(33.333% - 8px);
+            }
+            .poster-title { font-size: 9px; }
+            .poster-link { font-size: 8px; }
+            .rebel-content h2 { font-size: 16px; letter-spacing: 1.5px; }
+            .rebel-content .neon-btn { padding: 6px 12px; font-size: 9px; }
+            .footer-logo { font-size: 24px; letter-spacing: 2px; }
+            .social-icon { width: 34px; height: 34px; }
+            .contact-item { font-size: 10px; }
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>LiveGigs Asia - 后台管理</h1>
-        <p>编辑数据 → 导出 JSON → 粘贴到 GitHub content/data.json</p>
+
+    <!-- 导航栏 -->
+    <nav>
+        <img src="./image/logo.png" alt="LiveGigs Asia" class="logo-img" id="logo" onclick="location.reload()" data-editable="logo" data-src="./image/logo.png">
+        <div class="nav-links">
+            <a href="events.html" data-editable="nav-events" data-text="Events" data-href="events.html">Events</a>
+            <a href="partners.html" data-editable="nav-partners" data-text="Partners" data-href="partners.html">Partners</a>
+            <button class="neon-btn" onclick="openModal()" data-editable="nav-membership" data-text="Membership">Membership</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg" id="heroBg" data-editable="hero-bg" data-src="./image/hero%20bg.jpeg"></div>
+        
+        <div class="smoke-container">
+            <div class="smoke"></div>
+            <div class="smoke"></div>
+            <div class="smoke"></div>
+        </div>
+        
+        <div class="hero-overlay"></div>
+        
+        <div class="hero-content">
+            <h1 class="hero-title" data-editable="hero-title">
+                <span class="gray" data-editable="hero-title-gray" data-text="LIVEGIGS">LIVEGIGS</span><span class="red" data-editable="hero-title-red" data-text="ASIA">ASIA</span>
+            </h1>
+            <p class="hero-subtitle" data-editable="hero-subtitle">
+                <span class="line1" data-editable="hero-subtitle-line1" data-text="Concerts, Festivals, Tickets, Tour Dates">Concerts, Festivals, Tickets, Tour Dates</span>
+                <span class="line2" data-editable="hero-subtitle-line2" data-text="- Live Gigs">- Live Gigs</span>
+            </p>
+        </div>
+    </section>
+
+    <!-- 内容包装器 -->
+    <div class="content-wrapper">
+
+        <!-- Banner -->
+        <section class="banner-section">
+            <div class="rebel-banner">
+                <div class="rebel-slider" id="rebelSlider">
+                    <div class="rebel-slide" data-editable="banner-slide-1">
+                        <img src="./image/thenonameanti-.jpg" alt="The Noname Anti-IPA" class="rebel-poster"
+                             onerror="this.src='https://via.placeholder.com/1920x1080/1a0000/8b0000?text=THE+NONAME '" data-editable="banner-1-image" data-src="./image/thenonameanti-.jpg">
+                        <div class="rebel-content">
+                            <h2 data-editable="banner-1-title" data-text="THE NONAME ANTI-IPA">THE NONAME ANTI-IPA</h2>
+                            <button class="neon-btn" onclick="window.open('#', '_blank')" data-editable="banner-1-btn" data-text="無名逆襲社交 IPA" data-href="#">無名逆襲社交 IPA</button>
+                        </div>
+                    </div>
+                    <div class="rebel-slide" data-editable="banner-slide-2">
+                        <img src="./image/punkheartbanner.jpg" alt="Punk Heart Festival 2026" class="rebel-poster"
+                             onerror="this.src='https://via.placeholder.com/1920x1080/1a0000/8b0000?text=PUNK+HEART '" data-editable="banner-2-image" data-src="./image/punkheartbanner.jpg">
+                        <div class="rebel-content">
+                            <h2 data-editable="banner-2-title" data-text="朋克心音樂節 2026">朋克心音樂節 2026</h2>
+                            <button class="neon-btn" onclick="window.open('#', '_blank')" data-editable="banner-2-btn" data-text="PUNK HEART FESTIVAL" data-href="#">PUNK HEART FESTIVAL</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 海报 - 满屏显示 -->
+        <section class="posters-showcase">
+            <div class="posters-container">
+                <div class="poster-item" data-poster-id="1" data-link="https://wxaurl.cn/HMcAK6R7fou" data-editable="poster-1">
+                    <img src="./image/livegigscn1.png" alt="LiveGigs WeChat"
+                         onerror="this.src='https://via.placeholder.com/400x600/8b0000/000?text=LiveGigs+WeChat '" data-editable="poster-1-image" data-src="./image/livegigscn1.png">
+                    <div class="poster-overlay">
+                        <div class="poster-title" data-editable="poster-1-title" data-text="LiveGigs CN">LiveGigs CN</div>
+                        <a href="https://wxaurl.cn/HMcAK6R7fou" target="_blank" class="poster-link" data-editable="poster-1-link-text" data-text="Get on WeChat →" onclick="event.stopPropagation();">Get on WeChat →</a>
+                    </div>
+                </div>
+                <div class="poster-item-alt" data-poster-id="2" data-link="events.html" data-editable="poster-2">
+                    <img src="./image/1-b-2.jpg" alt="Event 1"
+                         onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=EVENT+1 '" data-editable="poster-2-image" data-src="./image/1-b-2.jpg">
+                    <div class="poster-overlay">
+                        <div class="poster-title" data-editable="poster-2-title" data-text="Upcoming Event">Upcoming Event</div>
+                        <a href="events.html" target="_blank" class="poster-link" data-editable="poster-2-link-text" data-text="View Details →" onclick="event.stopPropagation();">View Details →</a>
+                    </div>
+                </div>
+                <div class="poster-item-alt" data-poster-id="3" data-link="events.html" data-editable="poster-3">
+                    <img src="./image/1-b-3.jpg" alt="Event 2"
+                         onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=EVENT+2 '" data-editable="poster-3-image" data-src="./image/1-b-3.jpg">
+                    <div class="poster-overlay">
+                        <div class="poster-title" data-editable="poster-3-title" data-text="Special Guest">Special Guest</div>
+                        <a href="events.html" target="_blank" class="poster-link" data-editable="poster-3-link-text" data-text="Learn More →" onclick="event.stopPropagation();">Learn More →</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 间隙区域 -->
+        <div class="footer-gap"></div>
+
+        <!-- 底部区域 -->
+        <footer class="site-footer">
+            <div class="footer-main">
+                <div class="footer-container">
+                    <div class="footer-contact-left">
+                        <div class="contact-item" data-editable="footer-email">
+                            <a href="mailto:LiveGigsCn@Hotmail.Com">LiveGigsCn@Hotmail.Com</a>
+                        </div>
+                        <div class="contact-item" data-editable="footer-phone">
+                            <a href="tel:+852-456-7890">+852-456-7890</a>
+                        </div>
+                    </div>
+
+                    <div class="footer-brand">
+                        <div class="footer-logo" data-editable="footer-logo">
+                            <span class="livegigs">LIVEGIGS</span><span class="asia">ASIA</span>
+                        </div>
+                        
+                        <div class="social-links" id="socialContainer">
+                            <a href="#" class="social-icon" data-editable="social-facebook" data-href="https://facebook.com" data-platform="facebook" title="Facebook">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                            </a>
+                            <a href="#" class="social-icon" data-editable="social-instagram" data-href="https://instagram.com" data-platform="instagram" title="Instagram">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                            </a>
+                            <a href="#" class="social-icon" data-editable="social-youtube" data-href="https://youtube.com" data-platform="youtube" title="YouTube">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                            </a>
+                            <a href="#" class="social-icon" data-editable="social-x" data-href="https://x.com" data-platform="x" title="X">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                            </a>
+                        </div>
+
+                        <div class="producer-section">
+                            <div class="producer-label">Produced by</div>
+                            <img src="./image/emanonent-logo.png" alt="EMANON ENT." class="producer-logo" 
+                                 onerror="this.style.display='none'" 
+                                 data-editable="producer-logo" data-src="./image/emanonent-logo.png">
+                        </div>
+                    </div>
+
+                    <div class="footer-contact-right">
+                        <div class="contact-item" data-editable="footer-address">
+                            #303 TERRY FRANCINE STREET,<br>
+                            HONGKONG, CN 999077
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="footer-legal">
+                    <a href="privacypolicy.html" data-editable="footer-privacy" data-href="privacypolicy.html" data-text="Privacy Policy">Privacy Policy</a>
+                    <a href="accessibilitystatement.html" data-editable="footer-accessibility" data-href="accessibilitystatement.html" data-text="Accessibility Statement">Accessibility Statement</a>
+                </div>
+                <div class="copyright" data-editable="footer-copyright" data-text="Copyright © 2001-2026 EMANON ENT. - All Rights Reserved.">
+                    Copyright © 2001-2026 EMANON ENT. - All Rights Reserved.
+                </div>
+            </div>
+        </footer>
+
     </div>
-    
-    <div class="container">
-        <div id="alertContainer"></div>
-        
-        <!-- 加载数据按钮 -->
-        <div class="card" style="margin-bottom: 20px;">
-            <h3 style="color: #8b0000; margin-bottom: 15px;">Step 1: 加载当前数据</h3>
-            <p class="help-text" style="margin-bottom: 15px;">从 GitHub 加载当前的 data.json 文件</p>
-            <button class="btn btn-success" onclick="loadDataFromGitHub()">从 GitHub 加载数据</button>
-            <button class="btn btn-secondary" onclick="useEmptyData()">使用空数据开始</button>
-        </div>
-        
-        <div class="stats-bar" id="statsBar" style="display: none;">
-            <div class="stat-item">
-                <div class="stat-number" id="statBanners">0</div>
-                <div class="stat-label">首页 Banners</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number" id="statPosters">0</div>
-                <div class="stat-label">首页 Posters</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number" id="statEvents">0</div>
-                <div class="stat-label">Events</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number" id="statCollabs">0</div>
-                <div class="stat-label">Partners</div>
-            </div>
-        </div>
-        
-        <div class="nav-tabs" id="navTabs" style="display: none;">
-            <button class="nav-tab active" onclick="showSection('index')">首页 (Index)</button>
-            <button class="nav-tab" onclick="showSection('cn')">国内站 (CN)</button>
-            <button class="nav-tab" onclick="showSection('events')">活动 (Events)</button>
-            <button class="nav-tab" onclick="showSection('partners')">合作伙伴</button>
-            <button class="nav-tab" onclick="showSection('footer')">底部 (Footer)</button>
-            <button class="nav-tab" onclick="showSection('export')">导出 JSON</button>
-        </div>
-        
-        <!-- 首页管理 -->
-        <div id="index" class="section active">
-            <h2 class="section-title">首页 Banner 管理</h2>
-            
-            <div class="card">
-                <h3 style="color: #8b0000; margin-bottom: 20px;">添加/编辑 Banner</h3>
-                <form id="indexBannerForm">
-                    <input type="hidden" id="indexBannerEditIndex" value="">
-                    <div class="grid-2">
-                        <div class="form-group">
-                            <label>标题</label>
-                            <input type="text" id="indexBannerTitle" placeholder="例如: THE NONAME ANTI-IPA">
-                        </div>
-                        <div class="form-group">
-                            <label>排序</label>
-                            <input type="number" id="indexBannerOrder" value="1" min="1" style="width: 100px;">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>图片地址</label>
-                        <input type="text" id="indexBannerImage" placeholder="./image/thenonameanti-.jpg">
-                    </div>
-                    <div class="grid-2">
-                        <div class="form-group">
-                            <label>按钮文字</label>
-                            <input type="text" id="indexBannerButton" placeholder="無名逆襲社交 IPA">
-                        </div>
-                        <div class="form-group">
-                            <label>链接地址</label>
-                            <input type="text" id="indexBannerLink" placeholder="#">
-                        </div>
-                    </div>
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="indexBannerActive" checked>
-                        <label for="indexBannerActive" style="margin: 0;">启用</label>
-                    </div>
-                    <div style="margin-top: 20px;">
-                        <button type="button" class="btn btn-success" onclick="saveIndexBanner()">保存 Banner</button>
-                        <button type="button" class="btn btn-secondary" onclick="resetIndexBannerForm()">重置</button>
-                    </div>
-                </form>
-            </div>
-            
-            <div class="card">
-                <h3 style="color: #8b0000; margin-bottom: 20px;">现有 Banners</h3>
-                <div id="indexBannerList">
-                    <p style="color: #666;">请先加载数据</p>
-                </div>
-            </div>
-            
-            <h2 class="section-title" style="margin-top: 40px;">首页海报管理</h2>
-            
-            <div class="card">
-                <h3 style="color: #8b0000; margin-bottom: 20px;">编辑 3 个海报</h3>
-                <div id="indexPosterForms">
-                    <!-- 动态生成3个海报表单 -->
-                </div>
-                <button type="button" class="btn btn-success" onclick="saveIndexPosters()" style="margin-top: 20px;">保存所有海报</button>
-            </div>
-        </div>
-        
-        <!-- 国内站 -->
-        <div id="cn" class="section">
-            <h2 class="section-title">国内站管理 (cn.html)</h2>
-            <div class="card">
-                <p style="color: #888;">与首页结构相同，可独立设置 Banner 和海报</p>
-            </div>
-        </div>
-        
-        <!-- 活动页 -->
-        <div id="events" class="section">
-            <h2 class="section-title">Events 管理</h2>
-            <div class="card">
-                <h3 style="color: #8b0000; margin-bottom: 20px;">THE EVENTS WE'VE MANAGED</h3>
-                <p style="color: #888;">活动列表管理功能开发中...</p>
-            </div>
-        </div>
-        
-        <!-- 合作伙伴 -->
-        <div id="partners" class="section">
-            <h2 class="section-title">Partners 管理</h2>
-            <div class="card">
-                <h3 style="color: #8b0000; margin-bottom: 20px;">Banner 1-4</h3>
-                <p style="color: #888;">Partners Banner 管理功能开发中...</p>
-            </div>
-            <div class="card">
-                <h3 style="color: #8b0000; margin-bottom: 20px;">Collaborators Logo</h3>
+
+    <!-- Membership 弹窗 -->
+    <div class="modal-overlay" id="membershipModal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <h2 data-editable="modal-title" data-text="Join Membership">Join Membership</h2>
+            <p data-editable="modal-desc" data-text="Get exclusive access to presales and events">Get exclusive access to presales and events</p>
+            <form id="membershipForm" onsubmit="handleSubmit(event)">
                 <div class="form-group">
-                    <label>添加 Logo 地址</label>
-                    <input type="text" id="collabLogoInput" placeholder="./image/partner-logo.png">
+                    <label for="memberName" data-editable="modal-label-name" data-text="Name">Name</label>
+                    <input type="text" id="memberName" name="name" required placeholder="Enter your name" data-editable="modal-placeholder-name" data-text="Enter your name">
                 </div>
-                <button class="btn" onclick="addCollaborator()">添加</button>
-                <div id="collabList" style="margin-top: 20px;"></div>
-            </div>
-        </div>
-        
-        <!-- 底部管理 -->
-        <div id="footer" class="section">
-            <h2 class="section-title">底部管理</h2>
-            
-            <div class="card">
-                <h3 style="color: #8b0000; margin-bottom: 20px;">选择站点</h3>
                 <div class="form-group">
-                    <select id="footerSite" onchange="loadFooterData()">
-                        <option value="global">海外站 (Global)</option>
-                        <option value="cn">国内站 (CN)</option>
-                    </select>
+                    <label for="memberEmail" data-editable="modal-label-email" data-text="Email">Email</label>
+                    <input type="email" id="memberEmail" name="email" required placeholder="Enter your email" data-editable="modal-placeholder-email" data-text="Enter your email">
                 </div>
-            </div>
-            
-            <div class="card">
-                <h3 style="color: #8b0000; margin-bottom: 20px;">编辑底部内容</h3>
-                <form id="footerForm">
-                    <div class="form-group">
-                        <label>版权文字</label>
-                        <input type="text" id="footerCopyright" value="Copyright © 2001-2026 EMANON ENT. - All Rights Reserved.">
-                    </div>
-                    <div class="form-group">
-                        <label>邮箱</label>
-                        <input type="text" id="footerEmail" value="LiveGigsCn@Hotmail.Com">
-                    </div>
-                    <div class="form-group">
-                        <label>电话</label>
-                        <input type="text" id="footerPhone" value="+852-456-7890">
-                    </div>
-                    <div class="form-group">
-                        <label>地址</label>
-                        <textarea id="footerAddress" rows="2">#303 TERRY FRANCINE STREET,\nHONGKONG, CN 999077</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>制作单位 Logo</label>
-                        <input type="text" id="footerProducer" value="./image/emanonent-logo.png">
-                    </div>
-                    <div class="form-group">
-                        <label>社交链接 (JSON)</label>
-                        <textarea id="footerSocial" rows="6">[
-  {"name": "Facebook", "url": "https://facebook.com/livegigsasia"},
-  {"name": "Instagram", "url": "https://instagram.com/livegigsasia"},
-  {"name": "YouTube", "url": "https://youtube.com/livegigsasia"},
-  {"name": "X", "url": "https://x.com/livegigsasia"}
-]</textarea>
-                    </div>
-                    <button type="button" class="btn btn-success" onclick="saveFooter()">保存底部设置</button>
-                </form>
-            </div>
-        </div>
-        
-        <!-- 导出 JSON -->
-        <div id="export" class="section">
-            <h2 class="section-title">导出到 GitHub</h2>
-            
-            <div class="card">
-                <h3 style="color: #8b0000; margin-bottom: 20px;">Step 2: 复制 JSON 到 GitHub</h3>
-                <p class="help-text" style="margin-bottom: 15px;">
-                    1. 点击"复制到剪贴板"<br>
-                    2. 打开 GitHub 仓库的 content/data.json<br>
-                    3. 粘贴并 Commit<br>
-                    4. 等待 1-2 分钟网站自动更新
-                </p>
-                <button class="btn btn-success" onclick="copyToClipboard()">复制到剪贴板</button>
-                <button class="btn btn-warning" onclick="downloadJSON()">下载 JSON 文件</button>
-            </div>
-            
-            <div class="json-output" id="jsonOutput">
-                // 点击"复制到剪贴板"生成 JSON
-            </div>
+                <div class="form-group">
+                    <label for="memberPhone" data-editable="modal-label-phone" data-text="Phone (Optional)">Phone (Optional)</label>
+                    <input type="tel" id="memberPhone" name="phone" placeholder="Enter your phone number" data-editable="modal-placeholder-phone" data-text="Enter your phone number">
+                </div>
+                <div class="form-group">
+                    <label for="memberMessage" data-editable="modal-label-message" data-text="Message">Message</label>
+                    <textarea id="memberMessage" name="message" placeholder="Tell us what you're interested in..." data-editable="modal-placeholder-message" data-text="Tell us what you're interested in..."></textarea>
+                </div>
+                <button type="submit" class="neon-btn" data-editable="modal-submit" data-text="SUBMIT APPLICATION">SUBMIT APPLICATION</button>
+            </form>
         </div>
     </div>
 
+    <!-- JavaScript -->
     <script>
-        // ==================== 数据存储 ====================
-        let siteData = {
-            index: { banners: [], posters: [] },
-            cn: { banners: [], posters: [] },
-            events: { carousel: [], managed: [] },
-            partners: { banners: [], collaborators: [] },
-            footer: {
-                global: {
-                    copyright: "Copyright © 2001-2026 EMANON ENT. - All Rights Reserved.",
-                    email: "LiveGigsCn@Hotmail.Com",
-                    phone: "+852-456-7890",
-                    address: "#303 TERRY FRANCINE STREET,\\nHONGKONG, CN 999077",
-                    producer: "./image/emanonent-logo.png",
-                    social: [
-                        {name: "Facebook", url: "https://facebook.com/livegigsasia"},
-                        {name: "Instagram", url: "https://instagram.com/livegigsasia"},
-                        {name: "YouTube", url: "https://youtube.com/livegigsasia"},
-                        {name: "X", url: "https://x.com/livegigsasia"}
-                    ]
-                },
-                cn: { copyright: "", social: [], producer: "" }
-            },
-            lastUpdated: new Date().toISOString()
-        };
-        
-        // ==================== 工具函数 ====================
-        function showAlert(message, type = 'info') {
-            const container = document.getElementById('alertContainer');
-            const alert = document.createElement('div');
-            alert.className = `alert alert-${type}`;
-            alert.textContent = message;
-            container.innerHTML = '';
-            container.appendChild(alert);
-            setTimeout(() => alert.remove(), 5000);
+        function openModal() {
+            document.getElementById('membershipModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
         }
-        
-        function showSection(sectionId) {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-            document.getElementById(sectionId).classList.add('active');
-            event.target.classList.add('active');
-            
-            if (sectionId === 'index') renderIndexBanners();
-            if (sectionId === 'export') generateJSON();
-            if (sectionId === 'footer') loadFooterData();
-            if (sectionId === 'partners') renderCollaborators();
+
+        function closeModal() {
+            document.getElementById('membershipModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
         }
-        
-        function updateStats() {
-            document.getElementById('statBanners').textContent = siteData.index.banners.length;
-            document.getElementById('statPosters').textContent = siteData.index.posters.length;
-            document.getElementById('statEvents').textContent = siteData.events.managed.length;
-            document.getElementById('statCollabs').textContent = siteData.partners.collaborators.length;
-        }
-        
-        // ==================== 加载数据 ====================
-        async function loadDataFromGitHub() {
-            try {
-                showAlert('正在从 GitHub 加载数据...', 'info');
-                const response = await fetch('../content/data.json?t=' + Date.now());
-                if (!response.ok) throw new Error('Failed to load');
-                
-                const data = await response.json();
-                siteData = { ...siteData, ...data };
-                
-                // 确保结构完整
-                if (!siteData.index) siteData.index = { banners: [], posters: [] };
-                if (!siteData.index.banners) siteData.index.banners = [];
-                if (!siteData.index.posters) siteData.index.posters = [];
-                
-                showAlert('数据加载成功！', 'success');
-                document.getElementById('statsBar').style.display = 'flex';
-                document.getElementById('navTabs').style.display = 'flex';
-                updateStats();
-                renderIndexBanners();
-                renderIndexPosterForms();
-                
-            } catch (error) {
-                showAlert('加载失败: ' + error.message + '，使用默认数据', 'error');
-                useEmptyData();
-            }
-        }
-        
-        function useEmptyData() {
-            siteData = {
-                index: { banners: [], posters: [] },
-                cn: { banners: [], posters: [] },
-                events: { carousel: [], managed: [] },
-                partners: { banners: [], collaborators: [] },
-                footer: {
-                    global: {
-                        copyright: "Copyright © 2001-2026 EMANON ENT. - All Rights Reserved.",
-                        email: "LiveGigsCn@Hotmail.Com",
-                        phone: "+852-456-7890",
-                        address: "#303 TERRY FRANCINE STREET,\\nHONGKONG, CN 999077",
-                        producer: "./image/emanonent-logo.png",
-                        social: [
-                            {name: "Facebook", url: "https://facebook.com/livegigsasia"},
-                            {name: "Instagram", url: "https://instagram.com/livegigsasia"},
-                            {name: "YouTube", url: "https://youtube.com/livegigsasia"},
-                            {name: "X", url: "https://x.com/livegigsasia"}
-                        ]
-                    },
-                    cn: { copyright: "", social: [], producer: "" }
-                },
-                lastUpdated: new Date().toISOString()
-            };
-            
-            document.getElementById('statsBar').style.display = 'flex';
-            document.getElementById('navTabs').style.display = 'flex';
-            updateStats();
-            renderIndexBanners();
-            renderIndexPosterForms();
-            showAlert('已创建空数据，开始编辑吧', 'success');
-        }
-        
-        // ==================== 首页 Banner 管理 ====================
-        function renderIndexBanners() {
-            const list = document.getElementById('indexBannerList');
-            const banners = siteData.index.banners || [];
-            
-            if (banners.length === 0) {
-                list.innerHTML = '<p style="color: #666;">暂无 Banner</p>';
-                return;
-            }
-            
-            banners.sort((a, b) => (a.order || 0) - (b.order || 0));
-            
-            list.innerHTML = banners.map((banner, index) => `
-                <div class="item-card">
-                    <div class="item-info">
-                        <h4>
-                            ${banner.title || '未命名'}
-                            <span class="status-badge ${banner.active !== false ? 'status-active' : 'status-inactive'}">
-                                ${banner.active !== false ? '启用' : '禁用'}
-                            </span>
-                        </h4>
-                        <p>排序: ${banner.order || '-'} | 按钮: ${banner.button_text || '-'} | 链接: ${banner.link || '-'}</p>
-                    </div>
-                    <div class="item-actions">
-                        <button class="btn-small btn-edit" onclick="editIndexBanner(${index})">编辑</button>
-                        <button class="btn-small btn-delete" onclick="deleteIndexBanner(${index})">删除</button>
-                    </div>
-                </div>
-            `).join('');
-        }
-        
-        function saveIndexBanner() {
-            const editIndex = document.getElementById('indexBannerEditIndex').value;
-            const banner = {
-                title: document.getElementById('indexBannerTitle').value,
-                image: document.getElementById('indexBannerImage').value,
-                button_text: document.getElementById('indexBannerButton').value,
-                link: document.getElementById('indexBannerLink').value,
-                order: parseInt(document.getElementById('indexBannerOrder').value) || 1,
-                active: document.getElementById('indexBannerActive').checked
-            };
-            
-            if (!banner.title || !banner.image) {
-                showAlert('请填写标题和图片地址', 'error');
-                return;
-            }
-            
-            if (editIndex !== '') {
-                siteData.index.banners[parseInt(editIndex)] = banner;
-                showAlert('Banner 更新成功！', 'success');
-            } else {
-                siteData.index.banners.push(banner);
-                showAlert('Banner 添加成功！', 'success');
-            }
-            
-            resetIndexBannerForm();
-            renderIndexBanners();
-            updateStats();
-        }
-        
-        function resetIndexBannerForm() {
-            document.getElementById('indexBannerForm').reset();
-            document.getElementById('indexBannerEditIndex').value = '';
-        }
-        
-        function editIndexBanner(index) {
-            const banner = siteData.index.banners[index];
-            document.getElementById('indexBannerEditIndex').value = index;
-            document.getElementById('indexBannerTitle').value = banner.title || '';
-            document.getElementById('indexBannerImage').value = banner.image || '';
-            document.getElementById('indexBannerButton').value = banner.button_text || '';
-            document.getElementById('indexBannerLink').value = banner.link || '';
-            document.getElementById('indexBannerOrder').value = banner.order || 1;
-            document.getElementById('indexBannerActive').checked = banner.active !== false;
-        }
-        
-        function deleteIndexBanner(index) {
-            if (!confirm('确定删除？')) return;
-            siteData.index.banners.splice(index, 1);
-            renderIndexBanners();
-            updateStats();
-            showAlert('删除成功', 'success');
-        }
-        
-        // ==================== 首页海报管理 ====================
-        function renderIndexPosterForms() {
-            const container = document.getElementById('indexPosterForms');
-            const posters = siteData.index.posters || [];
-            
-            // 确保有3个海报
-            while (posters.length < 3) {
-                posters.push({ title: '', image: '', link_text: '', link: '' });
-            }
-            
-            container.innerHTML = [0, 1, 2].map(i => {
-                const p = posters[i] || {};
-                return `
-                    <div style="border: 1px solid #333; padding: 15px; margin-bottom: 15px; border-radius: 4px;">
-                        <h4 style="color: #8b0000; margin-bottom: 15px;">海报 ${i + 1}</h4>
-                        <div class="form-group">
-                            <label>标题</label>
-                            <input type="text" id="poster${i}_title" value="${p.title || ''}" placeholder="海报标题">
-                        </div>
-                        <div class="form-group">
-                            <label>图片地址</label>
-                            <input type="text" id="poster${i}_image" value="${p.image || ''}" placeholder="./image/poster.jpg">
-                        </div>
-                        <div class="grid-2">
-                            <div class="form-group">
-                                <label>链接文字</label>
-                                <input type="text" id="poster${i}_linkText" value="${p.link_text || ''}" placeholder="View Details →">
-                            </div>
-                            <div class="form-group">
-                                <label>链接地址</label>
-                                <input type="text" id="poster${i}_link" value="${p.link || ''}" placeholder="events.html">
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-        
-        function saveIndexPosters() {
-            siteData.index.posters = [0, 1, 2].map(i => ({
-                title: document.getElementById(`poster${i}_title`).value,
-                image: document.getElementById(`poster${i}_image`).value,
-                link_text: document.getElementById(`poster${i}_linkText`).value,
-                link: document.getElementById(`poster${i}_link`).value
-            }));
-            showAlert('海报保存成功！', 'success');
-            updateStats();
-        }
-        
-        // ==================== 合作伙伴 ====================
-        function renderCollaborators() {
-            const list = document.getElementById('collabList');
-            const collabs = siteData.partners.collaborators || [];
-            
-            if (collabs.length === 0) {
-                list.innerHTML = '<p style="color: #666;">暂无 Logo</p>';
-                return;
-            }
-            
-            list.innerHTML = collabs.map((logo, index) => `
-                <div style="display: inline-block; position: relative; margin: 5px;">
-                    <img src="${logo}" style="width: 80px; height: 50px; object-fit: contain; background: #1a1a1a; padding: 5px; border-radius: 4px;">
-                    <button onclick="deleteCollaborator(${index})" style="position: absolute; top: -5px; right: -5px; background: #8b0000; color: white; border: none; border-radius: 50%; width: 18px; height: 18px; cursor: pointer; font-size: 10px;">×</button>
-                </div>
-            `).join('');
-        }
-        
-        function addCollaborator() {
-            const logo = document.getElementById('collabLogoInput').value;
-            if (!logo) return;
-            siteData.partners.collaborators.push(logo);
-            document.getElementById('collabLogoInput').value = '';
-            renderCollaborators();
-            updateStats();
-        }
-        
-        function deleteCollaborator(index) {
-            siteData.partners.collaborators.splice(index, 1);
-            renderCollaborators();
-            updateStats();
-        }
-        
-        // ==================== 底部管理 ====================
-        function loadFooterData() {
-            const site = document.getElementById('footerSite').value;
-            const footer = siteData.footer[site] || siteData.footer.global;
-            
-            document.getElementById('footerCopyright').value = footer.copyright || '';
-            document.getElementById('footerEmail').value = footer.email || '';
-            document.getElementById('footerPhone').value = footer.phone || '';
-            document.getElementById('footerAddress').value = footer.address || '';
-            document.getElementById('footerProducer').value = footer.producer || '';
-            document.getElementById('footerSocial').value = JSON.stringify(footer.social || [], null, 2);
-        }
-        
-        function saveFooter() {
-            const site = document.getElementById('footerSite').value;
-            try {
-                siteData.footer[site] = {
-                    copyright: document.getElementById('footerCopyright').value,
-                    email: document.getElementById('footerEmail').value,
-                    phone: document.getElementById('footerPhone').value,
-                    address: document.getElementById('footerAddress').value,
-                    producer: document.getElementById('footerProducer').value,
-                    social: JSON.parse(document.getElementById('footerSocial').value)
-                };
-                showAlert('底部设置保存成功', 'success');
-            } catch (e) {
-                showAlert('JSON 格式错误', 'error');
-            }
-        }
-        
-        // ==================== 导出 JSON ====================
-        function generateJSON() {
-            siteData.lastUpdated = new Date().toISOString();
-            const json = JSON.stringify(siteData, null, 2);
-            document.getElementById('jsonOutput').textContent = json;
-            return json;
-        }
-        
-        function copyToClipboard() {
-            const json = generateJSON();
-            navigator.clipboard.writeText(json).then(() => {
-                showAlert('已复制到剪贴板！请粘贴到 GitHub content/data.json', 'success');
-            }).catch(() => {
-                const textarea = document.createElement('textarea');
-                textarea.value = json;
-                document.body.appendChild(textarea);
-                textarea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textarea);
-                showAlert('已复制到剪贴板！', 'success');
-            });
-        }
-        
-        function downloadJSON() {
-            const json = generateJSON();
-            const blob = new Blob([json], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `data-${new Date().toISOString().split('T')[0]}.json`;
-            a.click();
-            URL.revokeObjectURL(url);
-        }
-        
-        // ==================== 初始化 ====================
-        document.addEventListener('DOMContentLoaded', () => {
-            // 等待用户点击加载
+
+        document.getElementById('membershipModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
         });
+
+        function handleSubmit(e) {
+            e.preventDefault();
+            const formData = {
+                name: document.getElementById('memberName').value,
+                email: document.getElementById('memberEmail').value,
+                phone: document.getElementById('memberPhone').value,
+                message: document.getElementById('memberMessage').value,
+                timestamp: new Date().toISOString(),
+                source: 'LiveGigs Asia Homepage'
+            };
+            let submissions = JSON.parse(localStorage.getItem('membershipSubmissions') || '[]');
+            submissions.push(formData);
+            localStorage.setItem('membershipSubmissions', JSON.stringify(submissions));
+            alert('Thank you for your application! We will contact you soon.');
+            closeModal();
+            document.getElementById('membershipForm').reset();
+        }
+
+        document.getElementById('logo').addEventListener('error', function() {
+            this.style.display = 'none';
+        });
+
+        function checkBackgroundImage() {
+            const img = new Image();
+            img.onerror = function() {
+                document.getElementById('heroBg').style.background = 'linear-gradient(135deg, #1a0000 0%, #000 50%, #1a0000 100%)';
+            };
+            img.src = './image/hero%20bg.jpeg';
+        }
+        checkBackgroundImage();
+
+        const slider = document.getElementById('rebelSlider');
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.rebel-slide');
+        const totalSlides = slides.length;
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+
+        setInterval(nextSlide, 5000);
+
+        function updateContent(editableId, newValue, type = 'text') {
+            const element = document.querySelector(`[data-editable="${editableId}"]`);
+            if (!element) return;
+            
+            if (type === 'src') {
+                element.src = newValue;
+                element.setAttribute('data-src', newValue);
+            } else if (type === 'href') {
+                element.href = newValue;
+                element.setAttribute('data-href', newValue);
+                if (element.tagName === 'BUTTON') {
+                    element.onclick = function() { window.open(newValue, '_blank'); };
+                }
+            } else if (type === 'link') {
+                element.setAttribute('data-link', newValue);
+                const linkElement = element.querySelector('.poster-link');
+                if (linkElement) linkElement.href = newLink;
+            } else if (type === 'mailto') {
+                element.href = 'mailto:' + newValue;
+                element.textContent = newValue;
+            } else if (type === 'tel') {
+                element.href = 'tel:' + newValue;
+                element.textContent = newValue;
+            } else {
+                element.textContent = newValue;
+                element.setAttribute('data-text', newValue);
+            }
+        }
+
+        function updateMultipleContent(updates) {
+            updates.forEach(update => updateContent(update.id, update.value, update.type));
+        }
+
+        function getAllEditableContent() {
+            const elements = document.querySelectorAll('[data-editable]');
+            const content = {};
+            elements.forEach(el => {
+                const id = el.getAttribute('data-editable');
+                let type = 'text';
+                if (el.hasAttribute('data-src')) type = 'image';
+                else if (el.hasAttribute('data-href')) type = 'link';
+                else if (el.hasAttribute('data-link')) type = 'poster-link';
+                
+                content[id] = {
+                    type: type,
+                    value: type === 'image' ? el.getAttribute('data-src') :
+                          type === 'link' ? el.getAttribute('data-href') :
+                          type === 'poster-link' ? el.getAttribute('data-link') :
+                          el.getAttribute('data-text'),
+                    element: el.tagName
+                };
+            });
+            return content;
+        }
+
+        function updatePosterLink(posterId, newLink) {
+            const poster = document.querySelector(`[data-poster-id="${posterId}"]`);
+            if (poster) {
+                poster.setAttribute('data-link', newLink);
+                const linkElement = poster.querySelector('.poster-link');
+                if (linkElement) linkElement.href = newLink;
+            }
+        }
+
+        const SocialManager = {
+            add: function(platform, href, svgPath) {
+                const container = document.getElementById('socialContainer');
+                const a = document.createElement('a');
+                a.href = href;
+                a.className = 'social-icon';
+                a.title = platform;
+                a.setAttribute('data-platform', platform);
+                a.setAttribute('data-editable', 'social-' + platform);
+                a.setAttribute('data-href', href);
+                a.innerHTML = svgPath;
+                container.appendChild(a);
+            },
+            update: function(platform, newHref) {
+                const icon = document.querySelector(`[data-platform="${platform}"]`);
+                if (icon) {
+                    icon.href = newHref;
+                    icon.setAttribute('data-href', newHref);
+                }
+            },
+            remove: function(platform) {
+                const icon = document.querySelector(`[data-platform="${platform}"]`);
+                if (icon) icon.remove();
+            }
+        };
+
+        const FooterAdmin = {
+            updateText: updateContent,
+            updateHref: function(id, href) { updateContent(id, href, 'href'); },
+            updateImage: function(id, src) { updateContent(id, src, 'src'); },
+            updateEmail: function(id, email) { updateContent(id, email, 'mailto'); },
+            updatePhone: function(id, phone) { updateContent(id, phone, 'tel'); }
+        };
+
+        window.LiveGigsAdmin = {
+            update: updateContent,
+            updateMultiple: updateMultipleContent,
+            getAll: getAllEditableContent,
+            updatePosterLink: updatePosterLink,
+            updateBanner: function(index, image, title, buttonText, buttonLink) {
+                updateContent(`banner-${index}-image`, image, 'src');
+                updateContent(`banner-${index}-title`, title, 'text');
+                updateContent(`banner-${index}-btn`, buttonText, 'text');
+                const btn = document.querySelector(`[data-editable="banner-${index}-btn"]`);
+                if (btn) {
+                    btn.setAttribute('data-href', buttonLink);
+                    btn.onclick = function() { window.open(buttonLink, '_blank'); };
+                }
+            },
+            updatePoster: function(index, image, title, linkText, link) {
+                updateContent(`poster-${index}-image`, image, 'src');
+                updateContent(`poster-${index}-title`, title, 'text');
+                updateContent(`poster-${index}-link-text`, linkText, 'text');
+                updatePosterLink(index, link);
+            },
+            social: SocialManager,
+            footer: FooterAdmin
+        };
     </script>
+<script src="./js/data-loader.js"></script>
+<script>
+  DataLoader.init('index');
+</script>
 </body>
 </html>
