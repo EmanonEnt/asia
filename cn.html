@@ -1346,7 +1346,20 @@
             footer: FooterAdmin
         };
     </script>
-<script src="./js/data-loader.js"></script> 
+    <!-- Data Loader - 从JSON加载后台数据 -->
+    <script src="./js/data-loader.js"></script>
+    <script>
+        // 初始化数据加载器（带错误处理）
+        if (typeof DataLoader !== 'undefined') {
+            try {
+                DataLoader.init('cn');
+                console.log('✓ DataLoader initialized for CN page');
+            } catch (e) {
+                console.log('✗ DataLoader init error:', e);
+            }
+        } else {
+            console.log('! DataLoader not loaded - using default content');
+        }
+    </script>
 </body>
 </html>
-
