@@ -1,1 +1,18 @@
-[]
+{
+  "banners": [
+    {
+      "image": "./image/thenonameanti-.jpg",
+      "title": "THE NONAME ANTI-",
+      "subtitle": "CHINA TOUR 2025",
+      "btnText": "GET TICKETS →",
+      "btnLink": "#"
+    },
+    {
+      "image": "./image/punkheartbanner.jpg",
+      "title": "PUNK HEART",
+      "subtitle": "FESTIVAL 2025",
+      "btnText": "LEARN MORE →",
+      "btnLink": "#"
+    }
+  ]
+}

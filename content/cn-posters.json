@@ -1,5 +1,22 @@
-[
-  {},
-  {},
-  {}
-]
+{
+  "posters": [
+    {
+      "image": "./image/livegigscn1.png",
+      "title": "LiveGigs CN",
+      "linkText": "关注微信公众号 →",
+      "link": "https://wxaurl.cn/HMcAK6R7fou"
+    },
+    {
+      "image": "./image/cn-asiaad.jpg",
+      "title": "LiveGigs Asia",
+      "linkText": "View Details →",
+      "link": "livegigsasia"
+    },
+    {
+      "image": "./image/xrebookingad.jpg",
+      "title": "XRE Booking",
+      "linkText": "查看更多合作伙伴 →",
+      "link": "partners.html"
+    }
+  ]
+}

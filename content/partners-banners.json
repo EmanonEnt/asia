@@ -1,6 +1,40 @@
-[
-  {},
-  {},
-  {},
-  {}
-]
+{
+  "banners": [
+    {
+      "type": "phone",
+      "image": "./image/p-p-1.jpg",
+      "logo": "./image/p-p-1logo.png",
+      "title": "Download Our App",
+      "description": "Get exclusive access to presales and events",
+      "btnText": "Download Now →",
+      "btnLink": "#"
+    },
+    {
+      "type": "logo-overlay",
+      "image": "./image/p-p-2.jpg",
+      "logo": "./image/p-p-2logo.png",
+      "title": "",
+      "description": "",
+      "btnText": "小子联盟唱片",
+      "btnLink": "https://kids-union.com"
+    },
+    {
+      "type": "full",
+      "image": "./image/p-p-3.png",
+      "logo": "./image/p-p-3logo.png",
+      "title": "XRE BOOKING",
+      "description": "Professional booking services for artists and events",
+      "btnText": "Learn More →",
+      "btnLink": "#"
+    },
+    {
+      "type": "logo-center",
+      "image": "./image/p-p-4.jpg",
+      "logo": "./image/p-p-4logo.png",
+      "title": "",
+      "description": "",
+      "btnText": "Visit Website →",
+      "btnLink": "#"
+    }
+  ]
+}

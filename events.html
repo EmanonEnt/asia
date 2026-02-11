@@ -2643,6 +2643,18 @@
             toggleAdmin: toggleAdmin
         };
     </script>
-<script src="./js/data-loader.js"></script>
+
+    <!-- Data Loader -->
+    <script src="./js/data-loader.js"></script>
+    <script>
+        // 确保 DataLoader 加载完成后再初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof DataLoader !== 'undefined') {
+                DataLoader.init('events');
+            } else {
+                console.error('[Events] DataLoader not loaded');
+            }
+        });
+    </script>
 </body>
 </html>

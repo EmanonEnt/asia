@@ -1,5 +1,22 @@
-[
-  {},
-  {},
-  {}
-]
+{
+  "posters": [
+    {
+      "image": "./image/livegigscn1.png",
+      "title": "LiveGigs CN",
+      "linkText": "Get on WeChat →",
+      "link": "https://wxaurl.cn/HMcAK6R7fou"
+    },
+    {
+      "image": "./image/1-b-2.jpg",
+      "title": "Epic Past Gigs",
+      "linkText": "View Gallery →",
+      "link": "#"
+    },
+    {
+      "image": "./image/1-b-3.jpg",
+      "title": "XRE Booking",
+      "linkText": "Check Out More Partners →",
+      "link": "partners.html"
+    }
+  ]
+}

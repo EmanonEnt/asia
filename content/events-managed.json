@@ -1,26 +1,35 @@
-[
-  {
-    "title": "THE NONAME無名2026巡迴泰國",
-    "date": "2026-07-04",
-    "location": "ThaiLand",
-    "time": "",
-    "image": "/",
-    "ticket": "",
-    "status": "ontour",
-    "description": "TBA",
-    "button_text": "Get Tickets →",
-    "link": ""
-  },
-  {
-    "title": "NONAMEFEST 2026",
-    "date": "2026-10-01",
-    "location": "Hong Kong",
-    "time": "19:00",
-    "image": "./image/1-b-3.jpg",
-    "ticket": "$180",
-    "status": "",
-    "description": "TBA",
-    "button_text": "Get Tickets →",
-    "link": ""
-  }
-]
+{
+  "events": [
+    {
+      "name": "NONAMEFEST 2026",
+      "image": "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&h=800&fit=crop",
+      "status": "242 DAYS",
+      "statusType": "countdown",
+      "countdownDate": "2026-10-10",
+      "details": "10月10日週六 | 地點待定",
+      "venue": "NONAMEFEST 2026",
+      "btnText": "購買票券",
+      "btnLink": "#"
+    },
+    {
+      "name": "PUNK HEART FESTIVAL 2026 WARM-UP Show",
+      "image": "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop",
+      "status": "售完",
+      "statusType": "soldout",
+      "details": "1月17日週六 | 未來俱樂部",
+      "venue": "XI'AN",
+      "btnText": "詳細資料",
+      "btnLink": "#"
+    },
+    {
+      "name": "PUNK HEART FESTIVAL 2025",
+      "image": "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=600&h=800&fit=crop",
+      "status": "ON TOUR",
+      "statusType": "ontour",
+      "details": "10月03日週五 | 回授俱樂部",
+      "venue": "PUNK HEART FESTIVAL 2025",
+      "btnText": "詳細資料",
+      "btnLink": "#"
+    }
+  ]
+}
