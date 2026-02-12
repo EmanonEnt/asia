@@ -1,39 +1,32 @@
 {
-  "siteName": "LIVEGIGS",
-  "siteNameAsia": "CN",
-  "contactText": "如需咨询和合作机会，请联系我们：",
-  "email": "xrebooking@hotmail.com",
-  "address": "香港 | 上海 | 北京",
-  "copyright": "Copyright © 2001-2026 EMANON ENT",
-  "producerLogo": "./image/emanonent-logo.png",
   "socials": [
     {
       "id": 1,
-      "name": "微信",
-      "icon": "wechat",
-      "link": "https://weixin.qq.com",
-      "enabled": true
+      "name": "",
+      "icon": "",
+      "link": "",
+      "enabled": false
     },
     {
       "id": 2,
-      "name": "微博",
-      "icon": "weibo",
-      "link": "https://weibo.com",
-      "enabled": true
+      "name": "",
+      "icon": "",
+      "link": "",
+      "enabled": false
     },
     {
       "id": 3,
-      "name": "小红书",
-      "icon": "xiaohongshu",
-      "link": "https://xiaohongshu.com",
-      "enabled": true
+      "name": "",
+      "icon": "",
+      "link": "",
+      "enabled": false
     },
     {
       "id": 4,
-      "name": "小程序",
-      "icon": "miniprogram",
+      "name": "",
+      "icon": "",
       "link": "",
-      "enabled": true
+      "enabled": false
     },
     {
       "id": 5,
