@@ -1,10 +1,7 @@
 /**
- * LiveGigs Asia - Data Loader (Enhanced Auto-Sync Version)
- * 增强功能：
- * 1. 自动检测数据更新（每30秒检查一次）
- * 2. 防缓存机制（时间戳）
- * 3. 后台更新后前端自动刷新
- * 4. 页面可见性检测（切换回页面时刷新）
+ * LiveGigs Data Loader
+ * 自动从GitHub Pages加载JSON数据并渲染到页面
+ * 使用相对路径避免CORS问题
  */
 
 (function() {
@@ -12,725 +9,426 @@
 
     // 配置
     const CONFIG = {
-        dataPath: './content/',
-        // 防缓存时间戳
-        cacheBuster: '?v=' + Date.now(),
-        // 自动检查更新间隔（毫秒）
-        checkInterval: 30000, // 30秒
-        // 请求超时
-        timeout: 10000,
-        // 调试模式
-        debug: true
+        baseUrl: './content',
+        version: Date.now(), // 防止缓存
+        debug: false
     };
 
-    // 存储上次数据哈希（用于检测变化）
-    let lastDataHash = '';
-    let checkIntervalId = null;
-
-    // 页面配置映射
-    const PAGE_CONFIG = {
-        'index': {
-            files: ['banners.json', 'index-posters.json', 'footer-global.json'],
-            init: initIndexPage
-        },
-        'cn': {
-            files: ['banners.json', 'cn-posters.json', 'footer-cn.json'],
-            init: initCnPage
-        },
-        'events': {
-            files: ['events-carousel.json', 'events-managed.json', 'events-posters.json', 'footer-global.json'],
-            init: initEventsPage
-        },
-        'partners': {
-            files: ['partners-banners.json', 'collaborators.json', 'footer-global.json'],
-            init: initPartnersPage
-        },
-        'privacy': {
-            files: ['footer-global.json'],
-            init: initFooterOnly
-        },
-        'accessibility': {
-            files: ['footer-global.json'],
-            init: initFooterOnly
-        }
+    // 图标SVG映射
+    const ICONS = {
+        facebook: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>',
+        instagram: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>',
+        youtube: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>',
+        x: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>',
+        wechat: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.047c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 0 1-.023-.156.49.49 0 0 1 .201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.837-6.656-6.088V8.89c-.135-.01-.27-.027-.407-.03zm-2.53 3.274c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.97-.982zm4.844 0c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.969-.982z"/></svg>',
+        weibo: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M10.098 20.323c-3.977.391-7.414-1.406-7.672-4.02-.259-2.609 2.759-5.047 6.74-5.441 3.979-.394 7.413 1.404 7.671 4.018.259 2.6-2.759 5.049-6.737 5.439l-.002.004zM9.05 17.219c-.384.616-1.208.884-1.829.602-.612-.279-.793-.991-.406-1.593.379-.595 1.176-.861 1.793-.601.622.263.82.972.442 1.592zm1.27-1.627c-.141.237-.449.353-.689.253-.236-.09-.313-.361-.177-.586.138-.227.436-.346.672-.24.239.09.315.36.18.573h.014zm.176-2.719c-1.893-.493-4.033.45-4.857 2.118-.836 1.704-.026 3.591 1.886 4.21 1.983.64 4.318-.341 5.132-2.179.8-1.793-.201-3.642-2.161-4.149zm7.563-1.224c-.346-.105-.579-.18-.405-.649.389-1.061.428-1.979.002-2.634-.801-1.253-2.99-1.187-5.518-.034 0 0-.791.345-.589-.281.388-1.236.33-2.271-.275-2.868-1.371-1.354-5.025.052-8.163 3.14C1.102 10.542 0 12.652 0 14.51c0 3.558 4.584 5.72 9.065 5.72 5.871 0 9.779-3.406 9.779-6.115 0-1.634-1.379-2.561-2.785-2.466zm.846-4.304c-.729-.822-1.806-1.156-2.804-1.03-.397.051-.658.406-.606.795.052.39.407.657.795.606.564-.072 1.155.121 1.558.575.403.455.54 1.066.378 1.637-.097.343.101.697.444.795.343.099.698-.1.796-.443.259-.912.04-1.937-.561-2.935zm2.271-2.303c-1.564-1.766-3.889-2.479-6.035-2.205-.397.051-.658.406-.606.795.052.39.407.657.795.606 1.652-.211 3.419.354 4.604 1.693 1.184 1.339 1.523 3.149.979 4.782-.114.356.076.737.432.852.355.115.737-.075.852-.431.69-2.153.237-4.566-1.021-6.092z"/></svg>',
+        xiaohongshu: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.615 14.923h-2.769v-3.077h-3.692v3.077H7.385V7.077h2.769v3.077h3.692V7.077h2.769v9.846z"/></svg>',
+        miniprogram: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h-2v-2h2v2zm0-4h-2V7h2v6zm4 4h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>'
     };
 
-    // 日志函数
-    function log(...args) {
-        if (CONFIG.debug) {
-            console.log('[LiveGigs]', ...args);
-        }
-    }
-
-    // 工具函数：加载JSON（带防缓存）
-    async function loadJSON(filename, useCacheBuster = true) {
+    // 工具函数：加载JSON
+    async function loadJSON(filename) {
         try {
-            const cacheParam = useCacheBuster ? ('?v=' + Date.now()) : '';
-            const url = CONFIG.dataPath + filename + cacheParam;
-
-            log('Loading:', url);
-
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), CONFIG.timeout);
-
-            const response = await fetch(url, {
-                signal: controller.signal,
-                headers: {
-                    'Accept': 'application/json',
-                    'Cache-Control': 'no-cache'
-                }
-            });
-
-            clearTimeout(timeoutId);
-
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-            }
-
-            const data = await response.json();
-            return data;
+            const response = await fetch(`${CONFIG.baseUrl}/${filename}.json?v=${CONFIG.version}`);
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            return await response.json();
         } catch (error) {
-            console.error('[LiveGigs] Error loading', filename, error);
+            console.error(`[LiveGigs] Failed to load ${filename}:`, error);
             return null;
         }
     }
 
-    // 计算数据哈希（用于检测变化）
-    function getDataHash(data) {
-        return JSON.stringify(data).length + '-' + JSON.stringify(data).split('').reduce((a,b)=>{a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);
+    // 工具函数：获取图标SVG
+    function getIconSVG(iconName) {
+        return ICONS[iconName] || ICONS.facebook;
     }
 
-    // 工具函数：安全设置文本内容
-    function setText(element, value, defaultValue = '') {
-        if (element && value !== undefined && value !== null && value !== '') {
-            element.textContent = value;
-            element.style.display = '';
-        } else if (element && defaultValue) {
-            element.textContent = defaultValue;
-        } else if (element) {
-            element.style.display = 'none';
+    // 渲染底部区域
+    function renderFooter(data, containerId) {
+        const container = document.getElementById(containerId) || document.getElementById('socialContainer');
+        if (!container || !data) return;
+
+        // 查找底部区域容器
+        const footer = container.closest('.footer') || container.closest('footer') || document.querySelector('.footer');
+        if (!footer) return;
+
+        // 更新社交媒体图标
+        const socialContainer = footer.querySelector('#socialContainer') || footer.querySelector('.footer-social');
+        if (socialContainer && data.socials) {
+            const enabledSocials = data.socials.filter(s => s.enabled && s.link);
+            socialContainer.innerHTML = enabledSocials.map(social => `
+                <a href="${social.link}" target="_blank" rel="noopener noreferrer" class="social-icon" title="${social.name}">
+                    ${getIconSVG(social.icon)}
+                </a>
+            `).join('');
         }
-    }
 
-    // 工具函数：安全设置链接
-    function setLink(element, url, openNewWindow = true) {
-        if (element && url) {
-            element.href = url;
-            if (openNewWindow) {
-                element.target = '_blank';
-                element.rel = 'noopener noreferrer';
-            }
-            element.style.display = '';
-        } else if (element) {
-            element.style.display = 'none';
+        // 更新版权信息
+        const copyrightEl = footer.querySelector('.copyright') || footer.querySelector('#footer-copyright');
+        if (copyrightEl && data.copyright) {
+            copyrightEl.textContent = data.copyright;
         }
-    }
 
-    // 工具函数：安全设置图片
-    function setImage(element, src, alt = '') {
-        if (element && src) {
-            element.src = src;
-            element.alt = alt;
-            element.style.display = '';
-            element.onerror = function() {
-                this.style.display = 'none';
-            };
-        } else if (element) {
-            element.style.display = 'none';
+        // 更新制作单位Logo
+        const producerEl = footer.querySelector('.producer-logo') || footer.querySelector('#footer-producer');
+        if (producerEl && data.producerLogo) {
+            const img = producerEl.querySelector('img');
+            if (img) img.src = data.producerLogo;
         }
     }
 
-    // ========== 页面初始化函数 ==========
+    // 渲染Banner
+    function renderBanners(data) {
+        if (!data || !data.banners) return;
+        const enabledBanners = data.banners.filter(b => b.enabled && b.image);
 
-    function initIndexPage(data) {
-        log('Initializing Index page');
+        // 查找banner容器
+        const bannerContainer = document.querySelector('.banner-slider') || document.querySelector('.hero-slider');
+        if (!bannerContainer) return;
 
-        const banners = data['banners.json'];
-        const posters = data['index-posters.json'];
-        const footer = data['footer-global.json'];
+        bannerContainer.innerHTML = enabledBanners.map((banner, index) => `
+            <div class="banner-slide ${index === 0 ? 'active' : ''}" data-index="${index}">
+                <img src="${banner.image}" alt="${banner.title}">
+                <div class="banner-content">
+                    <h2>${banner.title}</h2>
+                    <a href="${banner.link}" target="_blank" class="banner-btn">${banner.buttonText}</a>
+                </div>
+            </div>
+        `).join('') + `
+            <div class="banner-dots">
+                ${enabledBanners.map((_, index) => `<span class="dot ${index === 0 ? 'active' : ''}" data-index="${index}"></span>`).join('')}
+            </div>
+        `;
 
-        if (banners && banners.banners) {
-            initBannerCarousel(banners.banners, 'index');
-        }
+        // 重新初始化轮播
+        initBannerSlider();
+    }
 
-        if (posters && posters.posters) {
-            initPosters(posters.posters, 'index');
-        }
+    // 渲染海报
+    function renderPosters(data, containerSelector) {
+        if (!data || !data.posters) return;
 
-        if (footer) {
-            initFooter(footer, 'global');
+        const container = document.querySelector(containerSelector);
+        if (!container) return;
+
+        const enabledPosters = data.posters.filter(p => p.enabled && p.image);
+
+        container.innerHTML = enabledPosters.map(poster => `
+            <div class="poster-item">
+                <img src="${poster.image}" alt="${poster.title}">
+                <div class="poster-overlay">
+                    <h3>${poster.title}</h3>
+                    <a href="${poster.link}" target="_blank" class="poster-link">${poster.linkText}</a>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // 渲染Events海报2（轮播）
+    function renderEventsPoster2(data) {
+        if (!data || !data.posters) return;
+
+        const container = document.querySelector('.poster2-carousel') || document.querySelector('.flyers-section .poster:nth-child(2)');
+        if (!container) return;
+
+        const enabledPosters = data.posters.filter(p => p.enabled && p.image);
+
+        if (enabledPosters.length === 0) return;
+
+        if (enabledPosters.length === 1 || !data.poster2_carousel) {
+            // 单图模式
+            const poster = enabledPosters[0];
+            container.innerHTML = `
+                <div class="poster-single">
+                    <img src="${poster.image}" alt="${poster.title}">
+                    <div class="poster-overlay">
+                        <h3>${poster.title}</h3>
+                        <a href="${poster.link}" target="_blank" class="poster-link">${poster.linkText}</a>
+                    </div>
+                </div>
+            `;
+        } else {
+            // 轮播模式
+            container.innerHTML = `
+                <div class="carousel-slider">
+                    ${enabledPosters.map((poster, index) => `
+                        <div class="carousel-slide ${index === 0 ? 'active' : ''}" data-index="${index}">
+                            <img src="${poster.image}" alt="${poster.title}">
+                            <div class="carousel-content">
+                                <h3>${poster.title}</h3>
+                                <a href="${poster.link}" target="_blank" class="carousel-btn">${poster.linkText}</a>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="carousel-dots">
+                    ${enabledPosters.map((_, index) => `<span class="dot ${index === 0 ? 'active' : ''}" data-index="${index}"></span>`).join('')}
+                </div>
+            `;
+
+            // 初始化轮播
+            initCarouselSlider(container);
         }
     }
 
-    function initCnPage(data) {
-        log('Initializing CN page');
+    // 渲染自主活动
+    function renderManagedEvents(data) {
+        if (!data || !data.events) return;
 
-        const banners = data['banners.json'];
-        const posters = data['cn-posters.json'];
-        const footer = data['footer-cn.json'];
+        const container = document.querySelector('.events-grid') || document.querySelector('.managed-events');
+        if (!container) return;
 
-        if (banners && banners.banners) {
-            initBannerCarousel(banners.banners, 'cn');
-        }
+        const enabledEvents = data.events.filter(e => e.enabled && e.title);
+        const displayEvents = enabledEvents.slice(0, 3); // 先显示3个
+        const hasMore = enabledEvents.length > 3;
 
-        if (posters && posters.posters) {
-            initPosters(posters.posters, 'cn');
-        }
+        container.innerHTML = displayEvents.map(event => `
+            <div class="event-card">
+                <div class="event-image">
+                    <img src="${event.image}" alt="${event.title}">
+                    ${event.status ? `<span class="event-status">${event.status}</span>` : `<span class="event-countdown" data-date="${event.date}"></span>`}
+                </div>
+                <div class="event-info">
+                    <h3>${event.title}</h3>
+                    <p class="event-date">${event.date}</p>
+                    <p class="event-venue">${event.venue}</p>
+                    <p class="event-time">${event.time}</p>
+                    <p class="event-ticket">${event.ticket}</p>
+                    <a href="${event.link}" target="_blank" class="event-btn">${event.buttonText}</a>
+                </div>
+            </div>
+        `).join('') + (hasMore ? `
+            <div class="load-more-container">
+                <button class="load-more-btn" onclick="loadMoreEvents()">Load More</button>
+            </div>
+        ` : '');
 
-        if (footer) {
-            initFooter(footer, 'cn');
-        }
+        // 保存所有事件到全局变量供load more使用
+        window.allEvents = enabledEvents;
+        window.displayedEvents = 3;
     }
 
-    function initEventsPage(data) {
-        log('Initializing Events page');
+    // Load More功能
+    window.loadMoreEvents = function() {
+        const container = document.querySelector('.events-grid') || document.querySelector('.managed-events');
+        if (!container || !window.allEvents) return;
 
-        const carousel = data['events-carousel.json'];
-        const managed = data['events-managed.json'];
-        const posters = data['events-posters.json'];
-        const footer = data['footer-global.json'];
+        const nextEvents = window.allEvents.slice(window.displayedEvents, window.displayedEvents + 3);
+        window.displayedEvents += nextEvents.length;
 
-        if (carousel && carousel.items) {
-            initEventsCarousel(carousel.items);
-        }
+        const loadMoreBtn = container.querySelector('.load-more-container');
 
-        if (managed && managed.events) {
-            initManagedEvents(managed.events);
-        }
-
-        if (posters && posters.posters) {
-            initEventsPosters(posters.posters);
-        }
-
-        if (footer) {
-            initFooter(footer, 'global');
-        }
-    }
-
-    function initPartnersPage(data) {
-        log('Initializing Partners page');
-
-        const banners = data['partners-banners.json'];
-        const collaborators = data['collaborators.json'];
-        const footer = data['footer-global.json'];
-
-        if (banners && banners.banners) {
-            initPartnersBanners(banners.banners);
-        }
-
-        if (collaborators && collaborators.logos) {
-            initCollaborators(collaborators.logos);
-        }
-
-        if (footer) {
-            initFooter(footer, 'global');
-        }
-    }
-
-    function initFooterOnly(data) {
-        log('Initializing Footer only');
-        const footer = data['footer-global.json'];
-        if (footer) {
-            initFooter(footer, 'global');
-        }
-    }
-
-    // ========== 组件初始化函数 ==========
-
-    function initBannerCarousel(banners, pageType) {
-        log('Init Banner Carousel:', banners.length, 'items');
-
-        const container = document.querySelector('#hero-banner, .hero-banner, .banner-container, #banner-container');
-        if (!container) {
-            log('Banner container not found');
-            return;
-        }
-
-        // 保存当前轮播索引（如果存在）
-        let currentIndex = 0;
-        const existingSlides = container.querySelectorAll('.banner-slide');
-        existingSlides.forEach((slide, idx) => {
-            if (slide.classList.contains('active')) currentIndex = idx;
+        nextEvents.forEach(event => {
+            const eventCard = document.createElement('div');
+            eventCard.className = 'event-card';
+            eventCard.innerHTML = `
+                <div class="event-image">
+                    <img src="${event.image}" alt="${event.title}">
+                    ${event.status ? `<span class="event-status">${event.status}</span>` : `<span class="event-countdown" data-date="${event.date}"></span>`}
+                </div>
+                <div class="event-info">
+                    <h3>${event.title}</h3>
+                    <p class="event-date">${event.date}</p>
+                    <p class="event-venue">${event.venue}</p>
+                    <p class="event-time">${event.time}</p>
+                    <p class="event-ticket">${event.ticket}</p>
+                    <a href="${event.link}" target="_blank" class="event-btn">${event.buttonText}</a>
+                </div>
+            `;
+            container.insertBefore(eventCard, loadMoreBtn);
         });
 
-        container.innerHTML = '';
-
-        banners.forEach((banner, index) => {
-            const slide = document.createElement('div');
-            slide.className = 'banner-slide';
-            slide.dataset.index = index;
-            if (index === currentIndex || (currentIndex === 0 && index === 0)) {
-                slide.classList.add('active');
-            }
-
-            if (banner.image) {
-                slide.style.backgroundImage = `url(${banner.image})`;
-            }
-
-            const content = document.createElement('div');
-            content.className = 'banner-content';
-
-            if (banner.title) {
-                const title = document.createElement('h2');
-                title.className = 'banner-title';
-                title.textContent = banner.title;
-                content.appendChild(title);
-            }
-
-            if (banner.buttonText && banner.link) {
-                const btn = document.createElement('a');
-                btn.className = 'banner-btn';
-                btn.textContent = banner.buttonText;
-                btn.href = banner.link;
-                btn.target = '_blank';
-                btn.rel = 'noopener noreferrer';
-                content.appendChild(btn);
-            }
-
-            slide.appendChild(content);
-            container.appendChild(slide);
-        });
-
-        // 启动轮播
-        if (banners.length > 1 && !container.dataset.carouselInitialized) {
-            container.dataset.carouselInitialized = 'true';
-            startBannerCarousel(container, banners.length);
+        if (window.displayedEvents >= window.allEvents.length) {
+            loadMoreBtn.style.display = 'none';
         }
+    };
+
+    // 渲染滚播活动
+    function renderCarousel(data) {
+        if (!data || !data.carousel) return;
+
+        const container = document.querySelector('.carousel-track') || document.querySelector('.events-carousel');
+        if (!container) return;
+
+        const enabledItems = data.carousel.filter(c => c.enabled && c.image).sort((a, b) => a.order - b.order);
+
+        container.innerHTML = enabledItems.map(item => `
+            <div class="carousel-item">
+                <img src="${item.image}" alt="${item.title}">
+                <div class="carousel-info">
+                    <h4>${item.title}</h4>
+                    <p>${item.date}</p>
+                    ${item.link ? `<a href="${item.link}" target="_blank">${item.buttonText || 'View Details'}</a>` : `<span>${item.buttonText || ''}</span>`}
+                </div>
+            </div>
+        `).join('');
     }
 
-    function startBannerCarousel(container, totalSlides) {
+    // 渲染Partners Banner
+    function renderPartnersBanners(data) {
+        if (!data || !data.banners) return;
+
+        const enabledBanners = data.banners.filter(b => b.enabled && b.mainImage);
+
+        enabledBanners.forEach((banner, index) => {
+            const bannerEl = document.querySelector(`#partner-banner-${index + 1}`) || document.querySelector(`.partner-banner-${index + 1}`);
+            if (!bannerEl) return;
+
+            bannerEl.style.backgroundImage = `url(${banner.mainImage})`;
+
+            const logoEl = bannerEl.querySelector('.banner-logo');
+            if (logoEl && banner.logoImage) {
+                logoEl.src = banner.logoImage;
+                logoEl.style.display = 'block';
+            } else if (logoEl) {
+                logoEl.style.display = 'none';
+            }
+
+            const titleEl = bannerEl.querySelector('.banner-title');
+            if (titleEl) titleEl.textContent = banner.title;
+
+            const descEl = bannerEl.querySelector('.banner-description');
+            if (descEl) descEl.textContent = banner.description;
+
+            const btnEl = bannerEl.querySelector('.banner-btn');
+            if (btnEl) {
+                btnEl.textContent = banner.buttonText;
+                btnEl.href = banner.link || 'javascript:void(0)';
+                btnEl.target = banner.link ? '_blank' : '';
+            }
+        });
+    }
+
+    // 渲染Collaborators
+    function renderCollaborators(data) {
+        if (!data || !data.logos) return;
+
+        const container = document.querySelector('.collaborators-grid') || document.querySelector('.partners-logos');
+        if (!container) return;
+
+        const enabledLogos = data.logos.filter(l => l.enabled && l.image);
+
+        container.innerHTML = enabledLogos.map(logo => `
+            ${logo.link ? `<a href="${logo.link}" target="_blank" class="collaborator-logo">` : '<div class="collaborator-logo">'}
+                <img src="${logo.image}" alt="${logo.name}">
+                ${logo.name ? `<span>${logo.name}</span>` : ''}
+            ${logo.link ? '</a>' : '</div>'}
+        `).join('');
+    }
+
+    // 初始化Banner轮播
+    function initBannerSlider() {
+        const slider = document.querySelector('.banner-slider');
+        if (!slider) return;
+
+        const slides = slider.querySelectorAll('.banner-slide');
+        const dots = slider.querySelectorAll('.dot');
         let current = 0;
-        setInterval(() => {
-            const slides = container.querySelectorAll('.banner-slide');
-            if (slides.length === 0) return;
 
-            slides[current].classList.remove('active');
-            current = (current + 1) % totalSlides;
-            slides[current].classList.add('active');
-        }, 5000);
-    }
-
-    function initPosters(posters, pageType) {
-        log('Init Posters:', posters.length, 'items');
-
-        posters.forEach((poster, index) => {
-            const container = document.querySelector(`#poster-${index + 1}, .poster-${index + 1}, [data-poster="${index + 1}"]`);
-            if (!container) return;
-
-            const img = container.querySelector('img, .poster-image');
-            setImage(img, poster.image, poster.title || '');
-
-            const title = container.querySelector('.poster-title, h3, h4');
-            setText(title, poster.title);
-
-            const btn = container.querySelector('a, .poster-btn, .btn');
-            if (btn && poster.buttonText && poster.link) {
-                btn.textContent = poster.buttonText;
-                setLink(btn, poster.link, true);
-            } else if (btn && (!poster.buttonText || !poster.link)) {
-                btn.style.display = 'none';
-            }
-        });
-    }
-
-    function initEventsPosters(posters) {
-        log('Init Events Posters:', posters.length, 'items');
-
-        posters.forEach((poster, index) => {
-            const posterNum = index + 1;
-            const container = document.querySelector(`#poster-${posterNum}, .poster-${posterNum}, [data-poster="${posterNum}"]`);
-            if (!container) return;
-
-            if (posterNum === 2 && poster.slides && poster.slides.length > 1) {
-                initPoster2Carousel(container, poster.slides);
-            } else {
-                const img = container.querySelector('img, .poster-image');
-                setImage(img, poster.image || (poster.slides && poster.slides[0] && poster.slides[0].image), poster.title || '');
-
-                const title = container.querySelector('.poster-title, h3, h4');
-                setText(title, poster.title);
-
-                const btn = container.querySelector('a, .poster-btn, .btn');
-                if (btn && poster.buttonText && poster.link) {
-                    btn.textContent = poster.buttonText;
-                    setLink(btn, poster.link, true);
-                }
-            }
-        });
-    }
-
-    function initPoster2Carousel(container, slides) {
-        log('Init Poster2 Carousel:', slides.length, 'slides');
-
-        const carouselContainer = document.createElement('div');
-        carouselContainer.className = 'poster-carousel';
-
-        slides.forEach((slide, index) => {
-            const slideDiv = document.createElement('div');
-            slideDiv.className = 'poster-carousel-slide';
-            if (index === 0) slideDiv.classList.add('active');
-
-            const img = document.createElement('img');
-            img.src = slide.image;
-            img.alt = slide.title || '';
-            slideDiv.appendChild(img);
-
-            if (slide.title) {
-                const title = document.createElement('h4');
-                title.className = 'poster-slide-title';
-                title.textContent = slide.title;
-                slideDiv.appendChild(title);
-            }
-
-            if (slide.buttonText && slide.link) {
-                const btn = document.createElement('a');
-                btn.className = 'poster-slide-btn';
-                btn.textContent = slide.buttonText;
-                btn.href = slide.link;
-                btn.target = '_blank';
-                slideDiv.appendChild(btn);
-            }
-
-            carouselContainer.appendChild(slideDiv);
-        });
-
-        container.innerHTML = '';
-        container.appendChild(carouselContainer);
-
-        if (slides.length > 1 && !container.dataset.carouselInitialized) {
-            container.dataset.carouselInitialized = 'true';
-            let current = 0;
-            setInterval(() => {
-                const slideEls = carouselContainer.querySelectorAll('.poster-carousel-slide');
-                if (slideEls.length === 0) return;
-                slideEls[current].classList.remove('active');
-                current = (current + 1) % slides.length;
-                slideEls[current].classList.add('active');
-            }, 4000);
-        }
-    }
-
-    function initEventsCarousel(items) {
-        log('Init Events Carousel:', items.length, 'items');
-
-        const container = document.querySelector('#events-carousel, .events-carousel, .carousel-container');
-        if (!container) return;
-
-        container.innerHTML = '';
-
-        items.forEach((item, index) => {
-            const slide = document.createElement('div');
-            slide.className = 'carousel-slide';
-            if (index === 0) slide.classList.add('active');
-
-            if (item.image) {
-                const img = document.createElement('img');
-                img.src = item.image;
-                img.alt = item.title || '';
-                slide.appendChild(img);
-            }
-
-            const content = document.createElement('div');
-            content.className = 'carousel-content';
-
-            if (item.title) {
-                const title = document.createElement('h3');
-                title.textContent = item.title;
-                content.appendChild(title);
-            }
-
-            if (item.date || item.time || item.location) {
-                const meta = document.createElement('p');
-                meta.className = 'carousel-meta';
-                meta.textContent = [item.date, item.time, item.location].filter(Boolean).join(' | ');
-                content.appendChild(meta);
-            }
-
-            if (item.details) {
-                const details = document.createElement('p');
-                details.className = 'carousel-details';
-                details.textContent = item.details;
-                content.appendChild(details);
-            }
-
-            if (item.link) {
-                const link = document.createElement('a');
-                link.href = item.link;
-                link.target = '_blank';
-                link.textContent = item.buttonText || 'View Details →';
-                content.appendChild(link);
-            }
-
-            slide.appendChild(content);
-            container.appendChild(slide);
-        });
-
-        if (items.length > 1 && !container.dataset.carouselInitialized) {
-            container.dataset.carouselInitialized = 'true';
-            let current = 0;
-            setInterval(() => {
-                const slides = container.querySelectorAll('.carousel-slide');
-                if (slides.length === 0) return;
-                slides[current].classList.remove('active');
-                current = (current + 1) % items.length;
-                slides[current].classList.add('active');
-            }, 5000);
-        }
-    }
-
-    function initManagedEvents(events) {
-        log('Init Managed Events:', events.length, 'events');
-
-        const container = document.querySelector('#managed-events, .managed-events, .events-grid');
-        if (!container) return;
-
-        container.innerHTML = '';
-
-        const displayCount = Math.min(events.length, 3);
-        const hasMore = events.length > 3;
-
-        events.slice(0, displayCount).forEach(event => {
-            const card = createEventCard(event);
-            container.appendChild(card);
-        });
-
-        // 移除旧的Load More按钮
-        const oldBtn = container.parentNode.querySelector('.load-more-btn');
-        if (oldBtn) oldBtn.remove();
-
-        if (hasMore) {
-            const loadMoreBtn = document.createElement('button');
-            loadMoreBtn.className = 'load-more-btn';
-            loadMoreBtn.textContent = 'Load More';
-            loadMoreBtn.onclick = () => {
-                events.slice(3).forEach(event => {
-                    const card = createEventCard(event);
-                    card.style.animation = 'fadeIn 0.5s ease';
-                    container.appendChild(card);
-                });
-                loadMoreBtn.style.display = 'none';
-            };
-            container.parentNode.appendChild(loadMoreBtn);
-        }
-    }
-
-    function createEventCard(event) {
-        const card = document.createElement('div');
-        card.className = 'event-card';
-
-        if (event.poster) {
-            const img = document.createElement('img');
-            img.src = event.poster;
-            img.alt = event.title || '';
-            img.className = 'event-poster';
-            card.appendChild(img);
+        function showSlide(index) {
+            slides.forEach((s, i) => s.classList.toggle('active', i === index));
+            dots.forEach((d, i) => d.classList.toggle('active', i === index));
         }
 
-        if (event.ontour || event.soldout) {
-            const badge = document.createElement('span');
-            badge.className = 'event-badge';
-            badge.textContent = event.soldout ? 'SOLD OUT' : 'ON TOUR';
-            card.appendChild(badge);
+        function nextSlide() {
+            current = (current + 1) % slides.length;
+            showSlide(current);
         }
 
-        if (event.title) {
-            const title = document.createElement('h3');
-            title.className = 'event-title';
-            title.textContent = event.title;
-            card.appendChild(title);
-        }
-
-        const details = document.createElement('div');
-        details.className = 'event-details';
-
-        if (event.date) {
-            const date = document.createElement('p');
-            date.innerHTML = `<strong>Date:</strong> ${event.date}`;
-            details.appendChild(date);
-        }
-
-        if (event.time) {
-            const time = document.createElement('p');
-            time.innerHTML = `<strong>Time:</strong> ${event.time}`;
-            details.appendChild(time);
-        }
-
-        if (event.location) {
-            const loc = document.createElement('p');
-            loc.innerHTML = `<strong>Location:</strong> ${event.location}`;
-            details.appendChild(loc);
-        }
-
-        if (event.ticket) {
-            const ticket = document.createElement('p');
-            ticket.innerHTML = `<strong>Ticket:</strong> ${event.ticket}`;
-            details.appendChild(ticket);
-        }
-
-        card.appendChild(details);
-
-        if (event.buttonText && event.link) {
-            const btn = document.createElement('a');
-            btn.className = 'event-btn';
-            btn.textContent = event.buttonText;
-            btn.href = event.link;
-            btn.target = '_blank';
-            card.appendChild(btn);
-        }
-
-        return card;
-    }
-
-    function initPartnersBanners(banners) {
-        log('Init Partners Banners:', banners.length, 'banners');
-
-        banners.forEach((banner, index) => {
-            const bannerNum = index + 1;
-            const container = document.querySelector(`#partner-banner-${bannerNum}, .partner-banner-${bannerNum}, [data-partner-banner="${bannerNum}"]`);
-            if (!container) return;
-
-            if (banner.backgroundImage) {
-                container.style.backgroundImage = `url(${banner.backgroundImage})`;
-            }
-
-            const logo = container.querySelector('.banner-logo, .partner-logo, img');
-            setImage(logo, banner.logo, banner.title || '');
-
-            const title = container.querySelector('.banner-title, h2, h3');
-            setText(title, banner.title);
-
-            const details = container.querySelector('.banner-details, .details, p');
-            setText(details, banner.details);
-
-            const btn = container.querySelector('a, .banner-btn, .btn');
-            if (btn && banner.buttonText && banner.link) {
-                btn.textContent = banner.buttonText;
-                setLink(btn, banner.link, true);
-            } else if (btn && (!banner.buttonText || !banner.link)) {
-                btn.style.display = 'none';
-            }
-        });
-    }
-
-    function initCollaborators(logos) {
-        log('Init Collaborators:', logos.length, 'logos');
-
-        const container = document.querySelector('#collaborators, .collaborators, .partners-logos');
-        if (!container) return;
-
-        container.innerHTML = '';
-
-        logos.forEach(logo => {
-            const item = document.createElement('div');
-            item.className = 'collaborator-item';
-
-            const img = document.createElement('img');
-            img.src = logo.image;
-            img.alt = logo.name || '';
-            img.className = 'collaborator-logo';
-
-            if (logo.link) {
-                const link = document.createElement('a');
-                link.href = logo.link;
-                link.target = '_blank';
-                link.appendChild(img);
-                item.appendChild(link);
-            } else {
-                item.appendChild(img);
-            }
-
-            if (logo.name) {
-                const name = document.createElement('p');
-                name.className = 'collaborator-name';
-                name.textContent = logo.name;
-                item.appendChild(name);
-            }
-
-            container.appendChild(item);
-        });
-    }
-
-    function initFooter(footer, type) {
-        log('Init Footer:', type);
-
-        const logo = document.querySelector('#footer-logo, .footer-logo');
-        if (logo && footer.logoText) {
-            logo.textContent = footer.logoText;
-        }
-
-        const socialContainer = document.querySelector('#footer-social, .footer-social, #socialContainer');
-        if (socialContainer && footer.socialMedia) {
-            socialContainer.innerHTML = '';
-
-            footer.socialMedia.forEach(social => {
-                if (!social.icon && !social.name) return;
-
-                const link = document.createElement('a');
-                link.className = 'social-icon';
-                link.href = social.link || '#';
-                link.target = '_blank';
-                link.title = social.name || '';
-
-                const img = document.createElement('img');
-                if (social.icon) {
-                    img.src = social.icon;
-                } else {
-                    img.src = getDefaultSocialIcon(social.name);
-                }
-                img.alt = social.name || '';
-                img.onerror = function() {
-                    this.style.display = 'none';
-                    link.textContent = social.name ? social.name.charAt(0).toUpperCase() : '?';
-                    link.style.display = 'flex';
-                    link.style.alignItems = 'center';
-                    link.style.justifyContent = 'center';
-                    link.style.background = '#8b0000';
-                    link.style.color = '#fff';
-                    link.style.borderRadius = '50%';
-                    link.style.width = '44px';
-                    link.style.height = '44px';
-                    link.style.textDecoration = 'none';
-                    link.style.fontWeight = 'bold';
-                };
-
-                link.appendChild(img);
-                socialContainer.appendChild(link);
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                current = index;
+                showSlide(current);
             });
-        }
+        });
 
-        const copyright = document.querySelector('#footer-copyright, .footer-copyright, .copyright');
-        setText(copyright, footer.copyright);
-
-        const producer = document.querySelector('#footer-producer, .footer-producer, .producer-logo');
-        if (producer && footer.producerLogo) {
-            const img = producer.querySelector('img') || document.createElement('img');
-            img.src = footer.producerLogo;
-            img.alt = 'Producer';
-            if (!producer.querySelector('img')) {
-                producer.appendChild(img);
-            }
+        if (slides.length > 1) {
+            setInterval(nextSlide, 5000);
         }
     }
 
-    function getDefaultSocialIcon(name) {
-        const icons = {
-            'facebook': 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>',
-            'instagram': 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>',
-            'youtube': 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>',
-            'twitter': 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>',
-            'x': 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>',
-            'weibo': 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M10.098 20.323c-3.977.391-7.414-1.406-7.672-4.02-.259-2.609 2.759-5.047 6.74-5.441 3.979-.394 7.413 1.404 7.671 4.018.259 2.6-2.759 5.049-6.737 5.439l-.002.004zM9.05 17.219c-.384.616-1.208.884-1.829.602-.612-.279-.793-.991-.406-1.593.379-.595 1.176-.861 1.793-.601.622.263.82.972.442 1.592zm1.27-1.627c-.141.237-.449.353-.689.253-.236-.09-.313-.361-.177-.586.138-.227.436-.346.672-.24.239.09.315.36.18.573h.014zm.176-2.719c-1.893-.493-4.033.45-4.857 2.118-.836 1.704-.026 3.591 1.886 4.21 1.983.64 4.318-.341 5.132-2.179.8-1.793-.201-3.642-2.161-4.149zm7.563-1.224c-.346-.105-.579-.18-.405-.649.389-1.061.428-1.979.003-2.634-.793-1.273-2.944-1.206-5.417-.034 0 0-.777.34-.578-.274.383-1.217.324-2.229-.27-2.817-1.344-1.332-4.918.045-7.99 3.073C1.87 10.963.917 13.511.917 15.614c0 4.042 5.172 6.505 10.229 6.505 6.61 0 11.007-3.86 11.007-6.912 0-1.848-1.566-2.898-2.94-3.558z"/></svg>',
-            'xiaohongshu': 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm4.5 16.5h-9a1.5 1.5 0 0 1-1.5-1.5V9a1.5 1.5 0 0 1 1.5-1.5h9A1.5 1.5 0 0 1 18 9v6a1.5 1.5 0 0 1-1.5 1.5z"/></svg>',
-            'wechat': 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.045c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 0 1-.023-.156.49.49 0 0 1 .201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.837-6.656-6.088V8.89c-.135-.01-.27-.027-.407-.03zm-2.53 3.274c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.97-.982zm4.844 0c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.969-.982z"/></svg>',
-            'miniprogram': 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 2c5.514 0 10 4.486 10 10s-4.486 10-10 10S2 17.514 2 12 6.486 2 12 2zm-1 5v4H7v2h4v4h2v-4h4v-2h-4V7h-2z"/></svg>'
-        };
+    // 初始化Carousel轮播
+    function initCarouselSlider(container) {
+        const slides = container.querySelectorAll('.carousel-slide');
+        const dots = container.querySelectorAll('.dot');
+        let current = 0;
 
-        return icons[name.toLowerCase()] || icons['facebook'];
+        function showSlide(index) {
+            slides.forEach((s, i) => s.classList.toggle('active', i === index));
+            dots.forEach((d, i) => d.classList.toggle('active', i === index));
+        }
+
+        function nextSlide() {
+            current = (current + 1) % slides.length;
+            showSlide(current);
+        }
+
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                current = index;
+                showSlide(current);
+            });
+        });
+
+        if (slides.length > 1) {
+            setInterval(nextSlide, 4000);
+        }
     }
 
-    // ========== 自动刷新机制 ==========
+    // 主加载函数
+    async function loadAndRender(pageType) {
+        console.log(`[LiveGigs] Loading data for page: ${pageType}`);
 
-    // 检测页面类型
+        // 加载底部数据（所有页面）
+        const isCN = pageType === 'cn';
+        const footerData = await loadJSON(isCN ? 'footer-cn' : 'footer-global');
+        renderFooter(footerData, 'socialContainer');
+
+        // 根据页面类型加载特定数据
+        switch(pageType) {
+            case 'index':
+                const indexBanners = await loadJSON('banners');
+                renderBanners(indexBanners);
+                const indexPosters = await loadJSON('index-posters');
+                renderPosters(indexPosters, '.flyers-grid, .posters-section');
+                break;
+
+            case 'cn':
+                const cnBanners = await loadJSON('banners');
+                renderBanners(cnBanners);
+                const cnPosters = await loadJSON('cn-posters');
+                renderPosters(cnPosters, '.flyers-grid, .posters-section');
+                break;
+
+            case 'events':
+                const eventsPosters = await loadJSON('events-posters');
+                renderEventsPoster2(eventsPosters);
+                const eventsPagePosters = await loadJSON('events-page-posters');
+                if (eventsPagePosters) {
+                    renderPosters({posters: [eventsPagePosters.poster1]}, '.poster1-container');
+                    renderPosters({posters: [eventsPagePosters.poster3]}, '.poster3-container');
+                }
+                const managedEvents = await loadJSON('events-managed');
+                renderManagedEvents(managedEvents);
+                const carousel = await loadJSON('events-carousel');
+                renderCarousel(carousel);
+                break;
+
+            case 'partners':
+                const partnersBanners = await loadJSON('partners-banners');
+                renderPartnersBanners(partnersBanners);
+                const collaborators = await loadJSON('collaborators');
+                renderCollaborators(collaborators);
+                break;
+
+            case 'privacy':
+            case 'accessibility':
+                // 这些页面只需要底部数据
+                break;
+        }
+    }
+
+    // 自动检测页面类型并加载
     function detectPageType() {
         const path = window.location.pathname;
         const filename = path.split('/').pop() || 'index.html';
@@ -743,130 +441,17 @@
         return 'index';
     }
 
-    // 加载并初始化
-    async function loadAndRender() {
-        const pageType = detectPageType();
-        log('Page type detected:', pageType);
-
-        const config = PAGE_CONFIG[pageType];
-        if (!config) {
-            console.error('[LiveGigs] Unknown page type:', pageType);
-            return;
-        }
-
-        const data = {};
-        for (const file of config.files) {
-            data[file] = await loadJSON(file);
-        }
-
-        // 计算数据哈希
-        const currentHash = getDataHash(data);
-
-        // 如果数据变化了，重新渲染
-        if (currentHash !== lastDataHash) {
-            log('Data changed, re-rendering...');
-            lastDataHash = currentHash;
-            config.init(data);
-
-            // 显示更新提示（可选）
-            if (document.visibilityState === 'visible') {
-                showUpdateNotification();
-            }
-        } else {
-            log('Data unchanged');
-        }
-    }
-
-    // 显示更新提示
-    function showUpdateNotification() {
-        // 检查是否已经有提示
-        if (document.getElementById('livegigs-update-notice')) return;
-
-        const notice = document.createElement('div');
-        notice.id = 'livegigs-update-notice';
-        notice.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #8b0000;
-            color: #c0c0c0;
-            padding: 15px 25px;
-            border-radius: 5px;
-            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-            z-index: 10000;
-            animation: slideIn 0.3s ease;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-        `;
-        notice.textContent = '内容已更新';
-
-        // 添加动画样式
-        if (!document.getElementById('livegigs-animations')) {
-            const style = document.createElement('style');
-            style.id = 'livegigs-animations';
-            style.textContent = `
-                @keyframes slideIn {
-                    from { transform: translateX(400px); opacity: 0; }
-                    to { transform: translateX(0); opacity: 1; }
-                }
-                @keyframes fadeOut {
-                    from { opacity: 1; }
-                    to { opacity: 0; }
-                }
-            `;
-            document.head.appendChild(style);
-        }
-
-        document.body.appendChild(notice);
-
-        // 3秒后自动消失
-        setTimeout(() => {
-            notice.style.animation = 'fadeOut 0.5s ease forwards';
-            setTimeout(() => notice.remove(), 500);
-        }, 3000);
-    }
-
-    // 启动自动检查
-    function startAutoCheck() {
-        // 立即执行一次
-        loadAndRender();
-
-        // 定期检查结果
-        checkIntervalId = setInterval(() => {
-            if (document.visibilityState === 'visible') {
-                loadAndRender();
-            }
-        }, CONFIG.checkInterval);
-
-        log('Auto-check started, interval:', CONFIG.checkInterval, 'ms');
-    }
-
-    // 页面可见性变化时刷新
-    document.addEventListener('visibilitychange', () => {
-        if (document.visibilityState === 'visible') {
-            log('Page visible, checking for updates...');
-            loadAndRender();
-        }
-    });
-
-    // 页面加载完成后启动
+    // 页面加载完成后执行
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', startAutoCheck);
+        document.addEventListener('DOMContentLoaded', () => loadAndRender(detectPageType()));
     } else {
-        startAutoCheck();
+        loadAndRender(detectPageType());
     }
 
     // 暴露全局接口
     window.LiveGigsData = {
-        reload: loadAndRender,
-        config: CONFIG,
-        getData: async (filename) => await loadJSON(filename),
-        stopAutoCheck: () => {
-            if (checkIntervalId) {
-                clearInterval(checkIntervalId);
-                log('Auto-check stopped');
-            }
-        },
-        startAutoCheck: startAutoCheck
+        reload: () => loadAndRender(detectPageType()),
+        loadPage: (pageType) => loadAndRender(pageType)
     };
 
 })();

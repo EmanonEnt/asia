@@ -1,24 +1,67 @@
 {
   "logos": [
     {
+      "id": 1,
       "name": "TMS LIVE",
       "image": "./image/p-logo-1.png",
-      "link": ""
+      "link": "",
+      "enabled": true
     },
     {
+      "id": 2,
       "name": "MORDAM MUSIC",
       "image": "./image/p-logo-2.png",
-      "link": ""
+      "link": "",
+      "enabled": true
     },
     {
+      "id": 3,
       "name": "TICKETFLAP",
       "image": "./image/p-logo-3.png",
-      "link": "https://ticketflap.com"
+      "link": "https://Ticketflap.com",
+      "enabled": true
     },
     {
+      "id": 4,
       "name": "GIBSON",
       "image": "./image/p-logo-4.png",
-      "link": ""
+      "link": "",
+      "enabled": true
+    },
+    {
+      "id": 5,
+      "name": "",
+      "image": "",
+      "link": "",
+      "enabled": false
+    },
+    {
+      "id": 6,
+      "name": "",
+      "image": "",
+      "link": "",
+      "enabled": false
+    },
+    {
+      "id": 7,
+      "name": "",
+      "image": "",
+      "link": "",
+      "enabled": false
+    },
+    {
+      "id": 8,
+      "name": "",
+      "image": "",
+      "link": "",
+      "enabled": false
+    },
+    {
+      "id": 9,
+      "name": "",
+      "image": "",
+      "link": "",
+      "enabled": false
     }
   ]
 }
