@@ -990,7 +990,11 @@
             <span class="modal-close" onclick="closeModal()">&times;</span>
             <h2 data-editable="modal-title" data-text="Join Membership">Join Membership</h2>
             <p data-editable="modal-desc" data-text="Get exclusive access to presales and events">Get exclusive access to presales and events</p>
-            <form id="membershipForm" action="https://formspree.io/f/mnjbjklp" method="POST" onsubmit="handleFormSubmit(event)">
+            <form id="membershipForm" action="https://api.web3forms.com/submit" method="POST" onsubmit="handleFormSubmit(event)">
+                <input type="hidden" name="access_key" value="021d1b10-1c62-4334-90f0-acff63be93c5">
+                <input type="hidden" name="subject" value="New Membership Application - LiveGigs Asia Privacy Policy">
+                <input type="hidden" name="from_name" value="LiveGigs Asia Website">
+                <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
                 <div class="form-group">
                     <label for="memberName" data-editable="modal-label-name" data-text="Name">Name</label>
                     <input type="text" id="memberName" name="name" required placeholder="Enter your name" data-editable="modal-placeholder-name" data-text="Enter your name">
@@ -1041,15 +1045,13 @@
             // 添加时间戳
             formData.append('timestamp', new Date().toISOString());
 
-            // 发送到 Formspree
+            // 发送到 Web3Forms
             fetch(form.action, {
                 method: 'POST',
-                body: formData,
-                headers: {
-                    'Accept': 'application/json'
-                }
-            }).then(response => {
-                if (response.ok) {
+                body: formData
+            }).then(response => response.json())
+            .then(data => {
+                if (data.success) {
                     // 显示成功消息
                     successDiv.style.display = 'block';
 
@@ -1244,7 +1246,7 @@
             <span class="modal-close" onclick="closeModal()">&times;</span>
             <h2 data-editable="modal-title" data-text="Join Membership">Join Membership</h2>
             <p data-editable="modal-desc" data-text="Get exclusive access to presales and events">Get exclusive access to presales and events</p>
-            <form id="membershipForm" action="https://formspree.io/f/mnjbjklp" method="POST" onsubmit="handleSubmit(event)">
+            <form id="membershipForm" action="https://api.web3forms.com/submit" method="POST" onsubmit="handleSubmit(event)">
                 <div class="form-group">
                     <label for="memberName" data-editable="modal-label-name" data-text="Name">Name</label>
                     <input type="text" id="memberName" name="name" required placeholder="Enter your name" data-editable="modal-placeholder-name" data-text="Enter your name">
@@ -1400,15 +1402,13 @@
             // 添加时间戳
             formData.append('timestamp', new Date().toISOString());
 
-            // 发送到 Formspree
+            // 发送到 Web3Forms
             fetch(form.action, {
                 method: 'POST',
-                body: formData,
-                headers: {
-                    'Accept': 'application/json'
-                }
-            }).then(response => {
-                if (response.ok) {
+                body: formData
+            }).then(response => response.json())
+            .then(data => {
+                if (data.success) {
                     // 显示成功消息
                     successDiv.style.display = 'block';
 

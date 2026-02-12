@@ -896,10 +896,10 @@
             .rebel-content { width: 95%; padding: 10px; }
             .rebel-content h2 { font-size: clamp(18px, 5.5vw, 28px); letter-spacing: 2px; margin-bottom: 12px; line-height: 1.3; }
             .rebel-content .neon-btn { padding: 8px 16px; font-size: 10px; letter-spacing: 1px; }
-            
+
             /* 手机端海报恢复有间距的显示 */
             .posters-container { padding: 0 20px; gap: 15px; justify-content: center; }
-            
+
             .poster-item,
             .poster-item-alt {
                 flex: 0 0 calc(33.333% - 10px);
@@ -907,29 +907,29 @@
                 min-width: auto;
                 border-radius: 4px;
             }
-            
+
             .poster-item:hover,
             .poster-item-alt:hover {
                 transform: translateY(-12px);
                 box-shadow: 0 25px 60px rgba(139, 0, 0, 0.4);
             }
-            
+
             .poster-item img,
             .poster-item-alt img {
                 transition: all 0.4s;
             }
-            
+
             .poster-item:hover img,
             .poster-item-alt:hover img {
                 filter: brightness(0.65);
                 transform: scale(1.08);
             }
-            
+
             .poster-overlay,
             .poster-item-alt .poster-overlay {
                 padding: 12px 6px 10px;
             }
-            
+
             .poster-title { font-size: 10px; letter-spacing: 1px; margin-bottom: 4px; }
             .poster-link { font-size: 9px; letter-spacing: 0.5px; }
             .footer-gap { height: 80px; }
@@ -970,7 +970,7 @@
 
     <!-- 导航栏 -->
     <nav>
-        <img src="./image/logo.png" alt="LiveGigs Asia" class="logo-img" id="logo" onclick="location.reload()" data-editable="logo" data-src="./image/logo.png">
+        <img src="./image/logo.png" alt="LiveGigs Asia" class="logo-img" id="logo" onclick="location.href='./index.html'" data-editable="logo" data-src="./image/logo.png">
         <div class="nav-links">
             <a href="events.html" data-editable="nav-events" data-text="Events" data-href="events.html">Events</a>
             <a href="partners.html" data-editable="nav-partners" data-text="Partners" data-href="partners.html">Partners</a>
@@ -981,15 +981,15 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-bg" id="heroBg" data-editable="hero-bg" data-src="./image/hero%20bg.jpeg"></div>
-        
+
         <div class="smoke-container">
             <div class="smoke"></div>
             <div class="smoke"></div>
             <div class="smoke"></div>
         </div>
-        
+
         <div class="hero-overlay"></div>
-        
+
         <div class="hero-content">
             <h1 class="hero-title" data-editable="hero-title">
                 <span class="gray" data-editable="hero-title-gray" data-text="LIVEGIGS">LIVEGIGS</span><span class="red" data-editable="hero-title-red" data-text="ASIA">ASIA</span>
@@ -1078,7 +1078,7 @@
                         <div class="footer-logo" data-editable="footer-logo">
                             <span class="livegigs">LIVEGIGS</span><span class="asia">ASIA</span>
                         </div>
-                        
+
                         <div class="social-links" id="socialContainer">
                             <a href="#" class="social-icon" data-editable="social-facebook" data-href="https://facebook.com" data-platform="facebook" title="Facebook">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
@@ -1130,7 +1130,10 @@
             <span class="modal-close" onclick="closeModal()">&times;</span>
             <h2 data-editable="modal-title" data-text="Join Membership">Join Membership</h2>
             <p data-editable="modal-desc" data-text="Get exclusive access to presales and events">Get exclusive access to presales and events</p>
-            <form id="membershipForm" action="https://formspree.io/f/mnjbjklp" method="POST" onsubmit="handleFormSubmit(event)">
+            <form id="membershipForm" action="https://api.web3forms.com/submit" method="POST" onsubmit="handleFormSubmit(event)">
+                <input type="hidden" name="access_key" value="021d1b10-1c62-4334-90f0-acff63be93c5">
+                <input type="hidden" name="subject" value="New Membership Application - LiveGigs Asia">
+                <input type="hidden" name="from_name" value="LiveGigs Asia Website">
                 <div class="form-group">
                     <label for="memberName" data-editable="modal-label-name" data-text="Name">Name</label>
                     <input type="text" id="memberName" name="name" required placeholder="Enter your name" data-editable="modal-placeholder-name" data-text="Enter your name">
@@ -1148,6 +1151,7 @@
                     <textarea id="memberMessage" name="message" placeholder="Tell us what you're interested in..." data-editable="modal-placeholder-message" data-text="Tell us what you're interested in..."></textarea>
                 </div>
                 <input type="hidden" name="source" id="formSource" value="LiveGigs Asia Homepage">
+                <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
                 <div id="formSuccess" style="display: none; text-align: center; padding: 15px; background: rgba(139, 0, 0, 0.2); border: 1px solid var(--dark-red); margin-bottom: 20px;">
                     <p style="color: #fff; margin: 0; font-size: 14px;">✓ Application sent successfully! We'll contact you soon.</p>
                 </div>
@@ -1181,20 +1185,18 @@
             // 添加时间戳
             formData.append('timestamp', new Date().toISOString());
 
-            // 发送到 Formspree
+            // 发送到 Web3Forms
             fetch(form.action, {
                 method: 'POST',
-                body: formData,
-                headers: {
-                    'Accept': 'application/json'
-                }
-            }).then(response => {
-                if (response.ok) {
+                body: formData
+            }).then(response => response.json())
+            .then(data => {
+                if (data.success) {
                     // 显示成功消息
                     successDiv.style.display = 'block';
 
                     // 保存到 localStorage 备份
-                    const data = {
+                    const submissionData = {
                         name: document.getElementById('memberName').value,
                         email: document.getElementById('memberEmail').value,
                         phone: document.getElementById('memberPhone').value,
@@ -1203,7 +1205,7 @@
                         source: 'LiveGigs Asia Homepage'
                     };
                     let submissions = JSON.parse(localStorage.getItem('membershipSubmissions') || '[]');
-                    submissions.push(data);
+                    submissions.push(submissionData);
                     localStorage.setItem('membershipSubmissions', JSON.stringify(submissions));
 
                     // 3秒后关闭弹窗并重置表单
@@ -1249,7 +1251,7 @@
         function updateContent(editableId, newValue, type = 'text') {
             const element = document.querySelector(`[data-editable="${editableId}"]`);
             if (!element) return;
-            
+
             if (type === 'src') {
                 element.src = newValue;
                 element.setAttribute('data-src', newValue);
@@ -1288,7 +1290,7 @@
                 if (el.hasAttribute('data-src')) type = 'image';
                 else if (el.hasAttribute('data-href')) type = 'link';
                 else if (el.hasAttribute('data-link')) type = 'poster-link';
-                
+
                 content[id] = {
                     type: type,
                     value: type === 'image' ? el.getAttribute('data-src') :
