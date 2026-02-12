@@ -1,23 +1,89 @@
 {
   "page": "events",
-  "lastUpdated": "2026-02-12T00:00:00.000Z",
+  "lastUpdated": "2026-02-12T10:00:00.000Z",
   "posters": [
-    { "title": "Past Gig 1", "image": "./image/1-b-2.jpg", "link_text": "View Details →", "link": "./events.html" },
-    { "title": "Past Gig 2", "image": "./image/1-b-3.jpg", "link_text": "View Details →", "link": "./events.html" },
-    { "title": "Past Gig 3", "image": "./image/livegigscn1.png", "link_text": "View Details →", "link": "./events.html" }
+    {
+      "title": "NONAMEFEST 2026",
+      "image": "./image/1-b-2.jpg",
+      "link_text": "View Details →",
+      "link": "./events.html"
+    },
+    {
+      "title": "PUNK HEART FESTIVAL 2026",
+      "image": "./image/1-b-3.jpg",
+      "link_text": "View Details →",
+      "link": "./events.html"
+    },
+    {
+      "title": "Epic Past Gigs",
+      "image": "./image/livegigscn1.png",
+      "link_text": "View Details →",
+      "link": "./events.html"
+    }
   ],
   "carousel": [
-    { "title": "Featured Event 1", "image": "./image/carousel1.jpg", "link_text": "View →", "link": "./events.html" },
-    { "title": "Featured Event 2", "image": "./image/carousel2.jpg", "link_text": "View →", "link": "./events.html" }
+    {
+      "title": "Featured Event 1",
+      "image": "./image/carousel1.jpg",
+      "date": "2026-03-15",
+      "venue": "Beijing",
+      "link": "./events.html"
+    }
   ],
-  "events": [],
+  "events": [
+    {
+      "id": "event-001",
+      "title": "发高洁风格就放寒假发",
+      "date": "2026-03-15",
+      "venue": "测试场地",
+      "time": "20:00",
+      "ticket": "¥180",
+      "onTour": false,
+      "soldOut": false,
+      "details": "测试活动详情",
+      "buttonText": "购买票券",
+      "link": "#",
+      "poster": "./image/event1.jpg"
+    },
+    {
+      "id": "event-002",
+      "title": "13321223213123",
+      "date": "2026-04-20",
+      "venue": "另一个场地",
+      "time": "19:30",
+      "ticket": "¥220",
+      "onTour": true,
+      "soldOut": false,
+      "details": "另一个测试活动",
+      "buttonText": "详细资料",
+      "link": "#",
+      "poster": "./image/event2.jpg"
+    },
+    {
+      "id": "event-003",
+      "title": "1111111111111111111",
+      "date": "2026-05-01",
+      "venue": "大型场馆",
+      "time": "18:00",
+      "ticket": "¥350",
+      "onTour": false,
+      "soldOut": true,
+      "details": "售罄测试活动",
+      "buttonText": "售罄",
+      "link": "#",
+      "poster": "./image/event3.jpg"
+    }
+  ],
   "footer": {
     "copyright": "© 2026 LIVEGIGS ASIA. ALL RIGHTS RESERVED.",
+    "email": "xrebooking@hotmail.com",
+    "phone": "+86 123 4567 8900",
+    "address": "Asia",
     "social": [
-      { "icon": "facebook", "name": "Facebook", "url": "https://facebook.com/livegigsasia" },
-      { "icon": "instagram", "name": "Instagram", "url": "https://instagram.com/livegigsasia" },
-      { "icon": "youtube", "name": "YouTube", "url": "https://youtube.com/livegigsasia" },
-      { "icon": "x", "name": "X", "url": "https://x.com/livegigsasia" }
+      { "platform": "facebook", "name": "Facebook", "url": "https://facebook.com/livegigsasia" },
+      { "platform": "instagram", "name": "Instagram", "url": "https://instagram.com/livegigsasia" },
+      { "platform": "youtube", "name": "YouTube", "url": "https://youtube.com/livegigsasia" },
+      { "platform": "x", "name": "X", "url": "https://x.com/livegigsasia" }
     ],
     "producer": "./image/emanonent-logo.png"
   }

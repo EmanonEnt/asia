@@ -1,4 +1,4 @@
-// LiveGigs Asia 数据加载器
+// LiveGigs Asia 数据加载器 - 修复版（解决 CORS 问题）
 const dataLoader = {
     github: {
         owner: 'EmanonEnt',
@@ -6,6 +6,9 @@ const dataLoader = {
         branch: 'main',
         contentPath: 'content'
     },
+
+    // 使用 GitHub Pages 地址读取（避免 CORS）
+    pagesUrl: 'https://emanonent.github.io/asia/content',
 
     cache: {
         banners: null,
@@ -36,6 +39,35 @@ const dataLoader = {
         return localStorage.getItem(ADMIN_CONFIG.storageKeys.githubToken) || '';
     },
 
+    // 修复：使用 GitHub Pages 读取（避免 CORS）
+    async fetchFromGitHubPages(filename) {
+        try {
+            const url = `${this.pagesUrl}/${filename}.json`;
+            console.log('[DataLoader] Fetching from:', url);
+
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                if (response.status === 404) {
+                    return { success: false, notFound: true };
+                }
+                throw new Error(`HTTP ${response.status}`);
+            }
+
+            const data = await response.json();
+            return { success: true, content: data };
+        } catch (e) {
+            console.error('[DataLoader] Fetch error:', e);
+            return { success: false, error: e.message };
+        }
+    },
+
+    // 保留：使用 GitHub API 写入（需要 Token）
     async getGitHubFile(path) {
         const token = this.getToken();
         if (!token) return { success: false, error: '未设置GitHub Token' };
@@ -174,7 +206,18 @@ const dataLoader = {
 
         const path = `${this.github.contentPath}/events.json`;
         const existing = await this.getGitHubFile(path);
-        const result = await this.saveGitHubFile(path, events, existing.sha);
+
+        // 构建完整的数据结构
+        const content = {
+            page: 'events',
+            lastUpdated: new Date().toISOString(),
+            posters: existing.content?.posters || [],
+            carousel: existing.content?.carousel || [],
+            events: events,
+            footer: existing.content?.footer || {}
+        };
+
+        const result = await this.saveGitHubFile(path, content, existing.sha);
 
         if (result.success) {
             this.updateDataVersion();
@@ -285,39 +328,53 @@ const dataLoader = {
         return await this.importAll(empty);
     },
 
-    // Sync from GitHub
+    // 修复：使用 GitHub Pages 读取（避免 CORS）
     async syncFromGitHub() {
         const files = [
-            { key: 'banners', path: 'banners.json', setter: (d) => { this.cache.banners = d; localStorage.setItem(ADMIN_CONFIG.storageKeys.banners, JSON.stringify(d)); } },
-            { key: 'posters_index', path: 'posters_index.json', setter: (d) => { this.cache.posters.index = d; localStorage.setItem(ADMIN_CONFIG.storageKeys.posters + '_index', JSON.stringify(d)); } },
-            { key: 'posters_cn', path: 'posters_cn.json', setter: (d) => { this.cache.posters.cn = d; localStorage.setItem(ADMIN_CONFIG.storageKeys.posters + '_cn', JSON.stringify(d)); } },
-            { key: 'posters_events', path: 'posters_events.json', setter: (d) => { this.cache.posters.events = d; localStorage.setItem(ADMIN_CONFIG.storageKeys.posters + '_events', JSON.stringify(d)); } },
-            { key: 'carousel', path: 'carousel.json', setter: (d) => { this.cache.carousel = d; localStorage.setItem('lg_carousel', JSON.stringify(d)); } },
-            { key: 'events', path: 'events.json', setter: (d) => { this.cache.events = d; localStorage.setItem(ADMIN_CONFIG.storageKeys.events, JSON.stringify(d)); } },
-            { key: 'collaborators', path: 'collaborators.json', setter: (d) => { this.cache.collaborators = d; localStorage.setItem(ADMIN_CONFIG.storageKeys.collaborators, JSON.stringify(d)); } },
-            { key: 'footer_global', path: 'footer_global.json', setter: (d) => { this.cache.footer.global = d; localStorage.setItem(ADMIN_CONFIG.storageKeys.footerGlobal, JSON.stringify(d)); } },
-            { key: 'footer_cn', path: 'footer_cn.json', setter: (d) => { this.cache.footer.cn = d; localStorage.setItem(ADMIN_CONFIG.storageKeys.footerCN, JSON.stringify(d)); } }
+            { key: 'banners', filename: 'banners', setter: (d) => { this.cache.banners = d; localStorage.setItem(ADMIN_CONFIG.storageKeys.banners, JSON.stringify(d)); } },
+            { key: 'posters_index', filename: 'posters_index', setter: (d) => { this.cache.posters.index = d; localStorage.setItem(ADMIN_CONFIG.storageKeys.posters + '_index', JSON.stringify(d)); } },
+            { key: 'posters_cn', filename: 'posters_cn', setter: (d) => { this.cache.posters.cn = d; localStorage.setItem(ADMIN_CONFIG.storageKeys.posters + '_cn', JSON.stringify(d)); } },
+            { key: 'posters_events', filename: 'posters_events', setter: (d) => { this.cache.posters.events = d; localStorage.setItem(ADMIN_CONFIG.storageKeys.posters + '_events', JSON.stringify(d)); } },
+            { key: 'carousel', filename: 'carousel', setter: (d) => { this.cache.carousel = d; localStorage.setItem('lg_carousel', JSON.stringify(d)); } },
+            { key: 'events', filename: 'events', setter: (d) => { 
+                // 处理 events.json 的嵌套结构
+                const events = d.events || d;
+                this.cache.events = events; 
+                localStorage.setItem(ADMIN_CONFIG.storageKeys.events, JSON.stringify(events)); 
+            } },
+            { key: 'collaborators', filename: 'collaborators', setter: (d) => { this.cache.collaborators = d; localStorage.setItem(ADMIN_CONFIG.storageKeys.collaborators, JSON.stringify(d)); } },
+            { key: 'footer_global', filename: 'footer_global', setter: (d) => { this.cache.footer.global = d; localStorage.setItem(ADMIN_CONFIG.storageKeys.footerGlobal, JSON.stringify(d)); } },
+            { key: 'footer_cn', filename: 'footer_cn', setter: (d) => { this.cache.footer.cn = d; localStorage.setItem(ADMIN_CONFIG.storageKeys.footerCN, JSON.stringify(d)); } }
         ];
 
         let success = 0;
         let errors = [];
 
         for (const file of files) {
-            const result = await this.getGitHubFile(`${this.github.contentPath}/${file.path}`);
+            console.log(`[DataLoader] Syncing ${file.filename}...`);
+            const result = await this.fetchFromGitHubPages(file.filename);
             if (result.success) {
                 file.setter(result.content);
                 success++;
+                console.log(`[DataLoader] ✓ ${file.filename} synced`);
             } else if (!result.notFound) {
-                errors.push(`${file.path}: ${result.error}`);
+                errors.push(`${file.filename}: ${result.error}`);
+                console.error(`[DataLoader] ✗ ${file.filename} failed:`, result.error);
+            } else {
+                console.log(`[DataLoader] - ${file.filename} not found (ok)`);
             }
         }
 
-        return { 
+        const result = { 
             success: errors.length === 0, 
             synced: success, 
+            total: files.length,
             errors: errors,
             error: errors.join('; ')
         };
+
+        console.log('[DataLoader] Sync complete:', result);
+        return result;
     }
 };
 
