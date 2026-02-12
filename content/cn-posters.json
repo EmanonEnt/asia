@@ -10,8 +10,7 @@
       "title": "活动 2",
       "buttonText": "查看详情 →",
       "link": "https://example.com/event2",
-      "image": "./image/cn-asiaad.jpg",
-      "slides": []
+      "image": "./image/cn-asiaad.jpg"
     },
     {
       "title": "活动 3",
