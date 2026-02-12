@@ -1,23 +1,21 @@
 [
   {
-    "title": "",
+    "title": "LIVEGIGS CN",
     "image": "./image/1-b-2.jpg",
-    "link_text": "View Details →",
-    "link": "./events.html",
-    "carousel": false
+    "link_text": "Get on WeChat →",
+    "link": "./events.html"
   },
   {
-    "title": "Epic Past Gigs",
-    "image": "./image/1-b-3.jpg",
-    "link_text": "View Details →",
+    "title": "Upcoming Event",
+    "link_text": "Get on WeChat →",
     "link": "./events.html",
-    "carousel": false
+    "carousel": false,
+    "image": "./image/1-b-3.jpg"
   },
   {
     "title": "",
     "image": "./image/livegigscn1.png",
-    "link_text": "View Details →",
-    "link": "./events.html",
-    "carousel": false
+    "link_text": "Learn More →",
+    "link": "./events.html"
   }
 ]
