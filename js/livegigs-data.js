@@ -1,12 +1,11 @@
 // LiveGigs Asia - Data Loader
-// 修复：添加备用CDN，解决raw.githubusercontent被墙问题
+// 版本: 2025-02-12-FORCE-JSdelivr
+// 强制使用 jsDelivr CDN，因为GitHub Pages被墙
 
-// 主数据源（GitHub Pages）
-const primaryUrl = 'https://emanonent.github.io/asia/content';
-// 备用CDN（jsdelivr）
-const backupUrl = 'https://cdn.jsdelivr.net/gh/EmanonEnt/asia@main/content';
+const baseUrl = 'https://cdn.jsdelivr.net/gh/EmanonEnt/asia@main/content';
 
-console.log('[LiveGigs] Data loader loaded');
+console.log('[LiveGigs] Data loader v2025-02-12-FORCE loaded');
+console.log('[LiveGigs] Using CDN:', baseUrl);
 
 const pageConfigs = {
     index: { json: 'banners.json', render: renderIndex },
@@ -17,7 +16,6 @@ const pageConfigs = {
     accessibility: { json: 'footer-global.json', render: renderFooterOnly }
 };
 
-// 带备用方案的加载函数
 async function loadAndRender(pageName) {
     const config = pageConfigs[pageName];
     if (!config) {
@@ -25,44 +23,29 @@ async function loadAndRender(pageName) {
         return;
     }
 
-    // 先尝试主源
-    let data = await tryLoad(primaryUrl, config.json);
-
-    // 如果失败，尝试备用源
-    if (!data) {
-        console.log('[LiveGigs] Trying backup CDN...');
-        data = await tryLoad(backupUrl, config.json);
-    }
-
-    if (data) {
-        console.log('[LiveGigs] Data loaded, events:', data.events ? data.events.length : 0);
-        config.render(data);
-    } else {
-        console.error('[LiveGigs] Failed to load data from all sources');
-    }
-}
-
-async function tryLoad(baseUrl, jsonFile) {
-    const url = baseUrl + '/' + jsonFile + '?t=' + Date.now();
-    console.log('[LiveGigs] Loading:', url);
+    const url = baseUrl + '/' + config.json + '?v=' + Date.now();
+    console.log('[LiveGigs] Fetching:', url);
 
     try {
         const response = await fetch(url, {
             method: 'GET',
-            headers: { 'Accept': 'application/json' },
-            // 添加超时
-            signal: AbortSignal.timeout(5000)
+            headers: { 'Accept': 'application/json' }
         });
 
         if (!response.ok) {
             throw new Error('HTTP ' + response.status);
         }
 
-        return await response.json();
+        const data = await response.json();
+        console.log('[LiveGigs] ✓ Data loaded:', pageName);
+        console.log('[LiveGigs] Events:', data.events ? data.events.length : 0);
+        console.log('[LiveGigs] Posters:', data.posters ? data.posters.length : 0);
+
+        config.render(data);
+        console.log('[LiveGigs] ✓ Render complete');
 
     } catch (error) {
-        console.log('[LiveGigs] Load failed:', error.message);
-        return null;
+        console.error('[LiveGigs] ✗ Error:', error.message);
     }
 }
 
@@ -84,11 +67,12 @@ function renderEvents(data) {
                     </div>
                 </div>
             `).join('');
-            track.innerHTML = items + items; // 克隆一份
+            track.innerHTML = items + items;
+            console.log('[LiveGigs] Carousel updated:', data.carousel.length);
         }
     }
 
-    // 2. 更新海报
+    // 2. 更新3个海报
     if (data.posters && data.posters.length >= 3) {
         for (let i = 1; i <= 3; i++) {
             const p = document.querySelector('[data-poster-id="' + i + '"]');
@@ -99,6 +83,7 @@ function renderEvents(data) {
                 if (title && data.posters[i-1].title) title.textContent = data.posters[i-1].title;
             }
         }
+        console.log('[LiveGigs] Posters updated');
     }
 
     // 3. 更新活动 - 关键部分
@@ -147,13 +132,16 @@ function renderEvents(data) {
                 setTimeout(initCountdowns, 100);
             }
 
-            console.log('[LiveGigs] Events updated:', data.events.length);
+            console.log('[LiveGigs] ✓ Events updated:', data.events.length);
         }
+    } else {
+        console.log('[LiveGigs] No events data');
     }
 
     // 4. 更新底部
     if (data.footer) {
         renderFooter(data.footer);
+        console.log('[LiveGigs] Footer updated');
     }
 }
 
@@ -203,7 +191,7 @@ function renderFooter(data) {
     }
 }
 
-// 其他页面渲染函数
+// 其他页面
 function renderIndex(data) {
     if (data.banners) {
         const container = document.getElementById('banner-container');
@@ -270,7 +258,7 @@ function renderFooterOnly(data) {
     if (data.footer) renderFooter(data.footer);
 }
 
-// 页面加载后自动执行
+// 页面加载后执行
 document.addEventListener('DOMContentLoaded', function() {
     const path = window.location.pathname;
     console.log('[LiveGigs] Page:', path);
