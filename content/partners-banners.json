@@ -1,0 +1,36 @@
+{
+  "banners": [
+    {
+      "title": "",
+      "details": "",
+      "buttonText": "下载APP",
+      "link": "https://xrebooking.com/app",
+      "backgroundImage": "./image/p-p-1.jpg",
+      "logo": "./image/p-p-1logo.png"
+    },
+    {
+      "title": "小子联盟唱片",
+      "details": "独立音乐厂牌，致力于推广优秀独立音乐",
+      "buttonText": "访问网站",
+      "link": "https://kids-union.com",
+      "backgroundImage": "./image/p-p-2.jpg",
+      "logo": "./image/p-p-2logo.png"
+    },
+    {
+      "title": "XRE BOOKING",
+      "details": "专业演出经纪\\n艺人管理\\n活动制作",
+      "buttonText": "了解更多",
+      "link": "https://xrebooking.com",
+      "backgroundImage": "./image/p-p-3.png",
+      "logo": "./image/p-p-3logo.png"
+    },
+    {
+      "title": "",
+      "details": "",
+      "buttonText": "访问官网",
+      "link": "https://partner4.com",
+      "backgroundImage": "./image/p-p-4.jpg",
+      "logo": "./image/p-p-4logo.png"
+    }
+  ]
+}

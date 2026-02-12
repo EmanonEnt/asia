@@ -1,0 +1,43 @@
+{
+  "posters": [
+    {
+      "title": "Epic Past Gigs",
+      "buttonText": "View Details →",
+      "link": "https://example.com/past",
+      "image": "./image/livegigscn1.png",
+      "slides": []
+    },
+    {
+      "title": "Epic Past Gigs",
+      "buttonText": "",
+      "link": "",
+      "image": "",
+      "slides": [
+        {
+          "image": "./image/1-b-2.jpg",
+          "title": "Past Gig 1",
+          "buttonText": "View →",
+          "link": "https://example.com/past1"
+        },
+        {
+          "image": "./image/1-b-3.jpg",
+          "title": "Past Gig 2",
+          "buttonText": "View →",
+          "link": "https://example.com/past2"
+        },
+        {
+          "image": "./image/cn-asiaad.jpg",
+          "title": "Past Gig 3",
+          "buttonText": "View →",
+          "link": "https://example.com/past3"
+        }
+      ]
+    },
+    {
+      "title": "Upcoming Events",
+      "buttonText": "View Details →",
+      "link": "https://example.com/upcoming",
+      "image": "./image/1-b-3.jpg"
+    }
+  ]
+}

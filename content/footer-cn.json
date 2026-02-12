@@ -1,0 +1,27 @@
+{
+  "logoText": "LIVEGIGS(CN)",
+  "copyright": "Copyright © 2001-2026 EMANON ENTERTAINMENT",
+  "producerLogo": "./image/emanonent-logo.png",
+  "socialMedia": [
+    {
+      "name": "Weibo",
+      "icon": "",
+      "link": "https://weibo.com/livegigscn"
+    },
+    {
+      "name": "WeChat",
+      "icon": "",
+      "link": "#"
+    },
+    {
+      "name": "Xiaohongshu",
+      "icon": "",
+      "link": "https://xiaohongshu.com/livegigs"
+    },
+    {
+      "name": "MiniProgram",
+      "icon": "",
+      "link": "#"
+    }
+  ]
+}

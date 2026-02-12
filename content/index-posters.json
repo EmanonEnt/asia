@@ -1,0 +1,23 @@
+{
+  "posters": [
+    {
+      "title": "LiveGigs Asia",
+      "buttonText": "View Details →",
+      "link": "https://livegigsasia.com",
+      "image": "./image/livegigscn1.png"
+    },
+    {
+      "title": "Event 2",
+      "buttonText": "View Details →",
+      "link": "https://example.com/event2",
+      "image": "./image/1-b-2.jpg",
+      "slides": []
+    },
+    {
+      "title": "Event 3",
+      "buttonText": "View Details →",
+      "link": "https://example.com/event3",
+      "image": "./image/1-b-3.jpg"
+    }
+  ]
+}
