@@ -37,7 +37,8 @@
       "title": "Upcoming Events",
       "buttonText": "View Details →",
       "link": "https://example.com/upcoming",
-      "image": "./image/1-b-3.jpg"
+      "image": "./image/1-b-3.jpg",
+      "slides": []
     }
   ]
 }
