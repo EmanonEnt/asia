@@ -1921,8 +1921,10 @@
             <span class="modal-close" onclick="closeModal()">&times;</span>
             <h2 data-editable="modal-title" data-text="Join Membership">Join Membership</h2>
             <p data-editable="modal-desc" data-text="Get exclusive access to presales and events">Get exclusive access to presales and events</p>
-            <form id="membershipForm" onsubmit="handleFormSubmit(event)">
+            <form id="membershipForm" action="https://api.web3forms.com/submit" method="POST" onsubmit="handleFormSubmit(event)">
                 <input type="hidden" name="access_key" value="021d1b10-1c62-4334-90f0-acff63be93c5">
+                <input type="hidden" name="subject" value="New Membership Application - LiveGigs Asia">
+                <input type="hidden" name="from_name" value="LiveGigs Asia Website">
                 <div class="form-group">
                     <label for="memberName" data-editable="modal-label-name" data-text="Name">Name</label>
                     <input type="text" id="memberName" name="name" required placeholder="Enter your name" data-editable="modal-placeholder-name" data-text="Enter your name">
@@ -1940,6 +1942,7 @@
                     <textarea id="memberMessage" name="message" placeholder="Tell us what you're interested in..." data-editable="modal-placeholder-message" data-text="Tell us what you're interested in..."></textarea>
                 </div>
                 <button type="submit" class="neon-btn" data-editable="modal-submit" data-text="SUBMIT APPLICATION">SUBMIT APPLICATION</button>
+                            <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
             </form>
         </div>
     </div>
@@ -2039,537 +2042,17 @@
     <button class="admin-toggle" onclick="toggleAdmin()" title="Open Admin Panel" style="display: none;">⚙️</button>
 
     <!-- JavaScript -->
+    
+<script src="./js/livegigs-data.js"></script>
+<script>
+  // 自动加载数据并渲染
+  if (typeof LiveGigsData !== 'undefined') {
+    LiveGigsData.loadAndRender('events');
+  }
+</script>
+
     <script>
-        // 检查活动数量，控制载入更多按钮显示
-        function checkLoadMoreButton() {
-            const allEvents = document.querySelectorAll('.event-card');
-            const visibleEvents = document.querySelectorAll('.event-card:not(.hidden)');
-            const loadMoreContainer = document.getElementById('loadMoreContainer');
-            
-            // 如果有超过3个活动（即有隐藏的活动），显示Load More按钮
-            if (allEvents.length > 3) {
-                loadMoreContainer.classList.add('visible');
-            } else {
-                loadMoreContainer.classList.remove('visible');
-            }
-        }
-
-        // 载入更多活动
-        function loadMoreEvents() {
-            const hiddenEvents = document.querySelectorAll('.event-card.hidden');
-            
-            // 每次显示3个
-            for (let i = 0; i < 3 && i < hiddenEvents.length; i++) {
-                hiddenEvents[i].classList.remove('hidden');
-            }
-            
-            // 如果没有更多隐藏的活动，隐藏Load More按钮
-            if (document.querySelectorAll('.event-card.hidden').length === 0) {
-                document.getElementById('loadMoreContainer').classList.remove('visible');
-            }
-            
-            // 重新初始化倒计时
-            initCountdowns();
-        }
-
-        // 滚动控制 - 左箭头回翻，右箭头加速
-        let isScrolling = false;
-        let scrollPosition = 0;
-        const itemWidth = 250; // 每个项目宽度
-        
-        function scrollLeft() {
-            const track = document.getElementById('autoScrollTrack');
-            const container = document.getElementById('autoScrollContainer');
-            
-            // 暂停CSS动画
-            track.classList.add('paused');
-            
-            // 获取当前transform值
-            const style = window.getComputedStyle(track);
-            const matrix = new WebKitCSSMatrix(style.transform);
-            let currentX = matrix.m41;
-            
-            // 向后滚动（向右移动，显示左侧内容）
-            scrollPosition = currentX + itemWidth;
-            
-            // 如果超出范围，循环到末尾
-            const maxScroll = -(track.scrollWidth / 2);
-            if (scrollPosition > 0) {
-                scrollPosition = maxScroll + itemWidth;
-            }
-            
-            // 应用平滑过渡
-            track.style.transition = 'transform 0.5s ease-out';
-            track.style.transform = `translateX(${scrollPosition}px)`;
-            
-            // 清除之前的定时器
-            if (window.resumeScrollTimeout) {
-                clearTimeout(window.resumeScrollTimeout);
-            }
-        }
-
-        function scrollRight() {
-            const track = document.getElementById('autoScrollTrack');
-            
-            // 加速滚动
-            track.style.animationDuration = '10s';
-            
-            // 2秒后恢复正常速度
-            setTimeout(() => {
-                track.style.animationDuration = '40s';
-            }, 2000);
-        }
-
-        // 鼠标移出区域后继续正常滚播
-        document.getElementById('autoScrollContainer').addEventListener('mouseleave', function() {
-            const track = document.getElementById('autoScrollTrack');
-            
-            // 延迟恢复，让用户有时间看到效果
-            window.resumeScrollTimeout = setTimeout(() => {
-                track.classList.remove('paused');
-                track.style.transition = '';
-                
-                // 计算新的动画延迟以保持位置
-                const maxScroll = -(track.scrollWidth / 2);
-                const progress = Math.abs(scrollPosition) / Math.abs(maxScroll);
-                track.style.animationDelay = `-${progress * 40}s`;
-            }, 1000);
-        });
-
-        // 海报2轮播 - 仅桌面端
-        let currentSlide = 0;
-        let slides = document.querySelectorAll('#posterCarousel img');
-        let dots = document.querySelectorAll('.carousel-dot');
-
-        function goToSlide(index) {
-            if (window.innerWidth <= 768) return; // 手机端不执行
-            
-            slides[currentSlide].classList.remove('active');
-            dots[currentSlide].classList.remove('active');
-            currentSlide = index;
-            slides[currentSlide].classList.add('active');
-            dots[currentSlide].classList.add('active');
-        }
-
-        function nextSlide() {
-            if (window.innerWidth <= 768) return; // 手机端不执行
-            
-            const next = (currentSlide + 1) % slides.length;
-            goToSlide(next);
-        }
-
-        // 自动轮播 - 仅桌面端
-        setInterval(nextSlide, 4000);
-
-        // 倒计时功能
-        function initCountdowns() {
-            document.querySelectorAll('.event-status[data-status-type="countdown"]').forEach(status => {
-                const targetDate = status.getAttribute('data-countdown-date');
-                if (!targetDate) return;
-                
-                const updateCountdown = () => {
-                    const now = new Date();
-                    const target = new Date(targetDate);
-                    const diff = target - now;
-                    
-                    if (diff <= 0) {
-                        status.textContent = 'STARTED';
-                        status.classList.remove('countdown');
-                        status.classList.add('ontour');
-                        return;
-                    }
-                    
-                    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                    status.textContent = days + ' DAYS';
-                };
-                
-                updateCountdown();
-                // 每分钟更新一次
-                setInterval(updateCountdown, 60000);
-            });
-        }
-
-        // 通用更新函数
-        function updateContent(editableId, newValue, type = 'text') {
-            const element = document.querySelector(`[data-editable="${editableId}"]`);
-            if (!element) return;
-            
-            if (type === 'src') {
-                element.src = newValue;
-                element.setAttribute('data-src', newValue);
-            } else if (type === 'href') {
-                element.href = newValue;
-                element.setAttribute('data-href', newValue);
-                if (element.tagName === 'BUTTON') {
-                    element.onclick = function() { window.open(newValue, '_blank'); };
-                }
-            } else if (type === 'link') {
-                element.setAttribute('data-link', newValue);
-                const linkElement = element.querySelector('.poster-link');
-                if (linkElement) linkElement.href = newLink;
-            } else if (type === 'mailto') {
-                element.href = 'mailto:' + newValue;
-                element.textContent = newValue;
-            } else if (type === 'tel') {
-                element.href = 'tel:' + newValue;
-                element.textContent = newValue;
-            } else if (type === 'status') {
-                element.textContent = newValue;
-                element.setAttribute('data-text', newValue);
-            } else {
-                element.textContent = newValue;
-                element.setAttribute('data-text', newValue);
-            }
-        }
-
-        function updateMultipleContent(updates) {
-            updates.forEach(update => updateContent(update.id, update.value, update.type));
-        }
-
-        function getAllEditableContent() {
-            const elements = document.querySelectorAll('[data-editable]');
-            const content = {};
-            elements.forEach(el => {
-                const id = el.getAttribute('data-editable');
-                let type = 'text';
-                if (el.hasAttribute('data-src')) type = 'image';
-                else if (el.hasAttribute('data-href')) type = 'link';
-                else if (el.hasAttribute('data-link')) type = 'poster-link';
-                else if (el.hasAttribute('data-date')) type = 'date';
-                else if (el.classList.contains('event-status')) type = 'status';
-                
-                content[id] = {
-                    type: type,
-                    value: type === 'image' ? el.getAttribute('data-src') :
-                          type === 'link' ? el.getAttribute('data-href') :
-                          type === 'poster-link' ? el.getAttribute('data-link') :
-                          type === 'date' ? el.getAttribute('data-date') :
-                          type === 'status' ? el.getAttribute('data-text') :
-                          el.getAttribute('data-text'),
-                    element: el.tagName
-                };
-            });
-            return content;
-        }
-
-        function updatePosterLink(posterId, newLink) {
-            const poster = document.querySelector(`[data-poster-id="${posterId}"]`);
-            if (poster) {
-                poster.setAttribute('data-link', newLink);
-                const linkElement = poster.querySelector('.poster-link');
-                if (linkElement) linkElement.href = newLink;
-            }
-        }
-
-        // 后台管理功能
-        function toggleAdmin() {
-            const panel = document.getElementById('adminPanel');
-            panel.classList.toggle('active');
-            if (panel.classList.contains('active')) {
-                loadAdminData();
-            }
-        }
-
-        function showAdminTab(tabName) {
-            document.querySelectorAll('.admin-tab').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.admin-section').forEach(section => section.classList.remove('active'));
-            
-            event.target.classList.add('active');
-            document.getElementById('admin-' + tabName).classList.add('active');
-        }
-
-        function loadAdminData() {
-            // 加载Events数据
-            const eventsList = document.getElementById('eventsAdminList');
-            eventsList.innerHTML = '';
-            document.querySelectorAll('.event-card').forEach((card, index) => {
-                const id = card.getAttribute('data-event-id');
-                const name = card.querySelector('.event-name').textContent;
-                const img = card.querySelector('.event-poster').getAttribute('data-src');
-                const statusEl = card.querySelector('.event-status');
-                const statusType = statusEl.getAttribute('data-status-type');
-                const statusText = statusEl.getAttribute('data-text');
-                const countdownDate = statusEl.getAttribute('data-countdown-date') || '';
-                
-                eventsList.innerHTML += `
-                    <div class="admin-item">
-                        <div class="admin-item-label">Event ${id}: ${name}</div>
-                        <input type="text" id="admin-event-${id}-name" value="${name}" placeholder="Event Name">
-                        <input type="text" id="admin-event-${id}-image" value="${img}" placeholder="Image URL">
-                        <input type="text" id="admin-event-${id}-details" value="${card.querySelector('.event-details').textContent}" placeholder="Details (Date | Location)">
-                        <input type="text" id="admin-event-${id}-venue" value="${card.querySelector('.event-venue').textContent}" placeholder="Venue/Subtitle">
-                        <input type="text" id="admin-event-${id}-btn" value="${card.querySelector('.event-btn').textContent}" placeholder="Button Text">
-                        <input type="text" id="admin-event-${id}-link" value="${card.querySelector('.event-btn').getAttribute('data-href')}" placeholder="Button Link">
-                        <select id="admin-event-${id}-status-type" style="width:100%; margin-bottom:10px; padding:10px; background:rgba(0,0,0,0.8); border:1px solid var(--dark-red); color:#fff;">
-                            <option value="countdown" ${statusType === 'countdown' ? 'selected' : ''}>Countdown</option>
-                            <option value="soldout" ${statusType === 'soldout' ? 'selected' : ''}>Sold Out</option>
-                            <option value="ontour" ${statusType === 'ontour' ? 'selected' : ''}>On Tour</option>
-                            <option value="onsale" ${statusType === 'onsale' ? 'selected' : ''}>On Sale</option>
-                        </select>
-                        <input type="text" id="admin-event-${id}-status-text" value="${statusText}" placeholder="Status Text (e.g., 242 DAYS, 售完, ON TOUR)">
-                        <input type="date" id="admin-event-${id}-countdown-date" value="${countdownDate}" placeholder="Countdown Date (YYYY-MM-DD)" style="width:100%; margin-bottom:10px; padding:10px; background:rgba(0,0,0,0.8); border:1px solid var(--dark-red); color:#fff;">
-                    </div>
-                `;
-            });
-
-            // 加载Auto Scroll数据（按日期排序显示）
-            const scrollList = document.getElementById('scrollAdminList');
-            scrollList.innerHTML = '';
-            
-            // 获取所有非克隆项并排序
-            const scrollItems = Array.from(document.querySelectorAll('.auto-scroll-item:not([data-editable*="-clone"])'));
-            scrollItems.sort((a, b) => {
-                const dateA = a.getAttribute('data-date') || '';
-                const dateB = b.getAttribute('data-date') || '';
-                const timeA = a.getAttribute('data-time') || '00:00';
-                const timeB = b.getAttribute('data-time') || '00:00';
-                return (dateA + timeA).localeCompare(dateB + timeB);
-            });
-            
-            scrollItems.forEach((item, index) => {
-                const id = item.getAttribute('data-editable').replace('auto-', '');
-                const title = item.querySelector('.auto-scroll-title').textContent;
-                const img = item.querySelector('img').getAttribute('data-src');
-                const date = item.getAttribute('data-date') || '';
-                const time = item.getAttribute('data-time') || '';
-                
-                scrollList.innerHTML += `
-                    <div class="admin-item">
-                        <div class="admin-item-label">Scroll Item ${id}: ${title} (Date: ${date} ${time})</div>
-                        <input type="text" id="admin-scroll-${id}-title" value="${title}" placeholder="Title">
-                        <input type="text" id="admin-scroll-${id}-image" value="${img}" placeholder="Image URL">
-                        <input type="text" id="admin-scroll-${id}-meta" value="${item.querySelector('.auto-scroll-meta').textContent}" placeholder="Meta Info">
-                        <input type="date" id="admin-scroll-${id}-date" value="${date}" placeholder="Event Date" style="width:100%; margin-bottom:10px; padding:10px; background:rgba(0,0,0,0.8); border:1px solid var(--dark-red); color:#fff;">
-                        <input type="time" id="admin-scroll-${id}-time" value="${time}" placeholder="Event Time" style="width:100%; margin-bottom:10px; padding:10px; background:rgba(0,0,0,0.8); border:1px solid var(--dark-red); color:#fff;">
-                    </div>
-                `;
-            });
-        }
-
-        function previewImage(input, previewId) {
-            const preview = document.getElementById(previewId);
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    preview.src = e.target.result;
-                    preview.style.display = 'block';
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        function saveAllChanges() {
-            // 保存Events
-            document.querySelectorAll('.event-card').forEach(card => {
-                const id = card.getAttribute('data-event-id');
-                const newName = document.getElementById(`admin-event-${id}-name`)?.value;
-                const newImg = document.getElementById(`admin-event-${id}-image`)?.value;
-                const newStatusType = document.getElementById(`admin-event-${id}-status-type`)?.value;
-                const newStatusText = document.getElementById(`admin-event-${id}-status-text`)?.value;
-                const newCountdownDate = document.getElementById(`admin-event-${id}-countdown-date`)?.value;
-                
-                if (newName) updateContent(`event-${id}-name`, newName, 'text');
-                if (newImg) updateContent(`event-${id}-image`, newImg, 'src');
-                if (newStatusText) {
-                    const statusEl = card.querySelector('.event-status');
-                    statusEl.textContent = newStatusText;
-                    statusEl.setAttribute('data-text', newStatusText);
-                }
-                if (newStatusType) {
-                    const statusEl = card.querySelector('.event-status');
-                    statusEl.setAttribute('data-status-type', newStatusType);
-                    statusEl.className = 'event-status ' + newStatusType;
-                }
-                if (newCountdownDate) {
-                    const statusEl = card.querySelector('.event-status');
-                    statusEl.setAttribute('data-countdown-date', newCountdownDate);
-                }
-            });
-
-            // 保存Text Content
-            const newTitle = document.getElementById('admin-section-title')?.value;
-            const newSubtitle = document.getElementById('admin-section-subtitle')?.value;
-            if (newTitle) updateContent('managed-title', newTitle, 'text');
-            if (newSubtitle) updateContent('managed-subtitle', newSubtitle, 'text');
-
-            // 保存Footer
-            const newEmail = document.getElementById('admin-footer-email')?.value;
-            const newPhone = document.getElementById('admin-footer-phone')?.value;
-            if (newEmail) {
-                updateContent('footer-email', newEmail, 'mailto');
-                document.querySelector('.footer-contact-left a[href^="mailto"]').textContent = newEmail;
-            }
-            if (newPhone) {
-                updateContent('footer-phone', newPhone, 'tel');
-                document.querySelector('.footer-contact-left a[href^="tel"]').textContent = newPhone;
-            }
-
-            // 保存Poster2手机端文字
-            const mobileText = document.getElementById('admin-poster2-mobile-text')?.value;
-            if (mobileText) {
-                const mobileTextEl = document.querySelector('.mobile-poster2-text h3');
-                if (mobileTextEl) {
-                    mobileTextEl.textContent = mobileText;
-                    mobileTextEl.setAttribute('data-text', mobileText);
-                }
-            }
-
-            alert('Changes saved successfully! (Note: In a real implementation, this would save to a database)');
-            toggleAdmin();
-        }
-
-        const SocialManager = {
-            add: function(platform, href, svgPath) {
-                const container = document.getElementById('socialContainer');
-                const a = document.createElement('a');
-                a.href = href;
-                a.className = 'social-icon';
-                a.title = platform;
-                a.setAttribute('data-platform', platform);
-                a.setAttribute('data-editable', 'social-' + platform);
-                a.setAttribute('data-href', href);
-                a.innerHTML = svgPath;
-                container.appendChild(a);
-            },
-            update: function(platform, newHref) {
-                const icon = document.querySelector(`[data-platform="${platform}"]`);
-                if (icon) {
-                    icon.href = newHref;
-                    icon.setAttribute('data-href', newHref);
-                }
-            },
-            remove: function(platform) {
-                const icon = document.querySelector(`[data-platform="${platform}"]`);
-                if (icon) icon.remove();
-            }
-        };
-
-        const FooterAdmin = {
-            updateText: updateContent,
-            updateHref: function(id, href) { updateContent(id, href, 'href'); },
-            updateImage: function(id, src) { updateContent(id, src, 'src'); },
-            updateEmail: function(id, email) { updateContent(id, email, 'mailto'); },
-            updatePhone: function(id, phone) { updateContent(id, phone, 'tel'); }
-        };
-
-        const EventsAdmin = {
-            add: function(id, image, name, details, venue, btnText, btnLink, statusType, statusText, countdownDate) {
-                const grid = document.getElementById('eventsGrid');
-                const card = document.createElement('div');
-                card.className = 'event-card hidden';
-                card.setAttribute('data-editable', 'event-' + id);
-                card.setAttribute('data-event-id', id);
-                card.innerHTML = `
-                    <img src="${image}" alt="${name}" class="event-poster" data-editable="event-${id}-image" data-src="${image}">
-                    <div class="event-status ${statusType}" data-editable="event-${id}-status" data-status-type="${statusType}" data-text="${statusText}" ${countdownDate ? 'data-countdown-date="' + countdownDate + '"' : ''} id="status-${id}">${statusText}</div>
-                    <div class="event-content">
-                        <h3 class="event-name" data-editable="event-${id}-name" data-text="${name}">${name}</h3>
-                        <div class="event-details" data-editable="event-${id}-details" data-text="${details}">${details}</div>
-                        <div class="event-venue" data-editable="event-${id}-venue" data-text="${venue}">${venue}</div>
-                        <a href="${btnLink}" class="event-btn" target="_blank" data-editable="event-${id}-btn" data-text="${btnText}" data-href="${btnLink}">${btnText}</a>
-                    </div>
-                `;
-                grid.appendChild(card);
-                checkLoadMoreButton();
-                initCountdowns();
-            },
-            update: function(id, field, value) {
-                updateContent(`event-${id}-${field}`, value, field === 'image' ? 'src' : 'text');
-            },
-            remove: function(id) {
-                const card = document.querySelector(`[data-event-id="${id}"]`);
-                if (card) {
-                    card.remove();
-                    checkLoadMoreButton();
-                }
-            }
-        };
-
-        const AutoScrollAdmin = {
-            add: function(id, image, title, meta, date, time) {
-                const track = document.getElementById('autoScrollTrack');
-                const item = document.createElement('div');
-                item.className = 'auto-scroll-item';
-                item.setAttribute('data-editable', 'auto-' + id);
-                item.setAttribute('data-date', date);
-                item.setAttribute('data-time', time || '20:00');
-                item.innerHTML = `
-                    <div class="auto-scroll-overlay"></div>
-                    <img src="${image}" alt="${title}" data-editable="auto-${id}-image" data-src="${image}">
-                    <div class="auto-scroll-info">
-                        <h4 class="auto-scroll-title" data-editable="auto-${id}-title" data-text="${title}">${title}</h4>
-                        <div class="auto-scroll-meta" data-editable="auto-${id}-meta" data-text="${meta}">${meta}</div>
-                    </div>
-                `;
-                track.appendChild(item);
-                this.sortByDate();
-            },
-            update: function(id, field, value) {
-                updateContent(`auto-${id}-${field}`, value, field === 'image' ? 'src' : 'text');
-            },
-            remove: function(id) {
-                const item = document.querySelector(`[data-editable="auto-${id}"]`);
-                if (item) item.remove();
-            },
-            sortByDate: function() {
-                const track = document.getElementById('autoScrollTrack');
-                const items = Array.from(track.querySelectorAll('.auto-scroll-item:not([data-editable*="-clone"])'));
-                items.sort((a, b) => {
-                    const dateA = a.getAttribute('data-date') || '';
-                    const dateB = b.getAttribute('data-date') || '';
-                    const timeA = a.getAttribute('data-time') || '00:00';
-                    const timeB = b.getAttribute('data-time') || '00:00';
-                    return (dateA + timeA).localeCompare(dateB + timeB);
-                });
-                items.forEach(item => track.appendChild(item));
-            }
-        };
-
-        const PosterCarouselAdmin = {
-            updateImage: function(index, imageSrc) {
-                const img = document.querySelector(`[data-editable="poster-2-image-${index}"]`);
-                if (img) {
-                    img.src = imageSrc;
-                    img.setAttribute('data-src', imageSrc);
-                }
-            },
-            updateMobileText: function(text) {
-                const mobileTextEl = document.querySelector('.mobile-poster2-text h3');
-                if (mobileTextEl) {
-                    mobileTextEl.textContent = text;
-                    mobileTextEl.setAttribute('data-text', text);
-                }
-            },
-            addSlide: function(imageSrc) {
-                if (window.innerWidth <= 768) return;
-                
-                const carousel = document.getElementById('posterCarousel');
-                const img = document.createElement('img');
-                img.src = imageSrc;
-                img.setAttribute('data-editable', `poster-2-image-${slides.length + 1}`);
-                img.setAttribute('data-src', imageSrc);
-                carousel.insertBefore(img, carousel.querySelector('.carousel-dots'));
-                
-                const dot = document.createElement('span');
-                dot.className = 'carousel-dot';
-                dot.onclick = function() { goToSlide(slides.length); };
-                carousel.querySelector('.carousel-dots').appendChild(dot);
-                
-                // 更新slides和dots
-                slides = document.querySelectorAll('#posterCarousel img');
-                dots = document.querySelectorAll('.carousel-dot');
-            }
-        };
-
-        function checkBackgroundImage() {
-            const img = new Image();
-            img.onerror = function() {
-                document.getElementById('heroBg').style.background = 'linear-gradient(135deg, #1a0000 0%, #000 50%, #1a0000 100%)';
-            };
-            img.src = './image/e-hero%20bg.jpg';
-        }
-        checkBackgroundImage();
-
+        // Membership弹窗控制
         function openModal() {
             document.getElementById('membershipModal').classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -2584,220 +2067,56 @@
             if (e.target === this) closeModal();
         });
 
-        async function handleFormSubmit(e) {
+        // 表单提交处理
+        function handleFormSubmit(e) {
             e.preventDefault();
-
-            const form = e.target;
+            const form = document.getElementById('membershipForm');
             const formData = new FormData(form);
-            const submitBtn = form.querySelector('button[type="submit"]');
-            const originalText = submitBtn.textContent;
+            const successDiv = document.getElementById('formSuccess');
 
-            // 显示加载状态
-            submitBtn.textContent = 'Sending...';
-            submitBtn.disabled = true;
-
-            // 添加时间戳和来源
+            // 添加时间戳
             formData.append('timestamp', new Date().toISOString());
-            formData.append('source', window.location.pathname.includes('cn') ? 'LiveGigs CN' : 'LiveGigs Asia');
 
-            try {
-                const response = await fetch(form.action, {
-                    method: 'POST',
-                    body: formData
-                });
-
-                const data = await response.json();
-
+            // 发送到 Web3Forms
+            fetch(form.action, {
+                method: 'POST',
+                body: formData
+            }).then(response => response.json())
+            .then(data => {
                 if (data.success) {
-                    // 显示成功提示
-                    showSuccessMessage('Thank you! Your application has been sent successfully. We will contact you soon.');
-                    closeModal();
-                    form.reset();
+                    // 显示成功消息
+                    successDiv.style.display = 'block';
+
+                    // 保存到 localStorage 备份
+                    const submissionData = {
+                        name: document.getElementById('memberName').value,
+                        email: document.getElementById('memberEmail').value,
+                        phone: document.getElementById('memberPhone').value,
+                        message: document.getElementById('memberMessage').value,
+                        timestamp: new Date().toISOString(),
+                        source: 'LiveGigs Asia'
+                    };
+                    let submissions = JSON.parse(localStorage.getItem('membershipSubmissions') || '[]');
+                    submissions.push(submissionData);
+                    localStorage.setItem('membershipSubmissions', JSON.stringify(submissions));
+
+                    // 3秒后关闭弹窗并重置表单
+                    setTimeout(() => {
+                        closeModal();
+                        form.reset();
+                        successDiv.style.display = 'none';
+                    }, 3000);
                 } else {
-                    throw new Error(data.message || 'Submission failed');
+                    alert('There was an error submitting your application. Please try again.');
                 }
-            } catch (error) {
+            }).catch(error => {
                 console.error('Error:', error);
-                // 如果 Web3Forms 失败，使用 mailto 作为备用
-                const name = document.getElementById('memberName').value;
-                const email = document.getElementById('memberEmail').value;
-                const phone = document.getElementById('memberPhone').value || '';
-                const message = document.getElementById('memberMessage').value || '';
-                const source = window.location.pathname.includes('cn') ? 'LiveGigs CN' : 'LiveGigs Asia';
-                const timestamp = new Date().toISOString();
-
-                const emailSubject = 'New Membership Application - ' + source;
-                const emailBody = `Name: ${name}
-Email: ${email}
-Phone: ${phone || 'Not provided'}
-Message: ${message || 'No message'}
-Source: ${source}
-Timestamp: ${timestamp}`;
-
-                window.location.href = `mailto:xrebooking@hotmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
-
-                showSuccessMessage('Thank you! Your application has been sent. We will contact you soon.');
-                closeModal();
-                form.reset();
-            } finally {
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-            }
+                alert('There was an error submitting your application. Please try again.');
+            });
         }
-
-
-            const formData = {
-                name: document.getElementById('memberName').value,
-                email: document.getElementById('memberEmail').value,
-                phone: document.getElementById('memberPhone').value || '',
-                message: document.getElementById('memberMessage').value || '',
-                source: window.location.pathname.includes('cn') ? 'LiveGigs CN' : (window.location.pathname.includes('events') ? 'LiveGigs Asia Events' : 'LiveGigs Asia Accessibility'),
-                timestamp: new Date().toISOString()
-            };
-
-            // 保存到 localStorage 备份
-            let submissions = JSON.parse(localStorage.getItem('membershipSubmissions') || '[]');
-            submissions.push(formData);
-            localStorage.setItem('membershipSubmissions', JSON.stringify(submissions));
-
-            // 使用 Formspree 发送邮件
-            try {
-                const response = await fetch('https://formspree.io/f/mnjbjklp', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
-                });
-
-                if (response.ok) {
-                    // 显示成功提示
-                    showSuccessMessage('Thank you! Your application has been sent successfully. We will contact you soon.');
-                    closeModal();
-                    document.getElementById('membershipForm').reset();
-                } else {
-                    throw new Error('Form submission failed');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                // 如果 Formspree 失败，使用 mailto 作为备用
-                const emailSubject = 'New Membership Application - ' + formData.source;
-                const emailBody = `Name: ${formData.name}
-Email: ${formData.email}
-Phone: ${formData.phone || 'Not provided'}
-Message: ${formData.message || 'No message'}
-Source: ${formData.source}
-Timestamp: ${formData.timestamp}`;
-                window.location.href = `mailto:xrebooking@hotmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
-
-                showSuccessMessage('Thank you! Your application has been sent. We will contact you soon.');
-                closeModal();
-                document.getElementById('membershipForm').reset();
-            }
-        }
-
-        // 显示成功提示的函数
-        function showSuccessMessage(message) {
-            // 移除已存在的提示
-            const existingToast = document.getElementById('successToast');
-            if (existingToast) existingToast.remove();
-
-            // 创建提示元素
-            const toast = document.createElement('div');
-            toast.id = 'successToast';
-            toast.style.cssText = `
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background: linear-gradient(135deg, #0a0000 0%, #1a0000 100%);
-                border: 1px solid #8b0000;
-                color: #fff;
-                padding: 30px 40px;
-                font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-                font-size: 16px;
-                letter-spacing: 1px;
-                text-align: center;
-                z-index: 20000;
-                box-shadow: 0 0 50px rgba(139, 0, 0, 0.5);
-                animation: toastFadeIn 0.3s ease-out;
-                max-width: 400px;
-                line-height: 1.5;
-            `;
-            toast.innerHTML = `
-                <div style="font-size: 48px; margin-bottom: 15px;">✓</div>
-                <div>${message}</div>
-            `;
-
-            // 添加动画样式
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes toastFadeIn {
-                    from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
-                    to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-                }
-                @keyframes toastFadeOut {
-                    from { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-                    to { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
-                }
-            `;
-            document.head.appendChild(style);
-
-            document.body.appendChild(toast);
-
-            // 3秒后自动消失
-            setTimeout(() => {
-                toast.style.animation = 'toastFadeOut 0.3s ease-in forwards';
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
-        }
-
-        document.getElementById('logo').addEventListener('error', function() {
-            this.style.display = 'none';
-        });
-
-        document.addEventListener('DOMContentLoaded', function() {
-            checkLoadMoreButton();
-            initCountdowns();
-            
-            // 初始化滚播图排序
-            AutoScrollAdmin.sortByDate();
-        });
-
-        // 全局API
-        window.LiveGigsAdmin = {
-            update: updateContent,
-            updateMultiple: updateMultipleContent,
-            getAll: getAllEditableContent,
-            updatePosterLink: updatePosterLink,
-            updateBanner: function(index, image, title, buttonText, buttonLink) {
-                updateContent(`banner-${index}-image`, image, 'src');
-                updateContent(`banner-${index}-title`, title, 'text');
-                updateContent(`banner-${index}-btn`, buttonText, 'text');
-                const btn = document.querySelector(`[data-editable="banner-${index}-btn"]`);
-                if (btn) {
-                    btn.setAttribute('data-href', buttonLink);
-                    btn.onclick = function() { window.open(buttonLink, '_blank'); };
-                }
-            },
-            updatePoster: function(index, image, title, linkText, link) {
-                updateContent(`poster-${index}-image`, image, 'src');
-                updateContent(`poster-${index}-title`, title, 'text');
-                updateContent(`poster-${index}-link-text`, linkText, 'text');
-                updatePosterLink(index, link);
-            },
-            social: SocialManager,
-            footer: FooterAdmin,
-            events: EventsAdmin,
-            autoScroll: AutoScrollAdmin,
-            posterCarousel: PosterCarouselAdmin,
-            toggleAdmin: toggleAdmin
-        };
     </script>
 <script src="./js/livegigs-data.js"></script>
 <script>
-  // 自动加载数据并渲染
   if (typeof LiveGigsData !== 'undefined') {
     LiveGigsData.loadAndRender('events');
   }
