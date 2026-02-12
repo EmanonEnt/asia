@@ -20,12 +20,12 @@
     },
     {
       "id": 3,
-      "title": "",
-      "buttonText": "",
+      "title": "TEST",
+      "buttonText": "TEST",
       "link": "",
-      "image": "",
+      "image": "https://i.kickstarter.com/assets/047/802/414/1b408629a93f67710c65cadd6eed4bb6_original.jpg?anim=false&fit=cover&gravity=auto&height=873&origin=ugc&q=92&v=1736619967&width=1552&sig=8%2BfdOJPWENZRNrAG2brugI0%2FEs0uBrygXdeeYwtvbYI%3D",
       "order": 3,
-      "enabled": false
+      "enabled": true
     },
     {
       "id": 4,
