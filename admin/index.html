@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LiveGigs Asia - Admin</title>
+    <link rel="icon" type="image/png" href="../image/webtop.png">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0a;
+            color: #c0c0c0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            background: linear-gradient(135deg, #1a0000 0%, #0a0000 100%);
+            border-bottom: 2px solid #8b0000;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 {
+            font-size: 24px;
+            color: #8b0000;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        .header .back-link {
+            color: #c0c0c0;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+        .header .back-link:hover {
+            color: #8b0000;
+        }
+        .container {
+            flex: 1;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        .section {
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        .section h2 {
+            color: #8b0000;
+            font-size: 20px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            color: #888;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            background: #0a0a0a;
+            border: 1px solid #333;
+            color: #c0c0c0;
+            font-size: 14px;
+            border-radius: 4px;
+            transition: border-color 0.3s;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #8b0000;
+        }
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        .social-item {
+            background: #0a0a0a;
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .social-item h4 {
+            color: #8b0000;
+            font-size: 14px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+        .btn {
+            background: #8b0000;
+            color: #fff;
+            border: none;
+            padding: 12px 30px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        .btn:hover {
+            background: #a00000;
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background: #333;
+            margin-left: 10px;
+        }
+        .btn-secondary:hover {
+            background: #444;
+        }
+        .status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-left: 15px;
+        }
+        .status.success {
+            background: rgba(0, 255, 0, 0.1);
+            color: #0f0;
+            border: 1px solid #0f0;
+        }
+        .status.error {
+            background: rgba(255, 0, 0, 0.1);
+            color: #f00;
+            border: 1px solid #f00;
+        }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        .tab {
+            padding: 12px 25px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: #888;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+        }
+        .tab.active {
+            background: #8b0000;
+            color: #fff;
+            border-color: #8b0000;
+        }
+        .tab:hover:not(.active) {
+            border-color: #8b0000;
+            color: #c0c0c0;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .help-text {
+            color: #666;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        .footer {
+            background: #050505;
+            border-top: 1px solid #333;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🔴 LiveGigs Asia Admin</h1>
+        <a href="../index.html" class="back-link">← Back to Website</a>
+    </div>
+
+    <div class="container">
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('global')">Global Footer</div>
+            <div class="tab" onclick="switchTab('cn')">CN Footer</div>
+            <div class="tab" onclick="switchTab('help')">Help</div>
+        </div>
+
+        <!-- Global Footer -->
+        <div id="global" class="tab-content active">
+            <div class="section">
+                <h2>Footer Settings (Global)</h2>
+                <div class="form-group">
+                    <label>Copyright Text</label>
+                    <input type="text" id="global-copyright" value="Copyright © 2001-2026 EMANON ENT. - All Rights Reserved.">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="global-email" value="LiveGigsCn@Hotmail.Com">
+                </div>
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input type="tel" id="global-phone" value="+852-456-7890">
+                </div>
+                <div class="form-group">
+                    <label>Producer Logo Path</label>
+                    <input type="text" id="global-producer" value="./image/emanonent-logo.png">
+                    <div class="help-text">Relative path from HTML file to logo image</div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Social Media Links (Global)</h2>
+                <div id="global-social-container">
+                    <div class="social-item">
+                        <h4>Facebook</h4>
+                        <div class="form-group">
+                            <label>Link URL</label>
+                            <input type="url" class="social-link" data-platform="facebook" value="https://facebook.com/livegigsasia">
+                        </div>
+                    </div>
+                    <div class="social-item">
+                        <h4>Instagram</h4>
+                        <div class="form-group">
+                            <label>Link URL</label>
+                            <input type="url" class="social-link" data-platform="instagram" value="https://instagram.com/livegigsasia">
+                        </div>
+                    </div>
+                    <div class="social-item">
+                        <h4>YouTube</h4>
+                        <div class="form-group">
+                            <label>Link URL</label>
+                            <input type="url" class="social-link" data-platform="youtube" value="https://youtube.com/livegigsasia">
+                        </div>
+                    </div>
+                    <div class="social-item">
+                        <h4>X (Twitter)</h4>
+                        <div class="form-group">
+                            <label>Link URL</label>
+                            <input type="url" class="social-link" data-platform="x" value="https://x.com/livegigsasia">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn" onclick="saveData('global')">Save Changes</button>
+            <span id="global-status"></span>
+        </div>
+
+        <!-- CN Footer -->
+        <div id="cn" class="tab-content">
+            <div class="section">
+                <h2>Footer Settings (CN)</h2>
+                <div class="form-group">
+                    <label>Copyright Text</label>
+                    <input type="text" id="cn-copyright" value="Copyright © 2001-2026 EMANON ENT. - All Rights Reserved.">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="cn-email" value="LiveGigsCn@Hotmail.Com">
+                </div>
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input type="tel" id="cn-phone" value="+852-456-7890">
+                </div>
+                <div class="form-group">
+                    <label>Producer Logo Path</label>
+                    <input type="text" id="cn-producer" value="./image/emanonent-logo.png">
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Social Media Links (CN)</h2>
+                <div id="cn-social-container">
+                    <div class="social-item">
+                        <h4>微博 (Weibo)</h4>
+                        <div class="form-group">
+                            <label>Link URL</label>
+                            <input type="url" class="social-link" data-platform="weibo" value="https://weibo.com">
+                        </div>
+                    </div>
+                    <div class="social-item">
+                        <h4>小红书 (Xiaohongshu)</h4>
+                        <div class="form-group">
+                            <label>Link URL</label>
+                            <input type="url" class="social-link" data-platform="xiaohongshu" value="https://xiaohongshu.com">
+                        </div>
+                    </div>
+                    <div class="social-item">
+                        <h4>微信公众号 (WeChat)</h4>
+                        <div class="form-group">
+                            <label>Link URL</label>
+                            <input type="url" class="social-link" data-platform="wechat" value="#">
+                        </div>
+                    </div>
+                    <div class="social-item">
+                        <h4>小程序 (Mini Program)</h4>
+                        <div class="form-group">
+                            <label>Link URL</label>
+                            <input type="url" class="social-link" data-platform="miniprogram" value="https://wxaurl.cn/HMcAK6R7fou">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn" onclick="saveData('cn')">Save Changes</button>
+            <span id="cn-status"></span>
+        </div>
+
+        <!-- Help -->
+        <div id="help" class="tab-content">
+            <div class="section">
+                <h2>How to Use</h2>
+                <p style="line-height: 1.8; color: #888;">
+                    1. <strong>Edit Content:</strong> Modify the text fields above<br><br>
+                    2. <strong>Save Changes:</strong> Click "Save Changes" button<br><br>
+                    3. <strong>Download JSON:</strong> The browser will download the updated JSON file<br><br>
+                    4. <strong>Upload to GitHub:</strong> Go to your GitHub repository → asia/content/ → Upload the downloaded JSON file<br><br>
+                    5. <strong>Wait for Update:</strong> GitHub Pages will update within 1-2 minutes<br><br>
+                    <strong>Note:</strong> Make sure to upload to the correct folder (asia/content/)
+                </p>
+            </div>
+            <div class="section">
+                <h2>File Structure</h2>
+                <pre style="background: #0a0a0a; padding: 20px; border-radius: 4px; overflow-x: auto; color: #666;">
+asia/
+├── index.html              ← Homepage (uses footer-global.json)
+├── cn.html                 ← CN site (uses footer-cn.json)
+├── events.html             ← Events page (uses footer-global.json)
+├── partners.html           ← Partners page (uses footer-global.json)
+├── privacypolicy.html      ← Privacy page (uses footer-global.json)
+├── accessibilitystatement.html  ← Accessibility page (uses footer-global.json)
+├── js/
+│   └── livegigs-data.js    ← Data loader (already included in HTML)
+├── content/
+│   ├── footer-global.json  ← Global footer config
+│   └── footer-cn.json      ← CN footer config
+└── admin/
+    └── index.html          ← This admin page
+                </pre>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        LiveGigs Asia Admin Panel | Simple JSON Generator
+    </div>
+
+    <script>
+        function switchTab(tabName) {
+            // Update tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Update content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(tabName).classList.add('active');
+        }
+
+        function saveData(type) {
+            const data = {
+                copyright: document.getElementById(`${type}-copyright`).value,
+                email: document.getElementById(`${type}-email`).value,
+                phone: document.getElementById(`${type}-phone`).value,
+                producer: document.getElementById(`${type}-producer`).value,
+                social: []
+            };
+
+            // Collect social links
+            const container = document.getElementById(`${type}-social-container`);
+            const socialItems = container.querySelectorAll('.social-item');
+
+            socialItems.forEach(item => {
+                const input = item.querySelector('.social-link');
+                const platform = input.getAttribute('data-platform');
+                const name = item.querySelector('h4').textContent;
+
+                data.social.push({
+                    platform: platform,
+                    name: name,
+                    link: input.value
+                });
+            });
+
+            // Convert to JSON
+            const jsonStr = JSON.stringify(data, null, 2);
+
+            // Create download
+            const blob = new Blob([jsonStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `footer-${type}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            // Show status
+            const statusEl = document.getElementById(`${type}-status`);
+            statusEl.innerHTML = '<span class="status success">✓ JSON Downloaded! Upload to GitHub to apply changes.</span>';
+
+            setTimeout(() => {
+                statusEl.innerHTML = '';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
