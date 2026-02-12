@@ -1,34 +1,30 @@
 {
   "title": "LIVEGIGS ASIA",
-  "contact": "Contact us for bookings and inquiries",
-  "address": "info@livegigsasia.com",
-  "copyright": "Copyright © 2001-2026 EMANON ENTERTAINMENT",
-  "producer": "./image/emanonent-logo.png",
+  "email": "info@livegigsasia.com",
+  "phone": "+86 123 4567 8900",
+  "address": "Beijing, China",
+  "copyright": "Copyright © 2001-2026 EMANON ENT. All Rights Reserved.",
+  "producerLogo": "./image/emanonent-logo.png",
   "social": [
     {
+      "platform": "facebook",
       "name": "Facebook",
-      "url": "https://facebook.com/livegigsasia",
-      "icon": "facebook"
+      "link": "https://www.facebook.com/livegigsasia"
     },
     {
+      "platform": "instagram",
       "name": "Instagram",
-      "url": "https://instagram.com/livegigsasia",
-      "icon": "instagram"
+      "link": "https://www.instagram.com/livegigsasia"
     },
     {
+      "platform": "youtube",
       "name": "YouTube",
-      "url": "https://youtube.com/livegigsasia",
-      "icon": "youtube"
+      "link": "https://www.youtube.com/livegigsasia"
     },
     {
+      "platform": "x",
       "name": "X",
-      "url": "https://x.com/livegigsasia",
-      "icon": "x"
-    },
-    {
-      "name": "",
-      "url": "",
-      "icon": "facebook"
+      "link": "https://x.com/livegigsasia"
     }
   ]
 }

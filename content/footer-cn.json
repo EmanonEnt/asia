@@ -1,34 +1,30 @@
 {
-  "title": "LIVEGIGS ASIA",
-  "contact": "联系我们进行预订和咨询",
-  "address": "info@livegigsasia.com",
-  "copyright": "Copyright © 2001-2026 EMANON ENTERTAINMENT",
-  "producer": "./image/emanonent-logo.png",
+  "title": "现场秀 亚洲",
+  "email": "info@livegigs.cn",
+  "phone": "+86 123 4567 8900",
+  "address": "中国 北京",
+  "copyright": "版权所有 © 2001-2026 EMANON ENT",
+  "producerLogo": "./image/emanonent-logo.png",
   "social": [
     {
+      "platform": "weibo",
       "name": "微博",
-      "url": "https://weibo.com/livegigsasia",
-      "icon": "weibo"
+      "link": "https://weibo.com/livegigs"
     },
     {
+      "platform": "xiaohongshu",
       "name": "小红书",
-      "url": "https://xiaohongshu.com/livegigsasia",
-      "icon": "xiaohongshu"
+      "link": "https://www.xiaohongshu.com/livegigs"
     },
     {
+      "platform": "wechat",
       "name": "微信",
-      "url": "#",
-      "icon": "wechat"
+      "link": "#"
     },
     {
+      "platform": "miniprogram",
       "name": "小程序",
-      "url": "#",
-      "icon": "miniprogram"
-    },
-    {
-      "name": "",
-      "url": "",
-      "icon": "facebook"
+      "link": "#"
     }
   ]
 }

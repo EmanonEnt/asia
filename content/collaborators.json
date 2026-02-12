@@ -1,22 +1,40 @@
-[
-  {
-    "image": "./image/p-logo-1.png",
-    "name": "TMS LIVE",
-    "link": ""
-  },
-  {
-    "image": "./image/p-logo-2.png",
-    "name": "Live Nation",
-    "link": "https://livenation.com"
-  },
-  {
-    "image": "./image/p-logo-3.png",
-    "name": "TICKETFLAP",
-    "link": "https://universalmusic.com"
-  },
-  {
-    "image": "./image/collab2.png",
-    "name": "GIBSON",
-    "link": "https://sonymusic.com"
-  }
-]
+{
+  "logos": [
+    {
+      "id": 1,
+      "name": "EMANON ENT",
+      "image": "./image/emanon-logo.png",
+      "link": "https://www.emanonent.com"
+    },
+    {
+      "id": 2,
+      "name": "XRE Booking",
+      "image": "./image/xre-logo.png",
+      "link": "mailto:xrebooking@hotmail.com"
+    },
+    {
+      "id": 3,
+      "name": "Kids Union",
+      "image": "./image/kidsunion-logo.png",
+      "link": "https://www.kids-union.com"
+    },
+    {
+      "id": 4,
+      "name": "Partner 4",
+      "image": "./image/partner4.png",
+      "link": ""
+    },
+    {
+      "id": 5,
+      "name": "Partner 5",
+      "image": "./image/partner5.png",
+      "link": ""
+    },
+    {
+      "id": 6,
+      "name": "Partner 6",
+      "image": "./image/partner6.png",
+      "link": ""
+    }
+  ]
+}
