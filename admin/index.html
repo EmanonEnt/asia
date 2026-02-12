@@ -123,6 +123,7 @@
         .btn-secondary:hover { background: #444; }
         .btn-success { background: #006400; }
         .btn-success:hover { background: #008000; }
+        .btn-danger { background: #8b0000; }
 
         .item-card {
             background: #1a1a1a; border: 2px solid #333; border-radius: 6px;
@@ -148,8 +149,9 @@
         .alert-error { background: rgba(139,0,0,0.2); border: 2px solid #8b0000; color: #ff6666; }
 
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
         @media (max-width: 768px) {
-            .grid-2 { grid-template-columns: 1fr; }
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
             .item-card { flex-direction: column; align-items: flex-start; gap: 15px; }
             .header { flex-direction: column; gap: 10px; }
             .header h1 { font-size: 20px; }
@@ -178,7 +180,29 @@
             border: none; width: 24px; height: 24px; border-radius: 50%; cursor: pointer;
             font-size: 16px; line-height: 1;
         }
+        .poster-carousel-list {
+            background: #1a1a1a;
+            border: 2px solid #333;
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        .carousel-image-item {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: #0a0a0a;
+            border-radius: 4px;
+        }
         .hidden { display: none !important; }
+        .preview-img {
+            max-width: 100px;
+            max-height: 100px;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -219,6 +243,10 @@
                     <div class="stat-label">Banners</div>
                 </div>
                 <div class="stat-item">
+                    <div class="stat-number" id="statPosters">0</div>
+                    <div class="stat-label">海报区域</div>
+                </div>
+                <div class="stat-item">
                     <div class="stat-number" id="statEvents">0</div>
                     <div class="stat-label">自主活动</div>
                 </div>
@@ -238,16 +266,17 @@
 
             <div class="nav-tabs">
                 <button class="nav-tab active" onclick="showSection('banners')">1. Banner管理</button>
-                <button class="nav-tab" onclick="showSection('events')">2. 自主活动</button>
-                <button class="nav-tab" onclick="showSection('carousel')">3. 滚播活动</button>
-                <button class="nav-tab" onclick="showSection('partners')">4. 合作伙伴</button>
-                <button class="nav-tab" onclick="showSection('footer')">5. 底部区域</button>
+                <button class="nav-tab" onclick="showSection('posters')">2. 海报区域</button>
+                <button class="nav-tab" onclick="showSection('events')">3. 自主活动</button>
+                <button class="nav-tab" onclick="showSection('carousel')">4. 滚播活动</button>
+                <button class="nav-tab" onclick="showSection('partners')">5. 合作伙伴</button>
+                <button class="nav-tab" onclick="showSection('footer')">6. 底部区域</button>
             </div>
 
-            <!-- Banner管理 -->
+            <!-- 1. Banner管理 -->
             <div id="banners" class="section active">
                 <h2 class="section-title">Banner 管理 (index + cn 同步)</h2>
-                <p class="help-text" style="margin-bottom: 20px;">尺寸: 1920×1080px (16:9) | 最多5个</p>
+                <p class="help-text" style="margin-bottom: 20px;">尺寸: 1920×1080px (16:9) | 最多5个 | 可服务器地址或网络地址</p>
 
                 <div class="card">
                     <h3 style="color: #8b0000; margin-bottom: 20px;">添加/编辑 Banner</h3>
@@ -265,7 +294,8 @@
                         </div>
                         <div class="form-group">
                             <label>海报图片 *</label>
-                            <input type="text" id="bannerImage" placeholder="./image/banner.jpg 或 https://...">
+                            <input type="text" id="bannerImage" placeholder="./image/banner.jpg 或 https://..." onchange="previewImage('bannerImage', 'bannerPreview')">
+                            <img id="bannerPreview" class="preview-img hidden" alt="预览">
                         </div>
                         <div class="grid-2">
                             <div class="form-group">
@@ -290,7 +320,127 @@
                 </div>
             </div>
 
-            <!-- 自主活动 -->
+            <!-- 2. 海报区域管理 -->
+            <div id="posters" class="section">
+                <h2 class="section-title">海报 FLYERS 区域管理</h2>
+                <p class="help-text" style="margin-bottom: 20px;">尺寸: 400×600px (2:3) | 每页固定3个海报 | events页面海报2支持1-5张滚播</p>
+
+                <div class="card">
+                    <h3 style="color: #8b0000; margin-bottom: 20px;">选择页面</h3>
+                    <div class="form-group">
+                        <select id="posterPage" onchange="loadPosters()">
+                            <option value="index">首页 (index.html)</option>
+                            <option value="cn">国内站 (cn.html)</option>
+                            <option value="events">活动页 (events.html)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 海报1 -->
+                <div class="card">
+                    <h3 style="color: #8b0000; margin-bottom: 20px;">海报 1 (左侧)</h3>
+                    <form id="poster1Form">
+                        <div class="form-group">
+                            <label>标题 (可选)</label>
+                            <input type="text" id="poster1_title" placeholder="海报标题">
+                        </div>
+                        <div class="form-group">
+                            <label>海报图片 *</label>
+                            <input type="text" id="poster1_image" placeholder="./image/poster1.jpg 或 https://..." onchange="previewPosterImage(1)">
+                            <img id="poster1_preview" class="preview-img hidden" alt="预览">
+                        </div>
+                        <div class="grid-2">
+                            <div class="form-group">
+                                <label>链接文字</label>
+                                <input type="text" id="poster1_linkText" placeholder="View Details →">
+                            </div>
+                            <div class="form-group">
+                                <label>链接地址</label>
+                                <input type="text" id="poster1_link" placeholder="./events.html">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- 海报2 -->
+                <div class="card">
+                    <h3 style="color: #8b0000; margin-bottom: 20px;">海报 2 (中间) - 支持滚播</h3>
+                    <form id="poster2Form">
+                        <div class="form-group">
+                            <label>标题 (可选)</label>
+                            <input type="text" id="poster2_title" placeholder="海报标题 (如: Epic Past Gigs)">
+                        </div>
+
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="poster2_carousel" onchange="togglePoster2Carousel()">
+                            <label for="poster2_carousel">启用滚播模式 (最少1张，最多5张，≥2张时自动滚播)</label>
+                        </div>
+
+                        <!-- 单图模式 -->
+                        <div id="poster2_single">
+                            <div class="form-group">
+                                <label>海报图片 *</label>
+                                <input type="text" id="poster2_image_single" placeholder="./image/poster2.jpg" onchange="previewPosterImage(2)">
+                            </div>
+                        </div>
+
+                        <!-- 滚播模式 -->
+                        <div id="poster2_carousel_mode" class="hidden">
+                            <div class="poster-carousel-list">
+                                <h4 style="color: #c0c0c0; margin-bottom: 15px;">滚播图片列表 (1-5张)</h4>
+                                <div id="poster2_carousel_images"></div>
+                                <button type="button" class="btn" onclick="addPoster2CarouselImage()">添加滚播图片</button>
+                            </div>
+                        </div>
+
+                        <img id="poster2_preview" class="preview-img hidden" alt="预览">
+
+                        <div class="grid-2">
+                            <div class="form-group">
+                                <label>链接文字</label>
+                                <input type="text" id="poster2_linkText" placeholder="View Details →">
+                            </div>
+                            <div class="form-group">
+                                <label>链接地址</label>
+                                <input type="text" id="poster2_link" placeholder="./events.html">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- 海报3 -->
+                <div class="card">
+                    <h3 style="color: #8b0000; margin-bottom: 20px;">海报 3 (右侧)</h3>
+                    <form id="poster3Form">
+                        <div class="form-group">
+                            <label>标题 (可选)</label>
+                            <input type="text" id="poster3_title" placeholder="海报标题">
+                        </div>
+                        <div class="form-group">
+                            <label>海报图片 *</label>
+                            <input type="text" id="poster3_image" placeholder="./image/poster3.jpg" onchange="previewPosterImage(3)">
+                            <img id="poster3_preview" class="preview-img hidden" alt="预览">
+                        </div>
+                        <div class="grid-2">
+                            <div class="form-group">
+                                <label>链接文字</label>
+                                <input type="text" id="poster3_linkText" placeholder="View Details →">
+                            </div>
+                            <div class="form-group">
+                                <label>链接地址</label>
+                                <input type="text" id="poster3_link" placeholder="./events.html">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <button class="btn btn-success" onclick="savePosters()">保存所有海报设置</button>
+                    <button class="btn btn-secondary" onclick="resetPostersForm()">重置</button>
+                </div>
+            </div>
+
+            <!-- 3. 自主活动 -->
             <div id="events" class="section">
                 <h2 class="section-title">自主 Events 活动管理</h2>
                 <p class="help-text" style="margin-bottom: 20px;">尺寸: 400×600px (2:3) | 最少1个最多9个 | ≤3个无Load More按钮</p>
@@ -321,7 +471,8 @@
                         </div>
                         <div class="form-group">
                             <label>海报图片 *</label>
-                            <input type="text" id="eventImage" placeholder="./image/event.jpg">
+                            <input type="text" id="eventImage" placeholder="./image/event.jpg" onchange="previewEventImage()">
+                            <img id="eventPreview" class="preview-img hidden" alt="预览">
                         </div>
                         <div class="grid-2">
                             <div class="form-group">
@@ -362,10 +513,10 @@
                 </div>
             </div>
 
-            <!-- 滚播活动 -->
+            <!-- 4. 滚播活动 -->
             <div id="carousel" class="section">
                 <h2 class="section-title">滚播推荐活动管理</h2>
-                <p class="help-text" style="margin-bottom: 20px;">尺寸: 1920×1080px (16:9) | 最少3个最多12个</p>
+                <p class="help-text" style="margin-bottom: 20px;">尺寸: 1920×1080px (16:9) | 最少3个最多12个 | 循环播放</p>
 
                 <div class="card">
                     <h3 style="color: #8b0000; margin-bottom: 20px;">添加/编辑滚播活动</h3>
@@ -387,7 +538,8 @@
                         </div>
                         <div class="form-group">
                             <label>海报图片 *</label>
-                            <input type="text" id="carouselImage" placeholder="./image/carousel.jpg">
+                            <input type="text" id="carouselImage" placeholder="./image/carousel.jpg" onchange="previewCarouselImage()">
+                            <img id="carouselPreview" class="preview-img hidden" alt="预览">
                         </div>
                         <div class="form-group">
                             <label>详情</label>
@@ -397,7 +549,7 @@
                             <label>链接地址 (留空则不能点击)</label>
                             <input type="text" id="carouselLink" placeholder="https://...">
                         </div>
-                        <button type="button" class="btn btn-success" onclick="saveCarousel()">保存</button>
+                        <button type="button" class="btn btn-success" onclick="saveCarousel()">保存滚播活动</button>
                         <button type="button" class="btn btn-secondary" onclick="resetCarouselForm()">重置</button>
                     </form>
                 </div>
@@ -408,19 +560,20 @@
                 </div>
             </div>
 
-            <!-- 合作伙伴 -->
+            <!-- 5. 合作伙伴 -->
             <div id="partners" class="section">
                 <h2 class="section-title">合作伙伴管理</h2>
 
                 <div class="card">
                     <h3 style="color: #8b0000; margin-bottom: 20px;">合作 Banner (最多9个)</h3>
-                    <p class="help-text" style="margin-bottom: 20px;">主海报: 1920×800px</p>
+                    <p class="help-text" style="margin-bottom: 20px;">主海报: 1920×800px | Logo图: 根据类型自动调整</p>
 
                     <form id="partnerBannerForm">
                         <input type="hidden" id="partnerBannerEditIndex" value="">
                         <div class="form-group">
                             <label>主海报图片 *</label>
-                            <input type="text" id="partnerBannerImage" placeholder="./image/p-banner.jpg">
+                            <input type="text" id="partnerBannerImage" placeholder="./image/p-banner.jpg" onchange="previewPartnerBannerImage()">
+                            <img id="partnerBannerPreview" class="preview-img hidden" alt="预览">
                         </div>
                         <div class="form-group">
                             <label>Logo图片</label>
@@ -432,7 +585,7 @@
                         </div>
                         <div class="form-group">
                             <label>详情文字</label>
-                            <textarea id="partnerBannerDesc" rows="3" placeholder="详情..."></textarea>
+                            <textarea id="partnerBannerDesc" rows="3" placeholder="详情描述..."></textarea>
                         </div>
                         <div class="grid-2">
                             <div class="form-group">
@@ -462,7 +615,8 @@
                         <div class="grid-2">
                             <div class="form-group">
                                 <label>Logo图片 *</label>
-                                <input type="text" id="collabLogoImage" placeholder="./image/logo.png">
+                                <input type="text" id="collabLogoImage" placeholder="./image/logo.png" onchange="previewCollabLogoImage()">
+                                <img id="collabLogoPreview" class="preview-img hidden" alt="预览">
                             </div>
                             <div class="form-group">
                                 <label>名称文字</label>
@@ -484,7 +638,7 @@
                 </div>
             </div>
 
-            <!-- 底部区域 -->
+            <!-- 6. 底部区域 -->
             <div id="footer" class="section">
                 <h2 class="section-title">底部区域管理</h2>
 
@@ -492,8 +646,8 @@
                     <h3 style="color: #8b0000; margin-bottom: 20px;">选择站点</h3>
                     <div class="form-group">
                         <select id="footerSite" onchange="loadFooter()">
-                            <option value="global">海外站 (Global)</option>
-                            <option value="cn">国内站 (CN)</option>
+                            <option value="global">海外站 (Global) - index/events/partners/privacy/accessibility</option>
+                            <option value="cn">国内站 (CN) - 独立更新</option>
                         </select>
                     </div>
                 </div>
@@ -502,7 +656,7 @@
                     <h3 style="color: #8b0000; margin-bottom: 20px;">编辑底部内容</h3>
                     <form id="footerForm">
                         <div class="form-group">
-                            <label>标题</label>
+                            <label>标题 (LIVEGIGS ASIA)</label>
                             <input type="text" id="footerTitle" value="LIVEGIGS ASIA">
                         </div>
                         <div class="form-group">
@@ -537,24 +691,66 @@
     </div>
 
     <script>
-
-        // 数据存储
+        // ==================== 全局数据存储 ====================
         let appData = {
             banners: [],
+            posters: {
+                index: [
+                    { title: "", image: "./image/1-b-2.jpg", link_text: "View Details →", link: "./events.html" },
+                    { title: "Epic Past Gigs", image: "./image/1-b-3.jpg", link_text: "View Details →", link: "./events.html", carousel: false },
+                    { title: "", image: "./image/livegigscn1.png", link_text: "View Details →", link: "./events.html" }
+                ],
+                cn: [
+                    { title: "", image: "./image/cn-asiaad.jpg", link_text: "查看详情 →", link: "./events.html" },
+                    { title: "", image: "./image/1-b-2.jpg", link_text: "查看详情 →", link: "./events.html" },
+                    { title: "", image: "./image/1-b-3.jpg", link_text: "查看详情 →", link: "./events.html" }
+                ],
+                events: [
+                    { title: "", image: "./image/1-b-2.jpg", link_text: "View Details →", link: "./events.html" },
+                    { title: "Epic Past Gigs", image: "./image/1-b-3.jpg", link_text: "View Details →", link: "./events.html", carousel: true, carouselImages: ["./image/1-b-3.jpg", "./image/1-b-2.jpg", "./image/livegigscn1.png"] },
+                    { title: "", image: "./image/livegigscn1.png", link_text: "View Details →", link: "./events.html" }
+                ]
+            },
             events: [],
             carousel: [],
             partnerBanners: [],
             collabLogos: [],
-            footerGlobal: { social: [] },
-            footerCN: { social: [] }
+            footerGlobal: {
+                title: "LIVEGIGS ASIA",
+                contact: "Contact us for bookings and inquiries",
+                address: "info@livegigsasia.com",
+                copyright: "Copyright © 2001-2026 EMANON ENTERTAINMENT",
+                producer: "./image/emanonent-logo.png",
+                social: [
+                    { name: "Facebook", url: "https://facebook.com/livegigsasia", icon: "facebook" },
+                    { name: "Instagram", url: "https://instagram.com/livegigsasia", icon: "instagram" },
+                    { name: "YouTube", url: "https://youtube.com/livegigsasia", icon: "youtube" },
+                    { name: "X", url: "https://x.com/livegigsasia", icon: "x" }
+                ]
+            },
+            footerCN: {
+                title: "LIVEGIGS ASIA",
+                contact: "联系我们进行预订和咨询",
+                address: "info@livegigsasia.com",
+                copyright: "Copyright © 2001-2026 EMANON ENTERTAINMENT",
+                producer: "./image/emanonent-logo.png",
+                social: [
+                    { name: "微博", url: "https://weibo.com/livegigsasia", icon: "weibo" },
+                    { name: "小红书", url: "https://xiaohongshu.com/livegigsasia", icon: "xiaohongshu" },
+                    { name: "微信", url: "#", icon: "wechat" },
+                    { name: "小程序", url: "#", icon: "miniprogram" }
+                ]
+            }
         };
+
         let githubToken = '';
         let lastActivity = Date.now();
         const socialIcons = ['facebook','instagram','youtube','x','weibo','xiaohongshu','wechat','miniprogram'];
 
-        // 初始化
+        // ==================== 初始化 ====================
         document.addEventListener('DOMContentLoaded', function() {
             checkLogin();
+            // 30分钟无操作检测
             setInterval(() => {
                 if (Date.now() - lastActivity > 30 * 60 * 1000) {
                     alert('30分钟无操作，自动退出');
@@ -566,6 +762,7 @@
         document.addEventListener('click', () => lastActivity = Date.now());
         document.addEventListener('keypress', () => lastActivity = Date.now());
 
+        // ==================== 登录/退出 ====================
         function checkLogin() {
             const session = localStorage.getItem('lg_session');
             const closed = localStorage.getItem('lg_closed');
@@ -578,7 +775,7 @@
                     githubToken = data.token || '';
                     document.getElementById('githubToken').value = githubToken;
                     showMain();
-                    loadData();
+                    loadAllData();
                 } else {
                     localStorage.removeItem('lg_session');
                 }
@@ -596,9 +793,10 @@
                 }));
                 localStorage.removeItem('lg_closed');
                 showMain();
-                loadData();
+                loadAllData();
+                showAlert('登录成功！', 'success');
             } else {
-                alert('用户名或密码错误');
+                showAlert('用户名或密码错误', 'error');
             }
         }
 
@@ -628,17 +826,23 @@
             document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             event.target.classList.add('active');
+
             if (id === 'banners') renderBanners();
+            if (id === 'posters') { loadPosters(); }
             if (id === 'events') renderEvents();
             if (id === 'carousel') renderCarousel();
             if (id === 'partners') { renderPartnerBanners(); renderCollabLogos(); }
             if (id === 'footer') loadFooter();
         }
 
-        async function loadData() {
+        // ==================== 数据加载 ====================
+        async function loadAllData() {
             const base = 'https://emanonent.github.io/asia/content';
             const files = {
                 banners: 'banners.json',
+                postersIndex: 'posters-index.json',
+                postersCN: 'posters-cn.json',
+                postersEvents: 'posters-events.json',
                 events: 'events-managed.json',
                 carousel: 'carousel.json',
                 partnerBanners: 'partners-banners.json',
@@ -650,7 +854,15 @@
             for (let [key, file] of Object.entries(files)) {
                 try {
                     const res = await fetch(`${base}/${file}?t=${Date.now()}`);
-                    if (res.ok) appData[key] = await res.json();
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (key.startsWith('posters')) {
+                            const page = key.replace('posters', '').toLowerCase();
+                            appData.posters[page] = data;
+                        } else {
+                            appData[key] = data;
+                        }
+                    }
                 } catch(e) {}
             }
 
@@ -665,23 +877,35 @@
             if (!appData.footerGlobal.social) appData.footerGlobal.social = [];
             if (!appData.footerCN.social) appData.footerCN.social = [];
 
+            // 确保poster数据完整
+            ['index', 'cn', 'events'].forEach(page => {
+                if (!appData.posters[page]) {
+                    appData.posters[page] = [{}, {}, {}];
+                }
+                while (appData.posters[page].length < 3) {
+                    appData.posters[page].push({});
+                }
+            });
+
             updateStats();
             renderBanners();
+            showAlert('数据加载完成', 'success');
         }
 
         function updateStats() {
             document.getElementById('statBanners').textContent = appData.banners.length;
+            document.getElementById('statPosters').textContent = '3页面×3';
             document.getElementById('statEvents').textContent = appData.events.length;
             document.getElementById('statCarousel').textContent = appData.carousel.length;
             document.getElementById('statPartners').textContent = appData.partnerBanners.length;
             document.getElementById('statCollabs').textContent = appData.collabLogos.length;
         }
 
-        // Banner管理
+        // ==================== Banner管理 ====================
         function renderBanners() {
             const list = document.getElementById('bannerList');
             if (!appData.banners.length) {
-                list.innerHTML = '<div class="empty-state"><h3>暂无 Banner</h3></div>';
+                list.innerHTML = '<div class="empty-state"><h3>暂无 Banner</h3><p>点击"添加/编辑 Banner"创建</p></div>';
                 return;
             }
             appData.banners.sort((a,b) => (a.order||0)-(b.order||0));
@@ -690,6 +914,7 @@
                     <div class="item-info">
                         <h4>${b.title||'未命名'}</h4>
                         <p>排序: ${b.order||'-'} | 按钮: ${b.button_text||'-'} | 链接: ${b.link||'-'}</p>
+                        ${b.image ? `<img src="${b.image}" style="max-width:100px;max-height:60px;margin-top:5px;" onerror="this.style.display='none'">` : ''}
                     </div>
                     <div class="item-actions">
                         <button class="btn-small btn-edit" onclick="editBanner(${i})">编辑</button>
@@ -697,6 +922,16 @@
                     </div>
                 </div>
             `).join('');
+        }
+
+        function previewImage(inputId, imgId) {
+            const url = document.getElementById(inputId).value;
+            const img = document.getElementById(imgId);
+            if (url) {
+                img.src = url;
+                img.classList.remove('hidden');
+                img.onerror = () => { img.classList.add('hidden'); };
+            }
         }
 
         function saveBanner() {
@@ -728,6 +963,7 @@
         function resetBannerForm() {
             document.getElementById('bannerForm').reset();
             document.getElementById('bannerEditIndex').value = '';
+            document.getElementById('bannerPreview').classList.add('hidden');
         }
 
         function editBanner(i) {
@@ -738,6 +974,7 @@
             document.getElementById('bannerButton').value = b.button_text||'';
             document.getElementById('bannerLink').value = b.link||'';
             document.getElementById('bannerOrder').value = b.order||1;
+            previewImage('bannerImage', 'bannerPreview');
         }
 
         function deleteBanner(i) {
@@ -748,11 +985,143 @@
             showAlert('删除成功！请同步到GitHub', 'success');
         }
 
-        // 活动管理
+        // ==================== 海报区域管理 ====================
+        function loadPosters() {
+            const page = document.getElementById('posterPage').value;
+            const posters = appData.posters[page];
+
+            // 海报1
+            document.getElementById('poster1_title').value = posters[0].title || '';
+            document.getElementById('poster1_image').value = posters[0].image || '';
+            document.getElementById('poster1_linkText').value = posters[0].link_text || '';
+            document.getElementById('poster1_link').value = posters[0].link || '';
+            previewPosterImage(1);
+
+            // 海报2
+            document.getElementById('poster2_title').value = posters[1].title || '';
+            document.getElementById('poster2_linkText').value = posters[1].link_text || '';
+            document.getElementById('poster2_link').value = posters[1].link || '';
+
+            const isCarousel = posters[1].carousel || false;
+            document.getElementById('poster2_carousel').checked = isCarousel;
+            togglePoster2Carousel();
+
+            if (isCarousel && posters[1].carouselImages) {
+                renderPoster2CarouselImages(posters[1].carouselImages);
+            } else {
+                document.getElementById('poster2_carousel_images').innerHTML = '';
+            }
+
+            if (!isCarousel) {
+                document.getElementById('poster2_image_single').value = posters[1].image || '';
+            }
+            previewPosterImage(2);
+
+            // 海报3
+            document.getElementById('poster3_title').value = posters[2].title || '';
+            document.getElementById('poster3_image').value = posters[2].image || '';
+            document.getElementById('poster3_linkText').value = posters[2].link_text || '';
+            document.getElementById('poster3_link').value = posters[2].link || '';
+            previewPosterImage(3);
+        }
+
+        function togglePoster2Carousel() {
+            const isCarousel = document.getElementById('poster2_carousel').checked;
+            document.getElementById('poster2_single').classList.toggle('hidden', isCarousel);
+            document.getElementById('poster2_carousel_mode').classList.toggle('hidden', !isCarousel);
+        }
+
+        function renderPoster2CarouselImages(images) {
+            const container = document.getElementById('poster2_carousel_images');
+            container.innerHTML = images.map((img, i) => `
+                <div class="carousel-image-item">
+                    <input type="text" value="${img}" placeholder="图片地址" style="flex:1;" class="carousel-img-input">
+                    <button type="button" class="btn-small btn-delete" onclick="removePoster2CarouselImage(${i})">删除</button>
+                </div>
+            `).join('');
+        }
+
+        function addPoster2CarouselImage() {
+            const container = document.getElementById('poster2_carousel_images');
+            const count = container.querySelectorAll('.carousel-image-item').length;
+            if (count >= 5) {
+                showAlert('最多5张滚播图片', 'error');
+                return;
+            }
+            const div = document.createElement('div');
+            div.className = 'carousel-image-item';
+            div.innerHTML = `
+                <input type="text" placeholder="图片地址" style="flex:1;" class="carousel-img-input">
+                <button type="button" class="btn-small btn-delete" onclick="this.parentElement.remove()">删除</button>
+            `;
+            container.appendChild(div);
+        }
+
+        function removePoster2CarouselImage(index) {
+            const items = document.querySelectorAll('#poster2_carousel_images .carousel-image-item');
+            if (items[index]) items[index].remove();
+        }
+
+        function previewPosterImage(num) {
+            const url = document.getElementById(`poster${num}_image`).value;
+            const img = document.getElementById(`poster${num}_preview`);
+            if (url) {
+                img.src = url;
+                img.classList.remove('hidden');
+                img.onerror = () => { img.classList.add('hidden'); };
+            }
+        }
+
+        function savePosters() {
+            const page = document.getElementById('posterPage').value;
+
+            // 海报1
+            appData.posters[page][0] = {
+                title: document.getElementById('poster1_title').value,
+                image: document.getElementById('poster1_image').value,
+                link_text: document.getElementById('poster1_linkText').value,
+                link: document.getElementById('poster1_link').value
+            };
+
+            // 海报2
+            const isCarousel = document.getElementById('poster2_carousel').checked;
+            appData.posters[page][1] = {
+                title: document.getElementById('poster2_title').value,
+                link_text: document.getElementById('poster2_linkText').value,
+                link: document.getElementById('poster2_link').value,
+                carousel: isCarousel
+            };
+
+            if (isCarousel) {
+                const inputs = document.querySelectorAll('#poster2_carousel_images .carousel-img-input');
+                appData.posters[page][1].carouselImages = Array.from(inputs).map(i => i.value).filter(v => v);
+                if (appData.posters[page][1].carouselImages.length > 0) {
+                    appData.posters[page][1].image = appData.posters[page][1].carouselImages[0];
+                }
+            } else {
+                appData.posters[page][1].image = document.getElementById('poster2_image_single').value;
+            }
+
+            // 海报3
+            appData.posters[page][2] = {
+                title: document.getElementById('poster3_title').value,
+                image: document.getElementById('poster3_image').value,
+                link_text: document.getElementById('poster3_linkText').value,
+                link: document.getElementById('poster3_link').value
+            };
+
+            showAlert('海报保存成功！请同步到GitHub', 'success');
+        }
+
+        function resetPostersForm() {
+            loadPosters();
+        }
+
+        // ==================== 活动管理 ====================
         function renderEvents() {
             const list = document.getElementById('eventList');
             if (!appData.events.length) {
-                list.innerHTML = '<div class="empty-state"><h3>暂无活动</h3></div>';
+                list.innerHTML = '<div class="empty-state"><h3>暂无活动</h3><p>点击"添加/编辑活动"创建</p></div>';
                 return;
             }
             list.innerHTML = appData.events.map((e,i) => `
@@ -760,6 +1129,7 @@
                     <div class="item-info">
                         <h4>${e.title||'未命名'} ${e.status?`<span class="status-badge ${e.status==='soldout'?'status-inactive':'status-active'}">${e.status}</span>`:''}</h4>
                         <p>${e.date||'-'} | ${e.location||'-'} | ${e.time||'-'}</p>
+                        ${e.image ? `<img src="${e.image}" style="max-width:80px;max-height:50px;margin-top:5px;" onerror="this.style.display='none'">` : ''}
                     </div>
                     <div class="item-actions">
                         <button class="btn-small btn-edit" onclick="editEvent(${i})">编辑</button>
@@ -767,6 +1137,16 @@
                     </div>
                 </div>
             `).join('');
+        }
+
+        function previewEventImage() {
+            const url = document.getElementById('eventImage').value;
+            const img = document.getElementById('eventPreview');
+            if (url) {
+                img.src = url;
+                img.classList.remove('hidden');
+                img.onerror = () => { img.classList.add('hidden'); };
+            }
         }
 
         function saveEvent() {
@@ -803,6 +1183,7 @@
         function resetEventForm() {
             document.getElementById('eventForm').reset();
             document.getElementById('eventEditIndex').value = '';
+            document.getElementById('eventPreview').classList.add('hidden');
         }
 
         function editEvent(i) {
@@ -818,6 +1199,7 @@
             document.getElementById('eventDesc').value = e.description||'';
             document.getElementById('eventButton').value = e.button_text||'';
             document.getElementById('eventLink').value = e.link||'';
+            previewEventImage();
         }
 
         function deleteEvent(i) {
@@ -828,11 +1210,11 @@
             showAlert('删除成功！请同步到GitHub', 'success');
         }
 
-        // 滚播管理
+        // ==================== 滚播管理 ====================
         function renderCarousel() {
             const list = document.getElementById('carouselList');
             if (!appData.carousel.length) {
-                list.innerHTML = '<div class="empty-state"><h3>暂无滚播活动</h3></div>';
+                list.innerHTML = '<div class="empty-state"><h3>暂无滚播活动</h3><p>点击"添加/编辑滚播活动"创建</p></div>';
                 return;
             }
             list.innerHTML = appData.carousel.map((c,i) => `
@@ -840,6 +1222,7 @@
                     <div class="item-info">
                         <h4>${c.title||'未命名'}</h4>
                         <p>${c.time||'-'} | ${c.location||'-'} | 链接: ${c.link||'无'}</p>
+                        ${c.image ? `<img src="${c.image}" style="max-width:80px;max-height:50px;margin-top:5px;" onerror="this.style.display='none'">` : ''}
                     </div>
                     <div class="item-actions">
                         <button class="btn-small btn-edit" onclick="editCarousel(${i})">编辑</button>
@@ -847,6 +1230,16 @@
                     </div>
                 </div>
             `).join('');
+        }
+
+        function previewCarouselImage() {
+            const url = document.getElementById('carouselImage').value;
+            const img = document.getElementById('carouselPreview');
+            if (url) {
+                img.src = url;
+                img.classList.remove('hidden');
+                img.onerror = () => { img.classList.add('hidden'); };
+            }
         }
 
         function saveCarousel() {
@@ -879,6 +1272,7 @@
         function resetCarouselForm() {
             document.getElementById('carouselForm').reset();
             document.getElementById('carouselEditIndex').value = '';
+            document.getElementById('carouselPreview').classList.add('hidden');
         }
 
         function editCarousel(i) {
@@ -890,6 +1284,7 @@
             document.getElementById('carouselImage').value = c.image||'';
             document.getElementById('carouselDesc').value = c.description||'';
             document.getElementById('carouselLink').value = c.link||'';
+            previewCarouselImage();
         }
 
         function deleteCarousel(i) {
@@ -900,11 +1295,11 @@
             showAlert('删除成功！请同步到GitHub', 'success');
         }
 
-        // 合作伙伴管理
+        // ==================== 合作伙伴管理 ====================
         function renderPartnerBanners() {
             const list = document.getElementById('partnerBannerList');
             if (!appData.partnerBanners.length) {
-                list.innerHTML = '<div class="empty-state"><h3>暂无 Banner</h3></div>';
+                list.innerHTML = '<div class="empty-state"><h3>暂无 Banner</h3><p>点击"添加/编辑 Banner"创建</p></div>';
                 return;
             }
             list.innerHTML = appData.partnerBanners.map((b,i) => `
@@ -912,6 +1307,7 @@
                     <div class="item-info">
                         <h4>${b.title||'未命名'}</h4>
                         <p>按钮: ${b.button_text||'-'} | 链接: ${b.link||'-'}</p>
+                        ${b.image ? `<img src="${b.image}" style="max-width:80px;max-height:50px;margin-top:5px;" onerror="this.style.display='none'">` : ''}
                     </div>
                     <div class="item-actions">
                         <button class="btn-small btn-edit" onclick="editPartnerBanner(${i})">编辑</button>
@@ -919,6 +1315,16 @@
                     </div>
                 </div>
             `).join('');
+        }
+
+        function previewPartnerBannerImage() {
+            const url = document.getElementById('partnerBannerImage').value;
+            const img = document.getElementById('partnerBannerPreview');
+            if (url) {
+                img.src = url;
+                img.classList.remove('hidden');
+                img.onerror = () => { img.classList.add('hidden'); };
+            }
         }
 
         function savePartnerBanner() {
@@ -951,6 +1357,7 @@
         function resetPartnerBannerForm() {
             document.getElementById('partnerBannerForm').reset();
             document.getElementById('partnerBannerEditIndex').value = '';
+            document.getElementById('partnerBannerPreview').classList.add('hidden');
         }
 
         function editPartnerBanner(i) {
@@ -962,6 +1369,7 @@
             document.getElementById('partnerBannerDesc').value = b.description||'';
             document.getElementById('partnerBannerButton').value = b.button_text||'';
             document.getElementById('partnerBannerLink').value = b.link||'';
+            previewPartnerBannerImage();
         }
 
         function deletePartnerBanner(i) {
@@ -975,7 +1383,7 @@
         function renderCollabLogos() {
             const list = document.getElementById('collabLogoList');
             if (!appData.collabLogos.length) {
-                list.innerHTML = '<div class="empty-state"><h3>暂无 Logo</h3></div>';
+                list.innerHTML = '<div class="empty-state"><h3>暂无 Logo</h3><p>点击"添加 Logo"创建</p></div>';
                 return;
             }
             list.innerHTML = appData.collabLogos.map((l,i) => `
@@ -983,6 +1391,7 @@
                     <div class="item-info">
                         <h4>${l.name||'未命名'}</h4>
                         <p>链接: ${l.link||'无'}</p>
+                        ${l.image ? `<img src="${l.image}" style="max-width:80px;max-height:50px;margin-top:5px;" onerror="this.style.display='none'">` : ''}
                     </div>
                     <div class="item-actions">
                         <button class="btn-small btn-edit" onclick="editCollabLogo(${i})">编辑</button>
@@ -990,6 +1399,16 @@
                     </div>
                 </div>
             `).join('');
+        }
+
+        function previewCollabLogoImage() {
+            const url = document.getElementById('collabLogoImage').value;
+            const img = document.getElementById('collabLogoPreview');
+            if (url) {
+                img.src = url;
+                img.classList.remove('hidden');
+                img.onerror = () => { img.classList.add('hidden'); };
+            }
         }
 
         function saveCollabLogo() {
@@ -1013,6 +1432,7 @@
 
         function resetCollabLogoForm() {
             document.getElementById('collabLogoForm').reset();
+            document.getElementById('collabLogoPreview').classList.add('hidden');
         }
 
         function editCollabLogo(i) {
@@ -1020,6 +1440,7 @@
             document.getElementById('collabLogoImage').value = l.image||'';
             document.getElementById('collabLogoName').value = l.name||'';
             document.getElementById('collabLogoLink').value = l.link||'';
+            previewCollabLogoImage();
             appData.collabLogos.splice(i,1);
             renderCollabLogos();
         }
@@ -1032,7 +1453,7 @@
             showAlert('删除成功！请同步到GitHub', 'success');
         }
 
-        // 底部管理
+        // ==================== 底部管理 ====================
         function loadFooter() {
             const site = document.getElementById('footerSite').value;
             const data = site === 'cn' ? appData.footerCN : appData.footerGlobal;
@@ -1053,7 +1474,7 @@
             container.innerHTML = socials.map((s,i) => `
                 <div class="array-item" style="margin-bottom: 10px;">
                     <button type="button" class="remove-array-item" onclick="removeSocialIcon(${i})">×</button>
-                    <div class="grid-2">
+                    <div class="grid-3">
                         <div class="form-group">
                             <label>名称</label>
                             <input type="text" id="social_name_${i}" value="${s.name||''}" placeholder="Facebook">
@@ -1062,12 +1483,12 @@
                             <label>链接</label>
                             <input type="text" id="social_url_${i}" value="${s.url||''}" placeholder="https://...">
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label>图标类型</label>
-                        <select id="social_icon_${i}">
-                            ${socialIcons.map(icon => `<option value="${icon}" ${s.icon===icon?'selected':''}>${icon}</option>`).join('')}
-                        </select>
+                        <div class="form-group">
+                            <label>图标</label>
+                            <select id="social_icon_${i}">
+                                ${socialIcons.map(icon => `<option value="${icon}" ${s.icon===icon?'selected':''}>${icon}</option>`).join('')}
+                            </select>
+                        </div>
                     </div>
                 </div>
             `).join('');
@@ -1101,35 +1522,32 @@
                 producer: document.getElementById('footerProducer').value,
                 social: []
             };
-
-            const socialItems = document.querySelectorAll('#socialIconsList .array-item');
-            socialItems.forEach((item, i) => {
+            const items = document.querySelectorAll('#socialIconsList .array-item');
+            items.forEach((item, i) => {
                 const name = document.getElementById(`social_name_${i}`)?.value;
                 const url = document.getElementById(`social_url_${i}`)?.value;
                 const icon = document.getElementById(`social_icon_${i}`)?.value;
                 if (name) footer.social.push({name, url, icon});
             });
-
-            if (site === 'cn') {
-                appData.footerCN = footer;
-            } else {
-                appData.footerGlobal = footer;
-            }
+            if (site === 'cn') appData.footerCN = footer;
+            else appData.footerGlobal = footer;
             showAlert('保存成功！请同步到GitHub', 'success');
         }
 
-        // 同步到GitHub
+        // ==================== GitHub同步 ====================
         async function syncToGitHub() {
             if (!githubToken) {
                 showAlert('未设置GitHub Token', 'error'); return;
             }
-
             const status = document.getElementById('syncStatus');
             status.textContent = '同步中...';
             status.className = 'sync-status pending';
 
             const files = {
                 'content/banners.json': JSON.stringify(appData.banners, null, 2),
+                'content/posters-index.json': JSON.stringify(appData.posters.index, null, 2),
+                'content/posters-cn.json': JSON.stringify(appData.posters.cn, null, 2),
+                'content/posters-events.json': JSON.stringify(appData.posters.events, null, 2),
                 'content/events-managed.json': JSON.stringify(appData.events, null, 2),
                 'content/carousel.json': JSON.stringify(appData.carousel, null, 2),
                 'content/partners-banners.json': JSON.stringify(appData.partnerBanners, null, 2),
@@ -1139,7 +1557,6 @@
             };
 
             let success = 0, errors = [];
-
             for (let [path, content] of Object.entries(files)) {
                 try {
                     let sha = null;
@@ -1149,21 +1566,16 @@
                         });
                         if (get.ok) sha = (await get.json()).sha;
                     } catch(e) {}
-
                     const body = { message: `Update ${path}`, content: btoa(unescape(encodeURIComponent(content))) };
                     if (sha) body.sha = sha;
-
                     const put = await fetch(`https://api.github.com/repos/EmanonEnt/asia/contents/${path}`, {
                         method: 'PUT',
                         headers: { 'Authorization': `token ${githubToken}`, 'Content-Type': 'application/json' },
                         body: JSON.stringify(body)
                     });
-
                     if (put.ok) success++;
                     else errors.push(`${path}: ${(await put.json()).message}`);
-                } catch(e) {
-                    errors.push(`${path}: ${e.message}`);
-                }
+                } catch(e) { errors.push(`${path}: ${e.message}`); }
             }
 
             if (success === Object.keys(files).length) {
