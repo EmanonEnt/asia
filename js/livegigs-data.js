@@ -1,24 +1,28 @@
-// LiveGigs Asia 前端数据加载器 V2
-// 使用GitHub Pages访问数据（无5分钟缓存限制）
-
+// LiveGigs Asia 前端数据加载器 - 调试版本
 const DataLoader = {
     config: {
-        // 使用GitHub Pages URL而不是raw.githubusercontent.com
-        // 格式: https://emanonent.github.io/asia/content/
-        baseUrl: window.location.origin.includes('github.io') 
-            ? window.location.origin + '/asia/content/'
-            : 'https://emanonent.github.io/asia/content/',
-
-        // 备用：如果GitHub Pages不行，使用jsDelivr CDN（缓存更短）
-        cdnUrl: 'https://cdn.jsdelivr.net/gh/EmanonEnt/asia@main/content/'
+        // 尝试多种方式获取数据
+        urls: [
+            // 方式1: 同域路径（如果content文件夹在网站根目录）
+            window.location.origin + '/content/',
+            // 方式2: GitHub Pages
+            'https://emanonent.github.io/asia/content/',
+            // 方式3: jsDelivr CDN
+            'https://cdn.jsdelivr.net/gh/EmanonEnt/asia@main/content/',
+            // 方式4: 相对路径
+            './content/',
+            '../content/'
+        ]
     },
 
     pageType: 'index',
-    useCDN: false, // 设置为true使用CDN
+    currentUrlIndex: 0,
 
     init(pageType) {
         this.pageType = pageType || 'index';
-        console.log('DataLoader initialized for:', this.pageType);
+        console.log('=== DataLoader 初始化 ===');
+        console.log('页面类型:', this.pageType);
+        console.log('当前域名:', window.location.origin);
 
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => this.loadAllData());
@@ -27,109 +31,162 @@ const DataLoader = {
         }
     },
 
-    // 获取数据URL
-    getDataUrl(filename) {
-        const base = this.useCDN ? this.config.cdnUrl : this.config.baseUrl;
-        return base + filename + '.json';
-    },
-
-    // 获取JSON数据
+    // 尝试从多个URL获取数据
     async fetchJSON(filename) {
-        const url = this.getDataUrl(filename) + '?t=' + Date.now();
+        console.log(`\n=== 获取 ${filename}.json ===`);
 
-        try {
-            const response = await fetch(url);
-            if (!response.ok) {
-                console.warn(`Failed to load ${filename}:`, response.status);
-                return null;
+        for (let i = 0; i < this.config.urls.length; i++) {
+            const baseUrl = this.config.urls[i];
+            const url = baseUrl + filename + '.json?t=' + Date.now();
+
+            console.log(`尝试 ${i + 1}/${this.config.urls.length}: ${url}`);
+
+            try {
+                const response = await fetch(url, { 
+                    cache: 'no-cache',
+                    headers: { 'Cache-Control': 'no-cache' }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('✓ 成功获取:', filename);
+                    console.log('数据内容:', JSON.stringify(data).substring(0, 200) + '...');
+                    this.currentUrlIndex = i; // 记录成功的URL
+                    return data;
+                } else {
+                    console.log('✗ 失败:', response.status, response.statusText);
+                }
+            } catch (e) {
+                console.log('✗ 错误:', e.message);
             }
-            return await response.json();
-        } catch (e) {
-            console.warn(`Error loading ${filename}:`, e);
-            // 如果失败且没用过CDN，尝试CDN
-            if (!this.useCDN) {
-                console.log('Trying CDN...');
-                this.useCDN = true;
-                return await this.fetchJSON(filename);
-            }
-            return null;
         }
+
+        console.error(`✗ 所有URL都失败: ${filename}`);
+        return null;
     },
 
-    // 加载所有数据
     async loadAllData() {
-        console.log('Loading data...');
+        console.log('\n=== 开始加载数据 ===');
 
         try {
             let posterKey = this.pageType === 'other' ? 'index' : this.pageType;
 
-            // 并行加载所有数据
-            const [banners, posters, footer] = await Promise.all([
-                this.fetchJSON('banners'),
-                this.fetchJSON(`posters_${posterKey}`),
-                this.fetchJSON(`footer_${this.pageType === 'cn' ? 'cn' : 'global'}`)
-            ]);
+            // 1. 加载Banners
+            console.log('\n--- 加载 Banners ---');
+            const banners = await this.fetchJSON('banners');
+            if (banners) {
+                console.log('Banners数量:', banners.length);
+                this.renderBanners(banners);
+            } else {
+                console.error('✗ 无法加载Banners');
+            }
 
-            if (banners) this.renderBanners(banners);
-            if (posters) this.renderPosters(posters);
-            if (footer) this.renderFooter(footer);
+            // 2. 加载海报
+            console.log('\n--- 加载 Posters ---');
+            const posters = await this.fetchJSON(`posters_${posterKey}`);
+            if (posters) {
+                console.log('Posters数量:', posters.length);
+                this.renderPosters(posters);
+            } else {
+                console.error('✗ 无法加载Posters');
+            }
 
-            // events页面额外加载
+            // 3. 加载底部
+            console.log('\n--- 加载 Footer ---');
+            const footer = await this.fetchJSON(`footer_${this.pageType === 'cn' ? 'cn' : 'global'}`);
+            if (footer) {
+                console.log('Footer:', footer);
+                this.renderFooter(footer);
+            } else {
+                console.error('✗ 无法加载Footer');
+            }
+
+            // 4. events页面额外加载
             if (this.pageType === 'events') {
-                const [carousel, events] = await Promise.all([
-                    this.fetchJSON('carousel'),
-                    this.fetchJSON('events')
-                ]);
-                if (carousel) this.renderCarousel(carousel);
-                if (events) this.renderEvents(events);
+                console.log('\n--- 加载 Events 数据 ---');
+
+                const carousel = await this.fetchJSON('carousel');
+                if (carousel) {
+                    console.log('Carousel数量:', carousel.length);
+                    this.renderCarousel(carousel);
+                }
+
+                const events = await this.fetchJSON('events');
+                if (events) {
+                    console.log('Events数量:', events.length);
+                    console.log('Events数据:', events);
+                    this.renderEvents(events);
+                } else {
+                    console.error('✗ 无法加载Events');
+                }
             }
 
-            // partners页面额外加载
+            // 5. partners页面额外加载
             if (this.pageType === 'partners') {
+                console.log('\n--- 加载 Partners 数据 ---');
                 const collaborators = await this.fetchJSON('collaborators');
-                if (collaborators) this.renderCollaborators(collaborators);
+                if (collaborators) {
+                    console.log('Collaborators数量:', collaborators.length);
+                    this.renderCollaborators(collaborators);
+                }
             }
 
-            console.log('Data loaded successfully');
+            console.log('\n=== 数据加载完成 ===');
 
         } catch (error) {
-            console.error('Error loading data:', error);
+            console.error('✗ 加载数据时出错:', error);
         }
     },
 
+    // 渲染函数 - 添加调试信息
     renderBanners(banners) {
+        console.log('触发 bannersLoaded 事件');
         window.dispatchEvent(new CustomEvent('bannersLoaded', { detail: banners }));
     },
 
     renderPosters(posters) {
+        console.log('触发 postersLoaded 事件');
         window.dispatchEvent(new CustomEvent('postersLoaded', { detail: posters }));
     },
 
     renderCarousel(carousel) {
+        console.log('触发 carouselLoaded 事件');
         window.dispatchEvent(new CustomEvent('carouselLoaded', { detail: carousel }));
     },
 
     renderEvents(events) {
+        console.log('触发 eventsLoaded 事件');
         window.dispatchEvent(new CustomEvent('eventsLoaded', { detail: events }));
     },
 
     renderCollaborators(collaborators) {
+        console.log('触发 collaboratorsLoaded 事件');
         window.dispatchEvent(new CustomEvent('collaboratorsLoaded', { detail: collaborators }));
     },
 
     renderFooter(footer) {
+        console.log('触发 footerLoaded 事件');
         if (footer.copyright) {
             const el = document.querySelector('.footer-copyright, .copyright, [data-editable="copyright"]');
-            if (el) el.textContent = footer.copyright;
+            if (el) {
+                console.log('更新版权文字:', footer.copyright);
+                el.textContent = footer.copyright;
+            } else {
+                console.warn('未找到版权元素');
+            }
         }
         if (footer.producer) {
             const el = document.querySelector('.producer-logo, [data-editable="producer"]');
-            if (el) el.src = footer.producer;
+            if (el) {
+                console.log('更新制作单位Logo:', footer.producer);
+                el.src = footer.producer;
+            }
         }
         window.dispatchEvent(new CustomEvent('footerLoaded', { detail: footer }));
     },
 
     async refresh() {
+        console.log('\n=== 手动刷新数据 ===');
         await this.loadAllData();
     }
 };
@@ -145,3 +202,11 @@ window.LiveGigsData = {
     getCollaborators: () => DataLoader.fetchJSON('collaborators'),
     getFooter: (site) => DataLoader.fetchJSON(`footer_${site}`)
 };
+
+// 页面加载完成后显示调试信息
+window.addEventListener('load', () => {
+    console.log('\n=== DataLoader 调试信息 ===');
+    console.log('当前URL:', window.location.href);
+    console.log('DataLoader 可用:', typeof DataLoader !== 'undefined');
+    console.log('要查看数据加载情况，请打开Console面板');
+});
