@@ -9,7 +9,8 @@
       "venue": "Riot City",
       "description": "NONAMEFEST 2026",
       "poster": "./image/thenonameanti-.jpg",
-      "status": "comingsoon",
+      "status": "countdown",
+      "statusText": "",
       "buttonText": "購買票券",
       "buttonLink": "https://example.com/tickets1"
     },
@@ -21,6 +22,7 @@
       "description": "XI'AN",
       "poster": "./image/punkheartbanner.jpg",
       "status": "soldout",
+      "statusText": "售完",
       "buttonText": "詳細資料",
       "buttonLink": "https://example.com/info2"
     },
@@ -32,6 +34,7 @@
       "description": "PUNK HEART FESTIVAL 2025",
       "poster": "./image/1-b-2.jpg",
       "status": "ontour",
+      "statusText": "ON TOUR",
       "buttonText": "詳細資料",
       "buttonLink": "https://example.com/info3"
     },
@@ -42,67 +45,76 @@
       "venue": "TAIPEI",
       "description": "ROCK STORM 2026",
       "poster": "./image/1-b-3.jpg",
-      "status": "comingsoon",
+      "status": "countdown",
+      "statusText": "",
       "buttonText": "Learn More",
       "buttonLink": "https://example.com/info4"
     }
   ],
   "carousel": [
     {
+      "title": "ROCK STORM 2026",
+      "date": "2026-01-15",
+      "time": "20:00",
+      "venue": "TAIPEI",
+      "image": "./image/carousel1.jpg"
+    },
+    {
       "title": "METAL STORM",
-      "date": "FEB 20, 2026",
+      "date": "2026-02-20",
+      "time": "19:30",
       "venue": "KAOHSIUNG",
-      "description": "",
-      "image": "./image/carousel1.jpg",
-      "linkText": "View →",
-      "link": "./events.html"
+      "image": "./image/carousel2.jpg"
     },
     {
       "title": "PUNK NIGHT",
-      "date": "MAR 10, 2026",
+      "date": "2026-03-10",
+      "time": "21:00",
       "venue": "TAICHUNG",
-      "description": "",
-      "image": "./image/carousel2.jpg",
-      "linkText": "View →",
-      "link": "./events.html"
+      "image": "./image/carousel3.jpg"
     },
     {
       "title": "INDIE MUSIC FEST",
-      "date": "APR 05, 2026",
+      "date": "2026-04-05",
+      "time": "18:00",
       "venue": "HONG KONG",
-      "description": "",
-      "image": "./image/carousel3.jpg",
-      "linkText": "View →",
-      "link": "./events.html"
+      "image": "./image/carousel4.jpg"
     },
     {
-      "title": "ROCK STORM 2026",
-      "date": "JAN 15, 2026",
-      "venue": "TAIPEI",
-      "description": "",
-      "image": "./image/carousel4.jpg",
-      "linkText": "View →",
-      "link": "./events.html"
+      "title": "HARD ROCK PARTY",
+      "date": "2026-05-18",
+      "time": "20:00",
+      "venue": "SINGAPORE",
+      "image": "./image/carousel5.jpg"
     }
   ],
-  "poster2Carousel": [
+  "posters": [
     {
-      "title": "Epic Past Gig 1",
-      "image": "./image/1-b-3.jpg",
-      "linkText": "View Details →",
-      "link": "./events.html"
-    },
-    {
-      "title": "Epic Past Gig 2",
+      "id": 1,
+      "title": "LiveGigs CN",
       "image": "./image/livegigscn1.png",
-      "linkText": "View Details →",
-      "link": "./events.html"
+      "linkText": "Get on WeChat →",
+      "link": "https://wxaurl.cn/HMcAK6R7fou"
     },
     {
-      "title": "Epic Past Gig 3",
-      "image": "./image/thenonameanti-.jpg",
-      "linkText": "View Details →",
-      "link": "./events.html"
+      "id": 2,
+      "title": "Epic Past Gigs",
+      "image": "./image/1-b-3.jpg",
+      "linkText": "View Gallery →",
+      "link": "./events.html",
+      "mobileText": "Legendary Live Events",
+      "carousel": [
+        "./image/1-b-3.jpg",
+        "./image/livegigscn1.png",
+        "./image/thenonameanti-.jpg"
+      ]
+    },
+    {
+      "id": 3,
+      "title": "XRE Booking",
+      "image": "./image/xrebookingad.jpg",
+      "linkText": "Check Out More Partners →",
+      "link": "./partners.html"
     }
   ]
 }
