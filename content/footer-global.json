@@ -1,0 +1,30 @@
+{
+  "title": "LIVEGIGS ASIA",
+  "email": "info@livegigsasia.com",
+  "phone": "+86 123 4567 8900",
+  "address": "Beijing, China",
+  "copyright": "Copyright © 2001-2026 EMANON ENT. All Rights Reserved.",
+  "producerLogo": "./image/emanonent-logo.png",
+  "social": [
+    {
+      "platform": "facebook",
+      "name": "Facebook",
+      "link": "https://www.facebook.com/livegigsasia"
+    },
+    {
+      "platform": "instagram",
+      "name": "Instagram",
+      "link": "https://www.instagram.com/livegigsasia"
+    },
+    {
+      "platform": "youtube",
+      "name": "YouTube",
+      "link": "https://www.youtube.com/livegigsasia"
+    },
+    {
+      "platform": "x",
+      "name": "X",
+      "link": "https://x.com/livegigsasia"
+    }
+  ]
+}

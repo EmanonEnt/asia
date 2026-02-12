@@ -1,0 +1,24 @@
+[
+  {
+    "id": 1,
+    "image": "./image/livegigscn1.png",
+    "title": "LiveGigs Asia",
+    "linkText": "View Details",
+    "link": "./events.html"
+  },
+  {
+    "id": 2,
+    "image": "./image/1-b-2.jpg",
+    "title": "Epic Past Gigs",
+    "linkText": "View Details",
+    "link": "./events.html",
+    "carousel": false
+  },
+  {
+    "id": 3,
+    "image": "./image/1-b-3.jpg",
+    "title": "Upcoming Events",
+    "linkText": "Learn More",
+    "link": "./events.html"
+  }
+]

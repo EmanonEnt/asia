@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "image": "./image/thenonameanti-.jpg",
+    "title": "THE NONAME ANTI IPA",
+    "subtitle": "印度淡色艾尔",
+    "buttonText": "了解更多",
+    "buttonLink": "https://www.thenonamepunks.com",
+    "phoneImage": "./image/phone-mockup.png"
+  },
+  {
+    "id": 2,
+    "image": "./image/punkheartbanner.jpg",
+    "logo": "./image/punkheart-logo.png",
+    "title": "PUNK HEART FESTIVAL",
+    "description": "Annual Punk Rock Celebration",
+    "buttonText": "Get Tickets",
+    "buttonLink": "https://www.punkheartfest.com"
+  }
+]

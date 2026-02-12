@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "title": "NO NAME PUNKS TOUR",
+    "date": "2026.03.15",
+    "location": "Beijing, China",
+    "time": "20:00",
+    "details": "Live at Omni Space",
+    "image": "./image/event1.jpg",
+    "status": "on tour",
+    "buttonText": "Get Tickets",
+    "link": "https://www.thenonamepunks.com"
+  },
+  {
+    "id": 2,
+    "title": "PUNK HEART FESTIVAL",
+    "date": "2026.05.01",
+    "location": "Shanghai, China",
+    "time": "14:00",
+    "details": "Annual Punk Rock Celebration",
+    "image": "./image/event2.jpg",
+    "status": "sold out",
+    "buttonText": "View Details",
+    "link": "https://www.punkheartfest.com"
+  },
+  {
+    "id": 3,
+    "title": "REBEL MUSIC NIGHT",
+    "date": "2026.04.20",
+    "location": "Guangzhou, China",
+    "time": "19:30",
+    "details": "Underground Music Showcase",
+    "image": "./image/event3.jpg",
+    "status": "on tour",
+    "buttonText": "Buy Now",
+    "link": "./events.html"
+  },
+  {
+    "id": 4,
+    "title": "TEST EVENT 4",
+    "date": "2026.06.01",
+    "location": "Shenzhen, China",
+    "time": "20:00",
+    "details": "Test Load More Feature",
+    "image": "./image/event4.jpg",
+    "status": "",
+    "buttonText": "Coming Soon",
+    "link": "#"
+  }
+]

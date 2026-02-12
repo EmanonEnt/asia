@@ -1,0 +1,30 @@
+{
+  "title": "现场秀 亚洲",
+  "email": "info@livegigs.cn",
+  "phone": "+86 123 4567 8900",
+  "address": "中国 北京",
+  "copyright": "版权所有 © 2001-2026 EMANON ENT",
+  "producerLogo": "./image/emanonent-logo.png",
+  "social": [
+    {
+      "platform": "weibo",
+      "name": "微博",
+      "link": "https://weibo.com/livegigs"
+    },
+    {
+      "platform": "xiaohongshu",
+      "name": "小红书",
+      "link": "https://www.xiaohongshu.com/livegigs"
+    },
+    {
+      "platform": "wechat",
+      "name": "微信",
+      "link": "#"
+    },
+    {
+      "platform": "miniprogram",
+      "name": "小程序",
+      "link": "#"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "background": "./image/p-p-1.jpg",
+    "logo": "./image/p-p-1logo.png",
+    "title": "LiveGigs App",
+    "description": "Download our mobile app for exclusive content",
+    "buttonText": "Download Now",
+    "buttonLink": "#"
+  },
+  {
+    "id": 2,
+    "background": "./image/p-p-2.jpg",
+    "logo": "./image/p-p-2logo.png",
+    "title": "Kids Union Records",
+    "description": "Independent music label supporting young artists",
+    "buttonText": "Visit Website",
+    "buttonLink": "https://www.kids-union.com"
+  },
+  {
+    "id": 3,
+    "background": "./image/p-p-3.png",
+    "logo": "./image/xre-logo.png",
+    "title": "XRE BOOKING",
+    "description": "Professional artist booking and management services",
+    "buttonText": "Contact Us",
+    "buttonLink": "mailto:xrebooking@hotmail.com"
+  },
+  {
+    "id": 4,
+    "background": "./image/p-p-4.jpg",
+    "logo": "./image/p-p-4logo.png",
+    "title": "Partner Name",
+    "description": "Partner description goes here",
+    "buttonText": "Learn More",
+    "buttonLink": "#"
+  }
+]
