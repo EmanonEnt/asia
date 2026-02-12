@@ -1,7 +1,7 @@
 /**
  * LiveGigs Asia - Data Loader
  * 自动从 JSON 文件加载数据并渲染到页面
- * 修正版：使用 GitHub Pages 路径避免 CORS 问题
+ * 修复版：支持 load more 功能（≤3个不显示，>3个显示）
  */
 
 const LiveGigsData = {
@@ -10,12 +10,12 @@ const LiveGigsData = {
 
     // 页面类型映射
     pageTypes: {
-        'index': ['banners', 'index-posters', 'footer-global'],
-        'cn': ['cn-banners', 'cn-posters', 'cn-footer'],
-        'events': ['events', 'events-carousel', 'events-managed', 'events-posters', 'footer-global'],
-        'partners': ['partners-banners', 'collaborators', 'footer-global'],
-        'privacy': ['footer-global'],
-        'accessibility': ['footer-global']
+        'index': ['banners', 'posters_index', 'footer_global'],
+        'cn': ['banners', 'posters_cn', 'footer_cn'],
+        'events': ['events', 'footer_global'],
+        'partners': ['partners_banners', 'collaborators', 'footer_global'],
+        'privacy': ['footer_global'],
+        'accessibility': ['footer_global']
     },
 
     // 加载单个 JSON 文件
@@ -45,13 +45,12 @@ const LiveGigsData = {
     },
 
     // 渲染 Banner
-    renderBanners: function(data, pageType) {
+    renderBanners: function(data) {
         if (!data || !data.banners) return;
 
         const slider = document.getElementById('rebelSlider');
         if (!slider) return;
 
-        // 清空现有内容
         slider.innerHTML = '';
 
         data.banners.forEach((banner, index) => {
@@ -71,7 +70,6 @@ const LiveGigsData = {
             slider.appendChild(slide);
         });
 
-        // 重新初始化轮播
         this.initSlider();
     },
 
@@ -82,7 +80,6 @@ const LiveGigsData = {
         const container = document.querySelector('.posters-container');
         if (!container) return;
 
-        // 清空现有内容
         container.innerHTML = '';
 
         data.posters.forEach((poster, index) => {
@@ -104,42 +101,124 @@ const LiveGigsData = {
         });
     },
 
-    // 渲染活动列表
+    // 渲染活动列表 - 支持 load more
     renderEvents: function(data) {
-        if (!data || !data.events) return;
+        if (!data || !data.events || !Array.isArray(data.events)) {
+            console.log('[LiveGigs] No events data found');
+            return;
+        }
 
         const container = document.getElementById('eventsGrid');
-        if (!container) return;
+        if (!container) {
+            console.log('[LiveGigs] eventsGrid not found');
+            return;
+        }
 
+        const events = data.events;
+        console.log(`[LiveGigs] Rendering ${events.length} events`);
+
+        // 清空现有内容
         container.innerHTML = '';
 
-        data.events.forEach((event, index) => {
+        // 渲染所有活动（初始显示3个，其余隐藏）
+        events.forEach((event, index) => {
             const eventCard = document.createElement('div');
             eventCard.className = 'event-card';
-            eventCard.setAttribute('data-event-id', event.id || index);
+            eventCard.setAttribute('data-event-id', event.id || `event-${index}`);
+
+            // 前3个显示，后面的隐藏（用于 load more）
+            if (index >= 3) {
+                eventCard.classList.add('event-hidden');
+                eventCard.style.display = 'none';
+            }
 
             // 构建标签
             let tags = '';
             if (event.onTour) tags += '<span class="event-tag on-tour">ON TOUR</span>';
             if (event.soldOut) tags += '<span class="event-tag sold-out">SOLD OUT</span>';
 
+            // 处理空字段 - 如果为空则不显示
+            const dateHtml = event.date ? `<p class="event-date">${event.date}</p>` : '';
+            const venueHtml = event.venue ? `<p class="event-location">${event.venue}</p>` : '';
+            const timeHtml = event.time ? `<p class="event-time">${event.time}</p>` : '';
+            const ticketHtml = event.ticket ? `<p class="event-ticket">${event.ticket}</p>` : '';
+            const detailsHtml = event.details ? `<p class="event-details">${event.details}</p>` : '';
+
+            // 按钮 - 如果没有链接则不显示或禁用
+            let buttonHtml = '';
+            if (event.buttonText) {
+                if (event.link && event.link !== '#') {
+                    buttonHtml = `<a href="${event.link}" class="event-btn" target="_blank">${event.buttonText}</a>`;
+                } else {
+                    buttonHtml = `<button class="event-btn" disabled>${event.buttonText}</button>`;
+                }
+            }
+
             eventCard.innerHTML = `
                 <div class="event-poster-wrapper">
-                    <img src="${event.poster}" alt="${event.title}" class="event-poster">
+                    <img src="${event.poster || './image/default-event.jpg'}" alt="${event.title}" class="event-poster"
+                         onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=EVENT+${index + 1}'">
                     ${tags}
                 </div>
                 <div class="event-info">
-                    <h3 class="event-title">${event.title}</h3>
-                    <p class="event-date">${event.date}</p>
-                    <p class="event-location">${event.location}</p>
-                    <p class="event-time">${event.time}</p>
-                    <p class="event-details">${event.details}</p>
-                    <a href="${event.link}" class="event-btn" target="_blank">${event.buttonText}</a>
+                    <h3 class="event-title">${event.title || 'Untitled Event'}</h3>
+                    ${dateHtml}
+                    ${venueHtml}
+                    ${timeHtml}
+                    ${ticketHtml}
+                    ${detailsHtml}
+                    ${buttonHtml}
                 </div>
             `;
 
             container.appendChild(eventCard);
         });
+
+        // 处理 load more 按钮
+        this.handleLoadMore(events.length);
+    },
+
+    // 处理 load more 按钮
+    handleLoadMore: function(totalEvents) {
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+
+        if (!loadMoreBtn) {
+            console.log('[LiveGigs] loadMoreBtn not found');
+            return;
+        }
+
+        // ≤3个活动：隐藏 load more 按钮
+        if (totalEvents <= 3) {
+            loadMoreBtn.style.display = 'none';
+            console.log('[LiveGigs] Load more hidden (≤3 events)');
+        } else {
+            // >3个活动：显示 load more 按钮
+            loadMoreBtn.style.display = 'block';
+            loadMoreBtn.textContent = 'LOAD MORE';
+
+            // 移除旧的事件监听器（避免重复）
+            const newBtn = loadMoreBtn.cloneNode(true);
+            loadMoreBtn.parentNode.replaceChild(newBtn, loadMoreBtn);
+
+            // 添加新的事件监听器
+            newBtn.addEventListener('click', function() {
+                const hiddenEvents = document.querySelectorAll('.event-hidden');
+
+                if (hiddenEvents.length > 0) {
+                    // 显示隐藏的活动
+                    hiddenEvents.forEach(el => {
+                        el.style.display = 'block';
+                        el.classList.remove('event-hidden');
+                    });
+
+                    // 隐藏按钮
+                    newBtn.style.display = 'none';
+                    console.log('[LiveGigs] All events shown');
+                }
+            });
+
+            console.log(`[LiveGigs] Load more shown (${totalEvents} events, 3 visible)`);
+        }
     },
 
     // 渲染底部
@@ -238,10 +317,11 @@ const LiveGigsData = {
 
             // 根据文件名决定如何渲染
             if (file.includes('banners')) {
-                this.renderBanners(data, pageType);
+                this.renderBanners(data);
             } else if (file.includes('posters')) {
                 this.renderPosters(data, pageType);
-            } else if (file.includes('events-managed')) {
+            } else if (file === 'events') {
+                // events.json 包含活动数据
                 this.renderEvents(data);
             } else if (file.includes('footer')) {
                 this.renderFooter(data);

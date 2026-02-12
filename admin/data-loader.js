@@ -1,4 +1,4 @@
-// LiveGigs Asia 数据加载器 - 修复版（解决 CORS 问题）
+// LiveGigs Asia 数据加载器 - 修复版（解决 CORS + 支持4个活动 + load more）
 const dataLoader = {
     github: {
         owner: 'EmanonEnt',
@@ -195,7 +195,7 @@ const dataLoader = {
         return result;
     },
 
-    // Events
+    // Events - 支持4个活动
     getEvents() {
         return this.cache.events || [];
     },
