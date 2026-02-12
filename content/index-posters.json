@@ -1,0 +1,22 @@
+{
+  "posters": [
+    {
+      "image": "./image/livegigscn1.png",
+      "title": "LiveGigs CN",
+      "linkText": "Get on WeChat →",
+      "link": "https://wxaurl.cn/HMcAK6R7fou"
+    },
+    {
+      "image": "./image/1-b-2.jpg",
+      "title": "Upcoming Event",
+      "linkText": "View Details →",
+      "link": "events.html"
+    },
+    {
+      "image": "./image/1-b-3.jpg",
+      "title": "Special Guest",
+      "linkText": "Learn More →",
+      "link": "events.html"
+    }
+  ]
+}

@@ -1,1 +1,16 @@
-{"banners":[{"title":"THE NO NAME ANTI","image":"./image/thenonameanti-.jpg","buttonText":"Learn More","link":"#"},{"title":"PUNK HEART","image":"./image/punkheartbanner.jpg","buttonText":"View Details","link":"#"}]}
+{
+  "banners": [
+    {
+      "image": "./image/thenonameanti-.jpg",
+      "title": "THE NONAME ANTI-IPA",
+      "buttonText": "無名逆襲社交 IPA",
+      "buttonLink": "#"
+    },
+    {
+      "image": "./image/punkheartbanner.jpg",
+      "title": "朋克心音樂節 2026",
+      "buttonText": "PUNK HEART FESTIVAL",
+      "buttonLink": "#"
+    }
+  ]
+}

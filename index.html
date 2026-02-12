@@ -1334,9 +1334,12 @@
             footer: FooterAdmin
         };
     </script>
-<script src="./js/data-loader.js"></script>
+<script src="./js/livegigs-data.js"></script>
 <script>
-  DataLoader.init('index');
+  // 自动加载数据并渲染
+  if (typeof LiveGigsData !== 'undefined') {
+    LiveGigsData.loadAndRender('index');
+  }
 </script>
 </body>
 </html>
