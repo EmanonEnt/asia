@@ -8,7 +8,7 @@
       "ticket": "¥280",
       "ontour": true,
       "soldout": false,
-      "details": "The Noname brings their iconic punk rock energy to Shanghai for an unforgettable night of raw power and anthemic choruses.",
+      "details": "The Noname brings their iconic punk rock energy...",
       "buttonText": "Buy Tickets",
       "link": "https://ticket.com/event1",
       "poster": "./image/thenonameanti-.jpg"
@@ -21,7 +21,7 @@
       "ticket": "¥380",
       "ontour": false,
       "soldout": true,
-      "details": "Annual punk rock festival featuring top bands from across Asia. Three stages, non-stop music.",
+      "details": "Annual punk rock festival...",
       "buttonText": "Sold Out",
       "link": "",
       "poster": "./image/punkheartbanner.jpg"
@@ -34,7 +34,7 @@
       "ticket": "¥180",
       "ontour": true,
       "soldout": false,
-      "details": "Showcasing the best new talent from XRE Booking roster. Don't miss these rising stars!",
+      "details": "Showcasing the best new talent...",
       "buttonText": "Get Tickets",
       "link": "https://ticket.com/event3",
       "poster": "./image/1-b-2.jpg"
@@ -47,7 +47,7 @@
       "ticket": "¥150",
       "ontour": false,
       "soldout": false,
-      "details": "A special night celebrating independent music featuring artists from Kids Union Records.",
+      "details": "A special night celebrating...",
       "buttonText": "Buy Now",
       "link": "https://kids-union.com/tickets",
       "poster": "./image/1-b-3.jpg"
