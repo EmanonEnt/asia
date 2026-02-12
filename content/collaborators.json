@@ -1,38 +1,67 @@
-[
-  {
-    "id": 1,
-    "name": "EMANON ENT",
-    "image": "./image/emanon-logo.png",
-    "link": "https://www.emanonent.com"
-  },
-  {
-    "id": 2,
-    "name": "XRE Booking",
-    "image": "./image/xre-logo.png",
-    "link": "mailto:xrebooking@hotmail.com"
-  },
-  {
-    "id": 3,
-    "name": "Kids Union",
-    "image": "./image/kidsunion-logo.png",
-    "link": "https://www.kids-union.com"
-  },
-  {
-    "id": 4,
-    "name": "Partner 4",
-    "image": "./image/partner4.png",
-    "link": ""
-  },
-  {
-    "id": 5,
-    "name": "Partner 5",
-    "image": "./image/partner5.png",
-    "link": ""
-  },
-  {
-    "id": 6,
-    "name": "Partner 6",
-    "image": "./image/partner6.png",
-    "link": ""
-  }
-]
+{
+  "logos": [
+    {
+      "id": 1,
+      "name": "TMS LIVE",
+      "image": "./image/p-logo-1.png",
+      "link": "",
+      "enabled": true
+    },
+    {
+      "id": 2,
+      "name": "MORDAM MUSIC",
+      "image": "./image/p-logo-2.png",
+      "link": "",
+      "enabled": true
+    },
+    {
+      "id": 3,
+      "name": "TICKETFLAP",
+      "image": "./image/p-logo-3.png",
+      "link": "https://Ticketflap.com",
+      "enabled": true
+    },
+    {
+      "id": 4,
+      "name": "GIBSON",
+      "image": "./image/p-logo-4.png",
+      "link": "",
+      "enabled": true
+    },
+    {
+      "id": 5,
+      "name": "",
+      "image": "",
+      "link": "",
+      "enabled": false
+    },
+    {
+      "id": 6,
+      "name": "",
+      "image": "",
+      "link": "",
+      "enabled": false
+    },
+    {
+      "id": 7,
+      "name": "",
+      "image": "",
+      "link": "",
+      "enabled": false
+    },
+    {
+      "id": 8,
+      "name": "",
+      "image": "",
+      "link": "",
+      "enabled": false
+    },
+    {
+      "id": 9,
+      "name": "",
+      "image": "",
+      "link": "",
+      "enabled": false
+    }
+  ]
+}

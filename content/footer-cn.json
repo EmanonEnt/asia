@@ -1,30 +1,81 @@
 {
-  "title": "现场秀 亚洲",
-  "email": "info@livegigs.cn",
-  "phone": "+86 123 4567 8900",
-  "address": "中国 北京",
-  "copyright": "版权所有 © 2001-2026 EMANON ENT",
+  "siteName": "LIVEGIGS",
+  "siteNameAsia": "CN",
+  "contactText": "如需咨询和合作机会，请联系我们：",
+  "email": "xrebooking@hotmail.com",
+  "address": "香港 | 上海 | 北京",
+  "copyright": "Copyright © 2001-2026 EMANON ENT",
   "producerLogo": "./image/emanonent-logo.png",
-  "social": [
+  "socials": [
     {
-      "platform": "weibo",
-      "name": "微博",
-      "link": "https://weibo.com/livegigs"
-    },
-    {
-      "platform": "xiaohongshu",
-      "name": "小红书",
-      "link": "https://www.xiaohongshu.com/livegigs"
-    },
-    {
-      "platform": "wechat",
+      "id": 1,
       "name": "微信",
-      "link": "#"
+      "icon": "wechat",
+      "link": "https://weixin.qq.com",
+      "enabled": true
     },
     {
-      "platform": "miniprogram",
+      "id": 2,
+      "name": "微博",
+      "icon": "weibo",
+      "link": "https://weibo.com",
+      "enabled": true
+    },
+    {
+      "id": 3,
+      "name": "小红书",
+      "icon": "xiaohongshu",
+      "link": "https://xiaohongshu.com",
+      "enabled": true
+    },
+    {
+      "id": 4,
       "name": "小程序",
-      "link": "#"
+      "icon": "miniprogram",
+      "link": "",
+      "enabled": true
+    },
+    {
+      "id": 5,
+      "name": "",
+      "icon": "",
+      "link": "",
+      "enabled": false
+    },
+    {
+      "id": 6,
+      "name": "",
+      "icon": "",
+      "link": "",
+      "enabled": false
+    },
+    {
+      "id": 7,
+      "name": "",
+      "icon": "",
+      "link": "",
+      "enabled": false
+    },
+    {
+      "id": 8,
+      "name": "",
+      "icon": "",
+      "link": "",
+      "enabled": false
+    },
+    {
+      "id": 9,
+      "name": "",
+      "icon": "",
+      "link": "",
+      "enabled": false
+    },
+    {
+      "id": 10,
+      "name": "",
+      "icon": "",
+      "link": "",
+      "enabled": false
     }
   ]
 }

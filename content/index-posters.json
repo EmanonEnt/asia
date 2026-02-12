@@ -1,0 +1,29 @@
+{
+  "page": "index",
+  "posters": [
+    {
+      "id": 1,
+      "title": "NONAMEFEST 2026",
+      "linkText": "View Details →",
+      "link": "./events.html",
+      "image": "./image/1-b-3.jpg",
+      "enabled": true
+    },
+    {
+      "id": 2,
+      "title": "PUNK HEART FESTIVAL 2026",
+      "linkText": "View Details →",
+      "link": "./events.html",
+      "image": "./image/1-b-2.jpg",
+      "enabled": true
+    },
+    {
+      "id": 3,
+      "title": "LiveGigs Asia",
+      "linkText": "View Details →",
+      "link": "./livegigsasia",
+      "image": "./image/livegigscn1.png",
+      "enabled": true
+    }
+  ]
+}

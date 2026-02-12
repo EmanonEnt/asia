@@ -1,0 +1,46 @@
+{
+  "page": "events",
+  "poster2_carousel": true,
+  "posters": [
+    {
+      "id": 1,
+      "title": "Epic Past Gigs",
+      "linkText": "View Gallery →",
+      "link": "./events.html",
+      "image": "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800",
+      "enabled": true
+    },
+    {
+      "id": 2,
+      "title": "朋克心音樂節2026",
+      "linkText": "PUNK HEART FESTIVAL",
+      "link": "https://Punkheartfest.com",
+      "image": "./image/punkheartbanner.jpg",
+      "enabled": true
+    },
+    {
+      "id": 3,
+      "title": "THE NONAME ANTI IPA",
+      "linkText": "無名逆襲社交IPA",
+      "link": "https://Nonamepunks.com",
+      "image": "./image/thenonameanti-.jpg",
+      "enabled": true
+    },
+    {
+      "id": 4,
+      "title": "",
+      "linkText": "",
+      "link": "",
+      "image": "",
+      "enabled": false
+    },
+    {
+      "id": 5,
+      "title": "",
+      "linkText": "",
+      "link": "",
+      "image": "",
+      "enabled": false
+    }
+  ]
+}

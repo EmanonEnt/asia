@@ -1,30 +1,81 @@
 {
-  "title": "LIVEGIGS ASIA",
-  "email": "info@livegigsasia.com",
-  "phone": "+86 123 4567 8900",
-  "address": "Beijing, China",
-  "copyright": "Copyright © 2001-2026 EMANON ENT. All Rights Reserved.",
+  "siteName": "LIVEGIGS",
+  "siteNameAsia": "ASIA",
+  "contactText": "For inquiries and partnership opportunities, reach out to us at:",
+  "email": "xrebooking@hotmail.com",
+  "address": "Hong Kong | Shanghai | Beijing",
+  "copyright": "Copyright © 2001-2026 EMANON ENT",
   "producerLogo": "./image/emanonent-logo.png",
-  "social": [
+  "socials": [
     {
-      "platform": "facebook",
+      "id": 1,
       "name": "Facebook",
-      "link": "https://www.facebook.com/livegigsasia"
+      "icon": "facebook",
+      "link": "https://facebook.com/livegigsasia",
+      "enabled": true
     },
     {
-      "platform": "instagram",
+      "id": 2,
       "name": "Instagram",
-      "link": "https://www.instagram.com/livegigsasia"
+      "icon": "instagram",
+      "link": "https://instagram.com/livegigsasia",
+      "enabled": true
     },
     {
-      "platform": "youtube",
+      "id": 3,
       "name": "YouTube",
-      "link": "https://www.youtube.com/livegigsasia"
+      "icon": "youtube",
+      "link": "https://youtube.com/livegigsasia",
+      "enabled": true
     },
     {
-      "platform": "x",
+      "id": 4,
       "name": "X",
-      "link": "https://x.com/livegigsasia"
+      "icon": "x",
+      "link": "https://x.com/livegigsasia",
+      "enabled": true
+    },
+    {
+      "id": 5,
+      "name": "",
+      "icon": "",
+      "link": "",
+      "enabled": false
+    },
+    {
+      "id": 6,
+      "name": "",
+      "icon": "",
+      "link": "",
+      "enabled": false
+    },
+    {
+      "id": 7,
+      "name": "",
+      "icon": "",
+      "link": "",
+      "enabled": false
+    },
+    {
+      "id": 8,
+      "name": "",
+      "icon": "",
+      "link": "",
+      "enabled": false
+    },
+    {
+      "id": 9,
+      "name": "",
+      "icon": "",
+      "link": "",
+      "enabled": false
+    },
+    {
+      "id": 10,
+      "name": "",
+      "icon": "",
+      "link": "",
+      "enabled": false
     }
   ]
 }

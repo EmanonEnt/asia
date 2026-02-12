@@ -1,20 +1,49 @@
-[
-  {
-    "id": 1,
-    "image": "./image/thenonameanti-.jpg",
-    "title": "THE NONAME ANTI IPA",
-    "subtitle": "印度淡色艾尔",
-    "buttonText": "了解更多",
-    "buttonLink": "https://www.thenonamepunks.com",
-    "phoneImage": "./image/phone-mockup.png"
-  },
-  {
-    "id": 2,
-    "image": "./image/punkheartbanner.jpg",
-    "logo": "./image/punkheart-logo.png",
-    "title": "PUNK HEART FESTIVAL",
-    "description": "Annual Punk Rock Celebration",
-    "buttonText": "Get Tickets",
-    "buttonLink": "https://www.punkheartfest.com"
-  }
-]
+{
+  "banners": [
+    {
+      "id": 1,
+      "title": "THE NONAME ANTI IPA",
+      "buttonText": "無名逆襲社交IPA",
+      "link": "https://Nonamepunks.com",
+      "image": "./image/thenonameanti-.jpg",
+      "order": 1,
+      "enabled": true
+    },
+    {
+      "id": 2,
+      "title": "朋克心音樂節2026",
+      "buttonText": "PUNK HEART FESTIVAL",
+      "link": "https://Punkheartfest.com",
+      "image": "./image/punkheartbanner.jpg",
+      "order": 2,
+      "enabled": true
+    },
+    {
+      "id": 3,
+      "title": "",
+      "buttonText": "",
+      "link": "",
+      "image": "",
+      "order": 3,
+      "enabled": false
+    },
+    {
+      "id": 4,
+      "title": "",
+      "buttonText": "",
+      "link": "",
+      "image": "",
+      "order": 4,
+      "enabled": false
+    },
+    {
+      "id": 5,
+      "title": "",
+      "buttonText": "",
+      "link": "",
+      "image": "",
+      "order": 5,
+      "enabled": false
+    }
+  ]
+}
