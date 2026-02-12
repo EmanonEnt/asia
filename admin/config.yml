@@ -1,0 +1,29 @@
+backend:
+  name: github
+  repo: EmanonEnt/asia
+  branch: main
+media_folder: "image/uploads"
+public_folder: "/image/uploads"
+collections:
+  - name: "index"
+    label: "Home"
+    files:
+      - {label: "Banners", name: "banners", file: "content/banners.json", fields: [{label: "Banners", name: "banners", widget: "list", max: 10, fields: [{label: "Title", name: "title", widget: "string"}, {label: "Image", name: "image", widget: "image"}, {label: "Button", name: "buttonText", widget: "string", required: false}, {label: "Link", name: "link", widget: "string", required: false}]}]}
+      - {label: "Posters", name: "posters", file: "content/posters.json", fields: [{label: "Poster 1", name: "poster1", widget: "object", fields: [{label: "Image", name: "image", widget: "image"}, {label: "Title", name: "title", widget: "string"}, {label: "Link", name: "link", widget: "string"}]}, {label: "Poster 2", name: "poster2", widget: "object", fields: [{label: "Image", name: "image", widget: "image"}, {label: "Title", name: "title", widget: "string"}, {label: "Link", name: "link", widget: "string"}]}, {label: "Poster 3", name: "poster3", widget: "object", fields: [{label: "Image", name: "image", widget: "image"}, {label: "Title", name: "title", widget: "string"}, {label: "Link", name: "link", widget: "string"}]}]}
+      - {label: "Footer", name: "footer", file: "content/footer.json", fields: [{label: "Copyright", name: "copyright", widget: "string"}, {label: "Social", name: "social", widget: "list", fields: [{label: "Name", name: "name", widget: "string"}, {label: "Icon", name: "icon", widget: "string"}, {label: "Link", name: "link", widget: "string"}]}]}
+  - name: "cn"
+    label: "CN"
+    files:
+      - {label: "Banners", name: "banners", file: "content/cn-banners.json", fields: [{label: "Banners", name: "banners", widget: "list", max: 10, fields: [{label: "Title", name: "title", widget: "string"}, {label: "Image", name: "image", widget: "image"}, {label: "Button", name: "buttonText", widget: "string"}, {label: "Link", name: "link", widget: "string"}]}]}
+      - {label: "Posters", name: "posters", file: "content/cn-posters.json", fields: [{label: "Poster 1", name: "poster1", widget: "object", fields: [{label: "Image", name: "image", widget: "image"}, {label: "Title", name: "title", widget: "string"}, {label: "Link", name: "link", widget: "string"}]}, {label: "Poster 2", name: "poster2", widget: "object", fields: [{label: "Image", name: "image", widget: "image"}, {label: "Title", name: "title", widget: "string"}, {label: "Link", name: "link", widget: "string"}]}, {label: "Poster 3", name: "poster3", widget: "object", fields: [{label: "Image", name: "image", widget: "image"}, {label: "Title", name: "title", widget: "string"}, {label: "Link", name: "link", widget: "string"}]}]}
+      - {label: "Footer", name: "footer", file: "content/cn-footer.json", fields: [{label: "Copyright", name: "copyright", widget: "string"}, {label: "Social", name: "social", widget: "list", fields: [{label: "Name", name: "name", widget: "string"}, {label: "Icon", name: "icon", widget: "string"}, {label: "Link", name: "link", widget: "string"}]}]}
+  - name: "events"
+    label: "Events"
+    files:
+      - {label: "Carousel", name: "carousel", file: "content/events-carousel.json", fields: [{label: "Slides", name: "carousel", widget: "list", fields: [{label: "Image", name: "image", widget: "image"}, {label: "Title", name: "title", widget: "string"}, {label: "Date", name: "date", widget: "string"}, {label: "Venue", name: "venue", widget: "string"}, {label: "Link", name: "link", widget: "string"}]}]}
+      - {label: "Events", name: "events", file: "content/events-managed.json", fields: [{label: "Events", name: "events", widget: "list", fields: [{label: "Image", name: "image", widget: "image"}, {label: "Title", name: "title", widget: "string"}, {label: "Date", name: "date", widget: "string"}, {label: "Venue", name: "venue", widget: "string"}, {label: "Button", name: "buttonText", widget: "string"}, {label: "Link", name: "link", widget: "string"}]}]}
+  - name: "partners"
+    label: "Partners"
+    files:
+      - {label: "Banners", name: "banners", file: "content/partners-banners.json", fields: [{label: "Banners", name: "banners", widget: "list", max: 4, fields: [{label: "Title", name: "title", widget: "string"}, {label: "Background", name: "image", widget: "image"}, {label: "Logo", name: "logo", widget: "image", required: false}, {label: "Phone Image", name: "phoneImage", widget: "image", required: false}, {label: "Description", name: "description", widget: "text"}, {label: "Button", name: "buttonText", widget: "string"}, {label: "Link", name: "link", widget: "string"}]}]}
+      - {label: "Collaborators", name: "collaborators", file: "content/collaborators.json", fields: [{label: "Partners", name: "collaborators", widget: "list", fields: [{label: "Name", name: "name", widget: "string"}, {label: "Logo", name: "image", widget: "image"}, {label: "Link", name: "link", widget: "string", required: false}]}]}
