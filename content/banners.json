@@ -12,5 +12,12 @@
     "button_text": "Get Tickets →",
     "link": "./events.html",
     "order": 2
+  },
+  {
+    "title": "333333",
+    "image": "https://pic55.photophoto.cn/20200509/0017030080472287_b.jpg",
+    "button_text": "TBA待定",
+    "link": "chineserocks.net",
+    "order": 3
   }
 ]
