@@ -2,33 +2,33 @@
   {
     "image": "./image/p-p-1.jpg",
     "logo": "./image/p-p-1logo.png",
-    "title": "XRE BOOKING",
+    "title": "LIVE GIGS CN",
     "description": "Professional booking services for Asia tours",
-    "button_text": "Learn More →",
-    "link": "https://xrebooking.com"
+    "button_text": "GO TO",
+    "link": "LIVEGIGS.CN"
   },
   {
     "image": "./image/p-p-2.jpg",
     "logo": "./image/p-p-2logo.png",
-    "title": "Kids Union Records",
+    "title": "",
     "description": "Independent record label supporting young artists",
-    "button_text": "Visit Site →",
+    "button_text": "小子联盟唱片",
     "link": "https://kids-union.com"
   },
   {
     "image": "./image/p-p-3.jpg",
     "logo": "./image/p-p-3logo.png",
-    "title": "Music Alliance",
+    "title": "XRE BOOKING",
     "description": "Connecting artists with venues across Asia",
-    "button_text": "Partner With Us →",
-    "link": "https://musicalliance.com"
+    "button_text": "XRE BOOKING",
+    "link": "xrebooking.com"
   },
   {
     "image": "./image/p-p-4.jpg",
     "logo": "./image/p-p-4logo.png",
-    "title": "Stage Tech Pro",
-    "description": "Professional stage equipment and technical support",
-    "button_text": "Our Services →",
-    "link": "https://stagetechpro.com"
+    "title": "",
+    "description": "摇滚万岁",
+    "button_text": "CHINESE ROCKS摇滚万岁",
+    "link": "chineserocks.net"
   }
 ]
