@@ -1,0 +1,38 @@
+[
+  {
+    "title": "THE NONAME FESTIVAL",
+    "date": "2026.03.15",
+    "location": "Shanghai",
+    "time": "18:00",
+    "image": "./image/event1.jpg",
+    "ticket": "$50",
+    "status": "",
+    "description": "Annual punk rock festival featuring top Asian bands",
+    "button_text": "Get Tickets →",
+    "link": "./events.html"
+  },
+  {
+    "title": "PUNK HEART LIVE",
+    "date": "2026.04.20",
+    "location": "Beijing",
+    "time": "20:00",
+    "image": "./image/event2.jpg",
+    "ticket": "$45",
+    "status": "ontour",
+    "description": "Heart of punk rock - live in Beijing",
+    "button_text": "Get Tickets →",
+    "link": "./events.html"
+  },
+  {
+    "title": "SUMMER ROCK OUT",
+    "date": "2026.06.10",
+    "location": "Guangzhou",
+    "time": "19:00",
+    "image": "./image/event3.jpg",
+    "ticket": "$40",
+    "status": "soldout",
+    "description": "Summer rock festival - all tickets sold out",
+    "button_text": "Join Waitlist →",
+    "link": "./events.html"
+  }
+]

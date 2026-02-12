@@ -1,0 +1,22 @@
+[
+  {
+    "image": "./image/collab1.png",
+    "name": "Warner Music",
+    "link": "https://warnermusic.com"
+  },
+  {
+    "image": "./image/collab2.png",
+    "name": "Sony Music",
+    "link": "https://sonymusic.com"
+  },
+  {
+    "image": "./image/collab3.png",
+    "name": "Universal",
+    "link": "https://universalmusic.com"
+  },
+  {
+    "image": "./image/collab4.png",
+    "name": "Live Nation",
+    "link": "https://livenation.com"
+  }
+]

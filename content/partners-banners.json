@@ -1,0 +1,34 @@
+[
+  {
+    "image": "./image/p-p-1.jpg",
+    "logo": "./image/p-p-1logo.png",
+    "title": "XRE BOOKING",
+    "description": "Professional booking services for Asia tours",
+    "button_text": "Learn More →",
+    "link": "https://xrebooking.com"
+  },
+  {
+    "image": "./image/p-p-2.jpg",
+    "logo": "./image/p-p-2logo.png",
+    "title": "Kids Union Records",
+    "description": "Independent record label supporting young artists",
+    "button_text": "Visit Site →",
+    "link": "https://kids-union.com"
+  },
+  {
+    "image": "./image/p-p-3.jpg",
+    "logo": "./image/p-p-3logo.png",
+    "title": "Music Alliance",
+    "description": "Connecting artists with venues across Asia",
+    "button_text": "Partner With Us →",
+    "link": "https://musicalliance.com"
+  },
+  {
+    "image": "./image/p-p-4.jpg",
+    "logo": "./image/p-p-4logo.png",
+    "title": "Stage Tech Pro",
+    "description": "Professional stage equipment and technical support",
+    "button_text": "Our Services →",
+    "link": "https://stagetechpro.com"
+  }
+]

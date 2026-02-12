@@ -1,0 +1,23 @@
+[
+  {
+    "title": "",
+    "image": "./image/1-b-2.jpg",
+    "link_text": "View Details →",
+    "link": "./events.html",
+    "carousel": false
+  },
+  {
+    "title": "Epic Past Gigs",
+    "image": "./image/1-b-3.jpg",
+    "link_text": "View Details →",
+    "link": "./events.html",
+    "carousel": false
+  },
+  {
+    "title": "",
+    "image": "./image/livegigscn1.png",
+    "link_text": "View Details →",
+    "link": "./events.html",
+    "carousel": false
+  }
+]

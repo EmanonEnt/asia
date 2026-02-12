@@ -1,0 +1,23 @@
+[
+  {
+    "title": "",
+    "image": "./image/cn-asiaad.jpg",
+    "link_text": "查看详情 →",
+    "link": "./events.html",
+    "carousel": false
+  },
+  {
+    "title": "",
+    "image": "./image/1-b-2.jpg",
+    "link_text": "查看详情 →",
+    "link": "./events.html",
+    "carousel": false
+  },
+  {
+    "title": "",
+    "image": "./image/1-b-3.jpg",
+    "link_text": "查看详情 →",
+    "link": "./events.html",
+    "carousel": false
+  }
+]

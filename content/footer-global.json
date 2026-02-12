@@ -1,0 +1,29 @@
+{
+  "title": "LIVEGIGS ASIA",
+  "contact": "Contact us for bookings and inquiries",
+  "address": "info@livegigsasia.com",
+  "copyright": "Copyright © 2001-2026 EMANON ENTERTAINMENT",
+  "producer": "./image/emanonent-logo.png",
+  "social": [
+    {
+      "name": "Facebook",
+      "url": "https://facebook.com/livegigsasia",
+      "icon": "facebook"
+    },
+    {
+      "name": "Instagram",
+      "url": "https://instagram.com/livegigsasia",
+      "icon": "instagram"
+    },
+    {
+      "name": "YouTube",
+      "url": "https://youtube.com/livegigsasia",
+      "icon": "youtube"
+    },
+    {
+      "name": "X",
+      "url": "https://x.com/livegigsasia",
+      "icon": "x"
+    }
+  ]
+}

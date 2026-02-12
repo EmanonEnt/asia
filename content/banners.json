@@ -1,0 +1,16 @@
+[
+  {
+    "title": "THE NONAME ANTI-MUSIC FESTIVAL",
+    "image": "./image/thenonameanti-.jpg",
+    "button_text": "View Details →",
+    "link": "./events.html",
+    "order": 1
+  },
+  {
+    "title": "PUNK HEART FESTIVAL",
+    "image": "./image/punkheartbanner.jpg",
+    "button_text": "Get Tickets →",
+    "link": "./events.html",
+    "order": 2
+  }
+]
