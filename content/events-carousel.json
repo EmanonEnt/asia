@@ -5,7 +5,7 @@
       "date": "March 15, 2026",
       "time": "20:00",
       "location": "Shanghai",
-      "details": "Experience the legendary punk rock band live in concert",
+      "details": "Experience the legendary punk rock band...",
       "buttonText": "View Details →",
       "link": "https://thenonameanti-.com",
       "image": "./image/thenonameanti-.jpg"
@@ -15,7 +15,7 @@
       "date": "April 20, 2026",
       "time": "18:00",
       "location": "Beijing",
-      "details": "The biggest punk festival in Asia returns",
+      "details": "The biggest punk festival in Asia...",
       "buttonText": "Learn More →",
       "link": "https://punkheart.com",
       "image": "./image/punkheartbanner.jpg"
@@ -25,60 +25,10 @@
       "date": "May 10, 2026",
       "time": "19:30",
       "location": "Guangzhou",
-      "details": "New talent showcase featuring emerging artists",
+      "details": "New talent showcase...",
       "buttonText": "Details →",
       "link": "https://xrebooking.com",
       "image": "./image/1-b-2.jpg"
-    },
-    {
-      "title": "Kids Union Night",
-      "date": "June 1, 2026",
-      "time": "20:30",
-      "location": "Shenzhen",
-      "details": "Independent music celebration",
-      "buttonText": "Get Tickets →",
-      "link": "https://kids-union.com",
-      "image": "./image/1-b-3.jpg"
-    },
-    {
-      "title": "LiveGigs Asia Annual Show",
-      "date": "July 15, 2026",
-      "time": "19:00",
-      "location": "Hong Kong",
-      "details": "Our biggest show of the year",
-      "buttonText": "View Details →",
-      "link": "https://livegigsasia.com",
-      "image": "./image/livegigscn1.png"
-    },
-    {
-      "title": "Summer Punk Party",
-      "date": "August 8, 2026",
-      "time": "18:00",
-      "location": "Chengdu",
-      "details": "All-day punk rock celebration",
-      "buttonText": "Join Us →",
-      "link": "https://example.com/summer",
-      "image": "./image/cn-asiaad.jpg"
-    },
-    {
-      "title": "Autumn Rock Fest",
-      "date": "September 20, 2026",
-      "time": "17:00",
-      "location": "Hangzhou",
-      "details": "Outdoor festival featuring top rock acts",
-      "buttonText": "Info →",
-      "link": "https://example.com/autumn",
-      "image": "./image/thenonameanti-.jpg"
-    },
-    {
-      "title": "Year End Bash",
-      "date": "December 31, 2026",
-      "time": "21:00",
-      "location": "Shanghai",
-      "details": "Ring in the new year with LiveGigs",
-      "buttonText": "Celebrate →",
-      "link": "https://example.com/nye",
-      "image": "./image/punkheartbanner.jpg"
     }
   ]
 }
