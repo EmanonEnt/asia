@@ -1745,7 +1745,7 @@
             <span class="modal-close" onclick="closeModal()">&times;</span>
             <h2 data-editable="modal-title" data-text="Join Membership">Join Membership</h2>
             <p data-editable="modal-desc" data-text="Get exclusive access to presales and events">Get exclusive access to presales and events</p>
-            <form id="membershipForm" onsubmit="handleSubmit(event)">
+            <form action="https://formspree.io/f/YOUR_FORMSPREE_FORM_ID" method="POST" id="membershipForm" onsubmit="handleFormSubmit(event)">
                 <div class="form-group">
                     <label for="memberName" data-editable="modal-label-name" data-text="Name">Name</label>
                     <input type="text" id="memberName" name="name" required placeholder="Enter your name" data-editable="modal-placeholder-name" data-text="Enter your name">
@@ -1762,6 +1762,7 @@
                     <label for="memberMessage" data-editable="modal-label-message" data-text="Message">Message</label>
                     <textarea id="memberMessage" name="message" placeholder="Tell us what you're interested in..." data-editable="modal-placeholder-message" data-text="Tell us what you're interested in..."></textarea>
                 </div>
+                <input type="hidden" name="source" id="formSource" value="LiveGigs Asia">
                 <button type="submit" class="neon-btn" data-editable="modal-submit" data-text="SUBMIT APPLICATION">SUBMIT APPLICATION</button>
             </form>
         </div>
@@ -1872,6 +1873,27 @@
         });
 
         function handleSubmit(e) {
+            // 设置来源页面
+            const pageNames = {
+                'index.html': 'LiveGigs Asia Homepage',
+                'cn.html': 'LiveGigs CN Homepage',
+                'partners.html': 'LiveGigs Asia Partners Page',
+                'events.html': 'LiveGigs Asia Events Page',
+                'privacypolicy.html': 'LiveGigs Asia Privacy Policy Page',
+                'accessibilitystatement.html': 'LiveGigs Asia Accessibility Page'
+            };
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const sourceField = document.getElementById('formSource');
+            if (sourceField) {
+                sourceField.value = pageNames[currentPage] || 'LiveGigs Asia';
+            }
+
+            // 显示提交中状态
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalText = btn.textContent;
+            btn.textContent = 'SENDING...';
+            btn.disabled = true;
+        }
             e.preventDefault();
             const formData = {
                 name: document.getElementById('memberName').value,
@@ -1896,6 +1918,12 @@
             });
         }
     </script>
-
+<script src="./js/livegigs-data.js"></script>
+<script>
+  // 自动加载数据并渲染
+  if (typeof LiveGigsData !== 'undefined') {
+    LiveGigsData.loadAndRender('partners');
+  }
+</script>
 </body>
 </html>
