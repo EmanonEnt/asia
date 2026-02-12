@@ -1,24 +1,24 @@
 {
   "logos": [
     {
-      "name": "XRE Booking",
-      "image": "./image/collab1.png",
-      "link": "https://xrebooking.com"
+      "name": "TMS LIVE",
+      "image": "./image/p-logo-1.png",
+      "link": ""
     },
     {
-      "name": "Kids Union",
-      "image": "./image/collab2.png",
-      "link": "https://kids-union.com"
+      "name": "MORDAM MUSIC",
+      "image": "./image/p-logo-2.png",
+      "link": ""
     },
     {
-      "name": "Modern Sky",
-      "image": "./image/collab3.png",
-      "link": "https://modernsky.com"
+      "name": "TICKETFLAP",
+      "image": "./image/p-logo-3.png",
+      "link": "https://ticketflap.com"
     },
     {
-      "name": "Mao Livehouse",
-      "image": "./image/collab4.png",
-      "link": "https://mao.com"
+      "name": "GIBSON",
+      "image": "./image/p-logo-4.png",
+      "link": ""
     }
   ]
 }
