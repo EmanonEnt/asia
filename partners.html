@@ -1092,9 +1092,9 @@
         .modal-content {
             background: linear-gradient(135deg, #0a0000 0%, #050505 100%);
             border: 1px solid var(--darker-red);
-            padding: 35px 30px;
-            max-width: 450px;
-            width: 100%;
+            padding: 40px 35px;
+            max-width: 480px;
+            width: 90%;
             max-height: 90vh;
             overflow-y: auto;
             position: relative;
@@ -1103,9 +1103,9 @@
 
         .modal-close {
             position: absolute;
-            top: 12px;
-            right: 18px;
-            font-size: 26px;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
             color: #666;
             cursor: pointer;
             transition: all 0.3s;
@@ -1114,8 +1114,8 @@
         .modal-close:hover { color: var(--dark-red); transform: scale(1.2); }
 
         .modal-content h2 {
-            font-size: 26px;
-            letter-spacing: 2px;
+            font-size: 28px;
+            letter-spacing: 3px;
             text-transform: uppercase;
             margin-bottom: 10px;
             color: #fff;
@@ -1129,25 +1129,25 @@
             margin-bottom: 20px;
         }
 
-        .form-group { margin-bottom: 15px; }
+        .form-group { margin-bottom: 18px; }
 
         .form-group label {
             display: block;
-            font-size: 10px;
-            letter-spacing: 1px;
+            font-size: 11px;
+            letter-spacing: 2px;
             text-transform: uppercase;
             color: var(--silver);
-            margin-bottom: 5px;
+            margin-bottom: 6px;
         }
 
         .form-group input,
         .form-group textarea {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             background: rgba(0, 0, 0, 0.6);
             border: 1px solid var(--darker-red);
             color: #fff;
-            font-size: 13px;
+            font-size: 14px;
             letter-spacing: 1px;
             transition: all 0.3s;
             font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
@@ -1167,12 +1167,12 @@
 
         .modal-content .neon-btn {
             width: 100%;
-            margin-top: 8px;
-            padding: 12px;
-            font-size: 12px;
+            margin-top: 10px;
+            padding: 14px;
+            font-size: 13px;
             background: transparent;
             color: #fff;
-            border: 2px solid var(--darker-red);
+            border: 1px solid var(--darker-red);
             cursor: pointer;
             transition: all 0.3s;
             font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
@@ -1763,6 +1763,9 @@
                     <textarea id="memberMessage" name="message" placeholder="Tell us what you're interested in..." data-editable="modal-placeholder-message" data-text="Tell us what you're interested in..."></textarea>
                 </div>
                 <input type="hidden" name="source" id="formSource" value="LiveGigs Asia">
+                <div id="formSuccess" style="display: none; text-align: center; padding: 15px; background: rgba(139, 0, 0, 0.2); border: 1px solid var(--dark-red); margin-bottom: 20px;">
+                    <p style="color: #fff; margin: 0; font-size: 14px;">✓ Application sent successfully! We'll contact you soon.</p>
+                </div>
                 <button type="submit" class="neon-btn" data-editable="modal-submit" data-text="SUBMIT APPLICATION">SUBMIT APPLICATION</button>
             </form>
         </div>
@@ -1773,7 +1776,7 @@
         function updateContent(editableId, newValue, type = 'text') {
             const element = document.querySelector(`[data-editable="${editableId}"]`);
             if (!element) return;
-            
+
             if (type === 'src') {
                 element.src = newValue;
                 element.setAttribute('data-src', newValue);
@@ -1790,7 +1793,7 @@
 
         window.LiveGigsAdmin = {
             update: updateContent,
-            
+
             updateBanner: function(id, updates) {
                 if (updates.bg) updateContent(`partner-${id}-bg`, updates.bg, 'src');
                 if (updates.logo) updateContent(`partner-${id}-logo`, updates.logo, 'src');
@@ -1809,11 +1812,11 @@
                     }
                 }
             },
-            
+
             addCollabLogo: function(name, imgSrc, href) {
                 const container = document.getElementById('partnersLogoGrid');
                 const id = document.querySelectorAll('.partner-logo-item').length + 1;
-                
+
                 const item = document.createElement('a');
                 item.href = href || '#';
                 item.target = '_blank';
@@ -1822,14 +1825,14 @@
                 item.setAttribute('data-href', href || '#');
                 item.setAttribute('data-name', name);
                 item.innerHTML = `<img src="${imgSrc}" alt="${name}" onerror="this.src='https://via.placeholder.com/180x110/333/fff?text=${encodeURIComponent(name)}'">`;
-                
+
                 container.appendChild(item);
             },
-            
+
             updateCollabLogo: function(id, updates) {
                 const item = document.querySelector(`[data-editable="collab-logo-${id}"]`);
                 if (!item) return;
-                
+
                 if (updates.name) item.setAttribute('data-name', updates.name);
                 if (updates.href) {
                     item.href = updates.href;
@@ -1840,7 +1843,7 @@
                     if (img) img.src = updates.imgSrc;
                 }
             },
-            
+
             removeCollabLogo: function(id) {
                 const item = document.querySelector(`[data-editable="collab-logo-${id}"]`);
                 if (item) item.remove();
@@ -1855,7 +1858,7 @@
             };
             img.src = './image/hero%20bg.jpeg';
         }
-        
+
         window.addEventListener('load', checkBackgroundImage);
 
         function openModal() {
@@ -1873,42 +1876,53 @@
         });
 
         function handleSubmit(e) {
-            // 设置来源页面
-            const pageNames = {
-                'index.html': 'LiveGigs Asia Homepage',
-                'cn.html': 'LiveGigs CN Homepage',
-                'partners.html': 'LiveGigs Asia Partners Page',
-                'events.html': 'LiveGigs Asia Events Page',
-                'privacypolicy.html': 'LiveGigs Asia Privacy Policy Page',
-                'accessibilitystatement.html': 'LiveGigs Asia Accessibility Page'
-            };
-            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-            const sourceField = document.getElementById('formSource');
-            if (sourceField) {
-                sourceField.value = pageNames[currentPage] || 'LiveGigs Asia';
-            }
-
-            // 显示提交中状态
-            const btn = e.target.querySelector('button[type="submit"]');
-            const originalText = btn.textContent;
-            btn.textContent = 'SENDING...';
-            btn.disabled = true;
-        }
             e.preventDefault();
-            const formData = {
-                name: document.getElementById('memberName').value,
-                email: document.getElementById('memberEmail').value,
-                phone: document.getElementById('memberPhone').value,
-                message: document.getElementById('memberMessage').value,
-                timestamp: new Date().toISOString(),
-                source: 'LiveGigs Asia Partners Page'
-            };
-            let submissions = JSON.parse(localStorage.getItem('membershipSubmissions') || '[]');
-            submissions.push(formData);
-            localStorage.setItem('membershipSubmissions', JSON.stringify(submissions));
-            alert('Thank you for your application! We will contact you soon.');
-            closeModal();
-            document.getElementById('membershipForm').reset();
+
+            const form = document.getElementById('membershipForm');
+            const formData = new FormData(form);
+            const successDiv = document.getElementById('formSuccess');
+
+            // 添加时间戳
+            formData.append('timestamp', new Date().toISOString());
+
+            // 发送到 Formspree
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    // 显示成功消息
+                    successDiv.style.display = 'block';
+
+                    // 保存到 localStorage 备份
+                    const data = {
+                        name: document.getElementById('memberName').value,
+                        email: document.getElementById('memberEmail').value,
+                        phone: document.getElementById('memberPhone').value,
+                        message: document.getElementById('memberMessage').value,
+                        timestamp: new Date().toISOString(),
+                        source: 'LiveGigs Asia Partners Page'
+                    };
+                    let submissions = JSON.parse(localStorage.getItem('membershipSubmissions') || '[]');
+                    submissions.push(data);
+                    localStorage.setItem('membershipSubmissions', JSON.stringify(submissions));
+
+                    // 3秒后关闭弹窗并重置表单
+                    setTimeout(() => {
+                        closeModal();
+                        form.reset();
+                        successDiv.style.display = 'none';
+                    }, 3000);
+                } else {
+                    alert('There was an error submitting your application. Please try again.');
+                }
+            }).catch(error => {
+                console.error('Error:', error);
+                alert('There was an error submitting your application. Please try again.');
+            });
         }
 
         const logo = document.getElementById('logo');
