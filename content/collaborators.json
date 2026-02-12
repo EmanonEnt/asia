@@ -1,22 +1,22 @@
 [
   {
-    "image": "./image/collab1.png",
-    "name": "Warner Music",
-    "link": "https://warnermusic.com"
+    "image": "./image/p-logo-1.png",
+    "name": "TMS LIVE",
+    "link": ""
   },
   {
-    "image": "./image/collab2.png",
-    "name": "Sony Music",
-    "link": "https://sonymusic.com"
+    "image": "./image/p-logo-2.png",
+    "name": "Live Nation",
+    "link": "https://livenation.com"
   },
   {
-    "image": "./image/collab3.png",
-    "name": "Universal",
+    "image": "./image/p-logo-3.png",
+    "name": "TICKETFLAP",
     "link": "https://universalmusic.com"
   },
   {
-    "image": "./image/collab4.png",
-    "name": "Live Nation",
-    "link": "https://livenation.com"
+    "image": "./image/collab2.png",
+    "name": "GIBSON",
+    "link": "https://sonymusic.com"
   }
 ]
