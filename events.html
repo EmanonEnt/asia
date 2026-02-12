@@ -2643,9 +2643,12 @@
             toggleAdmin: toggleAdmin
         };
     </script>
-<script src="./js/data-loader.js"></script>
+<script src="./js/livegigs-data.js"></script>
 <script>
-  DataLoader.init('events');
+  // 自动加载数据并渲染
+  if (typeof LiveGigsData !== 'undefined') {
+    LiveGigsData.loadAndRender('events');
+  }
 </script>
 </body>
 </html>
