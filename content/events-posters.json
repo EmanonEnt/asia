@@ -1,6 +1,6 @@
 {
   "page": "events",
-  "poster2_carousel": true,
+  "poster2_carousel": false,
   "posters": [
     {
       "id": 1,
