@@ -1259,11 +1259,21 @@
             }, 5000);
         }
     </script>
+<!-- 数据加载脚本 -->
 <script src="./js/livegigs-data.js"></script>
 <script>
-  if (typeof LiveGigsData !== 'undefined') {
-    LiveGigsData.loadAndRender('cn');
-  }
+    // 页面加载完成后自动加载数据
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.LiveGigsData) {
+                window.LiveGigsData.reload();
+            }
+        });
+    } else {
+        if (window.LiveGigsData) {
+            window.LiveGigsData.reload();
+        }
+    }
 </script>
 </body>
 </html>
