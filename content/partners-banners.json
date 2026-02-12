@@ -1,34 +1,34 @@
 {
   "banners": [
     {
-      "title": "",
-      "details": "",
-      "buttonText": "下载APP",
-      "link": "https://xrebooking.com/app",
+      "title": "LIVEGIGS CN",
+      "details": "Head to our homepage at livegigs.cn and follow us there for exclusive content, early bird tickets, and behind-the-scenes access to China's top live events!",
+      "buttonText": "Go to live gigs cn",
+      "link": "https://livegigs.cn",
       "backgroundImage": "./image/p-p-1.jpg",
-      "logo": "./image/p-p-1logo.png"
+      "logo": "./image/livegigscn1.png"
     },
     {
-      "title": "小子联盟唱片",
-      "details": "独立音乐厂牌，致力于推广优秀独立音乐",
+      "title": "小子聯盟唱片",
+      "details": "",
       "buttonText": "访问网站",
       "link": "https://kids-union.com",
       "backgroundImage": "./image/p-p-2.jpg",
-      "logo": "./image/p-p-2logo.png"
+      "logo": ""
     },
     {
       "title": "XRE BOOKING",
-      "details": "专业演出经纪\\n艺人管理\\n活动制作",
-      "buttonText": "了解更多",
+      "details": "Booking Agency in Punkrock, Garage, Mod, Powerpop, Surf, Poppunk, RocknRoll, Hardcore, Metal.",
+      "buttonText": "XRE BOOKING",
       "link": "https://xrebooking.com",
-      "backgroundImage": "./image/p-p-3.png",
-      "logo": "./image/p-p-3logo.png"
+      "backgroundImage": "./image/p-p-3.jpg",
+      "logo": "./image/webtop.png"
     },
     {
-      "title": "",
+      "title": "CHINESEROCKS",
       "details": "",
       "buttonText": "访问官网",
-      "link": "https://partner4.com",
+      "link": "https://chineserocks.n",
       "backgroundImage": "./image/p-p-4.jpg",
       "logo": "./image/p-p-4logo.png"
     }
