@@ -3,21 +3,19 @@
     "title": "",
     "image": "./image/cn-asiaad.jpg",
     "link_text": "查看详情 →",
-    "link": "./events.html",
-    "carousel": false
+    "link": "./events.html"
   },
   {
-    "title": "",
-    "image": "./image/1-b-2.jpg",
+    "title": "LIVE GIGS ASIA",
     "link_text": "查看详情 →",
     "link": "./events.html",
-    "carousel": false
+    "carousel": false,
+    "image": "./image/1-b-2.jpg"
   },
   {
-    "title": "",
+    "title": "Special Guest",
     "image": "./image/1-b-3.jpg",
     "link_text": "查看详情 →",
-    "link": "./events.html",
-    "carousel": false
+    "link": "./events.html"
   }
 ]
