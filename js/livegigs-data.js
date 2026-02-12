@@ -78,6 +78,33 @@ function getSocialIcon(icon) {
     return icons[icon] || icons[item.icon.toLowerCase()] || `<span>${item.icon}</span>`;
 }
 
+// 修复Logo链接 - 确保指向正确的首页
+function fixLogoLinks() {
+    const logo = document.getElementById('logo') || document.querySelector('.logo-img');
+    if (logo) {
+        // 检测当前页面类型
+        const path = window.location.pathname;
+        let homeUrl = './index.html';
+
+        // 如果是cn页面，logo指向cn.html
+        if (path.includes('cn')) {
+            homeUrl = './cn.html';
+        }
+
+        // 移除原有的onclick事件
+        logo.removeAttribute('onclick');
+
+        // 添加新的点击事件 - 跳转到首页
+        logo.style.cursor = 'pointer';
+        logo.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = homeUrl;
+        });
+
+        console.log('Logo link fixed to:', homeUrl);
+    }
+}
+
 // 主加载函数
 async function initLiveGigsData() {
     // 检测当前页面
@@ -92,6 +119,9 @@ async function initLiveGigsData() {
 
     const config = DATA_CONFIG.pages[pageType];
     if (!config) return;
+
+    // 修复Logo链接（所有页面都需要）
+    fixLogoLinks();
 
     // 加载底部数据（所有页面都需要）
     if (config.footer) {
