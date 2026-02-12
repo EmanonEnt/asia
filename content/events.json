@@ -1,6 +1,6 @@
 {
   "page": "events",
-  "lastUpdated": "2026-02-12T10:00:00.000Z",
+  "lastUpdated": "2026-02-12T12:00:00.000Z",
   "posters": [
     {
       "title": "NONAMEFEST 2026",
@@ -25,8 +25,7 @@
     {
       "title": "Featured Event 1",
       "image": "./image/carousel1.jpg",
-      "date": "2026-03-15",
-      "venue": "Beijing",
+      "link_text": "View →",
       "link": "./events.html"
     }
   ],
