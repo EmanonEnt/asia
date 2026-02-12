@@ -1,9 +1,12 @@
 // LiveGigs Asia - Data Loader
-// 版本：2025-02-12 修复版
+// 修复：添加备用CDN，解决raw.githubusercontent被墙问题
 
-const baseUrl = 'https://emanonent.github.io/asia/content';
+// 主数据源（GitHub Pages）
+const primaryUrl = 'https://emanonent.github.io/asia/content';
+// 备用CDN（jsdelivr）
+const backupUrl = 'https://cdn.jsdelivr.net/gh/EmanonEnt/asia@main/content';
 
-console.log('[LiveGigs] Data loader loaded, baseUrl:', baseUrl);
+console.log('[LiveGigs] Data loader loaded');
 
 const pageConfigs = {
     index: { json: 'banners.json', render: renderIndex },
@@ -14,50 +17,97 @@ const pageConfigs = {
     accessibility: { json: 'footer-global.json', render: renderFooterOnly }
 };
 
+// 带备用方案的加载函数
 async function loadAndRender(pageName) {
-    console.log('[LiveGigs] loadAndRender called for:', pageName);
-
     const config = pageConfigs[pageName];
     if (!config) {
         console.log('[LiveGigs] Unknown page:', pageName);
         return;
     }
 
-    const url = baseUrl + '/' + config.json + '?t=' + Date.now();
-    console.log('[LiveGigs] Fetching:', url);
+    // 先尝试主源
+    let data = await tryLoad(primaryUrl, config.json);
+
+    // 如果失败，尝试备用源
+    if (!data) {
+        console.log('[LiveGigs] Trying backup CDN...');
+        data = await tryLoad(backupUrl, config.json);
+    }
+
+    if (data) {
+        console.log('[LiveGigs] Data loaded, events:', data.events ? data.events.length : 0);
+        config.render(data);
+    } else {
+        console.error('[LiveGigs] Failed to load data from all sources');
+    }
+}
+
+async function tryLoad(baseUrl, jsonFile) {
+    const url = baseUrl + '/' + jsonFile + '?t=' + Date.now();
+    console.log('[LiveGigs] Loading:', url);
 
     try {
-        const response = await fetch(url);
-        console.log('[LiveGigs] Response status:', response.status);
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: { 'Accept': 'application/json' },
+            // 添加超时
+            signal: AbortSignal.timeout(5000)
+        });
 
         if (!response.ok) {
             throw new Error('HTTP ' + response.status);
         }
 
-        const data = await response.json();
-        console.log('[LiveGigs] Data loaded:', data);
-        console.log('[LiveGigs] Events:', data.events ? data.events.length : 0);
-
-        config.render(data);
-        console.log('[LiveGigs] Render complete for:', pageName);
+        return await response.json();
 
     } catch (error) {
-        console.error('[LiveGigs] Error:', error);
+        console.log('[LiveGigs] Load failed:', error.message);
+        return null;
     }
 }
 
+// Events页面渲染
 function renderEvents(data) {
-    console.log('[LiveGigs] renderEvents called');
+    console.log('[LiveGigs] Rendering events...');
 
-    // 更新活动
+    // 1. 更新轮播海报
+    if (data.carousel && data.carousel.length > 0) {
+        const track = document.getElementById('autoScrollTrack');
+        if (track) {
+            const items = data.carousel.map(item => `
+                <div class="auto-scroll-item" data-date="${item.date || ''}">
+                    <div class="auto-scroll-overlay"></div>
+                    <img src="${item.image}" alt="${item.title}">
+                    <div class="auto-scroll-info">
+                        <h4 class="auto-scroll-title">${item.title}</h4>
+                        <div class="auto-scroll-meta">${item.date || ''} / ${item.venue || ''}</div>
+                    </div>
+                </div>
+            `).join('');
+            track.innerHTML = items + items; // 克隆一份
+        }
+    }
+
+    // 2. 更新海报
+    if (data.posters && data.posters.length >= 3) {
+        for (let i = 1; i <= 3; i++) {
+            const p = document.querySelector('[data-poster-id="' + i + '"]');
+            if (p && data.posters[i-1]) {
+                const img = p.querySelector('img');
+                const title = p.querySelector('.poster-title');
+                if (img && data.posters[i-1].image) img.src = data.posters[i-1].image;
+                if (title && data.posters[i-1].title) title.textContent = data.posters[i-1].title;
+            }
+        }
+    }
+
+    // 3. 更新活动 - 关键部分
     if (data.events && data.events.length > 0) {
         const grid = document.getElementById('eventsGrid');
         if (grid) {
-            console.log('[LiveGigs] Updating events grid with', data.events.length, 'events');
-
             const html = data.events.map((event, index) => {
                 const imageUrl = event.poster || event.image || './image/placeholder.jpg';
-                const btnText = event.buttonText || 'Details';
+                const btnText = event.buttonText || event.button_text || 'Details';
                 const btnLink = event.link || '#';
 
                 let statusClass = 'countdown';
@@ -89,62 +139,30 @@ function renderEvents(data) {
             // Load More按钮
             const loadMore = document.getElementById('loadMoreContainer');
             if (loadMore) {
-                if (data.events.length > 3) {
-                    loadMore.classList.add('visible');
-                } else {
-                    loadMore.classList.remove('visible');
-                }
+                loadMore.classList.toggle('visible', data.events.length > 3);
             }
 
-            console.log('[LiveGigs] Events grid updated');
-        } else {
-            console.log('[LiveGigs] eventsGrid not found');
-        }
-    }
-
-    // 更新轮播
-    if (data.carousel && data.carousel.length > 0) {
-        const track = document.getElementById('autoScrollTrack');
-        if (track) {
-            const items = data.carousel.map(item => `
-                <div class="auto-scroll-item">
-                    <div class="auto-scroll-overlay"></div>
-                    <img src="${item.image}" alt="${item.title}">
-                    <div class="auto-scroll-info">
-                        <h4 class="auto-scroll-title">${item.title}</h4>
-                        <div class="auto-scroll-meta">${item.date || ''} / ${item.venue || ''}</div>
-                    </div>
-                </div>
-            `).join('');
-            const clones = items; // 克隆一份
-            track.innerHTML = items + clones;
-        }
-    }
-
-    // 更新海报
-    if (data.posters && data.posters.length >= 3) {
-        for (let i = 1; i <= 3; i++) {
-            const poster = document.querySelector('[data-poster-id="' + i + '"]');
-            if (poster && data.posters[i-1]) {
-                const img = poster.querySelector('img');
-                const title = poster.querySelector('.poster-title');
-                if (img && data.posters[i-1].image) img.src = data.posters[i-1].image;
-                if (title && data.posters[i-1].title) title.textContent = data.posters[i-1].title;
+            // 重新初始化倒计时
+            if (typeof initCountdowns === 'function') {
+                setTimeout(initCountdowns, 100);
             }
+
+            console.log('[LiveGigs] Events updated:', data.events.length);
         }
     }
 
-    // 更新底部
+    // 4. 更新底部
     if (data.footer) {
         renderFooter(data.footer);
     }
 }
 
-function renderFooter(footerData) {
-    if (!footerData) return;
+// 底部渲染
+function renderFooter(data) {
+    if (!data) return;
 
     // 社交链接
-    if (footerData.social && footerData.social.length > 0) {
+    if (data.social && data.social.length > 0) {
         const container = document.getElementById('socialContainer');
         if (container) {
             const icons = {
@@ -154,39 +172,40 @@ function renderFooter(footerData) {
                 x: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>'
             };
 
-            container.innerHTML = footerData.social.map(s => 
+            container.innerHTML = data.social.map(s => 
                 `<a href="${s.url}" class="social-icon" target="_blank" title="${s.name}">${icons[s.platform] || icons.facebook}</a>`
             ).join('');
         }
     }
 
     // 版权
-    if (footerData.copyright) {
+    if (data.copyright) {
         const el = document.querySelector('.footer-bottom .copyright');
-        if (el) el.textContent = footerData.copyright;
+        if (el) el.textContent = data.copyright;
     }
 
     // 邮箱
-    if (footerData.email) {
+    if (data.email) {
         const el = document.querySelector('.footer-contact-left a[href^="mailto"]');
         if (el) {
-            el.href = 'mailto:' + footerData.email;
-            el.textContent = footerData.email;
+            el.href = 'mailto:' + data.email;
+            el.textContent = data.email;
         }
     }
 
     // 电话
-    if (footerData.phone) {
+    if (data.phone) {
         const el = document.querySelector('.footer-contact-left a[href^="tel"]');
         if (el) {
-            el.href = 'tel:' + footerData.phone.replace(/\s/g, '');
-            el.textContent = footerData.phone;
+            el.href = 'tel:' + data.phone.replace(/\s/g, '');
+            el.textContent = data.phone;
         }
     }
 }
 
+// 其他页面渲染函数
 function renderIndex(data) {
-    if (data.banners && data.banners.length > 0) {
+    if (data.banners) {
         const container = document.getElementById('banner-container');
         if (container) {
             container.innerHTML = data.banners.map(b => `
@@ -240,9 +259,7 @@ function renderPartners(data) {
         const grid = document.getElementById('collaborators-grid');
         if (grid) {
             grid.innerHTML = data.collaborators.map(c => `
-                <div class="collaborator-logo">
-                    <img src="${c.image}" alt="${c.name || ''}" style="width:180px;height:110px;object-fit:contain;">
-                </div>
+                <div class="collaborator-logo"><img src="${c.image}" alt="" style="width:180px;height:110px;object-fit:contain;"></div>
             `).join('');
         }
     }
@@ -253,24 +270,17 @@ function renderFooterOnly(data) {
     if (data.footer) renderFooter(data.footer);
 }
 
-// 页面加载完成后自动执行
+// 页面加载后自动执行
 document.addEventListener('DOMContentLoaded', function() {
     const path = window.location.pathname;
-    console.log('[LiveGigs] Page path:', path);
+    console.log('[LiveGigs] Page:', path);
 
-    if (path.indexOf('events') !== -1) {
-        loadAndRender('events');
-    } else if (path.indexOf('partners') !== -1) {
-        loadAndRender('partners');
-    } else if (path.indexOf('cn') !== -1) {
-        loadAndRender('cn');
-    } else if (path.indexOf('privacy') !== -1) {
-        loadAndRender('privacy');
-    } else if (path.indexOf('accessibility') !== -1) {
-        loadAndRender('accessibility');
-    } else {
-        loadAndRender('index');
-    }
+    if (path.indexOf('events') !== -1) loadAndRender('events');
+    else if (path.indexOf('partners') !== -1) loadAndRender('partners');
+    else if (path.indexOf('cn') !== -1) loadAndRender('cn');
+    else if (path.indexOf('privacy') !== -1) loadAndRender('privacy');
+    else if (path.indexOf('accessibility') !== -1) loadAndRender('accessibility');
+    else loadAndRender('index');
 });
 
 window.LiveGigsData = { loadAndRender: loadAndRender };

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Test Data Sources</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #111; color: #fff; }
+        .source { margin: 20px 0; padding: 15px; border: 1px solid #333; background: #222; }
+        .success { color: #0f0; }
+        .error { color: #f00; }
+        pre { background: #333; padding: 10px; overflow: auto; max-height: 300px; }
+    </style>
+</head>
+<body>
+    <h1>Testing Data Sources</h1>
+    <div id="results"></div>
+
+    <script>
+        const sources = [
+            { name: 'GitHub Pages', url: 'https://emanonent.github.io/asia/content/events.json' },
+            { name: 'jsDelivr CDN', url: 'https://cdn.jsdelivr.net/gh/EmanonEnt/asia@main/content/events.json' },
+            { name: 'Raw GitHub (可能墙)', url: 'https://raw.githubusercontent.com/EmanonEnt/asia/main/content/events.json' }
+        ];
+
+        async function testSource(source) {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = 'source';
+            div.innerHTML = '<h3>' + source.name + '</h3><p>Loading: ' + source.url + '</p>';
+            results.appendChild(div);
+
+            try {
+                const response = await fetch(source.url + '?t=' + Date.now(), {
+                    signal: AbortSignal.timeout(10000)
+                });
+
+                if (!response.ok) throw new Error('HTTP ' + response.status);
+
+                const data = await response.json();
+                div.innerHTML += '<p class="success">✓ SUCCESS</p>';
+                div.innerHTML += '<p>Events: ' + (data.events ? data.events.length : 0) + '</p>';
+                div.innerHTML += '<pre>' + JSON.stringify(data.events ? data.events[0] : data, null, 2) + '</pre>';
+
+            } catch (error) {
+                div.innerHTML += '<p class="error">✗ FAILED: ' + error.message + '</p>';
+            }
+        }
+
+        // 测试所有源
+        sources.forEach(testSource);
+    </script>
+</body>
+</html>
