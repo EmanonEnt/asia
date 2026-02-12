@@ -1,89 +1,108 @@
 {
   "page": "events",
-  "lastUpdated": "2026-02-12T12:00:00.000Z",
-  "posters": [
+  "lastUpdated": "2026-02-12T00:00:00.000Z",
+  "events": [
     {
+      "id": 1,
       "title": "NONAMEFEST 2026",
-      "image": "./image/1-b-2.jpg",
-      "link_text": "View Details →",
-      "link": "./events.html"
+      "date": "2026-10-10",
+      "venue": "Riot City",
+      "description": "NONAMEFEST 2026",
+      "poster": "./image/thenonameanti-.jpg",
+      "status": "comingsoon",
+      "buttonText": "購買票券",
+      "buttonLink": "https://example.com/tickets1"
     },
     {
-      "title": "PUNK HEART FESTIVAL 2026",
-      "image": "./image/1-b-3.jpg",
-      "link_text": "View Details →",
-      "link": "./events.html"
+      "id": 2,
+      "title": "PUNK HEART FESTIVAL 2026 WARM-UP Show",
+      "date": "2026-01-17",
+      "venue": "未來俱樂部",
+      "description": "XI'AN",
+      "poster": "./image/punkheartbanner.jpg",
+      "status": "soldout",
+      "buttonText": "詳細資料",
+      "buttonLink": "https://example.com/info2"
     },
     {
-      "title": "Epic Past Gigs",
-      "image": "./image/livegigscn1.png",
-      "link_text": "View Details →",
-      "link": "./events.html"
+      "id": 3,
+      "title": "PUNK HEART FESTIVAL 2025",
+      "date": "2025-10-03",
+      "venue": "回授俱樂部",
+      "description": "PUNK HEART FESTIVAL 2025",
+      "poster": "./image/1-b-2.jpg",
+      "status": "ontour",
+      "buttonText": "詳細資料",
+      "buttonLink": "https://example.com/info3"
+    },
+    {
+      "id": 4,
+      "title": "ROCK STORM 2026",
+      "date": "2026-01-15",
+      "venue": "TAIPEI",
+      "description": "ROCK STORM 2026",
+      "poster": "./image/1-b-3.jpg",
+      "status": "comingsoon",
+      "buttonText": "Learn More",
+      "buttonLink": "https://example.com/info4"
     }
   ],
   "carousel": [
     {
-      "title": "Featured Event 1",
+      "title": "METAL STORM",
+      "date": "FEB 20, 2026",
+      "venue": "KAOHSIUNG",
+      "description": "",
       "image": "./image/carousel1.jpg",
-      "link_text": "View →",
+      "linkText": "View →",
+      "link": "./events.html"
+    },
+    {
+      "title": "PUNK NIGHT",
+      "date": "MAR 10, 2026",
+      "venue": "TAICHUNG",
+      "description": "",
+      "image": "./image/carousel2.jpg",
+      "linkText": "View →",
+      "link": "./events.html"
+    },
+    {
+      "title": "INDIE MUSIC FEST",
+      "date": "APR 05, 2026",
+      "venue": "HONG KONG",
+      "description": "",
+      "image": "./image/carousel3.jpg",
+      "linkText": "View →",
+      "link": "./events.html"
+    },
+    {
+      "title": "ROCK STORM 2026",
+      "date": "JAN 15, 2026",
+      "venue": "TAIPEI",
+      "description": "",
+      "image": "./image/carousel4.jpg",
+      "linkText": "View →",
       "link": "./events.html"
     }
   ],
-  "events": [
+  "poster2Carousel": [
     {
-      "id": "event-001",
-      "title": "发高洁风格就放寒假发",
-      "date": "2026-03-15",
-      "venue": "测试场地",
-      "time": "20:00",
-      "ticket": "¥180",
-      "onTour": false,
-      "soldOut": false,
-      "details": "测试活动详情",
-      "buttonText": "购买票券",
-      "link": "#",
-      "poster": "./image/event1.jpg"
+      "title": "Epic Past Gig 1",
+      "image": "./image/1-b-3.jpg",
+      "linkText": "View Details →",
+      "link": "./events.html"
     },
     {
-      "id": "event-002",
-      "title": "13321223213123",
-      "date": "2026-04-20",
-      "venue": "另一个场地",
-      "time": "19:30",
-      "ticket": "¥220",
-      "onTour": true,
-      "soldOut": false,
-      "details": "另一个测试活动",
-      "buttonText": "详细资料",
-      "link": "#",
-      "poster": "./image/event2.jpg"
+      "title": "Epic Past Gig 2",
+      "image": "./image/livegigscn1.png",
+      "linkText": "View Details →",
+      "link": "./events.html"
     },
     {
-      "id": "event-003",
-      "title": "1111111111111111111",
-      "date": "2026-05-01",
-      "venue": "大型场馆",
-      "time": "18:00",
-      "ticket": "¥350",
-      "onTour": false,
-      "soldOut": true,
-      "details": "售罄测试活动",
-      "buttonText": "售罄",
-      "link": "#",
-      "poster": "./image/event3.jpg"
+      "title": "Epic Past Gig 3",
+      "image": "./image/thenonameanti-.jpg",
+      "linkText": "View Details →",
+      "link": "./events.html"
     }
-  ],
-  "footer": {
-    "copyright": "© 2026 LIVEGIGS ASIA. ALL RIGHTS RESERVED.",
-    "email": "xrebooking@hotmail.com",
-    "phone": "+86 123 4567 8900",
-    "address": "Asia",
-    "social": [
-      { "platform": "facebook", "name": "Facebook", "url": "https://facebook.com/livegigsasia" },
-      { "platform": "instagram", "name": "Instagram", "url": "https://instagram.com/livegigsasia" },
-      { "platform": "youtube", "name": "YouTube", "url": "https://youtube.com/livegigsasia" },
-      { "platform": "x", "name": "X", "url": "https://x.com/livegigsasia" }
-    ],
-    "producer": "./image/emanonent-logo.png"
-  }
+  ]
 }
