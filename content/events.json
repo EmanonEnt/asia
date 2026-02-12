@@ -79,13 +79,6 @@
       "time": "18:00",
       "venue": "HONG KONG",
       "image": "./image/carousel4.jpg"
-    },
-    {
-      "title": "HARD ROCK PARTY",
-      "date": "2026-05-18",
-      "time": "20:00",
-      "venue": "SINGAPORE",
-      "image": "./image/carousel5.jpg"
     }
   ],
   "posters": [
@@ -93,28 +86,44 @@
       "id": 1,
       "title": "LiveGigs CN",
       "image": "./image/livegigscn1.png",
-      "linkText": "Get on WeChat →",
+      "link_text": "Get on WeChat →",
       "link": "https://wxaurl.cn/HMcAK6R7fou"
     },
     {
       "id": 2,
       "title": "Epic Past Gigs",
       "image": "./image/1-b-3.jpg",
-      "linkText": "View Gallery →",
-      "link": "./events.html",
-      "mobileText": "Legendary Live Events",
-      "carousel": [
-        "./image/1-b-3.jpg",
-        "./image/livegigscn1.png",
-        "./image/thenonameanti-.jpg"
-      ]
+      "link_text": "View Gallery →",
+      "link": "./events.html"
     },
     {
       "id": 3,
       "title": "XRE Booking",
       "image": "./image/xrebookingad.jpg",
-      "linkText": "Check Out More Partners →",
+      "link_text": "Check Out More Partners →",
       "link": "./partners.html"
     }
-  ]
+  ],
+  "footer": {
+    "copyright": "Copyright © 2001-2026 EMANON ENT. - All Rights Reserved.",
+    "social": [
+      {
+        "platform": "facebook",
+        "url": "https://facebook.com/livegigsasia"
+      },
+      {
+        "platform": "instagram",
+        "url": "https://instagram.com/livegigsasia"
+      },
+      {
+        "platform": "youtube",
+        "url": "https://youtube.com/livegigsasia"
+      },
+      {
+        "platform": "x",
+        "url": "https://x.com/livegigsasia"
+      }
+    ],
+    "producer": "./image/emanonent-logo.png"
+  }
 }

@@ -1,7 +1,7 @@
 /**
  * LiveGigs Asia - Data Loader
  * 自动从 GitHub Pages 加载 JSON 数据并渲染到页面
- * 适配现有 events.html 结构，不改变任何设计和效果
+ * 修复：使用同域名避免CORS，支持Events页面完整功能
  */
 
 const LiveGigsData = {
@@ -68,8 +68,7 @@ const LiveGigsData = {
             return;
         }
 
-        // 清空现有活动（保留前3个占位用于更新，或完全重建）
-        // 策略：如果后台有数据，完全替换；否则保留静态内容
+        // 如果没有活动数据，保留静态内容
         if (events.length === 0) {
             console.log('[LiveGigs] No events data, keeping static content');
             return;
@@ -115,7 +114,8 @@ const LiveGigsData = {
         // 构建详情文字（日期 | 场地）
         let detailsText = '';
         if (event.date && event.venue) {
-            detailsText = `${this.formatDate(event.date)} | ${event.venue}`;
+            const dateStr = this.formatDate(event.date);
+            detailsText = `${dateStr} | ${event.venue}`;
         } else if (event.date) {
             detailsText = this.formatDate(event.date);
         } else if (event.venue) {
@@ -263,110 +263,42 @@ const LiveGigsData = {
         console.log('[LiveGigs] Auto scroll rendered:', items.length, 'items');
     },
 
-    // 渲染海报区域
+    // 渲染海报数据
     renderPosters: function(posters) {
-        if (!posters || !Array.isArray(posters)) {
-            console.log('[LiveGigs] No posters data');
-            return;
-        }
+        if (!posters || !Array.isArray(posters)) return;
 
-        // 海报1
-        if (posters[0]) {
-            this.updatePoster(1, posters[0]);
-        }
+        posters.forEach((poster, index) => {
+            const i = index + 1;
+            const posterEl = document.querySelector(`[data-poster-id="${i}"]`);
+            if (!posterEl) return;
 
-        // 海报2 - 支持轮播
-        if (posters[1]) {
-            this.updatePoster2(posters[1]);
-        }
-
-        // 海报3
-        if (posters[2]) {
-            this.updatePoster(3, posters[2]);
-        }
-
-        console.log('[LiveGigs] Posters rendered');
-    },
-
-    // 更新单个海报
-    updatePoster: function(id, poster) {
-        const posterEl = document.querySelector(`[data-poster-id="${id}"]`);
-        if (!posterEl) return;
-
-        // 更新图片
-        const img = posterEl.querySelector('img');
-        if (img && poster.image) {
-            img.src = poster.image;
-            img.setAttribute('data-src', poster.image);
-        }
-
-        // 更新标题
-        const title = posterEl.querySelector('.poster-title');
-        if (title && poster.title) {
-            title.textContent = poster.title;
-            title.setAttribute('data-text', poster.title);
-        }
-
-        // 更新链接
-        const link = posterEl.querySelector('.poster-link');
-        if (link && poster.linkText) {
-            link.textContent = poster.linkText;
-            link.setAttribute('data-text', poster.linkText);
-        }
-        if (poster.link) {
-            posterEl.setAttribute('data-link', poster.link);
-            if (link) link.href = poster.link;
-        }
-    },
-
-    // 更新海报2（支持轮播）
-    updatePoster2: function(poster) {
-        const posterEl = document.querySelector('[data-poster-id="2"]');
-        if (!posterEl) return;
-
-        // 如果有轮播图片数组
-        if (poster.carousel && Array.isArray(poster.carousel) && poster.carousel.length > 0) {
-            const carousel = posterEl.querySelector('#posterCarousel');
-            if (carousel) {
-                // 更新轮播图片
-                const images = carousel.querySelectorAll('img:not(.active)');
-                poster.carousel.forEach((imgSrc, index) => {
-                    const img = carousel.querySelector(`[data-editable="poster-2-image-${index + 1}"]`);
-                    if (img) {
-                        img.src = imgSrc;
-                        img.setAttribute('data-src', imgSrc);
-                    }
-                });
-            }
-        } else if (poster.image) {
-            // 单张图片
+            // 更新图片
             const img = posterEl.querySelector('img');
-            if (img) {
+            if (img && poster.image) {
                 img.src = poster.image;
                 img.setAttribute('data-src', poster.image);
             }
-        }
 
-        // 更新标题
-        const title = posterEl.querySelector('.poster-title');
-        if (title && poster.title) {
-            title.textContent = poster.title;
-            title.setAttribute('data-text', poster.title);
-        }
+            // 更新标题
+            const title = posterEl.querySelector('.poster-title');
+            if (title && poster.title) {
+                title.textContent = poster.title;
+                title.setAttribute('data-text', poster.title);
+            }
 
-        // 更新手机端文字
-        const mobileText = posterEl.querySelector('.mobile-poster2-text h3');
-        if (mobileText && poster.mobileText) {
-            mobileText.textContent = poster.mobileText;
-            mobileText.setAttribute('data-text', poster.mobileText);
-        }
+            // 更新链接
+            const link = posterEl.querySelector('.poster-link');
+            if (link && poster.link_text) {
+                link.textContent = poster.link_text;
+                link.setAttribute('data-text', poster.link_text);
+            }
+            if (poster.link) {
+                posterEl.setAttribute('data-link', poster.link);
+                if (link) link.href = poster.link;
+            }
+        });
 
-        // 更新链接文字
-        const link = posterEl.querySelector('.poster-link');
-        if (link && poster.linkText) {
-            link.textContent = poster.linkText;
-            link.setAttribute('data-text', poster.linkText);
-        }
+        console.log('[LiveGigs] Posters rendered:', posters.length);
     },
 
     // 渲染底部数据
@@ -412,30 +344,6 @@ const LiveGigsData = {
             }
         }
 
-        // 联系信息
-        if (footer.email) {
-            const emailEl = document.querySelector('.footer-contact-left a[href^="mailto"]');
-            if (emailEl) {
-                emailEl.href = 'mailto:' + footer.email;
-                emailEl.textContent = footer.email;
-            }
-        }
-
-        if (footer.phone) {
-            const phoneEl = document.querySelector('.footer-contact-left a[href^="tel"]');
-            if (phoneEl) {
-                phoneEl.href = 'tel:' + footer.phone;
-                phoneEl.textContent = footer.phone;
-            }
-        }
-
-        if (footer.address) {
-            const addressEl = document.querySelector('.footer-contact-right .contact-item');
-            if (addressEl) {
-                addressEl.innerHTML = footer.address.replace(/\n/g, '<br>');
-            }
-        }
-
         console.log('[LiveGigs] Footer rendered');
     },
 
@@ -471,10 +379,26 @@ const LiveGigsData = {
                 if (eventsData.posters && eventsData.posters.length > 0) {
                     this.renderPosters(eventsData.posters);
                 }
+                // 渲染底部
+                if (eventsData.footer) {
+                    this.renderFooter(eventsData.footer);
+                }
+            }
+        } else {
+            // 其他页面（index, cn等）
+            const banners = await this.load('banners.json');
+            if (banners && banners.banners) {
+                this.renderBanners(banners.banners);
             }
 
-            // 加载底部数据
-            const footer = await this.load('footer-global.json');
+            const postersFile = pageType === 'cn' ? 'cn-posters.json' : 'index-posters.json';
+            const posters = await this.load(postersFile);
+            if (posters && posters.posters) {
+                this.renderPosters(posters.posters);
+            }
+
+            const footerFile = pageType === 'cn' ? 'footer-cn.json' : 'footer-global.json';
+            const footer = await this.load(footerFile);
             if (footer) {
                 this.renderFooter(footer);
             }
@@ -490,9 +414,9 @@ const LiveGigsData = {
     }
 };
 
-// 自动初始化（如果页面有 data-page 属性）
+// 自动初始化
 document.addEventListener('DOMContentLoaded', function() {
-    // 对于 events.html，直接加载
+    // 检查是否是 events 页面
     if (document.getElementById('eventsGrid')) {
         LiveGigsData.loadAndRender('events');
     }
