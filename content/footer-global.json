@@ -1,81 +1,27 @@
 {
-  "siteName": "LIVEGIGS",
-  "siteNameAsia": "ASIA",
-  "contactText": "For inquiries and partnership opportunities, reach out to us at:",
-  "email": "xrebooking@hotmail.com",
-  "address": "Hong Kong | Shanghai | Beijing",
-  "copyright": "Copyright © 2001-2026 EMANON ENT",
+  "logoText": "LIVEGIGS(ASIA)",
+  "copyright": "Copyright © 2001-2026 EMANON ENTERTAINMENT",
   "producerLogo": "./image/emanonent-logo.png",
-  "socials": [
+  "socialMedia": [
     {
-      "id": 1,
       "name": "Facebook",
-      "icon": "facebook",
-      "link": "https://facebook.com/livegigsasia",
-      "enabled": true
+      "icon": "",
+      "link": "https://facebook.com/livegigsasia"
     },
     {
-      "id": 2,
       "name": "Instagram",
-      "icon": "instagram",
-      "link": "https://instagram.com/livegigsasia",
-      "enabled": true
+      "icon": "",
+      "link": "https://instagram.com/livegigsasia"
     },
     {
-      "id": 3,
       "name": "YouTube",
-      "icon": "youtube",
-      "link": "https://youtube.com/livegigsasia",
-      "enabled": true
+      "icon": "",
+      "link": "https://youtube.com/livegigsasia"
     },
     {
-      "id": 4,
       "name": "X",
-      "icon": "x",
-      "link": "https://x.com/livegigsasia",
-      "enabled": true
-    },
-    {
-      "id": 5,
-      "name": "",
       "icon": "",
-      "link": "",
-      "enabled": false
-    },
-    {
-      "id": 6,
-      "name": "",
-      "icon": "",
-      "link": "",
-      "enabled": false
-    },
-    {
-      "id": 7,
-      "name": "",
-      "icon": "",
-      "link": "",
-      "enabled": false
-    },
-    {
-      "id": 8,
-      "name": "",
-      "icon": "",
-      "link": "",
-      "enabled": false
-    },
-    {
-      "id": 9,
-      "name": "",
-      "icon": "",
-      "link": "",
-      "enabled": false
-    },
-    {
-      "id": 10,
-      "name": "",
-      "icon": "",
-      "link": "",
-      "enabled": false
+      "link": "https://x.com/livegigsasia"
     }
   ]
 }

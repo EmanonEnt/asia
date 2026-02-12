@@ -1,29 +1,23 @@
 {
-  "page": "cn",
   "posters": [
     {
-      "id": 1,
-      "title": "NONAMEFEST 2026",
-      "linkText": "查看詳情 →",
-      "link": "./events.html",
-      "image": "./image/1-b-3.jpg",
-      "enabled": true
-    },
-    {
-      "id": 2,
-      "title": "PUNK HEART FESTIVAL 2026",
-      "linkText": "查看詳情 →",
-      "link": "./events.html",
-      "image": "./image/1-b-2.jpg",
-      "enabled": true
-    },
-    {
-      "id": 3,
       "title": "LiveGigs Asia",
-      "linkText": "查看詳情 →",
-      "link": "./livegigsasia",
-      "image": "./image/livegigscn1.png",
-      "enabled": true
+      "buttonText": "查看详情 →",
+      "link": "https://livegigs.cn",
+      "image": "./image/livegigscn1.png"
+    },
+    {
+      "title": "活动 2",
+      "buttonText": "查看详情 →",
+      "link": "https://example.com/event2",
+      "image": "./image/cn-asiaad.jpg",
+      "slides": []
+    },
+    {
+      "title": "活动 3",
+      "buttonText": "查看详情 →",
+      "link": "https://example.com/event3",
+      "image": "./image/1-b-3.jpg"
     }
   ]
 }

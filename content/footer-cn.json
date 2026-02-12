@@ -1,74 +1,27 @@
 {
-  "socials": [
+  "logoText": "LIVEGIGS(CN)",
+  "copyright": "Copyright © 2001-2026 EMANON ENTERTAINMENT",
+  "producerLogo": "./image/emanonent-logo.png",
+  "socialMedia": [
     {
-      "id": 1,
-      "name": "",
+      "name": "Weibo",
       "icon": "",
-      "link": "",
-      "enabled": false
+      "link": "https://weibo.com/livegigscn"
     },
     {
-      "id": 2,
-      "name": "",
+      "name": "WeChat",
       "icon": "",
-      "link": "",
-      "enabled": false
+      "link": "#"
     },
     {
-      "id": 3,
-      "name": "",
+      "name": "Xiaohongshu",
       "icon": "",
-      "link": "",
-      "enabled": false
+      "link": "https://xiaohongshu.com/livegigs"
     },
     {
-      "id": 4,
-      "name": "",
+      "name": "MiniProgram",
       "icon": "",
-      "link": "",
-      "enabled": false
-    },
-    {
-      "id": 5,
-      "name": "",
-      "icon": "",
-      "link": "",
-      "enabled": false
-    },
-    {
-      "id": 6,
-      "name": "",
-      "icon": "",
-      "link": "",
-      "enabled": false
-    },
-    {
-      "id": 7,
-      "name": "",
-      "icon": "",
-      "link": "",
-      "enabled": false
-    },
-    {
-      "id": 8,
-      "name": "",
-      "icon": "",
-      "link": "",
-      "enabled": false
-    },
-    {
-      "id": 9,
-      "name": "",
-      "icon": "",
-      "link": "",
-      "enabled": false
-    },
-    {
-      "id": 10,
-      "name": "",
-      "icon": "",
-      "link": "",
-      "enabled": false
+      "link": "#"
     }
   ]
 }

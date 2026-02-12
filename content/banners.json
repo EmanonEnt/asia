@@ -1,49 +1,16 @@
 {
   "banners": [
     {
-      "id": 1,
-      "title": "THE NONAME ANTI IPA",
-      "buttonText": "無名逆襲社交IPA",
-      "link": "https://Nonamepunks.com",
-      "image": "./image/thenonameanti-.jpg",
-      "order": 1,
-      "enabled": true
+      "title": "THE NONAME",
+      "buttonText": "View Details →",
+      "link": "https://thenonameanti-.com",
+      "image": "./image/thenonameanti-.jpg"
     },
     {
-      "id": 2,
-      "title": "朋克心音樂節2026",
-      "buttonText": "PUNK HEART FESTIVAL",
-      "link": "https://Punkheartfest.com",
-      "image": "./image/punkheartbanner.jpg",
-      "order": 2,
-      "enabled": true
-    },
-    {
-      "id": 3,
-      "title": "TEST",
-      "buttonText": "TEST",
-      "link": "",
-      "image": "https://i.kickstarter.com/assets/047/802/414/1b408629a93f67710c65cadd6eed4bb6_original.jpg?anim=false&fit=cover&gravity=auto&height=873&origin=ugc&q=92&v=1736619967&width=1552&sig=8%2BfdOJPWENZRNrAG2brugI0%2FEs0uBrygXdeeYwtvbYI%3D",
-      "order": 3,
-      "enabled": true
-    },
-    {
-      "id": 4,
-      "title": "",
-      "buttonText": "",
-      "link": "",
-      "image": "",
-      "order": 4,
-      "enabled": false
-    },
-    {
-      "id": 5,
-      "title": "",
-      "buttonText": "",
-      "link": "",
-      "image": "",
-      "order": 5,
-      "enabled": false
+      "title": "PUNK HEART",
+      "buttonText": "View Details →",
+      "link": "https://punkheart.com",
+      "image": "./image/punkheartbanner.jpg"
     }
   ]
 }
