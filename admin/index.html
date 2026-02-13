@@ -876,14 +876,36 @@
     }
 
     function initializeDataStructure() {
-        // 确保底部数据有默认值
-        if (!appData.footerGlobal.siteName) appData.footerGlobal.siteName = 'LIVEGIGS';
-        if (!appData.footerGlobal.siteNameAsia) appData.footerGlobal.siteNameAsia = 'ASIA';
-        if (!appData.footerGlobal.producerLogo) appData.footerGlobal.producerLogo = './image/emanonent-logo.png';
+        // 确保底部数据有默认值 - 修复：保留从JSON加载的数据
+        if (!appData.footerGlobal) {
+            appData.footerGlobal = {
+                siteName: 'LIVEGIGS',
+                siteNameAsia: 'ASIA',
+                contactText: '',
+                email: '',
+                address: '',
+                copyright: '',
+                producerLogo: './image/emanonent-logo.png',
+                socials: []
+            };
+        }
 
-        if (!appData.footerCN.siteName) appData.footerCN.siteName = 'LIVEGIGS';
-        if (!appData.footerCN.siteNameAsia) appData.footerCN.siteNameAsia = 'CN';
-        if (!appData.footerCN.producerLogo) appData.footerCN.producerLogo = './image/emanonent-logo.png';
+        if (!appData.footerCN) {
+            appData.footerCN = {
+                siteName: 'LIVEGIGS',
+                siteNameAsia: 'CN',
+                contactText: '',
+                email: '',
+                address: '',
+                copyright: '',
+                producerLogo: './image/emanonent-logo.png',
+                socials: []
+            };
+        }
+
+        // 确保socials数组存在
+        if (!appData.footerGlobal.socials) appData.footerGlobal.socials = [];
+        if (!appData.footerCN.socials) appData.footerCN.socials = [];
 
         // Banner初始化
         if (!appData.banners.banners || appData.banners.banners.length === 0) {

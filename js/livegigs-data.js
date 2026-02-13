@@ -1,6 +1,6 @@
 /**
  * LiveGigs Asia - Frontend Data Loader
- * 修复版 - 底部区域数据正确映射
+ * 修复版 - 正确处理留空链接的社交媒体
  */
 
 (function() {
@@ -9,37 +9,16 @@
     // 数据缓存
     let dataCache = {};
     let lastFetch = 0;
-    const CACHE_DURATION = 60000; // 1分钟缓存
+    const CACHE_DURATION = 60000;
 
     // 页面配置映射
     const pageConfig = {
-        'index': {
-            banners: 'banners',
-            posters: 'index-posters',
-            footer: 'footer-global'
-        },
-        'cn': {
-            banners: 'banners',
-            posters: 'cn-posters',
-            footer: 'footer-cn'
-        },
-        'events': {
-            carousel: 'events-carousel',
-            managed: 'events-managed',
-            posters: 'events-posters',
-            footer: 'footer-global'
-        },
-        'partners': {
-            partners: 'partners-banners',
-            collaborators: 'collaborators',
-            footer: 'footer-global'
-        },
-        'privacy': {
-            footer: 'footer-global'
-        },
-        'accessibility': {
-            footer: 'footer-global'
-        }
+        'index': { banners: 'banners', posters: 'index-posters', footer: 'footer-global' },
+        'cn': { banners: 'banners', posters: 'cn-posters', footer: 'footer-cn' },
+        'events': { carousel: 'events-carousel', managed: 'events-managed', posters: 'events-posters', footer: 'footer-global' },
+        'partners': { partners: 'partners-banners', collaborators: 'collaborators', footer: 'footer-global' },
+        'privacy': { footer: 'footer-global' },
+        'accessibility': { footer: 'footer-global' }
     };
 
     // 获取数据
@@ -50,7 +29,6 @@
         }
 
         try {
-            // 使用相对路径避免CORS问题
             const response = await fetch(`./content/${filename}.json?v=${now}`);
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             const data = await response.json();
@@ -63,172 +41,90 @@
         }
     }
 
-    // 渲染Banner
-    function renderBanners(data, pageType) {
-        if (!data || !data.banners) return;
-
-        const banners = data.banners.filter(b => b.enabled).sort((a, b) => (a.order || 0) - (b.order || 0));
-
-        // 查找banner容器
-        const bannerContainer = document.querySelector('.banner-slider, .hero-slider, #banner-container');
-        if (!bannerContainer) return;
-
-        // 清空现有内容
-        bannerContainer.innerHTML = '';
-
-        banners.forEach((banner, index) => {
-            const bannerEl = document.createElement('div');
-            bannerEl.className = 'banner-slide';
-            bannerEl.style.cssText = `
-                background-image: url('${banner.image}');
-                background-size: cover;
-                background-position: center;
-            `;
-
-            let contentHtml = '';
-            if (banner.title) {
-                contentHtml += `<h2 class="banner-title">${escapeHtml(banner.title)}</h2>`;
-            }
-            if (banner.buttonText) {
-                const linkAttr = banner.link ? `href="${escapeHtml(banner.link)}" target="_blank"` : '';
-                contentHtml += `<a ${linkAttr} class="banner-btn">${escapeHtml(banner.buttonText)}</a>`;
-            }
-
-            if (contentHtml) {
-                bannerEl.innerHTML = `<div class="banner-content">${contentHtml}</div>`;
-            }
-
-            bannerContainer.appendChild(bannerEl);
-        });
-
-        // 触发轮播初始化
-        if (typeof initBannerSlider === 'function') {
-            initBannerSlider();
-        }
-    }
-
-    // 渲染海报
-    function renderPosters(data, pageType) {
-        if (!data || !data.posters) return;
-
-        const posters = data.posters.filter(p => p.enabled);
-
-        posters.forEach((poster, index) => {
-            const posterEl = document.querySelector(`[data-poster="${index + 1}"], .poster-item:nth-child(${index + 1})`);
-            if (!posterEl) return;
-
-            // 更新图片
-            const imgEl = posterEl.querySelector('img, .poster-image');
-            if (imgEl && poster.image) {
-                imgEl.src = poster.image;
-            }
-
-            // 更新标题
-            const titleEl = posterEl.querySelector('.poster-title, h3, h4');
-            if (titleEl) {
-                titleEl.textContent = poster.title || '';
-                titleEl.style.display = poster.title ? '' : 'none';
-            }
-
-            // 更新链接
-            const linkEl = posterEl.querySelector('a');
-            if (linkEl) {
-                if (poster.link) {
-                    linkEl.href = poster.link;
-                    linkEl.target = '_blank';
-                }
-                if (poster.linkText) {
-                    linkEl.textContent = poster.linkText;
-                }
-            }
-        });
-    }
-
-    // 渲染底部区域 - 修复版，正确映射字段
+    // 渲染底部区域
     function renderFooter(data, pageType) {
-        if (!data) return;
+        if (!data) {
+            console.warn('No footer data provided');
+            return;
+        }
 
         console.log('Rendering footer with data:', data);
 
-        // 站点名称 (LIVEGIGS)
+        // 站点名称
         const siteNameEl = document.querySelector('.footer-site-name, .site-name, #footer-site-name');
-        if (siteNameEl && data.siteName !== undefined) {
+        if (siteNameEl && data.siteName) {
             siteNameEl.textContent = data.siteName;
-            siteNameEl.style.display = data.siteName ? '' : 'none';
         }
 
-        // 站点副标 (ASIA/CN - 红色)
+        // 站点副标
         const siteAsiaEl = document.querySelector('.footer-site-asia, .site-asia, #footer-site-asia, .footer-asia');
-        if (siteAsiaEl && data.siteNameAsia !== undefined) {
+        if (siteAsiaEl && data.siteNameAsia) {
             siteAsiaEl.textContent = data.siteNameAsia;
-            siteAsiaEl.style.display = data.siteNameAsia ? '' : 'none';
         }
 
         // 联系文字
         const contactTextEl = document.querySelector('.footer-contact-text, .contact-text, #footer-contact-text');
-        if (contactTextEl && data.contactText !== undefined) {
+        if (contactTextEl && data.contactText) {
             contactTextEl.textContent = data.contactText;
-            contactTextEl.style.display = data.contactText ? '' : 'none';
         }
 
-        // 邮箱地址 (可点击发信)
-        const emailEl = document.querySelector('.footer-email, .email-link, #footer-email, a[href^="mailto:"]');
-        if (emailEl && data.email !== undefined) {
-            if (data.email) {
-                emailEl.href = `mailto:${data.email}`;
-                emailEl.textContent = data.email;
-                emailEl.style.display = '';
-            } else {
-                emailEl.style.display = 'none';
-            }
+        // 邮箱地址
+        const emailEl = document.querySelector('.footer-email, .email-link, #footer-email');
+        if (emailEl && data.email) {
+            emailEl.href = `mailto:${data.email}`;
+            emailEl.textContent = data.email;
         }
 
         // 地址
         const addressEl = document.querySelector('.footer-address, .address-text, #footer-address');
-        if (addressEl && data.address !== undefined) {
+        if (addressEl && data.address) {
             addressEl.textContent = data.address;
-            addressEl.style.display = data.address ? '' : 'none';
         }
 
         // 版权文字
         const copyrightEl = document.querySelector('.footer-copyright, .copyright, #footer-copyright');
-        if (copyrightEl && data.copyright !== undefined) {
+        if (copyrightEl && data.copyright) {
             copyrightEl.textContent = data.copyright;
-            copyrightEl.style.display = data.copyright ? '' : 'none';
         }
 
         // 制作单位Logo
-        const producerEl = document.querySelector('.footer-producer, .producer-logo, #footer-producer img');
+        const producerEl = document.querySelector('.footer-producer img, .producer-logo img, #footer-producer img');
         if (producerEl && data.producerLogo) {
             producerEl.src = data.producerLogo;
         }
 
-        // 社交媒体
-        renderSocials(data.socials);
+        // 社交媒体 - 修复版
+        if (data.socials && Array.isArray(data.socials)) {
+            renderSocials(data.socials);
+        }
     }
 
-    // 渲染社交媒体 - 修复版：链接或名称为空时显示但不可点击
+    // 渲染社交媒体 - 修复：留空链接时仍然显示图标
     function renderSocials(socials) {
-        if (!socials || !Array.isArray(socials)) return;
-
-        const container = document.querySelector('#socialContainer, .footer-social, .social-links');
-        if (!container) return;
+        const container = document.querySelector('#socialContainer, .footer-social, .social-links, #footer-social');
+        if (!container) {
+            console.warn('Social container not found');
+            return;
+        }
 
         // 清空现有内容
         container.innerHTML = '';
 
+        // 只显示启用的社交媒体
         const enabledSocials = socials.filter(s => s.enabled);
 
+        console.log('Rendering socials:', enabledSocials);
+
         enabledSocials.forEach(social => {
-            // 使用自定义图标或预设图标
+            // 获取图标类型
             const iconType = social.customIcon || social.icon || 'default';
             const iconSvg = getSocialIcon(iconType);
 
-            // 判断是否应该可点击：链接和名称都必须有值
-            const isClickable = social.link && social.link.trim() !== '' && social.name && social.name.trim() !== '';
+            // 检查链接是否存在且不为空
+            const hasLink = social.link && social.link.trim() !== '';
 
-            if (isClickable) {
-                // 可点击：使用 <a> 标签
+            if (hasLink) {
+                // 有链接：使用 <a> 标签，可点击
                 const link = document.createElement('a');
                 link.className = 'social-link';
                 link.innerHTML = iconSvg;
@@ -237,12 +133,12 @@
                 link.title = social.name || '';
                 container.appendChild(link);
             } else {
-                // 不可点击：使用 <span> 标签，保持显示但无链接功能
+                // 无链接：使用 <span> 标签，显示但不可点击
                 const span = document.createElement('span');
                 span.className = 'social-link social-link-disabled';
                 span.innerHTML = iconSvg;
                 span.style.cursor = 'default';
-                span.style.opacity = '0.7';
+                span.style.opacity = '0.6';
                 span.title = social.name || 'Social Media';
                 container.appendChild(span);
             }
@@ -267,14 +163,6 @@
         return icons[type] || icons.default;
     }
 
-    // HTML转义
-    function escapeHtml(text) {
-        if (!text) return '';
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-    }
-
     // 主加载函数
     async function loadAndRender(pageType) {
         const config = pageConfig[pageType];
@@ -283,74 +171,24 @@
             return;
         }
 
-        console.log('Loading data for page:', pageType, config);
+        console.log('Loading data for page:', pageType);
 
-        // 加载所有需要的数据
-        const promises = [];
-
-        if (config.banners) {
-            promises.push(fetchData(config.banners).then(data => {
-                if (data) renderBanners(data, pageType);
-            }));
-        }
-
-        if (config.posters) {
-            promises.push(fetchData(config.posters).then(data => {
-                if (data) renderPosters(data, pageType);
-            }));
-        }
-
-        if (config.carousel) {
-            promises.push(fetchData(config.carousel).then(data => {
-                if (data && typeof renderCarousel === 'function') {
-                    renderCarousel(data);
-                }
-            }));
-        }
-
-        if (config.managed) {
-            promises.push(fetchData(config.managed).then(data => {
-                if (data && typeof renderManagedEvents === 'function') {
-                    renderManagedEvents(data);
-                }
-            }));
-        }
-
-        if (config.partners) {
-            promises.push(fetchData(config.partners).then(data => {
-                if (data && typeof renderPartnerBanners === 'function') {
-                    renderPartnerBanners(data);
-                }
-            }));
-        }
-
-        if (config.collaborators) {
-            promises.push(fetchData(config.collaborators).then(data => {
-                if (data && typeof renderCollaborators === 'function') {
-                    renderCollaborators(data);
-                }
-            }));
-        }
-
+        // 加载底部数据
         if (config.footer) {
-            promises.push(fetchData(config.footer).then(data => {
-                if (data) renderFooter(data, pageType);
-            }));
+            const footerData = await fetchData(config.footer);
+            if (footerData) {
+                renderFooter(footerData, pageType);
+            }
         }
-
-        await Promise.all(promises);
-        console.log('Data loading complete for page:', pageType);
     }
 
     // 暴露全局函数
     window.LiveGigsData = {
         loadAndRender: loadAndRender,
-        fetchData: fetchData,
-        renderFooter: renderFooter,
-        renderSocials: renderSocials
+        fetchData: fetchData
     };
 
-    // 自动初始化（如果页面有data-page属性）
+    // 自动初始化
     document.addEventListener('DOMContentLoaded', function() {
         const pageEl = document.querySelector('[data-page]');
         if (pageEl) {
