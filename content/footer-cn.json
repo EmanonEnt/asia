@@ -1,4 +1,11 @@
 {
+  "siteName": "LIVEGIGS",
+  "siteNameAsia": "CN",
+  "contactText": "",
+  "email": "",
+  "address": "",
+  "copyright": "",
+  "producerLogo": "./image/emanonent-logo.png",
   "socials": [
     {
       "id": 1,
