@@ -12,10 +12,10 @@
         }
 
         :root {
-            --primary-red: #8b0000;
-            --silver: #c0c0c0;
-            --dark-bg: #050505;
-            --light-silver: #d0d0d0;
+            --primary-red: #a00000;
+            --silver: #d0d0d0;
+            --dark-bg: #0a0a0a;
+            --light-silver: #e0e0e0;
             --text-dark: #050505;
         }
 
@@ -36,6 +36,7 @@
         }
 
         .login-box {
+            box-shadow: 0 0 30px rgba(160, 0, 0, 0.3);
             background: rgba(139, 0, 0, 0.1);
             border: 2px solid var(--primary-red);
             padding: 60px;
@@ -45,6 +46,7 @@
         }
 
         .login-box h1 {
+            text-shadow: 0 0 10px rgba(160, 0, 0, 0.5);
             color: var(--primary-red);
             font-size: 42px;
             margin-bottom: 10px;
@@ -89,6 +91,7 @@
         }
 
         .btn {
+            box-shadow: 0 4px 15px rgba(160, 0, 0, 0.4);
             padding: 15px 40px;
             background: var(--primary-red);
             color: white;
@@ -103,6 +106,7 @@
         }
 
         .btn:hover {
+            box-shadow: 0 6px 20px rgba(160, 0, 0, 0.6);
             background: #a00000;
             transform: translateY(-2px);
         }
@@ -568,29 +572,29 @@
         </header>
 
         <nav class="admin-sidebar">
-            <div class="nav-item active" data-section="dashboard" onclick="showSection('dashboard')">
+            <a href="#dashboard" class="nav-item active" data-section="dashboard" onclick="showSection('dashboard')">
                 Dashboard
             </div>
-            <div class="nav-item" data-section="banners" onclick="showSection('banners')">
+            <a href="#banners" class="nav-item" data-section="banners" onclick="showSection('banners')">
                 1. Banner管理
                 <span class="count" id="bannerCount">0</span>
             </div>
-            <div class="nav-item" data-section="posters" onclick="showSection('posters')">
+            <a href="#posters" class="nav-item" data-section="posters" onclick="showSection('posters')">
                 2. 海报管理
                 <span class="count" id="posterCount">0</span>
             </div>
-            <div class="nav-item" data-section="events" onclick="showSection('events')">
+            <a href="#events" class="nav-item" data-section="events" onclick="showSection('events')">
                 3. 自主活动
                 <span class="count" id="eventCount">0</span>
             </div>
-            <div class="nav-item" data-section="carousel" onclick="showSection('carousel')">
+            <a href="#carousel" class="nav-item" data-section="carousel" onclick="showSection('carousel')">
                 4. 滚播活动
                 <span class="count" id="carouselCount">0</span>
             </div>
-            <div class="nav-item" data-section="footer" onclick="showSection('footer')">
+            <a href="#footer" class="nav-item" data-section="footer" onclick="showSection('footer')">
                 5. 底部管理
             </div>
-            <div class="nav-item" data-section="partners" onclick="showSection('partners')">
+            <a href="#partners" class="nav-item" data-section="partners" onclick="showSection('partners')">
                 6. 合作伙伴
                 <span class="count" id="partnerCount">0</span>
             </div>
