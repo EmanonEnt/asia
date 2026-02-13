@@ -1,0 +1,28 @@
+{
+  "posters": [
+    {
+      "id": 1,
+      "image": "./image/livegigscn1.png",
+      "title": "LiveGigs CN",
+      "buttonText": "Get on WeChat →",
+      "link": "https://wxaurl.cn/HMcAK6R7fou"
+    },
+    {
+      "id": 2,
+      "carousel": [
+        {"image": "./image/2-old1.jpg", "title": "Non Servium China Tour", "buttonText": "w/The Noname", "link": ""},
+        {"image": "./image/2-old2.jpg", "title": "Skarface China Tour", "buttonText": "w/The Noname", "link": ""},
+        {"image": "./image/2-old3.jpg", "title": "Acidez S.E Asia Tour", "buttonText": "w/The Noname", "link": ""},
+        {"image": "./image/2-old4.jpg", "title": "Epic Past Gigs", "buttonText": "View Gallery", "link": ""},
+        {"image": "./image/2-old5.jpg", "title": "Epic Past Gigs", "buttonText": "View Gallery", "link": ""}
+      ]
+    },
+    {
+      "id": 3,
+      "image": "./image/xrebookingad.jpg",
+      "title": "XRE Booking",
+      "buttonText": "Check Out More Partners →",
+      "link": "partners.html"
+    }
+  ]
+}
