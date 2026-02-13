@@ -15,7 +15,7 @@
 
         body {
             font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-            background: linear-gradient(135deg, #d0d0d0 0%, #c0c0c0 100%);
+            background: linear-gradient(135deg, #e8e8e8 0%, #d0d0d0 100%);
             color: #1a1a1a;
             min-height: 100vh;
         }
@@ -25,7 +25,7 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background: linear-gradient(135deg, #d0d0d0 0%, #c0c0c0 100%);
+            background: linear-gradient(135deg, #e8e8e8 0%, #d0d0d0 100%);
         }
 
         .login-box {
@@ -243,7 +243,7 @@
 
         .data-table tr.disabled { opacity: 0.4; background: rgba(0, 0, 0, 0.05); }
 
-        .data-table input, .data-table textarea {
+        .data-table input, .data-table textarea, .data-table select {
             width: 100%;
             padding: 10px;
             background: #ffffff;
@@ -388,6 +388,19 @@
             color: #8b0000;
             margin-bottom: 20px;
             font-size: 24px;
+        }
+
+        .field-mapping {
+            background: rgba(139, 0, 0, 0.05);
+            border-left: 4px solid #8b0000;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #555;
+        }
+
+        .field-mapping strong {
+            color: #8b0000;
         }
     </style>
 </head>
@@ -574,43 +587,63 @@
                     <button class="tab" onclick="switchFooterTab('cn')">國內站 (CN)</button>
                 </div>
                 <div id="footer-global" class="tab-content active">
+                    <div class="field-mapping">
+                        <strong>字段映射说明：</strong><br>
+                        站点名称 → 前端 LIVEGIGS 文字<br>
+                        站点副标（红色）→ 前端 ASIA 文字<br>
+                        联系文字 → 前端电话/联系文字<br>
+                        邮箱地址 → 前端邮箱地址（可点击发信）<br>
+                        地址 → 前端右侧地址文字<br>
+                        版权文字 → 底部版权文字<br>
+                        制作单位Logo → 底部EMANON制作单位logo
+                    </div>
                     <p class="section-desc">Index/Events/Partners/Privacy/Accessibility 頁面共用。留空字段前端不显示。</p>
                     <table class="data-table" style="margin-bottom: 30px;">
                         <thead><tr><th>配置項</th><th>內容</th></tr></thead>
                         <tbody>
-                            <tr><td>站點名稱</td><td><input type="text" id="globalSiteName" value="LIVEGIGS"></td></tr>
-                            <tr><td>站點副標 (紅色)</td><td><input type="text" id="globalSiteAsia" value="ASIA"></td></tr>
-                            <tr><td>聯繫文字 (留空不顯示)</td><td><textarea id="globalContactText">For inquiries and partnership opportunities, reach out to us at:</textarea></td></tr>
-                            <tr><td>郵箱地址 (留空不顯示)</td><td><input type="text" id="globalEmail" value="xrebooking@hotmail.com"></td></tr>
-                            <tr><td>地址 (留空不顯示)</td><td><input type="text" id="globalAddress" value="Hong Kong | Shanghai | Beijing"></td></tr>
-                            <tr><td>版權文字 (留空不顯示)</td><td><input type="text" id="globalCopyright" value="Copyright © 2001-2026 EMANON ENT"></td></tr>
-                            <tr><td>製作單位Logo</td><td><input type="text" id="globalProducerLogo" value="./image/emanonent-logo.png"></td></tr>
+                            <tr><td>站點名稱 (對應LIVEGIGS)</td><td><input type="text" id="globalSiteName" placeholder="LIVEGIGS"></td></tr>
+                            <tr><td>站點副標 (紅色ASIA)</td><td><input type="text" id="globalSiteAsia" placeholder="ASIA"></td></tr>
+                            <tr><td>聯繫文字 (留空不顯示)</td><td><textarea id="globalContactText" placeholder="For inquiries and partnership opportunities, reach out to us at:"></textarea></td></tr>
+                            <tr><td>郵箱地址 (留空不顯示，可點擊發信)</td><td><input type="text" id="globalEmail" placeholder="xrebooking@hotmail.com"></td></tr>
+                            <tr><td>地址 (留空不顯示)</td><td><input type="text" id="globalAddress" placeholder="Hong Kong | Shanghai | Beijing"></td></tr>
+                            <tr><td>版權文字 (留空不顯示)</td><td><input type="text" id="globalCopyright" placeholder="Copyright © 2001-2026 EMANON ENT"></td></tr>
+                            <tr><td>製作單位Logo</td><td><input type="text" id="globalProducerLogo" placeholder="./image/emanonent-logo.png"></td></tr>
                         </tbody>
                     </table>
                     <h3 style="color: #8b0000; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px;">社交媒體 (最多10個，鏈接留空顯示但不可點擊)</h3>
                     <table class="data-table">
-                        <thead><tr><th width="50">啟用</th><th>名稱</th><th>圖標類型</th><th>鏈接地址 (留空不可點擊)</th></tr></thead>
+                        <thead><tr><th width="50">啟用</th><th>名稱</th><th>圖標類型/自定義</th><th>鏈接地址 (留空不可點擊)</th></tr></thead>
                         <tbody id="globalSocialTableBody"></tbody>
                     </table>
                     <button class="add-row-btn" onclick="addGlobalSocialRow()">+ 添加社交媒體</button>
                 </div>
                 <div id="footer-cn" class="tab-content">
+                    <div class="field-mapping">
+                        <strong>字段映射说明：</strong><br>
+                        站点名称 → 前端 LIVEGIGS 文字<br>
+                        站点副标（红色）→ 前端 CN 文字<br>
+                        联系文字 → 前端电话/联系文字<br>
+                        邮箱地址 → 前端邮箱地址（可点击发信）<br>
+                        地址 → 前端右侧地址文字<br>
+                        版权文字 → 底部版权文字<br>
+                        制作单位Logo → 底部EMANON制作单位logo
+                    </div>
                     <p class="section-desc">CN頁面獨立底部配置。留空字段前端不显示。</p>
                     <table class="data-table" style="margin-bottom: 30px;">
                         <thead><tr><th>配置項</th><th>內容</th></tr></thead>
                         <tbody>
-                            <tr><td>站點名稱</td><td><input type="text" id="cnSiteName" value="LIVEGIGS"></td></tr>
-                            <tr><td>站點副標 (紅色)</td><td><input type="text" id="cnSiteAsia" value="CN"></td></tr>
-                            <tr><td>聯繫文字 (留空不顯示)</td><td><textarea id="cnContactText">如需咨询和合作机会，请联系我们：</textarea></td></tr>
-                            <tr><td>郵箱地址 (留空不顯示)</td><td><input type="text" id="cnEmail" value="xrebooking@hotmail.com"></td></tr>
-                            <tr><td>地址 (留空不顯示)</td><td><input type="text" id="cnAddress" value="香港 | 上海 | 北京"></td></tr>
-                            <tr><td>版權文字 (留空不顯示)</td><td><input type="text" id="cnCopyright" value="Copyright © 2001-2026 EMANON ENT"></td></tr>
-                            <tr><td>製作單位Logo</td><td><input type="text" id="cnProducerLogo" value="./image/emanonent-logo.png"></td></tr>
+                            <tr><td>站點名稱 (對應LIVEGIGS)</td><td><input type="text" id="cnSiteName" placeholder="LIVEGIGS"></td></tr>
+                            <tr><td>站點副標 (紅色CN)</td><td><input type="text" id="cnSiteAsia" placeholder="CN"></td></tr>
+                            <tr><td>聯繫文字 (留空不顯示)</td><td><textarea id="cnContactText" placeholder="如需咨询和合作机会，请联系我们："></textarea></td></tr>
+                            <tr><td>郵箱地址 (留空不顯示，可點擊發信)</td><td><input type="text" id="cnEmail" placeholder="xrebooking@hotmail.com"></td></tr>
+                            <tr><td>地址 (留空不顯示)</td><td><input type="text" id="cnAddress" placeholder="香港 | 上海 | 北京"></td></tr>
+                            <tr><td>版權文字 (留空不顯示)</td><td><input type="text" id="cnCopyright" placeholder="Copyright © 2001-2026 EMANON ENT"></td></tr>
+                            <tr><td>製作單位Logo</td><td><input type="text" id="cnProducerLogo" placeholder="./image/emanonent-logo.png"></td></tr>
                         </tbody>
                     </table>
                     <h3 style="color: #8b0000; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px;">社交媒體 (最多10個，鏈接留空顯示但不可點擊)</h3>
                     <table class="data-table">
-                        <thead><tr><th width="50">啟用</th><th>名稱</th><th>圖標類型</th><th>鏈接地址 (留空不可點擊)</th></tr></thead>
+                        <thead><tr><th width="50">啟用</th><th>名稱</th><th>圖標類型/自定義</th><th>鏈接地址 (留空不可點擊)</th></tr></thead>
                         <tbody id="cnSocialTableBody"></tbody>
                     </table>
                     <button class="add-row-btn" onclick="addCnSocialRow()">+ 添加社交媒體</button>
@@ -668,8 +701,26 @@
         eventsPosters: { posters: [], poster2_carousel: false },
         eventsManaged: { events: [] },
         eventsCarousel: { carousel: [] },
-        footerGlobal: { socials: [] },
-        footerCN: { socials: [] },
+        footerGlobal: { 
+            siteName: '',
+            siteNameAsia: '',
+            contactText: '',
+            email: '',
+            address: '',
+            copyright: '',
+            producerLogo: '',
+            socials: [] 
+        },
+        footerCN: { 
+            siteName: '',
+            siteNameAsia: '',
+            contactText: '',
+            email: '',
+            address: '',
+            copyright: '',
+            producerLogo: '',
+            socials: [] 
+        },
         partnersBanners: { banners: [] },
         collaborators: { logos: [] }
     };
@@ -803,7 +854,12 @@
                     if (response.ok) {
                         const data = await response.json();
                         const key = file.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
-                        appData[key] = data;
+                        // 合并数据，保留现有内容
+                        if (key === 'footerGlobal' || key === 'footerCN') {
+                            appData[key] = { ...appData[key], ...data };
+                        } else {
+                            appData[key] = data;
+                        }
                     }
                 } catch (e) {
                     console.log(`Failed to load ${file}:`, e);
@@ -820,12 +876,23 @@
     }
 
     function initializeDataStructure() {
+        // 确保底部数据有默认值
+        if (!appData.footerGlobal.siteName) appData.footerGlobal.siteName = 'LIVEGIGS';
+        if (!appData.footerGlobal.siteNameAsia) appData.footerGlobal.siteNameAsia = 'ASIA';
+        if (!appData.footerGlobal.producerLogo) appData.footerGlobal.producerLogo = './image/emanonent-logo.png';
+
+        if (!appData.footerCN.siteName) appData.footerCN.siteName = 'LIVEGIGS';
+        if (!appData.footerCN.siteNameAsia) appData.footerCN.siteNameAsia = 'CN';
+        if (!appData.footerCN.producerLogo) appData.footerCN.producerLogo = './image/emanonent-logo.png';
+
+        // Banner初始化
         if (!appData.banners.banners || appData.banners.banners.length === 0) {
             appData.banners.banners = Array(5).fill(null).map((_, i) => ({
                 id: i + 1, title: '', buttonText: '', link: '', image: '', order: i + 1, enabled: false
             }));
         }
 
+        // Posters初始化
         if (!appData.indexPosters.posters || appData.indexPosters.posters.length === 0) {
             appData.indexPosters.posters = Array(3).fill(null).map((_, i) => ({
                 id: i + 1, title: '', linkText: '', link: '', image: '', enabled: false
@@ -844,6 +911,7 @@
             }));
         }
 
+        // Events初始化
         if (!appData.eventsManaged.events || appData.eventsManaged.events.length === 0) {
             appData.eventsManaged.events = Array(9).fill(null).map((_, i) => ({
                 id: i + 1, title: '', date: '', venue: '', time: '', image: '',
@@ -851,12 +919,14 @@
             }));
         }
 
+        // Carousel初始化
         if (!appData.eventsCarousel.carousel || appData.eventsCarousel.carousel.length === 0) {
             appData.eventsCarousel.carousel = Array(12).fill(null).map((_, i) => ({
                 id: i + 1, title: '', buttonText: '', link: '', image: '', date: '', order: i + 1, enabled: false
             }));
         }
 
+        // Partners初始化
         if (!appData.partnersBanners.banners || appData.partnersBanners.banners.length === 0) {
             appData.partnersBanners.banners = Array(9).fill(null).map((_, i) => ({
                 id: i + 1, mainImage: '', logoImage: '', title: '', description: '',
@@ -870,6 +940,7 @@
             }));
         }
 
+        // Socials初始化
         if (!appData.footerGlobal.socials || appData.footerGlobal.socials.length === 0) {
             appData.footerGlobal.socials = Array(10).fill(null).map((_, i) => ({
                 id: i + 1, name: '', icon: '', link: '', enabled: false
@@ -1142,6 +1213,7 @@
     }
 
     function renderFooter() {
+        // 海外站
         if (appData.footerGlobal) {
             const globalSiteName = document.getElementById('globalSiteName');
             const globalSiteAsia = document.getElementById('globalSiteAsia');
@@ -1151,8 +1223,8 @@
             const globalCopyright = document.getElementById('globalCopyright');
             const globalProducerLogo = document.getElementById('globalProducerLogo');
 
-            if (globalSiteName) globalSiteName.value = appData.footerGlobal.siteName || 'LIVEGIGS';
-            if (globalSiteAsia) globalSiteAsia.value = appData.footerGlobal.siteNameAsia || 'ASIA';
+            if (globalSiteName) globalSiteName.value = appData.footerGlobal.siteName || '';
+            if (globalSiteAsia) globalSiteAsia.value = appData.footerGlobal.siteNameAsia || '';
             if (globalContactText) globalContactText.value = appData.footerGlobal.contactText || '';
             if (globalEmail) globalEmail.value = appData.footerGlobal.email || '';
             if (globalAddress) globalAddress.value = appData.footerGlobal.address || '';
@@ -1166,13 +1238,21 @@
                         <td><input type="checkbox" ${social.enabled ? 'checked' : ''} onchange="updateGlobalSocial(${index}, 'enabled', this.checked)"></td>
                         <td><input type="text" value="${social.name || ''}" onchange="updateGlobalSocial(${index}, 'name', this.value)" placeholder="名稱"></td>
                         <td>
-                            <select onchange="updateGlobalSocial(${index}, 'icon', this.value)" style="background: #ffffff; border: 1px solid #8b0000; color: #1a1a1a; padding: 5px;">
-                                <option value="">選擇圖標</option>
+                            <select onchange="updateGlobalSocial(${index}, 'icon', this.value)" style="background: #ffffff; border: 1px solid #8b0000; color: #1a1a1a; padding: 5px; margin-bottom: 5px;">
+                                <option value="">選擇預設圖標</option>
                                 <option value="facebook" ${social.icon === 'facebook' ? 'selected' : ''}>Facebook</option>
                                 <option value="instagram" ${social.icon === 'instagram' ? 'selected' : ''}>Instagram</option>
                                 <option value="youtube" ${social.icon === 'youtube' ? 'selected' : ''}>YouTube</option>
                                 <option value="x" ${social.icon === 'x' ? 'selected' : ''}>X (Twitter)</option>
+                                <option value="twitter" ${social.icon === 'twitter' ? 'selected' : ''}>Twitter</option>
+                                <option value="tiktok" ${social.icon === 'tiktok' ? 'selected' : ''}>TikTok</option>
+                                <option value="linkedin" ${social.icon === 'linkedin' ? 'selected' : ''}>LinkedIn</option>
+                                <option value="spotify" ${social.icon === 'spotify' ? 'selected' : ''}>Spotify</option>
+                                <option value="apple" ${social.icon === 'apple' ? 'selected' : ''}>Apple Music</option>
+                                <option value="soundcloud" ${social.icon === 'soundcloud' ? 'selected' : ''}>SoundCloud</option>
+                                <option value="bandcamp" ${social.icon === 'bandcamp' ? 'selected' : ''}>Bandcamp</option>
                             </select>
+                            <input type="text" value="${social.customIcon || ''}" onchange="updateGlobalSocial(${index}, 'customIcon', this.value)" placeholder="或輸入自定義圖標名稱" style="margin-top: 5px;">
                         </td>
                         <td><input type="text" value="${social.link || ''}" onchange="updateGlobalSocial(${index}, 'link', this.value)" placeholder="留空不可點擊"></td>
                     </tr>
@@ -1180,6 +1260,7 @@
             }
         }
 
+        // 国内站
         if (appData.footerCN) {
             const cnSiteName = document.getElementById('cnSiteName');
             const cnSiteAsia = document.getElementById('cnSiteAsia');
@@ -1189,8 +1270,8 @@
             const cnCopyright = document.getElementById('cnCopyright');
             const cnProducerLogo = document.getElementById('cnProducerLogo');
 
-            if (cnSiteName) cnSiteName.value = appData.footerCN.siteName || 'LIVEGIGS';
-            if (cnSiteAsia) cnSiteAsia.value = appData.footerCN.siteNameAsia || 'CN';
+            if (cnSiteName) cnSiteName.value = appData.footerCN.siteName || '';
+            if (cnSiteAsia) cnSiteAsia.value = appData.footerCN.siteNameAsia || '';
             if (cnContactText) cnContactText.value = appData.footerCN.contactText || '';
             if (cnEmail) cnEmail.value = appData.footerCN.email || '';
             if (cnAddress) cnAddress.value = appData.footerCN.address || '';
@@ -1204,13 +1285,20 @@
                         <td><input type="checkbox" ${social.enabled ? 'checked' : ''} onchange="updateCnSocial(${index}, 'enabled', this.checked)"></td>
                         <td><input type="text" value="${social.name || ''}" onchange="updateCnSocial(${index}, 'name', this.value)" placeholder="名稱"></td>
                         <td>
-                            <select onchange="updateCnSocial(${index}, 'icon', this.value)" style="background: #ffffff; border: 1px solid #8b0000; color: #1a1a1a; padding: 5px;">
-                                <option value="">選擇圖標</option>
+                            <select onchange="updateCnSocial(${index}, 'icon', this.value)" style="background: #ffffff; border: 1px solid #8b0000; color: #1a1a1a; padding: 5px; margin-bottom: 5px;">
+                                <option value="">選擇預設圖標</option>
                                 <option value="wechat" ${social.icon === 'wechat' ? 'selected' : ''}>微信</option>
                                 <option value="weibo" ${social.icon === 'weibo' ? 'selected' : ''}>微博</option>
                                 <option value="xiaohongshu" ${social.icon === 'xiaohongshu' ? 'selected' : ''}>小紅書</option>
                                 <option value="miniprogram" ${social.icon === 'miniprogram' ? 'selected' : ''}>小程序</option>
+                                <option value="douyin" ${social.icon === 'douyin' ? 'selected' : ''}>抖音</option>
+                                <option value="bilibili" ${social.icon === 'bilibili' ? 'selected' : ''}>Bilibili</option>
+                                <option value="qq" ${social.icon === 'qq' ? 'selected' : ''}>QQ</option>
+                                <option value="zhihu" ${social.icon === 'zhihu' ? 'selected' : ''}>知乎</option>
+                                <option value="netease" ${social.icon === 'netease' ? 'selected' : ''}>網易雲音樂</option>
+                                <option value="qqmusic" ${social.icon === 'qqmusic' ? 'selected' : ''}>QQ音樂</option>
                             </select>
+                            <input type="text" value="${social.customIcon || ''}" onchange="updateCnSocial(${index}, 'customIcon', this.value)" placeholder="或輸入自定義圖標名稱" style="margin-top: 5px;">
                         </td>
                         <td><input type="text" value="${social.link || ''}" onchange="updateCnSocial(${index}, 'link', this.value)" placeholder="留空不可點擊"></td>
                     </tr>
@@ -1346,6 +1434,43 @@
         document.getElementById(`partner-${tab}`).classList.add('active');
     }
 
+    // 从表单更新底部数据 - 修复版
+    function updateFooterDataFromForm() {
+        // 海外站
+        const globalSiteName = document.getElementById('globalSiteName');
+        const globalSiteAsia = document.getElementById('globalSiteAsia');
+        const globalContactText = document.getElementById('globalContactText');
+        const globalEmail = document.getElementById('globalEmail');
+        const globalAddress = document.getElementById('globalAddress');
+        const globalCopyright = document.getElementById('globalCopyright');
+        const globalProducerLogo = document.getElementById('globalProducerLogo');
+
+        if (globalSiteName) appData.footerGlobal.siteName = globalSiteName.value;
+        if (globalSiteAsia) appData.footerGlobal.siteNameAsia = globalSiteAsia.value;
+        if (globalContactText) appData.footerGlobal.contactText = globalContactText.value;
+        if (globalEmail) appData.footerGlobal.email = globalEmail.value;
+        if (globalAddress) appData.footerGlobal.address = globalAddress.value;
+        if (globalCopyright) appData.footerGlobal.copyright = globalCopyright.value;
+        if (globalProducerLogo) appData.footerGlobal.producerLogo = globalProducerLogo.value;
+
+        // 国内站
+        const cnSiteName = document.getElementById('cnSiteName');
+        const cnSiteAsia = document.getElementById('cnSiteAsia');
+        const cnContactText = document.getElementById('cnContactText');
+        const cnEmail = document.getElementById('cnEmail');
+        const cnAddress = document.getElementById('cnAddress');
+        const cnCopyright = document.getElementById('cnCopyright');
+        const cnProducerLogo = document.getElementById('cnProducerLogo');
+
+        if (cnSiteName) appData.footerCN.siteName = cnSiteName.value;
+        if (cnSiteAsia) appData.footerCN.siteNameAsia = cnSiteAsia.value;
+        if (cnContactText) appData.footerCN.contactText = cnContactText.value;
+        if (cnEmail) appData.footerCN.email = cnEmail.value;
+        if (cnAddress) appData.footerCN.address = cnAddress.value;
+        if (cnCopyright) appData.footerCN.copyright = cnCopyright.value;
+        if (cnProducerLogo) appData.footerCN.producerLogo = cnProducerLogo.value;
+    }
+
     // 同步单个区域
     async function syncSection(section) {
         if (!githubToken) {
@@ -1432,43 +1557,6 @@
         } catch (error) {
             showAlert('同步失敗: ' + error.message, 'error');
         }
-    }
-
-    // 从表单更新底部数据
-    function updateFooterDataFromForm() {
-        // 海外站
-        const globalSiteName = document.getElementById('globalSiteName');
-        const globalSiteAsia = document.getElementById('globalSiteAsia');
-        const globalContactText = document.getElementById('globalContactText');
-        const globalEmail = document.getElementById('globalEmail');
-        const globalAddress = document.getElementById('globalAddress');
-        const globalCopyright = document.getElementById('globalCopyright');
-        const globalProducerLogo = document.getElementById('globalProducerLogo');
-
-        if (globalSiteName) appData.footerGlobal.siteName = globalSiteName.value;
-        if (globalSiteAsia) appData.footerGlobal.siteNameAsia = globalSiteAsia.value;
-        if (globalContactText) appData.footerGlobal.contactText = globalContactText.value;
-        if (globalEmail) appData.footerGlobal.email = globalEmail.value;
-        if (globalAddress) appData.footerGlobal.address = globalAddress.value;
-        if (globalCopyright) appData.footerGlobal.copyright = globalCopyright.value;
-        if (globalProducerLogo) appData.footerGlobal.producerLogo = globalProducerLogo.value;
-
-        // 国内站
-        const cnSiteName = document.getElementById('cnSiteName');
-        const cnSiteAsia = document.getElementById('cnSiteAsia');
-        const cnContactText = document.getElementById('cnContactText');
-        const cnEmail = document.getElementById('cnEmail');
-        const cnAddress = document.getElementById('cnAddress');
-        const cnCopyright = document.getElementById('cnCopyright');
-        const cnProducerLogo = document.getElementById('cnProducerLogo');
-
-        if (cnSiteName) appData.footerCN.siteName = cnSiteName.value;
-        if (cnSiteAsia) appData.footerCN.siteNameAsia = cnSiteAsia.value;
-        if (cnContactText) appData.footerCN.contactText = cnContactText.value;
-        if (cnEmail) appData.footerCN.email = cnEmail.value;
-        if (cnAddress) appData.footerCN.address = cnAddress.value;
-        if (cnCopyright) appData.footerCN.copyright = cnCopyright.value;
-        if (cnProducerLogo) appData.footerCN.producerLogo = cnProducerLogo.value;
     }
 
     // 全站同步
