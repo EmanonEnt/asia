@@ -311,6 +311,7 @@
         .alert.show { display: block; }
         .alert-success { background: rgba(40, 167, 69, 0.15); border: 1px solid #28a745; color: #155724; }
         .alert-error { background: rgba(220, 53, 69, 0.15); border: 1px solid #dc3545; color: #721c24; }
+        .alert-warning { background: rgba(255, 193, 7, 0.15); border: 1px solid #ffc107; color: #856404; }
 
         .add-row-btn {
             margin-top: 20px;
@@ -415,6 +416,36 @@
             align-items: center;
             gap: 10px;
         }
+
+        .sync-progress {
+            position: fixed;
+            top: 80px;
+            left: 280px;
+            right: 0;
+            background: rgba(139, 0, 0, 0.9);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            display: none;
+            z-index: 999;
+        }
+
+        .sync-progress.show { display: block; }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -438,6 +469,11 @@
                 <button type="submit" class="btn">Login</button>
             </form>
         </div>
+    </div>
+
+    <div class="sync-progress" id="syncProgress">
+        <span class="loading-spinner"></span>
+        <span id="syncProgressText">正在同步數據...</span>
     </div>
 
     <div class="admin-container" id="adminPanel">
@@ -706,6 +742,7 @@
     </div>
 
 <script>
+
     // 全局数据存储
     let appData = {
         banners: { banners: [] },
@@ -774,7 +811,8 @@
             if (Date.now() - savedTime < INACTIVITY_TIMEOUT) {
                 githubToken = localStorage.getItem('livegigs_github_token') || '';
                 showAdminPanel();
-                loadAllData();
+                // 登录后先反向同步前端数据到后台
+                reverseSyncFromFrontend();
             } else {
                 logout();
             }
@@ -792,7 +830,8 @@
                 localStorage.setItem('livegigs_admin_login_time', Date.now().toString());
                 localStorage.setItem('livegigs_github_token', githubToken);
                 showAdminPanel();
-                loadAllData();
+                // 登录后先反向同步前端数据到后台
+                reverseSyncFromFrontend();
                 startInactivityTimer();
             } else {
                 alert('用戶名或密碼錯誤');
@@ -835,28 +874,20 @@
         setTimeout(() => alertBox.classList.remove('show'), 5000);
     }
 
-    function showSection(section) {
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.classList.remove('active');
-            if (item.dataset.section === section) item.classList.add('active');
-        });
-
-        document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
-        const targetSection = document.getElementById(section);
-        if (targetSection) {
-            targetSection.classList.add('active');
-            targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-
-        if (section !== 'dashboard') {
-            renderSection(section);
-        } else {
-            updateDashboard();
-        }
-        return false;
+    function showSyncProgress(text) {
+        const progress = document.getElementById('syncProgress');
+        document.getElementById('syncProgressText').textContent = text;
+        progress.classList.add('show');
     }
 
-    async function loadAllData() {
+    function hideSyncProgress() {
+        document.getElementById('syncProgress').classList.remove('show');
+    }
+
+    // 反向同步：从GitHub加载现有数据到后台
+    async function reverseSyncFromFrontend() {
+        showSyncProgress('正在從GitHub同步數據到後台...');
+
         try {
             const files = [
                 'banners', 'index-posters', 'cn-posters', 'events-posters',
@@ -884,9 +915,19 @@
             initializeDataStructure();
             updateDashboard();
             renderAllSections();
-            showAlert('數據加載完成', 'success');
+            hideSyncProgress();
+            showAlert('數據同步完成', 'success');
+
+            // 更新同步状态
+            document.getElementById('syncStatus').textContent = '已同步';
+            document.getElementById('syncStatus').className = 'sync-status success';
+            document.getElementById('lastSync').textContent = new Date().toLocaleString();
         } catch (error) {
-            showAlert('數據加載失敗: ' + error.message, 'error');
+            hideSyncProgress();
+            showAlert('數據同步失敗: ' + error.message, 'error');
+            // 即使失败也初始化空结构
+            initializeDataStructure();
+            renderAllSections();
         }
     }
 
@@ -921,71 +962,149 @@
         if (!appData.footerGlobal.socials) appData.footerGlobal.socials = [];
         if (!appData.footerCN.socials) appData.footerCN.socials = [];
 
-        // Banner初始化
-        if (!appData.banners.banners || appData.banners.banners.length === 0) {
-            appData.banners.banners = Array(5).fill(null).map((_, i) => ({
-                id: i + 1, title: '', buttonText: '', link: '', image: '', order: i + 1, enabled: false
-            }));
+        // Banner初始化 - 5个空位
+        if (!appData.banners || !appData.banners.banners || appData.banners.banners.length === 0) {
+            appData.banners = { banners: [] };
+        }
+        // 确保有5个位置
+        while (appData.banners.banners.length < 5) {
+            appData.banners.banners.push({
+                id: appData.banners.banners.length + 1,
+                title: '',
+                buttonText: '',
+                link: '',
+                image: '',
+                order: appData.banners.banners.length + 1,
+                enabled: false
+            });
         }
 
-        // Posters初始化
-        if (!appData.indexPosters.posters || appData.indexPosters.posters.length === 0) {
-            appData.indexPosters.posters = Array(3).fill(null).map((_, i) => ({
-                id: i + 1, title: '', linkText: '', link: '', image: '', enabled: false
-            }));
+        // Posters初始化 - 3个位置
+        ['indexPosters', 'cnPosters'].forEach(key => {
+            if (!appData[key] || !appData[key].posters || appData[key].posters.length === 0) {
+                appData[key] = { posters: [] };
+            }
+            while (appData[key].posters.length < 3) {
+                appData[key].posters.push({
+                    id: appData[key].posters.length + 1,
+                    title: '',
+                    linkText: '',
+                    link: '',
+                    image: '',
+                    enabled: false
+                });
+            }
+        });
+
+        // Events posters - 5个位置
+        if (!appData.eventsPosters || !appData.eventsPosters.posters || appData.eventsPosters.posters.length === 0) {
+            appData.eventsPosters = { posters: [], poster2_carousel: false };
+        }
+        while (appData.eventsPosters.posters.length < 5) {
+            appData.eventsPosters.posters.push({
+                id: appData.eventsPosters.posters.length + 1,
+                title: '',
+                linkText: '',
+                link: '',
+                image: '',
+                enabled: false
+            });
         }
 
-        if (!appData.cnPosters.posters || appData.cnPosters.posters.length === 0) {
-            appData.cnPosters.posters = Array(3).fill(null).map((_, i) => ({
-                id: i + 1, title: '', linkText: '', link: '', image: '', enabled: false
-            }));
+        // Events初始化 - 9个位置
+        if (!appData.eventsManaged || !appData.eventsManaged.events || appData.eventsManaged.events.length === 0) {
+            appData.eventsManaged = { events: [] };
+        }
+        while (appData.eventsManaged.events.length < 9) {
+            appData.eventsManaged.events.push({
+                id: appData.eventsManaged.events.length + 1,
+                title: '',
+                date: '',
+                venue: '',
+                time: '',
+                image: '',
+                ticket: '',
+                status: '',
+                buttonText: '',
+                link: '',
+                enabled: false
+            });
         }
 
-        if (!appData.eventsPosters.posters || appData.eventsPosters.posters.length === 0) {
-            appData.eventsPosters.posters = Array(5).fill(null).map((_, i) => ({
-                id: i + 1, title: '', linkText: '', link: '', image: '', enabled: false
-            }));
+        // Carousel初始化 - 12个位置
+        if (!appData.eventsCarousel || !appData.eventsCarousel.carousel || appData.eventsCarousel.carousel.length === 0) {
+            appData.eventsCarousel = { carousel: [] };
+        }
+        while (appData.eventsCarousel.carousel.length < 12) {
+            appData.eventsCarousel.carousel.push({
+                id: appData.eventsCarousel.carousel.length + 1,
+                title: '',
+                buttonText: '',
+                link: '',
+                image: '',
+                date: '',
+                order: appData.eventsCarousel.carousel.length + 1,
+                enabled: false
+            });
         }
 
-        // Events初始化
-        if (!appData.eventsManaged.events || appData.eventsManaged.events.length === 0) {
-            appData.eventsManaged.events = Array(9).fill(null).map((_, i) => ({
-                id: i + 1, title: '', date: '', venue: '', time: '', image: '',
-                ticket: '', status: '', buttonText: '', link: '', enabled: false
-            }));
+        // Partners初始化 - 9个位置
+        if (!appData.partnersBanners || !appData.partnersBanners.banners || appData.partnersBanners.banners.length === 0) {
+            appData.partnersBanners = { banners: [] };
+        }
+        while (appData.partnersBanners.banners.length < 9) {
+            appData.partnersBanners.banners.push({
+                id: appData.partnersBanners.banners.length + 1,
+                mainImage: '',
+                logoImage: '',
+                title: '',
+                description: '',
+                buttonText: '',
+                link: '',
+                enabled: false
+            });
         }
 
-        // Carousel初始化
-        if (!appData.eventsCarousel.carousel || appData.eventsCarousel.carousel.length === 0) {
-            appData.eventsCarousel.carousel = Array(12).fill(null).map((_, i) => ({
-                id: i + 1, title: '', buttonText: '', link: '', image: '', date: '', order: i + 1, enabled: false
-            }));
+        if (!appData.collaborators || !appData.collaborators.logos || appData.collaborators.logos.length === 0) {
+            appData.collaborators = { logos: [] };
+        }
+        while (appData.collaborators.logos.length < 9) {
+            appData.collaborators.logos.push({
+                id: appData.collaborators.logos.length + 1,
+                name: '',
+                image: '',
+                link: '',
+                enabled: false
+            });
         }
 
-        // Partners初始化
-        if (!appData.partnersBanners.banners || appData.partnersBanners.banners.length === 0) {
-            appData.partnersBanners.banners = Array(9).fill(null).map((_, i) => ({
-                id: i + 1, mainImage: '', logoImage: '', title: '', description: '',
-                buttonText: '', link: '', enabled: false
-            }));
-        }
-
-        if (!appData.collaborators.logos || appData.collaborators.logos.length === 0) {
-            appData.collaborators.logos = Array(9).fill(null).map((_, i) => ({
-                id: i + 1, name: '', image: '', link: '', enabled: false
-            }));
-        }
-
-        // Socials初始化
+        // Socials初始化 - 10个位置
         if (!appData.footerGlobal.socials || appData.footerGlobal.socials.length === 0) {
-            appData.footerGlobal.socials = Array(10).fill(null).map((_, i) => ({
-                id: i + 1, name: '', icon: '', link: '', enabled: false
-            }));
+            appData.footerGlobal.socials = [];
         }
+        while (appData.footerGlobal.socials.length < 10) {
+            appData.footerGlobal.socials.push({
+                id: appData.footerGlobal.socials.length + 1,
+                name: '',
+                icon: '',
+                customIcon: '',
+                link: '',
+                enabled: false
+            });
+        }
+
         if (!appData.footerCN.socials || appData.footerCN.socials.length === 0) {
-            appData.footerCN.socials = Array(10).fill(null).map((_, i) => ({
-                id: i + 1, name: '', icon: '', link: '', enabled: false
-            }));
+            appData.footerCN.socials = [];
+        }
+        while (appData.footerCN.socials.length < 10) {
+            appData.footerCN.socials.push({
+                id: appData.footerCN.socials.length + 1,
+                name: '',
+                icon: '',
+                customIcon: '',
+                link: '',
+                enabled: false
+            });
         }
     }
 
@@ -1012,6 +1131,27 @@
         document.getElementById('statCarousel').textContent = carouselEnabled;
         document.getElementById('statPartners').textContent = partnerBannerEnabled;
         document.getElementById('statLogos').textContent = logoEnabled;
+    }
+
+    function showSection(section) {
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.classList.remove('active');
+            if (item.dataset.section === section) item.classList.add('active');
+        });
+
+        document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+        const targetSection = document.getElementById(section);
+        if (targetSection) {
+            targetSection.classList.add('active');
+            targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        if (section !== 'dashboard') {
+            renderSection(section);
+        } else {
+            updateDashboard();
+        }
+        return false;
     }
 
     function renderSection(section) {
@@ -1507,7 +1647,7 @@
         if (cnProducerLogo) appData.footerCN.producerLogo = cnProducerLogo.value;
     }
 
-    // 同步单个区域
+    // 同步单个区域到GitHub
     async function syncSection(section) {
         if (!githubToken) {
             showAlert('請先設置GitHub Token', 'error');
@@ -1525,7 +1665,7 @@
             return;
         }
 
-        showAlert('正在同步 ' + section + '...', 'warning');
+        showSyncProgress('正在同步 ' + section + ' 到GitHub...');
 
         try {
             let files = [];
@@ -1582,6 +1722,7 @@
                 }
             }
 
+            hideSyncProgress();
             if (failCount === 0) {
                 showAlert(`${section} 區域同步成功 (${successCount} 個文件)`, 'success');
                 document.getElementById('syncStatus').textContent = '已同步';
@@ -1591,11 +1732,12 @@
                 showAlert(`${section} 區域同步完成: ${successCount} 成功, ${failCount} 失敗`, 'error');
             }
         } catch (error) {
+            hideSyncProgress();
             showAlert('同步失敗: ' + error.message, 'error');
         }
     }
 
-    // 全站同步
+    // 全站同步到GitHub
     async function syncAllToGitHub() {
         if (!githubToken) {
             showAlert('請先設置GitHub Token', 'error');
@@ -1608,6 +1750,8 @@
         const statusEl = document.getElementById('syncStatus');
         statusEl.textContent = '同步中...';
         statusEl.className = 'sync-status pending';
+
+        showSyncProgress('正在全站同步到GitHub...');
 
         try {
             const files = [
@@ -1664,6 +1808,7 @@
                 }
             }
 
+            hideSyncProgress();
             if (failCount === 0) {
                 statusEl.textContent = '同步成功';
                 statusEl.className = 'sync-status success';
@@ -1675,6 +1820,7 @@
                 showAlert(`同步完成: ${successCount} 成功, ${failCount} 失敗`, 'error');
             }
         } catch (error) {
+            hideSyncProgress();
             statusEl.textContent = '同步錯誤';
             statusEl.className = 'sync-status error';
             showAlert('同步失敗: ' + error.message, 'error');
