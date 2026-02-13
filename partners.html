@@ -720,18 +720,21 @@
 
         .partner-logo-item.no-link {
             cursor: default;
-            pointer-events: none;
         }
 
         .partner-logo-item.no-link:hover {
-            background: rgba(255,255,255,0.05);
-            border-color: rgba(139, 0, 0, 0.4);
+            background: rgba(139, 0, 0, 0.2);
+            border-color: var(--dark-red);
             transform: none;
-            box-shadow: none;
+            box-shadow: 0 0 30px rgba(139, 0, 0, 0.6), 0 0 60px rgba(139, 0, 0, 0.3);
         }
 
         .partner-logo-item.no-link:hover::before {
-            display: none;
+            left: 100%;
+        }
+
+        .partner-logo-item.no-link:hover img {
+            filter: grayscale(0%) brightness(1.2);
         }
 
         .partner-logo-item::before {
