@@ -11,28 +11,28 @@
       "id": 1,
       "name": "Facebook",
       "icon": "facebook",
-      "link": "https://facebook.com/xrebooking",
+      "link": "https://facebook.com/livegigsasia",
       "enabled": true
     },
     {
       "id": 2,
       "name": "Instagram",
       "icon": "instagram",
-      "link": "https://instagram.com/xrebooking",
+      "link": "https://instagram.com/livegigsasia",
       "enabled": true
     },
     {
       "id": 3,
       "name": "YouTube",
       "icon": "youtube",
-      "link": " ",
+      "link": "https://youtube.com/livegigsasia",
       "enabled": true
     },
     {
       "id": 4,
       "name": "X",
       "icon": "x",
-      "link": "https://x.com/xrebooking",
+      "link": "https://x.com/livegigsasia",
       "enabled": true
     }
   ]

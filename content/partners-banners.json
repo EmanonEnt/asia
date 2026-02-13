@@ -32,11 +32,11 @@
     },
     {
       "id": 4,
-      "mainImage": "./image/p-p-4.jpg",
-      "logoImage": "./image/p-p-4logo.png",
-      "title": "Partner Four",
-      "description": "Description for partner four",
-      "buttonText": "Learn More",
+      "mainImage": "",
+      "logoImage": "",
+      "title": "",
+      "description": "",
+      "buttonText": "",
       "link": "",
       "enabled": false
     }
