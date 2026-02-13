@@ -1,91 +1,81 @@
 {
   "siteName": "LIVEGIGS",
   "siteNameAsia": "CN",
-  "contactText": "+852-456-7890",
-  "email": "XREBooking@Hotmail.com",
-  "address": "#303 TERRY FRANCINE STREET, 香港, CN 999077",
-  "copyright": "Copyright © 2001-2026 EMANON ENT. - 版權所有.",
+  "contactText": "",
+  "email": "",
+  "address": "",
+  "copyright": "",
   "producerLogo": "./image/emanonent-logo.png",
   "socials": [
     {
       "id": 1,
-      "enabled": true,
-      "name": "現場中國",
-      "icon": "weibo",
-      "customIcon": "",
-      "link": "https://weibo.com/u/2069556322"
+      "name": "",
+      "icon": "",
+      "link": "",
+      "enabled": false
     },
     {
       "id": 2,
-      "enabled": true,
-      "name": "LIVEGIGS",
-      "icon": "xiaohongshu",
-      "customIcon": "",
-      "link": "https://www.xiaohongshu.com/user/profile/64a076b2000000001c"
+      "name": "",
+      "icon": "",
+      "link": "",
+      "enabled": false
     },
     {
       "id": 3,
-      "enabled": true,
-      "name": "LIVEGIGS CN",
-      "icon": "wechat",
-      "customIcon": "",
-      "link": ""
+      "name": "",
+      "icon": "",
+      "link": "",
+      "enabled": false
     },
     {
       "id": 4,
-      "enabled": true,
-      "name": "現場秀",
-      "icon": "miniprogram",
-      "customIcon": "",
-      "link": "https://wxaurl.cn/HMcAK6R7fou"
+      "name": "",
+      "icon": "",
+      "link": "",
+      "enabled": false
     },
     {
       "id": 5,
-      "enabled": false,
       "name": "",
       "icon": "",
-      "customIcon": "",
-      "link": ""
+      "link": "",
+      "enabled": false
     },
     {
       "id": 6,
-      "enabled": false,
       "name": "",
       "icon": "",
-      "customIcon": "",
-      "link": ""
+      "link": "",
+      "enabled": false
     },
     {
       "id": 7,
-      "enabled": false,
       "name": "",
       "icon": "",
-      "customIcon": "",
-      "link": ""
+      "link": "",
+      "enabled": false
     },
     {
       "id": 8,
-      "enabled": false,
       "name": "",
       "icon": "",
-      "customIcon": "",
-      "link": ""
+      "link": "",
+      "enabled": false
     },
     {
       "id": 9,
-      "enabled": false,
       "name": "",
       "icon": "",
-      "customIcon": "",
-      "link": ""
+      "link": "",
+      "enabled": false
     },
     {
       "id": 10,
-      "enabled": false,
       "name": "",
       "icon": "",
-      "customIcon": "",
-      "link": ""
+      "link": "",
+      "enabled": false
     }
   ]
 }
