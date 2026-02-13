@@ -54,24 +54,21 @@
         .event-card { position: relative; background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%); overflow: hidden; cursor: pointer; transition: all 0.4s ease; border: 1px solid rgba(139, 0, 0, 0.3); aspect-ratio: 3/4; max-width: 400px; margin: 0 auto; width: 100%; }
         .event-card:hover { transform: translateY(-10px); border-color: rgba(139, 0, 0, 0.8); box-shadow: 0 0 30px rgba(139, 0, 0, 0.3), inset 0 0 20px rgba(139, 0, 0, 0.1); }
         .event-poster { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; filter: brightness(0.7); transition: all 0.4s; z-index: 1; }
-        .event-card:hover .event-poster { filter: brightness(1); transform: scale(1.05); }
-        .event-status { position: absolute; top: 20px; right: 20px; z-index: 10; padding: 8px 16px; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; font-weight: bold; border-radius: 4px; animation: statusPulse 2s ease-in-out infinite; background: rgba(0, 0, 0, 0.7); border: 1px solid var(--dark-red); color: #fff; }
+        .event-card:hover .event-poster { filter: brightness(0.4); transform: scale(1.05); }
+        .event-status { position: absolute; top: 20px; right: 20px; z-index: 10; padding: 8px 16px; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; font-weight: bold; border-radius: 4px; animation: statusPulse 2s ease-in-out infinite; }
         .event-status.countdown { background: rgba(0, 0, 0, 0.8); color: #fff; border: 1px solid var(--dark-red); }
         .event-status.soldout { background: var(--dark-red); color: #fff; border: 1px solid var(--dark-red); }
         .event-status.ontour { background: rgba(139, 0, 0, 0.8); color: #fff; border: 1px solid var(--dark-red); }
         @keyframes statusPulse { 0%, 100% { box-shadow: 0 0 10px rgba(139, 0, 0, 0.5); } 50% { box-shadow: 0 0 20px rgba(139, 0, 0, 0.8); } }
-        .event-content { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; padding: 80px 20px 100px; z-index: 5; background: rgba(0,0,0,0.4); transition: opacity 0.4s; }
-        /* .event-card:hover .event-content { opacity: 0; } */
-        .event-btn-wrapper { position: absolute; bottom: 40px; left: 0; right: 0; display: flex; justify-content: center; z-index: 10; }
+        .event-content { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; padding: 80px 20px 40px; z-index: 5; background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0.6) 70%, rgba(0,0,0,0.8) 100%); }
         .event-name { font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; font-size: clamp(20px, 2.5vw, 28px); letter-spacing: 2px; text-transform: uppercase; color: #fff; margin-bottom: 15px; text-shadow: 0 0 30px rgba(139, 0, 0, 1), 0 2px 4px rgba(0,0,0,0.8); line-height: 1.2; text-align: center; }
         .event-details { font-size: 14px; color: var(--silver); letter-spacing: 1px; margin-bottom: 8px; text-align: center; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
         .event-venue { font-size: 13px; color: rgba(255,255,255,0.8); letter-spacing: 1px; margin-bottom: auto; text-align: center; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
-        .event-btn { display: inline-block; background: rgba(139, 0, 0, 0.8); color: #fff; border: 2px solid var(--dark-red); padding: 12px 30px; font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; cursor: pointer; transition: all 0.4s; position: relative; overflow: hidden; }
+        .event-btn { display: inline-block; background: rgba(139, 0, 0, 0.8); color: #fff; border: 2px solid var(--dark-red); padding: 12px 30px; font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; cursor: pointer; transition: all 0.4s; position: relative; overflow: hidden; margin-top: auto; }
         .event-btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); transition: left 0.5s; }
         .event-btn:hover::before { left: 100%; }
-        .event-btn:hover { background: var(--dark-red); box-shadow: 0 0 30px rgba(139, 0, 0, 0.8), 0 0 60px rgba(139, 0, 0, 0.4); transform: scale(1.05); letter-spacing: 3px; }
-        .event-btn.disabled { pointer-events: none; cursor: default; opacity: 0.6; }
-        .event-btn.disabled:hover { background: var(--dark-red); box-shadow: 0 0 30px rgba(139, 0, 0, 0.8), 0 0 60px rgba(139, 0, 0, 0.4); transform: scale(1.05); letter-spacing: 3px; }
+        .event-btn:hover { background: var(--dark-red); border-color: #fff; box-shadow: 0 0 30px rgba(139, 0, 0, 0.8), 0 0 60px rgba(139, 0, 0, 0.4); transform: scale(1.05); letter-spacing: 3px; }
+        .event-btn.disabled { pointer-events: none; cursor: default; }
         .event-card.hidden { display: none; }
         .load-more-container { text-align: center; margin-top: 60px; display: none; }
         .load-more-container.visible { display: block; }
@@ -171,7 +168,112 @@
         @media (max-width: 768px) { nav { padding: 0 20px; height: 65px; } .logo-img { height: 35px; max-width: 130px; } .nav-links a { font-size: 11px; letter-spacing: 2px; } .nav-links .neon-btn { padding: 8px 16px; font-size: 10px; } .hero-content { margin-top: 80px; } .hero-title { font-size: clamp(55px, 14vw, 80px); letter-spacing: 5px; margin-bottom: 35px; } .hero-subtitle { font-size: clamp(16px, 3.5vw, 22px); letter-spacing: 2.5px; margin-top: 50px; } .section-title { font-size: clamp(28px, 5vw, 40px); } .event-status { top: 15px; right: 15px; padding: 6px 12px; font-size: 11px; } .event-content { padding: 60px 20px 30px; } .auto-scroll-item { flex: 0 0 33.333%; min-width: 200px; } .footer-gap { height: 100px; } .footer-main { padding: 40px 30px 30px; } .footer-container { flex-direction: column; gap: 30px; text-align: center; } .footer-contact-left, .footer-contact-right { text-align: center; flex: 1; width: 100%; } .social-links { margin-bottom: 20px; } .producer-section { text-align: center; } .footer-bottom { flex-direction: column; gap: 15px; padding: 20px 30px; text-align: center; } .footer-legal { flex-wrap: wrap; justify-content: center; gap: 20px; } .scroll-arrow { width: 35px; height: 50px; font-size: 18px; } .poster-carousel { display: block !important; } .mobile-poster2-text { display: none !important; } }
         @media (max-width: 480px) { nav { padding: 0 15px; height: 60px; background: rgba(0, 0, 0, 0.5); } .logo-img { height: 32px; max-width: 120px; } .nav-links { gap: 12px; } .nav-links a { font-size: 10px; letter-spacing: 1px; } .nav-links .neon-btn { padding: 6px 14px; font-size: 9px; } .hero-content { margin-top: 60px; } .hero-title { font-size: clamp(45px, 13vw, 65px); letter-spacing: 4px; margin-bottom: 30px; } .hero-subtitle { font-size: clamp(13px, 3.5vw, 16px); letter-spacing: 2px; margin-top: 40px; line-height: 1.6; } .hero-subtitle .line1 { margin-bottom: 5px; } .smoke-container { opacity: 0.35; } .managed-events { padding: 60px 0; } .section-header { margin-bottom: 40px; } .section-subtitle { font-size: 12px; } .event-card { aspect-ratio: 2/3; } .event-status { font-size: 10px; padding: 5px 10px; top: 10px; right: 10px; } .event-content { padding: 50px 15px 25px; } .event-name { font-size: 18px; margin-bottom: 10px; } .event-details { font-size: 12px; } .event-venue { font-size: 11px; } .event-btn { padding: 10px 25px; font-size: 11px; margin-top: 20px; } .load-more-btn { padding: 12px 30px; font-size: 12px; } .auto-scroll-section { padding: 0; } .auto-scroll-item { flex: 0 0 50%; min-width: 150px; } .auto-scroll-title { font-size: 14px; } .posters-showcase { padding: 0; } .posters-container { padding: 0 20px; gap: 15px; justify-content: center; } .poster-item-alt { flex: 0 0 calc(33.333% - 10px); max-width: calc(33.333% - 10px); min-width: auto; border-radius: 4px; border: none; } .poster-item-alt:hover { transform: translateY(-12px); box-shadow: 0 25px 60px rgba(139, 0, 0, 0.4); } .poster-item-alt img { transition: all 0.4s; } .poster-item-alt:hover img { filter: brightness(0.65); transform: scale(1.08); } .poster-item-alt .poster-overlay { padding: 12px 6px 10px; } .poster-title { font-size: 10px; letter-spacing: 1px; margin-bottom: 4px; } .poster-link { font-size: 9px; letter-spacing: 0.5px; } .poster-overlay { padding: 12px 6px 10px; } .footer-gap { height: 80px; } .footer-main { padding: 35px 25px 25px; } .footer-logo { font-size: 28px; letter-spacing: 3px; margin-bottom: 15px; } .social-links { gap: 12px; margin-bottom: 20px; } .social-icon { width: 36px; height: 36px; } .social-icon svg { width: 14px; height: 14px; } .contact-item { font-size: 11px; margin-bottom: 8px; } .producer-label { font-size: 9px; letter-spacing: 2px; } .producer-logo { height: 30px; } .footer-bottom { padding: 15px 20px; gap: 12px; } .footer-legal { gap: 15px; } .footer-legal a { font-size: 10px; } .copyright { font-size: 10px; } .scroll-arrow { width: 30px; height: 45px; font-size: 16px; } }
         @media (max-width: 375px) { .hero-title { font-size: 38px; letter-spacing: 3px; } .hero-subtitle { font-size: 11px; } .events-grid { padding: 0 15px; } .event-name { font-size: 16px; } .posters-container { padding: 0 15px; gap: 12px; } .poster-item-alt { flex: 0 0 calc(33.333% - 8px); max-width: calc(33.333% - 8px); } .poster-title { font-size: 9px; } .poster-link { font-size: 8px; } .footer-logo { font-size: 24px; letter-spacing: 2px; } .social-icon { width: 34px; height: 34px; } .contact-item { font-size: 10px; } }
-    </style>
+    
+        /* 右上角状态按钮统一半透明背景 */
+        .event-status {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 10;
+            padding: 8px 16px;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: bold;
+            border-radius: 4px;
+            background: rgba(0, 0, 0, 0.7) !important;
+            border: 1px solid rgba(139, 0, 0, 0.5);
+            animation: statusPulse 2s ease-in-out infinite;
+        }
+        .event-status.countdown {
+            color: #fff;
+        }
+        .event-status.soldout {
+            color: #ff4444;
+        }
+        .event-status.ontour {
+            color: #ffaa00;
+        }
+
+        /* 无链接按钮样式 - 禁用状态 */
+        .event-btn.disabled {
+            pointer-events: none;
+            cursor: not-allowed;
+            opacity: 0.6;
+            background: rgba(139, 0, 0, 0.4);
+            border-color: rgba(139, 0, 0, 0.6);
+        }
+        .event-btn.disabled:hover {
+            transform: none;
+            box-shadow: none;
+            letter-spacing: 2px;
+        }
+
+        /* 海报蒙版效果 - 默认半透明黑色，hover全透明 */
+        .event-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2;
+            transition: all 0.4s ease;
+            pointer-events: none;
+        }
+        .event-card:hover::before {
+            background: rgba(0, 0, 0, 0);
+        }
+
+        /* 海报内容区域 - hover时隐藏标题/日期/地址，保留按钮 */
+        .event-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 80px 20px 40px;
+            z-index: 5;
+            background: transparent;
+            transition: all 0.4s ease;
+        }
+
+        /* hover时隐藏的内容 */
+        .event-card:hover .event-name,
+        .event-card:hover .event-details,
+        .event-card:hover .event-venue {
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        /* 始终显示的内容 */
+        .event-status,
+        .event-btn {
+            opacity: 1 !important;
+            visibility: visible !important;
+            z-index: 20;
+        }
+
+        /* 调整按钮位置确保可见 */
+        .event-btn {
+            margin-top: auto;
+            position: relative;
+            z-index: 20;
+        }
+
+        .event-status {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 20;
+        }
+</style>
 </head>
 <body>
     <nav>
@@ -400,16 +502,7 @@
                 if (!targetDate) return;
                 const target = new Date(targetDate + 'T00:00:00');
                 const diff = target - now;
-                const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
-                if (days < 0) { 
-                    el.textContent = 'ENDED'; 
-                } else if (days === 0) { 
-                    el.textContent = 'TODAY'; 
-                } else { 
-                    el.textContent = days + ' DAYS'; 
-                }
-            });
-        }
+                if (diff <= 0) { el.textContent = 'EVENT STARTED'; return; }
                 const days = Math.floor(diff / (1000 * 60 * 60 * 24));
                 el.textContent = days + ' DAYS';
             });
