@@ -303,14 +303,26 @@
             height: 100%;
             opacity: 0;
             transition: opacity 0.8s ease-in-out;
+            z-index: 1;
         }
         .carousel-slide.active {
             opacity: 1;
+            z-index: 2;
         }
         .carousel-slide img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            display: block;
+        }
+        /* 确保海报2容器有高度 */
+        #poster2Carousel {
+            min-height: 600px !important;
+        }
+        @media (max-width: 768px) {
+            #poster2Carousel {
+                min-height: 400px !important;
+            }
         }
         .poster-btn {
             display: inline-block;
