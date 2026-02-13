@@ -294,6 +294,60 @@
         .event-card:hover .event-poster {
             filter: brightness(1) !important;
         }
+    
+        /* 海报2滚播 - 每张海报独立文字 */
+        .carousel-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+        }
+        .carousel-slide.active {
+            opacity: 1;
+        }
+        .carousel-slide img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .carousel-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 35px 20px 25px;
+            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 50%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.4s;
+            pointer-events: none;
+        }
+        .carousel-slide.active .carousel-overlay {
+            opacity: 1;
+        }
+        .carousel-title {
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: 18px;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 8px;
+            text-shadow: 0 0 20px rgba(139, 0, 0, 0.8);
+        }
+        .carousel-link {
+            display: inline-block;
+            color: #c0c0c0;
+            font-size: 12px;
+            text-decoration: none;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+            cursor: default;
+        }
     </style>
 </head>
 <body>
@@ -412,23 +466,20 @@
                 </div>
                 <div class="poster-item-alt" data-poster-id="2">
                     <div class="poster-carousel" id="posterCarousel">
-                        <img src="./image/2-old1.jpg" alt="Past Event 1" class="active">
-                        <img src="./image/2-old2.jpg" alt="Past Event 2">
-                        <img src="./image/2-old3.jpg" alt="Past Event 3">
-                        <img src="https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=600&h=800&fit=crop" alt="Past Event 4">
-                        <img src="https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=600&h=800&fit=crop" alt="Past Event 5">
+                        <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&h=800&fit=crop" alt="Past Event 1" class="active">
+                        <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop" alt="Past Event 2">
+                        <img src="https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=600&h=800&fit=crop" alt="Past Event 3">
                         <div class="carousel-dots">
                             <span class="carousel-dot active" onclick="goToSlide(0)"></span>
                             <span class="carousel-dot" onclick="goToSlide(1)"></span>
                             <span class="carousel-dot" onclick="goToSlide(2)"></span>
-                            <span class="carousel-dot" onclick="goToSlide(3)"></span>
-                            <span class="carousel-dot" onclick="goToSlide(4)"></span>
                         </div>
                         <div class="poster-overlay">
                             <div class="poster-title">Epic Past Gigs</div>
                             <span class="poster-link">View Gallery →</span>
                         </div>
                     </div>
+                    <div class="mobile-poster2-text"><h3>Legendary Live Events</h3></div>
                 </div>
                 <div class="poster-item-alt" data-poster-id="3" data-link="partners.html">
                     <img src="./image/xrebookingad.jpg" alt="XRE Booking" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=XRE+BOOKING'">
@@ -572,6 +623,8 @@
         const slides = document.querySelectorAll('.poster-carousel img');
         const dots = document.querySelectorAll('.carousel-dot');
         function goToSlide(n) {
+            const slides = document.querySelectorAll('.carousel-slide');
+            const dots = document.querySelectorAll('.carousel-dot');
             slides[currentSlide].classList.remove('active');
             dots[currentSlide].classList.remove('active');
             currentSlide = (n + slides.length) % slides.length;
