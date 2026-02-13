@@ -2,27 +2,27 @@
   "posters": [
     {
       "id": 1,
-      "title": "LiveGigs Asia",
+      "enabled": true,
+      "title": "LiveGigs Asia 2026",
       "linkText": "View Details →",
-      "link": "https://livegigsasia.com",
-      "image": "./image/livegigscn1.png",
-      "enabled": true
+      "link": "./events.html",
+      "image": "./image/livegigscn1.png"
     },
     {
       "id": 2,
+      "enabled": true,
       "title": "Epic Past Gigs",
       "linkText": "View Details →",
-      "link": "https://livegigsasia.com/events",
-      "image": "./image/1-b-2.jpg",
-      "enabled": true
+      "link": "./events.html",
+      "image": "./image/1-b-2.jpg"
     },
     {
       "id": 3,
-      "title": "Upcoming Shows",
+      "enabled": true,
+      "title": "Upcoming Events",
       "linkText": "View Details →",
-      "link": "https://livegigsasia.com/events",
-      "image": "./image/1-b-3.jpg",
-      "enabled": true
+      "link": "./events.html",
+      "image": "./image/1-b-3.jpg"
     }
   ]
 }

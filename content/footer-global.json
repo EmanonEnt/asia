@@ -4,36 +4,88 @@
   "contactText": "+852-456-7890",
   "email": "LiveGigsCN@Hotmail.com",
   "address": "#303 TERRY FRANCINE STREET, HONGKONG, CN 999077",
-  "copyright": " Copyright © 2001-2026 EMANON ENT. - All Rights Reserved.",
+  "copyright": "Copyright © 2001-2026 EMANON ENT. - All Rights Reserved.",
   "producerLogo": "./image/emanonent-logo.png",
   "socials": [
     {
       "id": 1,
+      "enabled": true,
       "name": "Facebook",
       "icon": "facebook",
-      "link": "https://facebook.com/xrebooking",
-      "enabled": true
+      "customIcon": "",
+      "link": "https://facebook.com/xrebooking"
     },
     {
       "id": 2,
+      "enabled": true,
       "name": "Instagram",
       "icon": "instagram",
-      "link": "https://instagram.com/xrebooking",
-      "enabled": true
+      "customIcon": "",
+      "link": "https://instagram.com/xrebooking"
     },
     {
       "id": 3,
+      "enabled": true,
       "name": "YouTube",
       "icon": "youtube",
-      "link": " ",
-      "enabled": true
+      "customIcon": "",
+      "link": ""
     },
     {
       "id": 4,
+      "enabled": true,
       "name": "X",
       "icon": "x",
-      "link": "https://x.com/xrebooking",
-      "enabled": true
+      "customIcon": "",
+      "link": "https://x.com/xrebooking"
+    },
+    {
+      "id": 5,
+      "enabled": false,
+      "name": "",
+      "icon": "",
+      "customIcon": "",
+      "link": ""
+    },
+    {
+      "id": 6,
+      "enabled": false,
+      "name": "",
+      "icon": "",
+      "customIcon": "",
+      "link": ""
+    },
+    {
+      "id": 7,
+      "enabled": false,
+      "name": "",
+      "icon": "",
+      "customIcon": "",
+      "link": ""
+    },
+    {
+      "id": 8,
+      "enabled": false,
+      "name": "",
+      "icon": "",
+      "customIcon": "",
+      "link": ""
+    },
+    {
+      "id": 9,
+      "enabled": false,
+      "name": "",
+      "icon": "",
+      "customIcon": "",
+      "link": ""
+    },
+    {
+      "id": 10,
+      "enabled": false,
+      "name": "",
+      "icon": "",
+      "customIcon": "",
+      "link": ""
     }
   ]
 }

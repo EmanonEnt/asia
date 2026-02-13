@@ -2,45 +2,66 @@
   "logos": [
     {
       "id": 1,
-      "name": "Partner 1",
-      "image": "./image/partner1.png",
-      "link": "https://partner1.com",
-      "enabled": true
+      "enabled": true,
+      "name": "XRE Booking",
+      "image": "./image/collab-1.png",
+      "link": "https://xrebooking.com"
     },
     {
       "id": 2,
-      "name": "Partner 2",
-      "image": "./image/partner2.png",
-      "link": "",
-      "enabled": true
+      "enabled": true,
+      "name": "Kids Union",
+      "image": "./image/collab-2.png",
+      "link": "https://kids-union.com"
     },
     {
       "id": 3,
-      "name": "Partner 3",
-      "image": "./image/partner3.png",
-      "link": "https://partner3.com",
-      "enabled": true
+      "enabled": true,
+      "name": "Music Asia",
+      "image": "./image/collab-3.png",
+      "link": "https://musicasia.com"
     },
     {
       "id": 4,
-      "name": "Partner 4",
-      "image": "./image/partner4.png",
-      "link": "",
-      "enabled": true
+      "enabled": true,
+      "name": "Live Nation",
+      "image": "./image/collab-4.png",
+      "link": "https://livenation.com"
     },
     {
       "id": 5,
-      "name": "Partner 5",
-      "image": "./image/partner5.png",
-      "link": "https://partner5.com",
-      "enabled": true
+      "enabled": true,
+      "name": "Modern Sky",
+      "image": "./image/collab-5.png",
+      "link": "https://modernsky.com"
     },
     {
       "id": 6,
-      "name": "Partner 6",
-      "image": "./image/partner6.png",
-      "link": "",
-      "enabled": true
+      "enabled": true,
+      "name": "Split Works",
+      "image": "./image/collab-6.png",
+      "link": "https://splitworks.com"
+    },
+    {
+      "id": 7,
+      "enabled": false,
+      "name": "",
+      "image": "",
+      "link": ""
+    },
+    {
+      "id": 8,
+      "enabled": false,
+      "name": "",
+      "image": "",
+      "link": ""
+    },
+    {
+      "id": 9,
+      "enabled": false,
+      "name": "",
+      "image": "",
+      "link": ""
     }
   ]
 }

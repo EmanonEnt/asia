@@ -485,7 +485,7 @@
                             <th width="60">排序</th>
                             <th>標題 (留空不顯示)</th>
                             <th>按鈕文字 (留空不顯示)</th>
-                            <th>鏈接地址 (留空不可點擊)</th>
+                            <th>鏈接地址 (留空顯示但不可點擊)</th>
                             <th>海報圖片</th>
                         </tr>
                     </thead>
@@ -507,14 +507,14 @@
                 <div id="poster-index" class="tab-content active">
                     <p class="section-desc">Index頁面3個海報。尺寸：400×600px。</p>
                     <table class="data-table">
-                        <thead><tr><th width="50">啟用</th><th>標題 (留空不顯示)</th><th>鏈接文字 (留空不顯示)</th><th>鏈接地址 (留空不可點擊)</th><th>海報圖片</th></tr></thead>
+                        <thead><tr><th width="50">啟用</th><th>標題 (留空不顯示)</th><th>鏈接文字 (留空不顯示)</th><th>鏈接地址 (留空顯示但不可點擊)</th><th>海報圖片</th></tr></thead>
                         <tbody id="indexPosterTableBody"></tbody>
                     </table>
                 </div>
                 <div id="poster-cn" class="tab-content">
                     <p class="section-desc">CN頁面3個海報。尺寸：400×600px。</p>
                     <table class="data-table">
-                        <thead><tr><th width="50">啟用</th><th>標題 (留空不顯示)</th><th>鏈接文字 (留空不顯示)</th><th>鏈接地址 (留空不可點擊)</th><th>海報圖片</th></tr></thead>
+                        <thead><tr><th width="50">啟用</th><th>標題 (留空不顯示)</th><th>鏈接文字 (留空不顯示)</th><th>鏈接地址 (留空顯示但不可點擊)</th><th>海報圖片</th></tr></thead>
                         <tbody id="cnPosterTableBody"></tbody>
                     </table>
                 </div>
@@ -524,7 +524,7 @@
                         <label><input type="checkbox" id="poster2Carousel" onchange="togglePoster2Carousel()"> 啟用海報2滾播模式</label>
                     </div>
                     <table class="data-table">
-                        <thead><tr><th width="50">啟用</th><th>標題 (留空不顯示)</th><th>鏈接文字 (留空不顯示)</th><th>鏈接地址 (留空不可點擊)</th><th>海報圖片</th></tr></thead>
+                        <thead><tr><th width="50">啟用</th><th>標題 (留空不顯示)</th><th>鏈接文字 (留空不顯示)</th><th>鏈接地址 (留空顯示但不可點擊)</th><th>海報圖片</th></tr></thead>
                         <tbody id="eventsPosterTableBody"></tbody>
                     </table>
                     <button class="add-row-btn" onclick="addEventsPosterRow()">+ 添加海報 (最多5個)</button>
@@ -571,7 +571,7 @@
                     <span>已啟用: <strong id="enabledCarousel">0</strong> / 12</span>
                 </div>
                 <table class="data-table">
-                    <thead><tr><th width="50">啟用</th><th width="60">排序</th><th>標題 (留空不顯示)</th><th>按鈕文字 (留空不顯示)</th><th>鏈接地址 (留空不可點擊)</th><th>日期</th><th>海報圖片</th></tr></thead>
+                    <thead><tr><th width="50">啟用</th><th width="60">排序</th><th>標題 (留空不顯示)</th><th>按鈕文字 (留空不顯示)</th><th>鏈接地址 (留空顯示但不可點擊)</th><th>日期</th><th>海報圖片</th></tr></thead>
                     <tbody id="carouselTableBody"></tbody>
                 </table>
                 <button class="add-row-btn" onclick="addCarouselRow()">+ 添加滾播 (最多12個)</button>
@@ -610,9 +610,9 @@
                             <tr><td>製作單位Logo</td><td><input type="text" id="globalProducerLogo" placeholder="./image/emanonent-logo.png"></td></tr>
                         </tbody>
                     </table>
-                    <h3 style="color: #8b0000; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px;">社交媒體 (最多10個，鏈接留空顯示但不可點擊)</h3>
+                    <h3 style="color: #8b0000; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px;">社交媒體 (最多10個，鏈接或名稱留空時圖標顯示但不可點擊)</h3>
                     <table class="data-table">
-                        <thead><tr><th width="50">啟用</th><th>名稱</th><th>圖標類型/自定義</th><th>鏈接地址 (留空不可點擊)</th></tr></thead>
+                        <thead><tr><th width="50">啟用</th><th>名稱</th><th>圖標類型/自定義</th><th>鏈接地址 (留空顯示但不可點擊)</th></tr></thead>
                         <tbody id="globalSocialTableBody"></tbody>
                     </table>
                     <button class="add-row-btn" onclick="addGlobalSocialRow()">+ 添加社交媒體</button>
@@ -641,9 +641,9 @@
                             <tr><td>製作單位Logo</td><td><input type="text" id="cnProducerLogo" placeholder="./image/emanonent-logo.png"></td></tr>
                         </tbody>
                     </table>
-                    <h3 style="color: #8b0000; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px;">社交媒體 (最多10個，鏈接留空顯示但不可點擊)</h3>
+                    <h3 style="color: #8b0000; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px;">社交媒體 (最多10個，鏈接或名稱留空時圖標顯示但不可點擊)</h3>
                     <table class="data-table">
-                        <thead><tr><th width="50">啟用</th><th>名稱</th><th>圖標類型/自定義</th><th>鏈接地址 (留空不可點擊)</th></tr></thead>
+                        <thead><tr><th width="50">啟用</th><th>名稱</th><th>圖標類型/自定義</th><th>鏈接地址 (留空顯示但不可點擊)</th></tr></thead>
                         <tbody id="cnSocialTableBody"></tbody>
                     </table>
                     <button class="add-row-btn" onclick="addCnSocialRow()">+ 添加社交媒體</button>
@@ -672,7 +672,7 @@
                     <p class="section-desc">最多9個，>6個自動換行居中。尺寸：180×110px。</p>
                     <div class="toolbar"><span>已啟用: <strong id="enabledPartnerLogos">0</strong> / 9</span></div>
                     <table class="data-table">
-                        <thead><tr><th width="50">啟用</th><th>名稱</th><th>Logo圖片</th><th>鏈接地址 (留空不可點擊)</th></tr></thead>
+                        <thead><tr><th width="50">啟用</th><th>名稱</th><th>Logo圖片</th><th>鏈接地址 (留空顯示但不可點擊)</th></tr></thead>
                         <tbody id="partnerLogoTableBody"></tbody>
                     </table>
                     <button class="add-row-btn" onclick="addPartnerLogoRow()">+ 添加Logo (最多9個)</button>

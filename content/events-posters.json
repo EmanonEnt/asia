@@ -1,45 +1,45 @@
 {
+  "poster2_carousel": true,
   "posters": [
     {
       "id": 1,
-      "title": "",
-      "linkText": "",
-      "link": "",
-      "image": "",
-      "enabled": false
+      "enabled": true,
+      "title": "Epic Past Gigs",
+      "linkText": "View Details →",
+      "link": "./events.html",
+      "image": "./image/1-b-2.jpg"
     },
     {
       "id": 2,
-      "title": "Epic Past Gigs",
+      "enabled": true,
+      "title": "LiveGigs Asia",
       "linkText": "View Details →",
-      "link": "https://livegigsasia.com/events",
-      "image": "./image/1-b-2.jpg",
-      "enabled": true
+      "link": "./events.html",
+      "image": "./image/livegigscn1.png"
     },
     {
       "id": 3,
-      "title": "",
-      "linkText": "",
-      "link": "",
-      "image": "",
-      "enabled": false
+      "enabled": true,
+      "title": "Upcoming Events",
+      "linkText": "View Details →",
+      "link": "./events.html",
+      "image": "./image/1-b-3.jpg"
     },
     {
       "id": 4,
+      "enabled": false,
       "title": "",
       "linkText": "",
       "link": "",
-      "image": "",
-      "enabled": false
+      "image": ""
     },
     {
       "id": 5,
+      "enabled": false,
       "title": "",
       "linkText": "",
       "link": "",
-      "image": "",
-      "enabled": false
+      "image": ""
     }
-  ],
-  "poster2_carousel": false
+  ]
 }
