@@ -1,91 +1,81 @@
 {
-  "siteName": "LIVEGIGS",
-  "siteNameAsia": "CN",
-  "contactText": "如需咨询和合作机会，请联系我们：",
-  "email": "xrebooking@hotmail.com",
-  "address": "香港 | 上海 | 北京",
-  "copyright": "Copyright © 2001-2026 EMANON ENT",
+  "siteName": "",
+  "siteNameAsia": "",
+  "contactText": "",
+  "email": "",
+  "address": "",
+  "copyright": "",
   "producerLogo": "./image/emanonent-logo.png",
   "socials": [
     {
       "id": 1,
-      "enabled": true,
-      "name": "微信",
-      "icon": "wechat",
-      "customIcon": "",
-      "link": "https://weixin.qq.com/livegigs"
+      "name": "",
+      "icon": "",
+      "link": "",
+      "enabled": false
     },
     {
       "id": 2,
-      "enabled": true,
-      "name": "微博",
-      "icon": "weibo",
-      "customIcon": "",
-      "link": "https://weibo.com/livegigs"
+      "name": "",
+      "icon": "",
+      "link": "",
+      "enabled": false
     },
     {
       "id": 3,
-      "enabled": true,
-      "name": "小红书",
-      "icon": "xiaohongshu",
-      "customIcon": "",
-      "link": "https://xiaohongshu.com/livegigs"
+      "name": "",
+      "icon": "",
+      "link": "",
+      "enabled": false
     },
     {
       "id": 4,
-      "enabled": true,
-      "name": "小程序",
-      "icon": "miniprogram",
-      "customIcon": "",
-      "link": ""
+      "name": "",
+      "icon": "",
+      "link": "",
+      "enabled": false
     },
     {
       "id": 5,
-      "enabled": false,
       "name": "",
       "icon": "",
-      "customIcon": "",
-      "link": ""
+      "link": "",
+      "enabled": false
     },
     {
       "id": 6,
-      "enabled": false,
       "name": "",
       "icon": "",
-      "customIcon": "",
-      "link": ""
+      "link": "",
+      "enabled": false
     },
     {
       "id": 7,
-      "enabled": false,
       "name": "",
       "icon": "",
-      "customIcon": "",
-      "link": ""
+      "link": "",
+      "enabled": false
     },
     {
       "id": 8,
-      "enabled": false,
       "name": "",
       "icon": "",
-      "customIcon": "",
-      "link": ""
+      "link": "",
+      "enabled": false
     },
     {
       "id": 9,
-      "enabled": false,
       "name": "",
       "icon": "",
-      "customIcon": "",
-      "link": ""
+      "link": "",
+      "enabled": false
     },
     {
       "id": 10,
-      "enabled": false,
       "name": "",
       "icon": "",
-      "customIcon": "",
-      "link": ""
+      "link": "",
+      "enabled": false
     }
   ]
 }
