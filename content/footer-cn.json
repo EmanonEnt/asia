@@ -2,31 +2,31 @@
   "socials": [
     {
       "id": 1,
-      "name": "現場中國",
-      "icon": "weibo",
-      "link": "https://weibo.com/u/2069556322",
-      "enabled": true
+      "name": "",
+      "icon": "",
+      "link": "",
+      "enabled": false
     },
     {
       "id": 2,
-      "name": "LIVEGIGS",
-      "icon": "xiaohongshu",
-      "link": "https://www.xiaohongshu.com/user/profile/64a076b2000000001c0292cc",
-      "enabled": true
+      "name": "",
+      "icon": "",
+      "link": "",
+      "enabled": false
     },
     {
       "id": 3,
-      "name": "LIVEGIGS CN",
-      "icon": "wechat",
-      "link": "https://wxaurl.cn/HMcAK6R7fou",
-      "enabled": true
+      "name": "",
+      "icon": "",
+      "link": "",
+      "enabled": false
     },
     {
       "id": 4,
-      "name": "現場秀",
-      "icon": "miniprogram",
-      "link": "https://wxaurl.cn/HMcAK6R7fou",
-      "enabled": true
+      "name": "",
+      "icon": "",
+      "link": "",
+      "enabled": false
     },
     {
       "id": 5,
