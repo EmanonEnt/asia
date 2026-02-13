@@ -1261,7 +1261,7 @@
         const rebelSlider = document.getElementById('rebelSlider');
         if (rebelSlider) {
             setInterval(() => {
-                rebelCurrent = (rebelCurrent + 1) % 2;
+                rebelCurrent = (rebelCurrent + 1) % 3;
                 rebelSlider.style.transform = `translateX(-${rebelCurrent * 100}%)`;
             }, 5000);
         }
