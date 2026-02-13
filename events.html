@@ -466,22 +466,50 @@
                 </div>
                 <div class="poster-item-alt" data-poster-id="2">
                     <div class="poster-carousel" id="posterCarousel">
-                        <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&h=800&fit=crop" alt="Past Event 1" class="active">
-                        <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop" alt="Past Event 2">
-                        <img src="https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=600&h=800&fit=crop" alt="Past Event 3">
+                        <div class="carousel-slide active">
+                            <img src="./image/2-old1.jpg" alt="Non Servium China Tour">
+                            <div class="carousel-overlay">
+                                <div class="carousel-title">Non Servium China Tour</div>
+                                <span class="carousel-link">w/The Noname →</span>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="./image/2-old2.jpg" alt="Skarface China Tour">
+                            <div class="carousel-overlay">
+                                <div class="carousel-title">Skarface China Tour</div>
+                                <span class="carousel-link">w/The Noname →</span>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="./image/2-old3.jpg" alt="Acidez S.E Asia Tour">
+                            <div class="carousel-overlay">
+                                <div class="carousel-title">Acidez S.E Asia Tour</div>
+                                <span class="carousel-link">w/The Noname →</span>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=600&h=800&fit=crop" alt="Epic Past Gigs">
+                            <div class="carousel-overlay">
+                                <div class="carousel-title">Epic Past Gigs</div>
+                                <span class="carousel-link">View Gallery →</span>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=600&h=800&fit=crop" alt="Epic Past Gigs">
+                            <div class="carousel-overlay">
+                                <div class="carousel-title">Epic Past Gigs</div>
+                                <span class="carousel-link">View Gallery →</span>
+                            </div>
+                        </div>
                         <div class="carousel-dots">
                             <span class="carousel-dot active" onclick="goToSlide(0)"></span>
                             <span class="carousel-dot" onclick="goToSlide(1)"></span>
                             <span class="carousel-dot" onclick="goToSlide(2)"></span>
-                        </div>
-                        <div class="poster-overlay">
-                            <div class="poster-title">Epic Past Gigs</div>
-                            <span class="poster-link">View Gallery →</span>
+                            <span class="carousel-dot" onclick="goToSlide(3)"></span>
+                            <span class="carousel-dot" onclick="goToSlide(4)"></span>
                         </div>
                     </div>
-                    <div class="mobile-poster2-text"><h3>Legendary Live Events</h3></div>
-                </div>
-                <div class="poster-item-alt" data-poster-id="3" data-link="partners.html">
+                </div><div class="poster-item-alt" data-poster-id="3" data-link="partners.html">
                     <img src="./image/xrebookingad.jpg" alt="XRE Booking" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=XRE+BOOKING'">
                     <div class="poster-overlay">
                         <div class="poster-title">XRE Booking</div>
@@ -623,15 +651,18 @@
         const slides = document.querySelectorAll('.poster-carousel img');
         const dots = document.querySelectorAll('.carousel-dot');
         function goToSlide(n) {
-            const slides = document.querySelectorAll('.carousel-slide');
-            const dots = document.querySelectorAll('.carousel-dot');
             slides[currentSlide].classList.remove('active');
             dots[currentSlide].classList.remove('active');
             currentSlide = (n + slides.length) % slides.length;
             slides[currentSlide].classList.add('active');
             dots[currentSlide].classList.add('active');
         }
-        setInterval(() => { goToSlide(currentSlide + 1); }, 5000);
+        setInterval(() => { 
+            const slides = document.querySelectorAll('.carousel-slide');
+            if (slides.length > 0) {
+                goToSlide(currentSlide + 1); 
+            }
+        }, 5000);
         function scrollLeft() {
             const track = document.getElementById('autoScrollTrack');
             track.style.animationPlayState = 'paused';
