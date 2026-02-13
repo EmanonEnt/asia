@@ -124,8 +124,8 @@
         .scroll-arrow.left { left: 0; border-radius: 0 8px 8px 0; border-left: none; }
         .scroll-arrow.right { right: 0; border-radius: 8px 0 0 8px; border-right: none; }
         .posters-showcase { width: 100%; padding: 0; background: linear-gradient(180deg, #050505 0%, #0a0a0a 50%, #050505 100%); position: relative; }
-        .posters-container { width: 100%; max-width: none; margin: 0 auto; display: flex; justify-content: stretch; align-items: stretch; gap: 0; padding: 0; aspect-ratio: 3/1; min-height: 400px; }
-        .poster-item { flex: 1; min-width: 0; max-width: none; position: relative; overflow: hidden; cursor: default; background: #000; transition: all 0.4s ease; height: 100%; }
+        .posters-container { width: 100%; max-width: none; margin: 0 auto; display: flex; justify-content: stretch; align-items: stretch; gap: 0; padding: 0; }
+        .poster-item { flex: 1; min-width: 0; max-width: none; position: relative; overflow: hidden; cursor: default; background: #000; transition: all 0.4s ease; }
         .poster-item:hover { transform: translateY(-12px); box-shadow: 0 25px 60px rgba(139, 0, 0, 0.4); }
         .poster-item img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; transition: all 0.4s; }
         .poster-item:hover img { filter: brightness(0.65); transform: scale(1.08); }
@@ -134,7 +134,7 @@
         .poster-title { font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; font-size: 18px; color: #fff; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 8px; text-shadow: 0 0 20px rgba(139, 0, 0, 0.8); }
         .poster-link { display: inline-block; color: var(--silver); font-size: 12px; text-decoration: none; letter-spacing: 1px; transition: color 0.3s; cursor: pointer; padding: 5px 0; }
         .poster-link:hover { color: var(--dark-red); }
-        .poster-item-alt { flex: 1; min-width: 0; max-width: none; position: relative; overflow: hidden; cursor: default; background: #000; transition: all 0.4s ease; border: none; height: 100%; }
+        .poster-item-alt { flex: 1; min-width: 0; max-width: none; position: relative; overflow: hidden; cursor: default; background: #000; transition: all 0.4s ease; border: none; }
         .poster-item-alt:hover { border-color: rgba(139, 0, 0, 0.6); box-shadow: 0 0 30px rgba(139, 0, 0, 0.3), inset 0 0 20px rgba(139, 0, 0, 0.1); transform: translateY(-5px); }
         .poster-item-alt img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; transition: filter 0.4s; }
         .poster-item-alt:hover img { filter: brightness(0.7); }
@@ -415,8 +415,8 @@
                         <img src="./image/2-old1.jpg" alt="Past Event 1" class="active">
                         <img src="./image/2-old2.jpg" alt="Past Event 2">
                         <img src="./image/2-old3.jpg" alt="Past Event 3">
-                        <img src="./image/2-old4.jpg" alt="Past Event 4">
-                        <img src="./image/2-old5.jpg" alt="Past Event 5">
+                        <img src="https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=600&h=800&fit=crop" alt="Past Event 4">
+                        <img src="https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=600&h=800&fit=crop" alt="Past Event 5">
                         <div class="carousel-dots">
                             <span class="carousel-dot active" onclick="goToSlide(0)"></span>
                             <span class="carousel-dot" onclick="goToSlide(1)"></span>
