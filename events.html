@@ -212,9 +212,7 @@
                         <h3 class="event-name">PUNK HEART FESTIVAL 2026<br>TBA</h3>
                         <div class="event-details">09.25 | TBA</div>
                         <div class="event-venue"></div>
-                    </div>
-                    <div class="event-btn-wrapper">
-                        <a href="http://punkheartfest.com" class="event-btn" target="_blank">朋克心2026</a>
+                        <a href="https://punkheartfest.com" class="event-btn" target="_blank">朋克心2026</a>
                     </div>
                 </div>
 
@@ -225,9 +223,7 @@
                         <h3 class="event-name">PUNK HEART FESTIVAL 2026<br>WUHAN</h3>
                         <div class="event-details">09.27 | TBA</div>
                         <div class="event-venue"></div>
-                    </div>
-                    <div class="event-btn-wrapper">
-                        <a href="http://punkheartfest.com" class="event-btn" target="_blank">朋克心2026</a>
+                        <a href="https://punkheartfest.com" class="event-btn" target="_blank">朋克心2026</a>
                     </div>
                 </div>
 
@@ -238,8 +234,6 @@
                         <h3 class="event-name">NONAMEFEST 2026<br>RIOT CITY</h3>
                         <div class="event-details">10.?? | TBA</div>
                         <div class="event-venue"></div>
-                    </div>
-                    <div class="event-btn-wrapper">
                         <span class="event-btn disabled">無名盛宴2026</span>
                     </div>
                 </div>
@@ -251,8 +245,6 @@
                         <h3 class="event-name">PUNK HEART FESTIVAL 2026<br>WARM-UP Show</h3>
                         <div class="event-details">01.17 | 未來俱樂部</div>
                         <div class="event-venue"></div>
-                    </div>
-                    <div class="event-btn-wrapper">
                         <span class="event-btn disabled">朋克心2026預熱派對</span>
                     </div>
                 </div>
@@ -409,8 +401,17 @@
                 const target = new Date(targetDate + 'T00:00:00');
                 const diff = target - now;
                 const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
-                if (days <= 0) { el.textContent = 'TODAY'; }
-                else { el.textContent = days + ' DAYS'; }
+                if (days < 0) { 
+                    el.textContent = 'ENDED'; 
+                } else if (days === 0) { 
+                    el.textContent = 'TODAY'; 
+                } else { 
+                    el.textContent = days + ' DAYS'; 
+                }
+            });
+        }
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                el.textContent = days + ' DAYS';
             });
         }
         setInterval(updateCountdowns, 1000);
