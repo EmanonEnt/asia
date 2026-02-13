@@ -300,8 +300,9 @@
             width: 100%;
             position: relative;
             overflow: hidden;
-            height: 0;
-            padding-bottom: 56.25%; /* 16:9 比例 = 1080/1920 */
+            height: 56.25vw;
+            max-height: 100vh;
+            min-height: 400px;
             background: #000;
         }
 
@@ -314,9 +315,8 @@
         .rebel-slide {
             min-width: 100%;
             height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
+            max-height: 100vh;
+            position: relative;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -355,10 +355,7 @@
         .rebel-slide:hover .rebel-poster { filter: brightness(0.5); }
 
         .rebel-content {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            position: relative;
             z-index: 2;
             text-align: center;
             padding: 20px;
@@ -372,10 +369,6 @@
         .rebel-slide:hover .rebel-content {
             opacity: 1;
             pointer-events: auto;
-        }
-
-        .rebel-slide:hover .rebel-content {
-            opacity: 1;
         }
 
         .rebel-content h2 {
