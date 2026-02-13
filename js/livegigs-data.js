@@ -1,13 +1,11 @@
-// LiveGigs Data Loader - 智能修复版
-// 解决不同页面社交图标显示问题
+// LiveGigs Data Loader - 完整修复版
+// 解决底部信息不更新问题
 
 (function() {
     'use strict';
 
-    // 数据基础路径
     const baseUrl = './content';
 
-    // 页面配置
     const pageConfig = {
         'index': { footer: 'footer-global' },
         'cn': { footer: 'footer-cn' },
@@ -17,7 +15,6 @@
         'accessibility': { footer: 'footer-global' }
     };
 
-    // SVG图标
     const icons = {
         facebook: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>`,
         instagram: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>`,
@@ -29,11 +26,9 @@
         miniprogram: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h-2v-2h2v2zm0-4h-2V7h2v6zm4 4h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>`
     };
 
-    // 获取页面类型
     function getPageType() {
         const path = window.location.pathname;
         const filename = path.split('/').pop() || 'index.html';
-
         if (filename.includes('cn')) return 'cn';
         if (filename.includes('events')) return 'events';
         if (filename.includes('partners')) return 'partners';
@@ -42,7 +37,6 @@
         return 'index';
     }
 
-    // 加载JSON
     async function loadJson(filename) {
         try {
             const response = await fetch(`${baseUrl}/${filename}.json?v=${Date.now()}`);
@@ -54,168 +48,113 @@
         }
     }
 
-    // 智能查找社交容器
-    function findSocialContainer() {
-        // 尝试多种可能的选择器
-        const selectors = [
-            '#socialContainer',
-            '#footer-social',
-            '.social-icons',
-            '.footer-social',
-            '[class*="social"]'
-        ];
+    // 渲染底部 - 修复版
+    function renderFooter(data) {
+        if (!data) return;
+        console.log('[LiveGigs] Rendering footer:', data);
 
-        for (const selector of selectors) {
-            const el = document.querySelector(selector);
-            if (el) {
-                console.log(`Found social container: ${selector}`);
-                return el;
+        // 1. 更新邮箱
+        const emailContainer = document.querySelector('[data-editable="footer-email"]');
+        if (emailContainer && data.email) {
+            const emailLink = emailContainer.querySelector('a');
+            if (emailLink) {
+                emailLink.href = `mailto:${data.email}`;
+                emailLink.textContent = data.email;
+            } else {
+                emailContainer.innerHTML = `<a href="mailto:${data.email}">${data.email}</a>`;
             }
         }
-        return null;
+
+        // 2. 更新电话
+        const phoneContainer = document.querySelector('[data-editable="footer-phone"]');
+        if (phoneContainer && data.phone) {
+            const phoneLink = phoneContainer.querySelector('a');
+            if (phoneLink) {
+                phoneLink.href = `tel:${data.phone}`;
+                phoneLink.textContent = data.phone;
+            } else {
+                phoneContainer.innerHTML = `<a href="tel:${data.phone}">${data.phone}</a>`;
+            }
+        }
+
+        // 3. 更新地址（支持HTML换行）
+        const addressContainer = document.querySelector('[data-editable="footer-address"]');
+        if (addressContainer && data.address) {
+            addressContainer.innerHTML = data.address.replace(/\n/g, '<br>');
+        }
+
+        // 4. 更新版权
+        const copyrightEl = document.querySelector('.copyright') || 
+                           document.querySelector('[data-editable="footer-copyright"]');
+        if (copyrightEl && data.copyright) {
+            copyrightEl.textContent = data.copyright;
+        }
+
+        // 5. 更新Logo文字
+        const logoEl = document.querySelector('.footer-logo') ||
+                      document.querySelector('[data-editable="footer-logo"]');
+        if (logoEl && data.siteName) {
+            const asiaText = data.siteNameAsia || '';
+            logoEl.innerHTML = `<span class="livegigs">${data.siteName}</span><span class="cn">${asiaText}</span>`;
+        }
+
+        // 6. 更新制作单位Logo
+        const producerEl = document.querySelector('.producer-logo') ||
+                          document.querySelector('[data-editable="producer-logo"]');
+        if (producerEl && data.producerLogo) {
+            if (producerEl.tagName === 'IMG') {
+                producerEl.src = data.producerLogo;
+            } else {
+                const img = producerEl.querySelector('img');
+                if (img) img.src = data.producerLogo;
+            }
+        }
+
+        // 7. 渲染社交图标
+        renderSocialIcons(data.socials);
     }
 
-    // 渲染社交图标 - 智能适配版
+    // 渲染社交图标
     function renderSocialIcons(socials) {
         if (!socials || !Array.isArray(socials)) return;
 
-        const container = findSocialContainer();
+        const container = document.getElementById('socialContainer');
         if (!container) {
-            console.warn('Social container not found');
+            console.warn('[LiveGigs] Social container #socialContainer not found');
             return;
         }
 
-        // 获取容器的现有样式
-        const computedStyle = window.getComputedStyle(container);
-        const existingDisplay = computedStyle.display;
-
-        // 清空但不破坏容器结构
+        // 清空现有内容
         container.innerHTML = '';
-
-        // 设置容器样式 - 保持原有布局
-        container.style.display = existingDisplay === 'flex' ? 'flex' : 'inline-flex';
-        container.style.alignItems = 'center';
-        container.style.justifyContent = 'center';
-        container.style.gap = '15px';
 
         // 过滤启用的社交图标
         const enabledSocials = socials.filter(s => s && s.enabled && s.icon);
+        console.log(`[LiveGigs] Rendering ${enabledSocials.length} social icons`);
 
-        if (enabledSocials.length === 0) {
-            console.warn('No enabled social icons found');
-            return;
-        }
-
-        // 创建图标
         enabledSocials.forEach(social => {
-            const iconSvg = icons[social.icon] || icons.facebook;
-            const link = social.link || '#';
+            const iconSvg = icons[social.icon];
+            if (!iconSvg) {
+                console.warn(`[LiveGigs] Unknown icon: ${social.icon}`);
+                return;
+            }
 
             const a = document.createElement('a');
-            a.href = link;
+            a.href = social.link || '#';
             a.target = '_blank';
             a.rel = 'noopener noreferrer';
+            a.className = 'social-icon';
+            a.title = social.name || social.icon;
+            a.innerHTML = iconSvg;
 
-            // 关键：使用内联样式确保不被拉伸
-            a.style.cssText = `
-                display: inline-flex !important;
-                align-items: center !important;
-                justify-content: center !important;
-                width: 44px !important;
-                height: 44px !important;
-                min-width: 44px !important;
-                min-height: 44px !important;
-                max-width: 44px !important;
-                max-height: 44px !important;
-                background: #1a1a1a !important;
-                border-radius: 50% !important;
-                transition: all 0.3s ease !important;
-                text-decoration: none !important;
-                overflow: hidden !important;
-                flex-shrink: 0 !important;
-                box-sizing: border-box !important;
-            `;
-
-            const svgContainer = document.createElement('div');
-            svgContainer.innerHTML = iconSvg;
-            svgContainer.style.cssText = `
-                width: 22px !important;
-                height: 22px !important;
-                min-width: 22px !important;
-                min-height: 22px !important;
-                max-width: 22px !important;
-                max-height: 22px !important;
-                color: #c0c0c0 !important;
-                display: flex !important;
-                align-items: center !important;
-                justify-content: center !important;
-                flex-shrink: 0 !important;
-                pointer-events: none !important;
-            `;
-
-            // 悬停效果
-            a.addEventListener('mouseenter', () => {
-                a.style.background = '#8b0000';
-                a.style.transform = 'translateY(-3px)';
-                svgContainer.style.color = '#ffffff';
-            });
-
-            a.addEventListener('mouseleave', () => {
-                a.style.background = '#1a1a1a';
-                a.style.transform = 'translateY(0)';
-                svgContainer.style.color = '#c0c0c0';
-            });
-
-            a.appendChild(svgContainer);
             container.appendChild(a);
         });
-
-        console.log(`Rendered ${enabledSocials.length} social icons`);
-    }
-
-    // 渲染底部
-    function renderFooter(data) {
-        if (!data) return;
-
-        // 文本内容更新
-        const textElements = {
-            'footer-site-name': data.siteName,
-            'footer-site-asia': data.siteNameAsia,
-            'footer-contact-text': data.contactText,
-            'footer-email': data.email,
-            'footer-address': data.address,
-            'footer-copyright': data.copyright
-        };
-
-        for (const [id, value] of Object.entries(textElements)) {
-            const el = document.getElementById(id) || document.querySelector(`.${id}`);
-            if (el && value) {
-                if (id === 'footer-email' && el.tagName === 'A') {
-                    el.href = `mailto:${value}`;
-                    el.textContent = value;
-                } else {
-                    el.textContent = value;
-                }
-            }
-        }
-
-        // 制作单位Logo
-        const producerEl = document.getElementById('footer-producer') || document.querySelector('.producer-logo');
-        if (producerEl && data.producerLogo) {
-            const img = producerEl.tagName === 'IMG' ? producerEl : producerEl.querySelector('img');
-            if (img) img.src = data.producerLogo;
-        }
-
-        // 社交图标
-        renderSocialIcons(data.socials);
     }
 
     // 主加载函数
     async function loadAndRender() {
         const pageType = getPageType();
         const config = pageConfig[pageType];
-
-        console.log(`Loading data for page: ${pageType}`);
+        console.log(`[LiveGigs] Loading data for page: ${pageType}`);
 
         if (config && config.footer) {
             const footerData = await loadJson(config.footer);
@@ -232,7 +171,10 @@
         loadAndRender();
     }
 
-    // 暴露全局刷新函数
-    window.livegigsRefresh = loadAndRender;
+    // 暴露全局API
+    window.LiveGigsData = {
+        loadAndRender: loadAndRender,
+        refresh: loadAndRender
+    };
 
 })();
