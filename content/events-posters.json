@@ -1,45 +1,42 @@
 {
-  "poster2_carousel": true,
   "posters": [
     {
-      "id": 1,
-      "enabled": true,
+      "image": "./image/epic-past-1.jpg",
+      "title": "",
+      "buttonText": "",
+      "buttonLink": ""
+    },
+    {
+      "image": "./image/epic-past-1.jpg",
       "title": "Epic Past Gigs",
-      "linkText": "View Details →",
-      "link": "./events.html",
-      "image": "./image/1-b-2.jpg"
+      "buttonText": "View Details",
+      "buttonLink": "#",
+      "carousel": [
+        {
+          "image": "./image/epic-past-1.jpg",
+          "title": "Epic Past Gigs",
+          "buttonText": "View Details",
+          "link": "#"
+        },
+        {
+          "image": "./image/epic-past-2.jpg",
+          "title": "Epic Past Gigs",
+          "buttonText": "View Details",
+          "link": "#"
+        },
+        {
+          "image": "./image/epic-past-3.jpg",
+          "title": "Epic Past Gigs",
+          "buttonText": "View Details",
+          "link": "#"
+        }
+      ]
     },
     {
-      "id": 2,
-      "enabled": true,
-      "title": "LiveGigs Asia",
-      "linkText": "View Details →",
-      "link": "./events.html",
-      "image": "./image/livegigscn1.png"
-    },
-    {
-      "id": 3,
-      "enabled": true,
-      "title": "Upcoming Events",
-      "linkText": "View Details →",
-      "link": "./events.html",
-      "image": "./image/1-b-3.jpg"
-    },
-    {
-      "id": 4,
-      "enabled": false,
+      "image": "./image/event-poster3.jpg",
       "title": "",
-      "linkText": "",
-      "link": "",
-      "image": ""
-    },
-    {
-      "id": 5,
-      "enabled": false,
-      "title": "",
-      "linkText": "",
-      "link": "",
-      "image": ""
+      "buttonText": "",
+      "buttonLink": ""
     }
   ]
 }

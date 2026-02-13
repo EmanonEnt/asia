@@ -1,28 +1,30 @@
 {
   "posters": [
     {
-      "id": 1,
-      "enabled": true,
-      "title": "LiveGigs Asia 2026",
-      "linkText": "查看详情 →",
-      "link": "./events.html",
-      "image": "./image/cn-asiaad.jpg"
+      "image": "./image/cn-poster1.jpg",
+      "title": "",
+      "buttonText": "",
+      "buttonLink": ""
     },
     {
-      "id": 2,
-      "enabled": true,
-      "title": "Epic Past Gigs",
-      "linkText": "查看详情 →",
-      "link": "./events.html",
-      "image": "./image/1-b-2.jpg"
+      "image": "./image/cn-asiaad.jpg",
+      "title": "LiveGigs Asia",
+      "buttonText": "View Details →",
+      "buttonLink": "https://livegigsasia.com",
+      "carousel": [
+        {
+          "image": "./image/cn-asiaad.jpg",
+          "title": "LiveGigs Asia",
+          "buttonText": "View Details →",
+          "link": "https://livegigsasia.com"
+        }
+      ]
     },
     {
-      "id": 3,
-      "enabled": true,
-      "title": "Upcoming Events",
-      "linkText": "查看详情 →",
-      "link": "./events.html",
-      "image": "./image/1-b-3.jpg"
+      "image": "./image/cn-poster3.jpg",
+      "title": "",
+      "buttonText": "",
+      "buttonLink": ""
     }
   ]
 }

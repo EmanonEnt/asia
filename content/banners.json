@@ -1,49 +1,16 @@
 {
   "banners": [
     {
-      "id": 1,
-      "enabled": true,
-      "order": 1,
-      "title": "THE NONAME",
-      "buttonText": "View Details →",
-      "link": "https://example.com/noname",
-      "image": "./image/thenonameanti-.jpg"
+      "image": "./image/thenonameanti-.jpg",
+      "title": "CONCERTS, FESTIVALS, TICKETS, TOUR DATES<br>- LIVE GIGS",
+      "buttonText": "WWW.LIVEGIGSASIA.COM",
+      "buttonLink": "https://livegigsasia.com"
     },
     {
-      "id": 2,
-      "enabled": true,
-      "order": 2,
-      "title": "PUNK HEART FESTIVAL 2026",
-      "buttonText": "Get Tickets →",
-      "link": "https://example.com/punkheart",
-      "image": "./image/punkheartbanner.jpg"
-    },
-    {
-      "id": 3,
-      "enabled": false,
-      "order": 3,
-      "title": "",
-      "buttonText": "",
-      "link": "",
-      "image": ""
-    },
-    {
-      "id": 4,
-      "enabled": false,
-      "order": 4,
-      "title": "",
-      "buttonText": "",
-      "link": "",
-      "image": ""
-    },
-    {
-      "id": 5,
-      "enabled": false,
-      "order": 5,
-      "title": "",
-      "buttonText": "",
-      "link": "",
-      "image": ""
+      "image": "./image/punkheartbanner.jpg",
+      "title": "CONCERTS, FESTIVALS, TICKETS, TOUR DATES<br>- LIVE GIGS",
+      "buttonText": "WWW.LIVEGIGSASIA.COM",
+      "buttonLink": "https://livegigsasia.com"
     }
   ]
 }
