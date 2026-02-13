@@ -55,12 +55,13 @@
         .event-card:hover { transform: translateY(-10px); border-color: rgba(139, 0, 0, 0.8); box-shadow: 0 0 30px rgba(139, 0, 0, 0.3), inset 0 0 20px rgba(139, 0, 0, 0.1); }
         .event-poster { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; filter: brightness(0.7); transition: all 0.4s; z-index: 1; }
         .event-card:hover .event-poster { filter: brightness(0.4); transform: scale(1.05); }
-        .event-status { position: absolute; top: 20px; right: 20px; z-index: 10; padding: 8px 16px; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; font-weight: bold; border-radius: 4px; animation: statusPulse 2s ease-in-out infinite; }
+        .event-status { position: absolute; top: 20px; right: 20px; z-index: 10; padding: 8px 16px; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; font-weight: bold; border-radius: 4px; animation: statusPulse 2s ease-in-out infinite; background: rgba(0, 0, 0, 0.8); border: 1px solid var(--dark-red); color: #fff; }
         .event-status.countdown { background: rgba(0, 0, 0, 0.8); color: #fff; border: 1px solid var(--dark-red); }
         .event-status.soldout { background: var(--dark-red); color: #fff; border: 1px solid var(--dark-red); }
         .event-status.ontour { background: rgba(139, 0, 0, 0.8); color: #fff; border: 1px solid var(--dark-red); }
         @keyframes statusPulse { 0%, 100% { box-shadow: 0 0 10px rgba(139, 0, 0, 0.5); } 50% { box-shadow: 0 0 20px rgba(139, 0, 0, 0.8); } }
-        .event-content { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; padding: 80px 20px 40px; z-index: 5; background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0.6) 70%, rgba(0,0,0,0.8) 100%); }
+        .event-content { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; padding: 80px 20px 40px; z-index: 5; background: rgba(0,0,0,0.5); transition: opacity 0.4s; }
+        .event-card:hover .event-content { opacity: 0; }
         .event-name { font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; font-size: clamp(20px, 2.5vw, 28px); letter-spacing: 2px; text-transform: uppercase; color: #fff; margin-bottom: 15px; text-shadow: 0 0 30px rgba(139, 0, 0, 1), 0 2px 4px rgba(0,0,0,0.8); line-height: 1.2; text-align: center; }
         .event-details { font-size: 14px; color: var(--silver); letter-spacing: 1px; margin-bottom: 8px; text-align: center; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
         .event-venue { font-size: 13px; color: rgba(255,255,255,0.8); letter-spacing: 1px; margin-bottom: auto; text-align: center; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
@@ -68,7 +69,7 @@
         .event-btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); transition: left 0.5s; }
         .event-btn:hover::before { left: 100%; }
         .event-btn:hover { background: var(--dark-red); border-color: #fff; box-shadow: 0 0 30px rgba(139, 0, 0, 0.8), 0 0 60px rgba(139, 0, 0, 0.4); transform: scale(1.05); letter-spacing: 3px; }
-        .event-btn.disabled { pointer-events: none; cursor: default; }
+        .event-btn.disabled { pointer-events: none; cursor: default; opacity: 0.6; }
         .event-card.hidden { display: none; }
         .load-more-container { text-align: center; margin-top: 60px; display: none; }
         .load-more-container.visible { display: block; }
