@@ -576,25 +576,32 @@
             dots[currentSlide].classList.add('active');
         }
         setInterval(() => { goToSlide(currentSlide + 1); }, 5000);
+        let scrollSpeed = 1;
+        let speedTimeout;
         function scrollLeft() {
             const track = document.getElementById('autoScrollTrack');
-            track.style.animationPlayState = 'paused';
-            track.style.transform = 'translateX(100px)';
-            setTimeout(() => {
-                track.style.transition = 'transform 0.5s ease';
-                track.style.transform = 'translateX(0)';
-                setTimeout(() => { track.style.animationPlayState = 'running'; track.style.transition = ''; }, 500);
-            }, 50);
+            // 加速向左滚动（查看左侧历史海报）
+            scrollSpeed = 5;
+            track.style.animationDuration = (40 / scrollSpeed) + 's';
+            track.style.animationDirection = 'reverse';
+            clearTimeout(speedTimeout);
+            speedTimeout = setTimeout(() => {
+                scrollSpeed = 1;
+                track.style.animationDuration = '40s';
+                track.style.animationDirection = 'normal';
+            }, 2000);
         }
         function scrollRight() {
             const track = document.getElementById('autoScrollTrack');
-            track.style.animationPlayState = 'paused';
-            track.style.transform = 'translateX(-100px)';
-            setTimeout(() => {
-                track.style.transition = 'transform 0.5s ease';
-                track.style.transform = 'translateX(0)';
-                setTimeout(() => { track.style.animationPlayState = 'running'; track.style.transition = ''; }, 500);
-            }, 50);
+            // 加速向右滚动（查看右侧新海报）
+            scrollSpeed = 5;
+            track.style.animationDuration = (40 / scrollSpeed) + 's';
+            track.style.animationDirection = 'normal';
+            clearTimeout(speedTimeout);
+            speedTimeout = setTimeout(() => {
+                scrollSpeed = 1;
+                track.style.animationDuration = '40s';
+            }, 2000);
         }
         const autoScrollContainer = document.getElementById('autoScrollContainer');
         const autoScrollTrack = document.getElementById('autoScrollTrack');
