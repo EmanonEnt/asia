@@ -2,18 +2,18 @@
   "banners": [
     {
       "id": 1,
-      "title": "THE NONAME ANTI IPA",
-      "buttonText": "無名逆襲社交IPA",
-      "link": "https://Nonamepunks.com",
+      "title": "THE NO ANTI PRESENTS",
+      "buttonText": "VIEW DETAILS",
+      "link": "https://example.com/event1",
       "image": "./image/thenonameanti-.jpg",
       "order": 1,
       "enabled": true
     },
     {
       "id": 2,
-      "title": "朋克心音樂節2026",
-      "buttonText": "PUNK HEART FESTIVAL",
-      "link": "https://Punkheartfest.com",
+      "title": "PUNK HEART FESTIVAL",
+      "buttonText": "GET TICKETS",
+      "link": "https://example.com/event2",
       "image": "./image/punkheartbanner.jpg",
       "order": 2,
       "enabled": true

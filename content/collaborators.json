@@ -2,66 +2,45 @@
   "logos": [
     {
       "id": 1,
-      "name": "TMS LIVE",
-      "image": "./image/p-logo-1.png",
-      "link": "",
+      "name": "Partner 1",
+      "image": "./image/partner1.png",
+      "link": "https://partner1.com",
       "enabled": true
     },
     {
       "id": 2,
-      "name": "MORDAM MUSIC",
-      "image": "./image/p-logo-2.png",
+      "name": "Partner 2",
+      "image": "./image/partner2.png",
       "link": "",
       "enabled": true
     },
     {
       "id": 3,
-      "name": "TICKETFLAP",
-      "image": "./image/p-logo-3.png",
-      "link": "https://Ticketflap.com",
+      "name": "Partner 3",
+      "image": "./image/partner3.png",
+      "link": "https://partner3.com",
       "enabled": true
     },
     {
       "id": 4,
-      "name": "GIBSON",
-      "image": "./image/p-logo-4.png",
+      "name": "Partner 4",
+      "image": "./image/partner4.png",
       "link": "",
       "enabled": true
     },
     {
       "id": 5,
-      "name": "",
-      "image": "",
-      "link": "",
-      "enabled": false
+      "name": "Partner 5",
+      "image": "./image/partner5.png",
+      "link": "https://partner5.com",
+      "enabled": true
     },
     {
       "id": 6,
-      "name": "",
-      "image": "",
+      "name": "Partner 6",
+      "image": "./image/partner6.png",
       "link": "",
-      "enabled": false
-    },
-    {
-      "id": 7,
-      "name": "",
-      "image": "",
-      "link": "",
-      "enabled": false
-    },
-    {
-      "id": 8,
-      "name": "",
-      "image": "",
-      "link": "",
-      "enabled": false
-    },
-    {
-      "id": 9,
-      "name": "",
-      "image": "",
-      "link": "",
-      "enabled": false
+      "enabled": true
     }
   ]
 }
