@@ -2,31 +2,31 @@
   "socials": [
     {
       "id": 1,
-      "name": "dd ",
-      "icon": "miniprogram",
-      "link": "sdf fds ",
+      "name": "",
+      "icon": "weibo",
+      "link": "",
       "enabled": true
     },
     {
       "id": 2,
-      "name": "",
-      "icon": "",
-      "link": "",
-      "enabled": false
+      "name": "LIVEGIGS",
+      "icon": "xiaohongshu",
+      "link": "https://www.xiaohongshu.com/user/profile/64a076b2000000001c0292cc",
+      "enabled": true
     },
     {
       "id": 3,
       "name": "",
-      "icon": "",
+      "icon": "wechat",
       "link": "",
-      "enabled": false
+      "enabled": true
     },
     {
       "id": 4,
-      "name": "",
-      "icon": "",
-      "link": "",
-      "enabled": false
+      "name": "現場秀",
+      "icon": "miniprogram",
+      "link": "https://wxaurl.cn/HMcAK6R7fou",
+      "enabled": true
     },
     {
       "id": 5,
