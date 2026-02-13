@@ -1081,7 +1081,7 @@
                 <div class="footer-container">
                     <div class="footer-contact-left">
                         <div class="contact-item" data-editable="footer-email">
-                            <a href="mailto:LiveGigsCn@Hotmail.Com">LiveGigsCn@Hotmail.Com</a>
+                            <a href="mailto:XREBooking@Hotmail.com">XREBooking@Hotmail.com</a>
                         </div>
                         <div class="contact-item" data-editable="footer-phone">
                             <a href="tel:+852-456-7890">+852-456-7890</a>
@@ -1260,9 +1260,11 @@
         // Banner轮播
         let rebelCurrent = 0;
         const rebelSlider = document.getElementById('rebelSlider');
+        const rebelSlides = rebelSlider ? rebelSlider.querySelectorAll('.rebel-slide') : [];
+        const rebelTotal = rebelSlides.length || 3;
         if (rebelSlider) {
             setInterval(() => {
-                rebelCurrent = (rebelCurrent + 1) % 2;
+                rebelCurrent = (rebelCurrent + 1) % rebelTotal;
                 rebelSlider.style.transform = `translateX(-${rebelCurrent * 100}%)`;
             }, 5000);
         }
