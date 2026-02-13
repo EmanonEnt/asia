@@ -1,0 +1,49 @@
+{
+  "banners": [
+    {
+      "id": 1,
+      "enabled": true,
+      "order": 1,
+      "title": "THE (INTERNATIONAL) NOISE CONSPIRACY",
+      "buttonText": "Get Tickets",
+      "link": "https://dice.fm/partner/xre-booking-dice/promoter-livegigs-asia",
+      "image": "./image/thenonameanti-.jpg"
+    },
+    {
+      "id": 2,
+      "enabled": true,
+      "order": 2,
+      "title": "PUNK HEART FESTIVAL 2025",
+      "buttonText": "Learn More",
+      "link": "https://punkheartfestival.com",
+      "image": "./image/punkheartbanner.jpg"
+    },
+    {
+      "id": 3,
+      "enabled": false,
+      "order": 3,
+      "title": "",
+      "buttonText": "",
+      "link": "",
+      "image": ""
+    },
+    {
+      "id": 4,
+      "enabled": false,
+      "order": 4,
+      "title": "",
+      "buttonText": "",
+      "link": "",
+      "image": ""
+    },
+    {
+      "id": 5,
+      "enabled": false,
+      "order": 5,
+      "title": "",
+      "buttonText": "",
+      "link": "",
+      "image": ""
+    }
+  ]
+}

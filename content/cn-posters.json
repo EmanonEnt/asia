@@ -1,0 +1,28 @@
+{
+  "posters": [
+    {
+      "id": 1,
+      "enabled": true,
+      "title": "LiveGigs Asia",
+      "linkText": "查看详情 →",
+      "link": "./events.html",
+      "image": "./image/livegigscn1.png"
+    },
+    {
+      "id": 2,
+      "enabled": true,
+      "title": "精彩演出回顾",
+      "linkText": "查看详情 →",
+      "link": "./events.html",
+      "image": "./image/cn-asiaad.jpg"
+    },
+    {
+      "id": 3,
+      "enabled": true,
+      "title": "即将上演",
+      "linkText": "查看详情 →",
+      "link": "./events.html",
+      "image": "./image/1-b-3.jpg"
+    }
+  ]
+}

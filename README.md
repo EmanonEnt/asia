@@ -1,90 +1,120 @@
 # LiveGigs Asia 后台管理系统
 
 ## 文件结构
+
 ```
 asia/
-├── js/
-│   └── livegigs-data.js          # 前端数据加载脚本（修复版）
 ├── admin/
-│   └── index.html                # 后台管理界面
-├── content/                      # JSON数据文件
-│   ├── banners.json              # Banner数据（index+cn同步）
-│   ├── index-posters.json        # 首页海报
-│   ├── cn-posters.json           # CN页面海报（独立）
-│   ├── events-posters.json       # Events页面海报
-│   ├── footer-global.json        # 海外站底部（统一）
-│   └── footer-cn.json            # 国内站底部（独立）
-└── [原有页面文件]
+│   └── index.html          # 后台管理界面
+├── content/                # JSON数据文件
+│   ├── banners.json        # Banner数据 (index+cn同步)
+│   ├── index-posters.json  # Index页面海报
+│   ├── cn-posters.json     # CN页面海报
+│   ├── events-posters.json # Events页面海报 (海报2可滚播)
+│   ├── events-managed.json # 自主活动
+│   ├── events-carousel.json # 滚播活动
+│   ├── footer-global.json  # 海外站底部
+│   ├── footer-cn.json      # 国内站底部
+│   ├── partners-banners.json # 合作伙伴Banner
+│   └── collaborators.json  # 合作Logo
+└── js/
+    └── livegigs-data.js    # 前端数据加载脚本
 ```
-
-## 关键修复
-
-### 1. CN页面底部错乱问题
-**原因**：CN页面错误加载了`footer-global.json`，导致显示"ASIA"和海外社交媒体
-**修复**：`livegigs-data.js`现在正确检测页面类型，CN页面自动加载`footer-cn.json`
-
-### 2. 海报区域错乱问题
-**原因**：所有页面共用同一个posters.json，数据互相覆盖
-**修复**：分离为三个独立文件：
-- `index-posters.json` - 首页专用
-- `cn-posters.json` - CN页面专用  
-- `events-posters.json` - Events页面专用
-
-### 3. 数据加载逻辑优化
-- Index页面：banners + index-posters + footer-global
-- CN页面：banners + cn-posters + footer-cn（独立）
-- Events页面：events-posters + footer-global
-- Partners/Privacy/Accessibility：footer-global
 
 ## 使用说明
 
-### 1. 上传文件到GitHub
-将ZIP内所有文件上传到GitHub仓库的`asia`文件夹：
-- `js/livegigs-data.js` → 覆盖原有文件
-- `admin/index.html` → 新建admin文件夹并上传
-- `content/*.json` → 新建content文件夹并上传所有JSON
+### 1. 部署到GitHub
 
-### 2. 访问后台
-打开 `https://livegigsasia.com/admin/`
-- 用户名：admin
-- 密码：00123456a
+将以下文件上传到GitHub仓库 `EmanonEnt/asia`：
 
-### 3. 编辑内容
-- **Banner管理**：编辑Index和CN共用的轮播图（最多5个）
-- **海报管理**：
-  - Index页面：3个独立海报
-  - CN页面：3个独立海报（与Index分开配置）
-  - Events页面：海报2支持1-5个轮播图
-- **底部管理**：
-  - 海外站底部：Index/Events/Partners/Privacy/Accessibility共用
-  - 国内站底部：CN页面独立（显示"CN"标识和中国社交媒体）
+1. `admin/index.html` → 上传到 `asia/admin/index.html`
+2. `content/` 文件夹内所有JSON → 上传到 `asia/content/`
+3. `js/livegigs-data.js` → 上传到 `asia/js/livegigs-data.js`
 
-### 4. 同步更新
-1. 在后台编辑内容后，点击"同步到GitHub"
-2. 下载生成的JSON文件
-3. 上传到GitHub的`content/`文件夹并Commit
-4. 等待1-2分钟，GitHub Pages自动部署
-5. 刷新前端页面查看更新（按Ctrl+F5强制刷新）
+### 2. 前端页面修改
 
-## 注意事项
+在每个HTML页面（index.html, cn.html, events.html, partners.html, privacypolicy.html, accessibilitystatement.html）的 `</body>` 标签前添加：
 
-1. **CN页面独立配置**：CN页面的底部和海报现在完全独立，修改不会影响其他页面
-2. **社交媒体**：
-   - 海外站：Facebook, Instagram, YouTube, X
-   - 国内站：微博, 微信, 小红书, 小程序, YouTube, Instagram
-3. **链接留空**：社交媒体链接留空时，图标显示但不可点击
-4. **自动退出**：后台30分钟无操作自动退出，关闭浏览器后3分钟内重新打开保持登录
+```html
+<script src="./js/livegigs-data.js"></script>
+```
 
-## 故障排除
+### 3. 登录后台
 
-**问题**：CN页面底部仍显示错误
-**解决**：
-1. 确认上传了`footer-cn.json`
-2. 确认`js/livegigs-data.js`已更新为修复版
-3. 清除浏览器缓存（Ctrl+F5）
+访问 `https://livegigsasia.com/admin/`
 
-**问题**：后台更新后前端不更新
-**解决**：
-1. 确认JSON文件已上传到GitHub
-2. 等待1-2分钟让GitHub Pages重新部署
-3. 检查浏览器控制台是否有CORS错误
+- 用户名: `admin`
+- 密码: `00123456a`
+- GitHub Token: 输入您的GitHub Personal Access Token（用于自动同步）
+
+### 4. 后台功能
+
+#### 7大管理模块：
+
+1. **Banner管理** (Index + CN同步)
+   - 最多5个Banner
+   - 尺寸: 1920×1080px
+   - 可设置标题、按钮文字、链接、图片
+
+2. **海报管理**
+   - Index页面: 3个海报
+   - CN页面: 3个海报
+   - Events页面: 海报2可设置滚播模式（最多5个）
+   - 尺寸: 400×600px
+
+3. **自主活动管理**
+   - 最多9个活动
+   - >3个时显示Load More按钮
+   - 尺寸: 400×600px
+   - 支持: 标题、日期、地点、时间、门票、状态(SOLD OUT/ON TOUR)、按钮、链接
+
+4. **滚播活动管理**
+   - 最少3个，最多12个
+   - 尺寸: 1920×1080px
+   - 自动轮播
+
+5. **底部区域管理**
+   - 海外站: Index/Events/Partners/Privacy/Accessibility共用
+   - 国内站: CN页面独立
+   - 支持: 站点名称、副标、联系文字、邮箱、地址、版权、制作单位Logo、社交媒体(最多10个)
+
+6. **合作伙伴管理**
+   - 合作Banner: 最多9个 (1920×800px)
+   - 合作Logo: 最多9个 (180×110px)，>6个自动换行居中
+
+### 5. 同步机制
+
+- **区域同步**: 点击每个区域右上角的"同步此区域"按钮
+- **全站同步**: 点击顶部"全站同步"按钮
+- **自动同步**: 需要配置GitHub Token
+
+### 6. 字段留空规则
+
+- **文字字段留空**: 前端不显示该元素
+- **链接字段留空**: 前端显示但不可点击（按钮变灰）
+- **图片字段留空**: 使用默认图片或隐藏
+
+### 7. 安全机制
+
+- **30分钟无操作自动退出**: 有任何操作时重新计时
+- **关闭浏览器**: 3分钟内重新打开保持登录，超过需重新登录
+- **GitHub Token**: 可选，用于自动同步到GitHub
+
+### 8. 数据备份
+
+点击"下载备份"按钮可下载所有数据的JSON文件。
+
+## 尺寸标准
+
+| 区域 | 尺寸 | 格式 |
+|------|------|------|
+| Banner | 1920×1080px | 16:9 |
+| 海报 | 400×600px | 2:3 |
+| 活动海报 | 400×600px | 2:3 |
+| 滚播海报 | 1920×1080px | 16:9 |
+| Partners Banner | 1920×800px | - |
+| Collaborators Logo | 180×110px | - |
+
+## 技术支持
+
+如有问题，请联系: xrebooking@hotmail.com

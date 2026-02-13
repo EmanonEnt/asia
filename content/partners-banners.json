@@ -1,0 +1,94 @@
+{
+  "banners": [
+    {
+      "id": 1,
+      "enabled": true,
+      "mainImage": "./image/p-p-1.jpg",
+      "logoImage": "./image/p-p-1logo.png",
+      "title": "XRE BOOKING APP",
+      "description": "Download our app for exclusive deals and instant notifications",
+      "buttonText": "Download Now",
+      "link": "https://xrebooking.com/app"
+    },
+    {
+      "id": 2,
+      "enabled": true,
+      "mainImage": "./image/p-p-2.jpg",
+      "logoImage": "./image/p-p-2logo.png",
+      "title": "小子联盟唱片",
+      "description": "Independent record label supporting local punk scene",
+      "buttonText": "Visit Store",
+      "link": "https://kids-union.com"
+    },
+    {
+      "id": 3,
+      "enabled": true,
+      "mainImage": "./image/p-p-3.png",
+      "logoImage": "./image/p-p-3logo.png",
+      "title": "XRE BOOKING",
+      "description": "Professional booking agency for Asia-Pacific region",
+      "buttonText": "Learn More",
+      "link": "https://xrebooking.com"
+    },
+    {
+      "id": 4,
+      "enabled": true,
+      "mainImage": "./image/p-p-4.jpg",
+      "logoImage": "./image/p-p-4logo.png",
+      "title": "PUNK HEART",
+      "description": "Annual punk rock festival bringing together the best bands",
+      "buttonText": "Get Tickets",
+      "link": "https://punkheartfestival.com"
+    },
+    {
+      "id": 5,
+      "enabled": false,
+      "mainImage": "",
+      "logoImage": "",
+      "title": "",
+      "description": "",
+      "buttonText": "",
+      "link": ""
+    },
+    {
+      "id": 6,
+      "enabled": false,
+      "mainImage": "",
+      "logoImage": "",
+      "title": "",
+      "description": "",
+      "buttonText": "",
+      "link": ""
+    },
+    {
+      "id": 7,
+      "enabled": false,
+      "mainImage": "",
+      "logoImage": "",
+      "title": "",
+      "description": "",
+      "buttonText": "",
+      "link": ""
+    },
+    {
+      "id": 8,
+      "enabled": false,
+      "mainImage": "",
+      "logoImage": "",
+      "title": "",
+      "description": "",
+      "buttonText": "",
+      "link": ""
+    },
+    {
+      "id": 9,
+      "enabled": false,
+      "mainImage": "",
+      "logoImage": "",
+      "title": "",
+      "description": "",
+      "buttonText": "",
+      "link": ""
+    }
+  ]
+}

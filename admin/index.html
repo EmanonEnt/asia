@@ -402,6 +402,19 @@
         .field-mapping strong {
             color: #8b0000;
         }
+
+        .last-sync {
+            color: #888;
+            font-size: 12px;
+            margin-right: 15px;
+            font-family: Arial, sans-serif;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
     </style>
 </head>
 <body>
@@ -431,8 +444,8 @@
         <header class="admin-header">
             <h1>LIVEGIGS ASIA ADMIN</h1>
             <div class="user-info">
-                <span id="syncStatus" class="sync-status pending">未同步</span>
                 <span id="lastSync" class="last-sync"></span>
+                <span id="syncStatus" class="sync-status pending">未同步</span>
                 <button class="btn btn-small" onclick="syncAllToGitHub()">全站同步</button>
                 <button class="btn btn-small btn-secondary" onclick="downloadAllData()">下载备份</button>
                 <button class="btn btn-small btn-secondary" onclick="logout()">退出</button>
@@ -727,7 +740,7 @@
 
     let githubToken = '';
     let inactivityTimer = null;
-    const INACTIVITY_TIMEOUT = 30 * 60 * 1000;
+    const INACTIVITY_TIMEOUT = 30 * 60 * 1000; // 30分钟
 
     const fileMapping = {
         'banners': { file: 'banners.json', key: 'banners' },
@@ -755,6 +768,7 @@
     };
 
     document.addEventListener('DOMContentLoaded', function() {
+        // 检查登录状态
         if (localStorage.getItem('livegigs_admin_logged_in')) {
             const savedTime = parseInt(localStorage.getItem('livegigs_admin_login_time') || '0');
             if (Date.now() - savedTime < INACTIVITY_TIMEOUT) {
@@ -766,6 +780,7 @@
             }
         }
 
+        // 登录表单
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const username = document.getElementById('username').value;
@@ -784,6 +799,7 @@
             }
         });
 
+        // 活动检测
         document.addEventListener('click', resetInactivityTimer);
         document.addEventListener('keypress', resetInactivityTimer);
     });
@@ -854,7 +870,6 @@
                     if (response.ok) {
                         const data = await response.json();
                         const key = file.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
-                        // 合并数据，保留现有内容
                         if (key === 'footerGlobal' || key === 'footerCN') {
                             appData[key] = { ...appData[key], ...data };
                         } else {
@@ -876,7 +891,7 @@
     }
 
     function initializeDataStructure() {
-        // 确保底部数据有默认值 - 修复：保留从JSON加载的数据
+        // 底部数据默认值
         if (!appData.footerGlobal) {
             appData.footerGlobal = {
                 siteName: 'LIVEGIGS',
@@ -903,7 +918,6 @@
             };
         }
 
-        // 确保socials数组存在
         if (!appData.footerGlobal.socials) appData.footerGlobal.socials = [];
         if (!appData.footerCN.socials) appData.footerCN.socials = [];
 
@@ -1456,7 +1470,7 @@
         document.getElementById(`partner-${tab}`).classList.add('active');
     }
 
-    // 从表单更新底部数据 - 修复版
+    // 从表单更新底部数据
     function updateFooterDataFromForm() {
         // 海外站
         const globalSiteName = document.getElementById('globalSiteName');
@@ -1500,7 +1514,7 @@
             return;
         }
 
-        // 先更新底部数据从表单
+        // 先更新底部数据
         if (section === 'footer' || section === 'all') {
             updateFooterDataFromForm();
         }
@@ -1688,4 +1702,5 @@
         closeModal();
     }
 </script>
-</body></html>
+</body>
+</html>
