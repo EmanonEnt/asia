@@ -55,18 +55,43 @@
         .event-card:hover { transform: translateY(-10px); border-color: rgba(139, 0, 0, 0.8); box-shadow: 0 0 30px rgba(139, 0, 0, 0.3), inset 0 0 20px rgba(139, 0, 0, 0.1); }
         .event-poster { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; filter: brightness(0.7); transition: all 0.4s; z-index: 1; }
         .event-card:hover .event-poster { filter: brightness(1); transform: scale(1.05); }
-        .event-status { position: absolute; top: 20px; right: 20px; z-index: 10; padding: 8px 16px; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; font-weight: bold; border-radius: 4px; animation: statusPulse 2s ease-in-out infinite; background: rgba(0, 0, 0, 0.7) !important; border: 1px solid rgba(139, 0, 0, 0.5); }
-        .event-status.countdown { color: #fff; }
-        .event-status.soldout { color: #ff4444; }
-        .event-status.ontour { color: #ffaa00; }
+        .event-status { position: absolute; top: 20px; right: 20px; z-index: 10; padding: 8px 16px; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; font-weight: bold; border-radius: 4px; animation: statusPulse 2s ease-in-out infinite; }
+        .event-status.countdown { background: rgba(0, 0, 0, 0.8); color: #fff; border: 1px solid var(--dark-red); }
+        .event-status.soldout { background: var(--dark-red); color: #fff; border: 1px solid var(--dark-red); }
+        .event-status.ontour { background: rgba(139, 0, 0, 0.8); color: #fff; border: 1px solid var(--dark-red); }
         @keyframes statusPulse { 0%, 100% { box-shadow: 0 0 10px rgba(139, 0, 0, 0.5); } 50% { box-shadow: 0 0 20px rgba(139, 0, 0, 0.8); } }
         .event-content { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; padding: 80px 20px 40px; z-index: 5; background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0.6) 70%, rgba(0,0,0,0.8) 100%); transition: all 0.4s ease; }
         .event-card:hover .event-content { background: transparent; }
         .event-name { font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; font-size: clamp(20px, 2.5vw, 28px); letter-spacing: 2px; text-transform: uppercase; color: #fff; margin-bottom: 15px; text-shadow: 0 0 30px rgba(139, 0, 0, 1), 0 2px 4px rgba(0,0,0,0.8); line-height: 1.2; text-align: center; }
         .event-details { font-size: 14px; color: var(--silver); letter-spacing: 1px; margin-bottom: 8px; text-align: center; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
         .event-venue { font-size: 13px; color: rgba(255,255,255,0.8); letter-spacing: 1px; margin-bottom: auto; text-align: center; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
-        .event-btn { display: inline-block; background: rgba(139, 0, 0, 0.9); color: #fff; border: 2px solid var(--dark-red); padding: 12px 30px; font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; cursor: pointer; transition: all 0.4s; position: relative; overflow: hidden; margin-top: auto; box-shadow: none; outline: none; -webkit-box-shadow: none; -moz-box-shadow: none; }
-        .event-btn:focus, .event-btn:active { outline: none; box-shadow: none; border-color: var(--dark-red); }
+        .event-btn { 
+            display: inline-block; 
+            background: rgba(139, 0, 0, 0.9); 
+            color: #fff; 
+            border: 2px solid var(--dark-red); 
+            padding: 12px 30px; 
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; 
+            font-size: 13px; 
+            letter-spacing: 2px; 
+            text-transform: uppercase; 
+            text-decoration: none; 
+            cursor: pointer; 
+            transition: all 0.4s; 
+            position: relative; 
+            overflow: hidden; 
+            margin-top: auto;
+            box-shadow: none;
+            outline: none;
+            -webkit-box-shadow: none;
+            -moz-box-shadow: none;
+        }
+        .event-btn:focus,
+        .event-btn:active {
+            outline: none;
+            box-shadow: none;
+            border-color: var(--dark-red);
+        }
         .event-btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); transition: left 0.5s; }
         .event-btn:hover::before { left: 100%; }
         .event-btn:hover { background: var(--dark-red); border-color: var(--dark-red); box-shadow: 0 0 30px rgba(139, 0, 0, 0.8), 0 0 60px rgba(139, 0, 0, 0.4); transform: scale(1.05); letter-spacing: 3px; }
@@ -113,18 +138,14 @@
         .poster-item-alt:hover { border-color: rgba(139, 0, 0, 0.6); box-shadow: 0 0 30px rgba(139, 0, 0, 0.3), inset 0 0 20px rgba(139, 0, 0, 0.1); transform: translateY(-5px); }
         .poster-item-alt img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; transition: filter 0.4s; }
         .poster-item-alt:hover img { filter: brightness(0.7); }
-
-        /* 海报2轮播样式 - 修复版 */
-        .poster-carousel-wrapper { position: relative; width: 100%; height: 100%; overflow: hidden; }
-        .poster-carousel { position: relative; width: 100%; height: 100%; }
-        .poster-carousel-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 0.8s ease-in-out; z-index: 1; }
-        .poster-carousel-slide.active { opacity: 1; z-index: 2; }
-        .poster-carousel-slide img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
-        .carousel-dots { position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; z-index: 10; }
+        .poster-item-alt .poster-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 35px 20px 25px; background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 50%, transparent 100%); opacity: 0; transition: opacity 0.4s; }
+        .poster-item-alt:hover .poster-overlay { opacity: 1; }
+        .poster-carousel { position: relative; width: 100%; height: 100%; overflow: hidden; }
+        .poster-carousel img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.8s ease-in-out; }
+        .poster-carousel img.active { opacity: 1; }
+        .carousel-dots { position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; z-index: 10; }
         .carousel-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.3); cursor: pointer; transition: all 0.3s; border: 1px solid rgba(255,255,255,0.5); }
         .carousel-dot.active { background: var(--dark-red); border-color: var(--dark-red); box-shadow: 0 0 10px rgba(139, 0, 0, 0.8); transform: scale(1.2); }
-        .poster-item-alt .poster-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 35px 20px 25px; background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 50%, transparent 100%); opacity: 0; transition: opacity 0.4s; z-index: 5; }
-        .poster-item-alt:hover .poster-overlay { opacity: 1; }
         .mobile-poster2-text { display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; z-index: 5; width: 90%; }
         .mobile-poster2-text h3 { font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; font-size: clamp(18px, 4vw, 24px); letter-spacing: 3px; text-transform: uppercase; color: #fff; text-shadow: 0 0 30px rgba(139, 0, 0, 0.8), 0 2px 10px rgba(0,0,0,0.8); line-height: 1.3; }
         .footer-gap { height: 150px; background: linear-gradient(180deg, #050505 0%, #1a1a1a 30%, var(--silver-bg) 100%); position: relative; }
@@ -174,10 +195,146 @@
         @media (max-width: 768px) { nav { padding: 0 20px; height: 65px; } .logo-img { height: 35px; max-width: 130px; } .nav-links a { font-size: 11px; letter-spacing: 2px; } .nav-links .neon-btn { padding: 8px 16px; font-size: 10px; } .hero-content { margin-top: 80px; } .hero-title { font-size: clamp(55px, 14vw, 80px); letter-spacing: 5px; margin-bottom: 35px; } .hero-subtitle { font-size: clamp(16px, 3.5vw, 22px); letter-spacing: 2.5px; margin-top: 50px; } .section-title { font-size: clamp(28px, 5vw, 40px); } .event-status { top: 15px; right: 15px; padding: 6px 12px; font-size: 11px; } .event-content { padding: 60px 20px 30px; } .auto-scroll-item { flex: 0 0 33.333%; min-width: 200px; } .footer-gap { height: 100px; } .footer-main { padding: 40px 30px 30px; } .footer-container { flex-direction: column; gap: 30px; text-align: center; } .footer-contact-left, .footer-contact-right { text-align: center; flex: 1; width: 100%; } .social-links { margin-bottom: 20px; } .producer-section { text-align: center; } .footer-bottom { flex-direction: column; gap: 15px; padding: 20px 30px; text-align: center; } .footer-legal { flex-wrap: wrap; justify-content: center; gap: 20px; } .scroll-arrow { width: 35px; height: 50px; font-size: 18px; } .poster-carousel { display: block !important; } .mobile-poster2-text { display: none !important; } }
         @media (max-width: 480px) { nav { padding: 0 15px; height: 60px; background: rgba(0, 0, 0, 0.5); } .logo-img { height: 32px; max-width: 120px; } .nav-links { gap: 12px; } .nav-links a { font-size: 10px; letter-spacing: 1px; } .nav-links .neon-btn { padding: 6px 14px; font-size: 9px; } .hero-content { margin-top: 60px; } .hero-title { font-size: clamp(45px, 13vw, 65px); letter-spacing: 4px; margin-bottom: 30px; } .hero-subtitle { font-size: clamp(13px, 3.5vw, 16px); letter-spacing: 2px; margin-top: 40px; line-height: 1.6; } .hero-subtitle .line1 { margin-bottom: 5px; } .smoke-container { opacity: 0.35; } .managed-events { padding: 60px 0; } .section-header { margin-bottom: 40px; } .section-subtitle { font-size: 12px; } .event-card { aspect-ratio: 2/3; } .event-status { font-size: 10px; padding: 5px 10px; top: 10px; right: 10px; } .event-content { padding: 50px 15px 25px; } .event-name { font-size: 18px; margin-bottom: 10px; } .event-details { font-size: 12px; } .event-venue { font-size: 11px; } .event-btn { padding: 10px 25px; font-size: 11px; margin-top: 20px; } .load-more-btn { padding: 12px 30px; font-size: 12px; } .auto-scroll-section { padding: 0; } .auto-scroll-item { flex: 0 0 50%; min-width: 150px; } .auto-scroll-title { font-size: 14px; } .posters-showcase { padding: 0; } .posters-container { padding: 0 20px; gap: 15px; justify-content: center; } .poster-item-alt { flex: 0 0 calc(33.333% - 10px); max-width: calc(33.333% - 10px); min-width: auto; border-radius: 4px; border: none; } .poster-item-alt:hover { transform: translateY(-12px); box-shadow: 0 25px 60px rgba(139, 0, 0, 0.4); } .poster-item-alt img { transition: all 0.4s; } .poster-item-alt:hover img { filter: brightness(0.65); transform: scale(1.08); } .poster-item-alt .poster-overlay { padding: 12px 6px 10px; } .poster-title { font-size: 10px; letter-spacing: 1px; margin-bottom: 4px; } .poster-link { font-size: 9px; letter-spacing: 0.5px; } .poster-overlay { padding: 12px 6px 10px; } .footer-gap { height: 80px; } .footer-main { padding: 35px 25px 25px; } .footer-logo { font-size: 28px; letter-spacing: 3px; margin-bottom: 15px; } .social-links { gap: 12px; margin-bottom: 20px; } .social-icon { width: 36px; height: 36px; } .social-icon svg { width: 14px; height: 14px; } .contact-item { font-size: 11px; margin-bottom: 8px; } .producer-label { font-size: 9px; letter-spacing: 2px; } .producer-logo { height: 30px; } .footer-bottom { padding: 15px 20px; gap: 12px; } .footer-legal { gap: 15px; } .footer-legal a { font-size: 10px; } .copyright { font-size: 10px; } .scroll-arrow { width: 30px; height: 45px; font-size: 16px; } }
         @media (max-width: 375px) { .hero-title { font-size: 38px; letter-spacing: 3px; } .hero-subtitle { font-size: 11px; } .events-grid { padding: 0 15px; } .event-name { font-size: 16px; } .posters-container { padding: 0 15px; gap: 12px; } .poster-item-alt { flex: 0 0 calc(33.333% - 8px); max-width: calc(33.333% - 8px); } .poster-title { font-size: 9px; } .poster-link { font-size: 8px; } .footer-logo { font-size: 24px; letter-spacing: 2px; } .social-icon { width: 34px; height: 34px; } .contact-item { font-size: 10px; } }
-        .event-card:hover .event-name, .event-card:hover .event-details, .event-card:hover .event-venue { opacity: 0; visibility: hidden; transition: all 0.3s ease; }
-        .event-status, .event-btn { opacity: 1 !important; visibility: visible !important; }
-        .event-card:hover .event-poster { filter: brightness(1) !important; }
-    </style>
+    
+        /* 右上角状态按钮统一半透明背景 */
+        .event-status {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 10;
+            padding: 8px 16px;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: bold;
+            border-radius: 4px;
+            background: rgba(0, 0, 0, 0.7) !important;
+            border: 1px solid rgba(139, 0, 0, 0.5);
+            animation: statusPulse 2s ease-in-out infinite;
+        }
+        .event-status.countdown {
+            color: #fff;
+        }
+        .event-status.soldout {
+            color: #ff4444;
+        }
+        .event-status.ontour {
+            color: #ffaa00;
+        }
+
+        /* 无链接按钮样式 - 禁用状态，与正常按钮效果一致但不可点击 */
+        .event-btn.disabled {
+            pointer-events: none;
+            cursor: not-allowed;
+            display: inline-block;
+            background: rgba(139, 0, 0, 0.9);
+            color: #fff;
+            border: 2px solid var(--dark-red);
+            padding: 12px 30px;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: 13px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            margin-top: auto;
+            opacity: 0.8;
+            box-shadow: none;
+            outline: none;
+            -webkit-box-shadow: none;
+            -moz-box-shadow: none;
+        }
+        .event-btn.disabled:focus,
+        .event-btn.disabled:active {
+            outline: none;
+            box-shadow: none;
+            border-color: var(--dark-red);
+        }
+        .event-btn.disabled::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+        .event-btn.disabled:hover::before {
+            left: 100%;
+        }
+        .event-btn.disabled:hover {
+            background: var(--dark-red);
+            border-color: var(--dark-red);
+            box-shadow: 0 0 30px rgba(139, 0, 0, 0.8), 0 0 60px rgba(139, 0, 0, 0.4);
+            transform: scale(1.05);
+            letter-spacing: 3px;
+            opacity: 1;
+        }
+
+
+        /* hover时隐藏标题/日期/地址，保留按钮和状态 */
+        .event-card:hover .event-name,
+        .event-card:hover .event-details,
+        .event-card:hover .event-venue {
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        /* 始终显示按钮和状态 */
+        .event-status,
+        .event-btn {
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
+        /* hover时海报保持原图亮度，无蒙版 */
+        .event-card:hover .event-poster {
+            filter: brightness(1) !important;
+        }
+    
+        /* 滚播区域倒计时样式 */
+        .auto-scroll-countdown {
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: 14px;
+            color: #fff;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: 8px;
+            padding: 6px 12px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--dark-red);
+            border-radius: 4px;
+            display: inline-block;
+            animation: statusPulse 2s ease-in-out infinite;
+        }
+
+        /* hover时隐藏所有信息（包括倒计时） */
+        .auto-scroll-item:hover .auto-scroll-info {
+            opacity: 0;
+        }
+
+        /* 加速滚动动画 */
+        .auto-scroll-track.fast-left {
+            animation: autoScrollFast 10s linear infinite;
+        }
+
+        .auto-scroll-track.fast-right {
+            animation: autoScrollFastReverse 10s linear infinite;
+        }
+
+        @keyframes autoScrollFast {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        @keyframes autoScrollFastReverse {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(0); }
+        }
+</style>
 </head>
 <body>
     <nav>
@@ -263,22 +420,226 @@
 
         <section class="auto-scroll-section">
             <div class="auto-scroll-wrapper">
-                <button class="scroll-arrow left" onclick="scrollLeft()">❮</button>
-                <button class="scroll-arrow right" onclick="scrollRight()">❯</button>
+                <button class="scroll-arrow left" id="scrollLeftBtn">❮</button>
+                <button class="scroll-arrow right" id="scrollRightBtn">❯</button>
                 <div class="auto-scroll-container" id="autoScrollContainer">
                     <div class="auto-scroll-track" id="autoScrollTrack">
-                        <div class="auto-scroll-item"><div class="auto-scroll-overlay"></div><img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&h=800&fit=crop" alt="Rock Storm 2026"><div class="auto-scroll-info"><h4 class="auto-scroll-title">ROCK STORM 2026</h4><div class="auto-scroll-meta">JAN 15, 2026 / TAIPEI</div></div></div>
-                        <div class="auto-scroll-item"><div class="auto-scroll-overlay"></div><img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop" alt="Metal Storm"><div class="auto-scroll-info"><h4 class="auto-scroll-title">METAL STORM</h4><div class="auto-scroll-meta">FEB 20, 2026 / KAOHSIUNG</div></div></div>
-                        <div class="auto-scroll-item"><div class="auto-scroll-overlay"></div><img src="https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=600&h=800&fit=crop" alt="Punk Night"><div class="auto-scroll-info"><h4 class="auto-scroll-title">PUNK NIGHT</h4><div class="auto-scroll-meta">MAR 10, 2026 / TAICHUNG</div></div></div>
-                        <div class="auto-scroll-item"><div class="auto-scroll-overlay"></div><img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&h=800&fit=crop" alt="Indie Music Fest"><div class="auto-scroll-info"><h4 class="auto-scroll-title">INDIE MUSIC FEST</h4><div class="auto-scroll-meta">APR 05, 2026 / HONG KONG</div></div></div>
-                        <div class="auto-scroll-item"><div class="auto-scroll-overlay"></div><img src="https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=600&h=800&fit=crop" alt="Hard Rock Party"><div class="auto-scroll-info"><h4 class="auto-scroll-title">HARD ROCK PARTY</h4><div class="auto-scroll-meta">MAY 18, 2026 / SINGAPORE</div></div></div>
-                        <div class="auto-scroll-item"><div class="auto-scroll-overlay"></div><img src="https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=600&h=800&fit=crop" alt="Summer Music Fest"><div class="auto-scroll-info"><h4 class="auto-scroll-title">SUMMER MUSIC FEST</h4><div class="auto-scroll-meta">JUN 22, 2026 / TOKYO</div></div></div>
-                        <div class="auto-scroll-item"><div class="auto-scroll-overlay"></div><img src="https://images.unsplash.com/photo-1506157786151-b8491531f063?w=600&h=800&fit=crop" alt="Rock Marathon"><div class="auto-scroll-info"><h4 class="auto-scroll-title">ROCK MARATHON</h4><div class="auto-scroll-meta">JUL 30, 2026 / SEOUL</div></div></div>
-                        <div class="auto-scroll-item"><div class="auto-scroll-overlay"></div><img src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=600&h=800&fit=crop" alt="Asia Tour"><div class="auto-scroll-info"><h4 class="auto-scroll-title">ASIA TOUR</h4><div class="auto-scroll-meta">AUG 15, 2026 / BANGKOK</div></div></div>
-                        <div class="auto-scroll-item"><div class="auto-scroll-overlay"></div><img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&h=800&fit=crop" alt="Rock Storm 2026"><div class="auto-scroll-info"><h4 class="auto-scroll-title">ROCK STORM 2026</h4><div class="auto-scroll-meta">JAN 15, 2026 / TAIPEI</div></div></div>
-                        <div class="auto-scroll-item"><div class="auto-scroll-overlay"></div><img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop" alt="Metal Storm"><div class="auto-scroll-info"><h4 class="auto-scroll-title">METAL STORM</h4><div class="auto-scroll-meta">FEB 20, 2026 / KAOHSIUNG</div></div></div>
-                        <div class="auto-scroll-item"><div class="auto-scroll-overlay"></div><img src="https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=600&h=800&fit=crop" alt="Punk Night"><div class="auto-scroll-info"><h4 class="auto-scroll-title">PUNK NIGHT</h4><div class="auto-scroll-meta">MAR 10, 2026 / TAICHUNG</div></div></div>
-                        <div class="auto-scroll-item"><div class="auto-scroll-overlay"></div><img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&h=800&fit=crop" alt="Indie Music Fest"><div class="auto-scroll-info"><h4 class="auto-scroll-title">INDIE MUSIC FEST</h4><div class="auto-scroll-meta">APR 05, 2026 / HONG KONG</div></div></div>
+                        <div class="auto-scroll-item" data-date="2025-09-25" onclick="window.open('http://punkheartfest.com', '_blank')" style="cursor: pointer;">
+                            <div class="auto-scroll-overlay"></div>
+                            <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=400&h=600&fit=crop" alt="PUNK HEART FESTIVAL" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=PUNK+HEART+FESTIVAL'">
+                            <div class="auto-scroll-info">
+                                <h4 class="auto-scroll-title">PUNK HEART FESTIVAL</h4>
+                                <div class="auto-scroll-meta">SEP 25, 2025 / TAIPEI</div>
+                                <div class="auto-scroll-countdown" data-countdown-date="2025-09-25">CALCULATING...</div>
+                            </div>
+                        </div>
+                        <div class="auto-scroll-item" data-date="2025-11-15" style="cursor: default;">
+                            <div class="auto-scroll-overlay"></div>
+                            <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=600&fit=crop" alt="METAL STORM" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=METAL+STORM'">
+                            <div class="auto-scroll-info">
+                                <h4 class="auto-scroll-title">METAL STORM</h4>
+                                <div class="auto-scroll-meta">NOV 15, 2025 / KAOHSIUNG</div>
+                                <div class="auto-scroll-countdown" data-countdown-date="2025-11-15">CALCULATING...</div>
+                            </div>
+                        </div>
+                        <div class="auto-scroll-item" data-date="2025-12-20" onclick="window.open('https://example.com/rocknight', '_blank')" style="cursor: pointer;">
+                            <div class="auto-scroll-overlay"></div>
+                            <img src="https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=400&h=600&fit=crop" alt="ROCK NIGHT" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=ROCK+NIGHT'">
+                            <div class="auto-scroll-info">
+                                <h4 class="auto-scroll-title">ROCK NIGHT</h4>
+                                <div class="auto-scroll-meta">DEC 20, 2025 / TAICHUNG</div>
+                                <div class="auto-scroll-countdown" data-countdown-date="2025-12-20">CALCULATING...</div>
+                            </div>
+                        </div>
+                        <div class="auto-scroll-item" data-date="2026-01-15" style="cursor: default;">
+                            <div class="auto-scroll-overlay"></div>
+                            <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=400&h=600&fit=crop" alt="INDIE MUSIC FEST" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=INDIE+MUSIC+FEST'">
+                            <div class="auto-scroll-info">
+                                <h4 class="auto-scroll-title">INDIE MUSIC FEST</h4>
+                                <div class="auto-scroll-meta">JAN 15, 2026 / HONG KONG</div>
+                                <div class="auto-scroll-countdown" data-countdown-date="2026-01-15">CALCULATING...</div>
+                            </div>
+                        </div>
+                        <div class="auto-scroll-item" data-date="2026-02-28" onclick="window.open('https://example.com/hardrock', '_blank')" style="cursor: pointer;">
+                            <div class="auto-scroll-overlay"></div>
+                            <img src="https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=400&h=600&fit=crop" alt="HARD ROCK PARTY" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=HARD+ROCK+PARTY'">
+                            <div class="auto-scroll-info">
+                                <h4 class="auto-scroll-title">HARD ROCK PARTY</h4>
+                                <div class="auto-scroll-meta">FEB 28, 2026 / SINGAPORE</div>
+                                <div class="auto-scroll-countdown" data-countdown-date="2026-02-28">CALCULATING...</div>
+                            </div>
+                        </div>
+                        <div class="auto-scroll-item" data-date="2026-03-20" style="cursor: default;">
+                            <div class="auto-scroll-overlay"></div>
+                            <img src="https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=400&h=600&fit=crop" alt="SUMMER MUSIC FEST" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=SUMMER+MUSIC+FEST'">
+                            <div class="auto-scroll-info">
+                                <h4 class="auto-scroll-title">SUMMER MUSIC FEST</h4>
+                                <div class="auto-scroll-meta">MAR 20, 2026 / TOKYO</div>
+                                <div class="auto-scroll-countdown" data-countdown-date="2026-03-20">CALCULATING...</div>
+                            </div>
+                        </div>
+                        <div class="auto-scroll-item" data-date="2026-04-15" onclick="window.open('https://example.com/marathon', '_blank')" style="cursor: pointer;">
+                            <div class="auto-scroll-overlay"></div>
+                            <img src="https://images.unsplash.com/photo-1506157786151-b8491531f063?w=400&h=600&fit=crop" alt="ROCK MARATHON" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=ROCK+MARATHON'">
+                            <div class="auto-scroll-info">
+                                <h4 class="auto-scroll-title">ROCK MARATHON</h4>
+                                <div class="auto-scroll-meta">APR 15, 2026 / SEOUL</div>
+                                <div class="auto-scroll-countdown" data-countdown-date="2026-04-15">CALCULATING...</div>
+                            </div>
+                        </div>
+                        <div class="auto-scroll-item" data-date="2026-05-10" style="cursor: default;">
+                            <div class="auto-scroll-overlay"></div>
+                            <img src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=400&h=600&fit=crop" alt="ASIA TOUR" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=ASIA+TOUR'">
+                            <div class="auto-scroll-info">
+                                <h4 class="auto-scroll-title">ASIA TOUR</h4>
+                                <div class="auto-scroll-meta">MAY 10, 2026 / BANGKOK</div>
+                                <div class="auto-scroll-countdown" data-countdown-date="2026-05-10">CALCULATING...</div>
+                            </div>
+                        </div>
+                        <div class="auto-scroll-item" data-date="2026-06-25" onclick="window.open('https://example.com/punkrev', '_blank')" style="cursor: pointer;">
+                            <div class="auto-scroll-overlay"></div>
+                            <img src="https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?w=400&h=600&fit=crop" alt="PUNK REVOLUTION" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=PUNK+REVOLUTION'">
+                            <div class="auto-scroll-info">
+                                <h4 class="auto-scroll-title">PUNK REVOLUTION</h4>
+                                <div class="auto-scroll-meta">JUN 25, 2026 / MANILA</div>
+                                <div class="auto-scroll-countdown" data-countdown-date="2026-06-25">CALCULATING...</div>
+                            </div>
+                        </div>
+                        <div class="auto-scroll-item" data-date="2026-07-30" style="cursor: default;">
+                            <div class="auto-scroll-overlay"></div>
+                            <img src="https://images.unsplash.com/photo-1511735111819-9a3f77ebd235?w=400&h=600&fit=crop" alt="HEAVY METAL NIGHT" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=HEAVY+METAL+NIGHT'">
+                            <div class="auto-scroll-info">
+                                <h4 class="auto-scroll-title">HEAVY METAL NIGHT</h4>
+                                <div class="auto-scroll-meta">JUL 30, 2026 / JAKARTA</div>
+                                <div class="auto-scroll-countdown" data-countdown-date="2026-07-30">CALCULATING...</div>
+                            </div>
+                        </div>
+                        <div class="auto-scroll-item" data-date="2026-08-20" onclick="window.open('https://example.com/expo', '_blank')" style="cursor: pointer;">
+                            <div class="auto-scroll-overlay"></div>
+                            <img src="https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=400&h=600&fit=crop" alt="LIVE GIGS EXPO" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=LIVE+GIGS+EXPO'">
+                            <div class="auto-scroll-info">
+                                <h4 class="auto-scroll-title">LIVE GIGS EXPO</h4>
+                                <div class="auto-scroll-meta">AUG 20, 2026 / KUALA LUMPUR</div>
+                                <div class="auto-scroll-countdown" data-countdown-date="2026-08-20">CALCULATING...</div>
+                            </div>
+                        </div>
+                        <div class="auto-scroll-item" data-date="2026-09-15" style="cursor: default;">
+                            <div class="auto-scroll-overlay"></div>
+                            <img src="https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=400&h=600&fit=crop" alt="ROCK LEGENDS" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=ROCK+LEGENDS'">
+                            <div class="auto-scroll-info">
+                                <h4 class="auto-scroll-title">ROCK LEGENDS</h4>
+                                <div class="auto-scroll-meta">SEP 15, 2026 / SHANGHAI</div>
+                                <div class="auto-scroll-countdown" data-countdown-date="2026-09-15">CALCULATING...</div>
+                            </div>
+                        </div>
+                        <div class="auto-scroll-item" data-date="2025-09-25" onclick="window.open('http://punkheartfest.com', '_blank')" style="cursor: pointer;">
+                            <div class="auto-scroll-overlay"></div>
+                            <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=400&h=600&fit=crop" alt="PUNK HEART FESTIVAL" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=PUNK+HEART+FESTIVAL'">
+                            <div class="auto-scroll-info">
+                                <h4 class="auto-scroll-title">PUNK HEART FESTIVAL</h4>
+                                <div class="auto-scroll-meta">SEP 25, 2025 / TAIPEI</div>
+                                <div class="auto-scroll-countdown" data-countdown-date="2025-09-25">CALCULATING...</div>
+                            </div>
+                        </div>
+                        <div class="auto-scroll-item" data-date="2025-11-15" style="cursor: default;">
+                            <div class="auto-scroll-overlay"></div>
+                            <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=600&fit=crop" alt="METAL STORM" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=METAL+STORM'">
+                            <div class="auto-scroll-info">
+                                <h4 class="auto-scroll-title">METAL STORM</h4>
+                                <div class="auto-scroll-meta">NOV 15, 2025 / KAOHSIUNG</div>
+                                <div class="auto-scroll-countdown" data-countdown-date="2025-11-15">CALCULATING...</div>
+                            </div>
+                        </div>
+                        <div class="auto-scroll-item" data-date="2025-12-20" onclick="window.open('https://example.com/rocknight', '_blank')" style="cursor: pointer;">
+                            <div class="auto-scroll-overlay"></div>
+                            <img src="https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=400&h=600&fit=crop" alt="ROCK NIGHT" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=ROCK+NIGHT'">
+                            <div class="auto-scroll-info">
+                                <h4 class="auto-scroll-title">ROCK NIGHT</h4>
+                                <div class="auto-scroll-meta">DEC 20, 2025 / TAICHUNG</div>
+                                <div class="auto-scroll-countdown" data-countdown-date="2025-12-20">CALCULATING...</div>
+                            </div>
+                        </div>
+                        <div class="auto-scroll-item" data-date="2026-01-15" style="cursor: default;">
+                            <div class="auto-scroll-overlay"></div>
+                            <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=400&h=600&fit=crop" alt="INDIE MUSIC FEST" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=INDIE+MUSIC+FEST'">
+                            <div class="auto-scroll-info">
+                                <h4 class="auto-scroll-title">INDIE MUSIC FEST</h4>
+                                <div class="auto-scroll-meta">JAN 15, 2026 / HONG KONG</div>
+                                <div class="auto-scroll-countdown" data-countdown-date="2026-01-15">CALCULATING...</div>
+                            </div>
+                        </div>
+                        <div class="auto-scroll-item" data-date="2026-02-28" onclick="window.open('https://example.com/hardrock', '_blank')" style="cursor: pointer;">
+                            <div class="auto-scroll-overlay"></div>
+                            <img src="https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=400&h=600&fit=crop" alt="HARD ROCK PARTY" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=HARD+ROCK+PARTY'">
+                            <div class="auto-scroll-info">
+                                <h4 class="auto-scroll-title">HARD ROCK PARTY</h4>
+                                <div class="auto-scroll-meta">FEB 28, 2026 / SINGAPORE</div>
+                                <div class="auto-scroll-countdown" data-countdown-date="2026-02-28">CALCULATING...</div>
+                            </div>
+                        </div>
+                        <div class="auto-scroll-item" data-date="2026-03-20" style="cursor: default;">
+                            <div class="auto-scroll-overlay"></div>
+                            <img src="https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=400&h=600&fit=crop" alt="SUMMER MUSIC FEST" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=SUMMER+MUSIC+FEST'">
+                            <div class="auto-scroll-info">
+                                <h4 class="auto-scroll-title">SUMMER MUSIC FEST</h4>
+                                <div class="auto-scroll-meta">MAR 20, 2026 / TOKYO</div>
+                                <div class="auto-scroll-countdown" data-countdown-date="2026-03-20">CALCULATING...</div>
+                            </div>
+                        </div>
+                        <div class="auto-scroll-item" data-date="2026-04-15" onclick="window.open('https://example.com/marathon', '_blank')" style="cursor: pointer;">
+                            <div class="auto-scroll-overlay"></div>
+                            <img src="https://images.unsplash.com/photo-1506157786151-b8491531f063?w=400&h=600&fit=crop" alt="ROCK MARATHON" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=ROCK+MARATHON'">
+                            <div class="auto-scroll-info">
+                                <h4 class="auto-scroll-title">ROCK MARATHON</h4>
+                                <div class="auto-scroll-meta">APR 15, 2026 / SEOUL</div>
+                                <div class="auto-scroll-countdown" data-countdown-date="2026-04-15">CALCULATING...</div>
+                            </div>
+                        </div>
+                        <div class="auto-scroll-item" data-date="2026-05-10" style="cursor: default;">
+                            <div class="auto-scroll-overlay"></div>
+                            <img src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=400&h=600&fit=crop" alt="ASIA TOUR" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=ASIA+TOUR'">
+                            <div class="auto-scroll-info">
+                                <h4 class="auto-scroll-title">ASIA TOUR</h4>
+                                <div class="auto-scroll-meta">MAY 10, 2026 / BANGKOK</div>
+                                <div class="auto-scroll-countdown" data-countdown-date="2026-05-10">CALCULATING...</div>
+                            </div>
+                        </div>
+                        <div class="auto-scroll-item" data-date="2026-06-25" onclick="window.open('https://example.com/punkrev', '_blank')" style="cursor: pointer;">
+                            <div class="auto-scroll-overlay"></div>
+                            <img src="https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?w=400&h=600&fit=crop" alt="PUNK REVOLUTION" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=PUNK+REVOLUTION'">
+                            <div class="auto-scroll-info">
+                                <h4 class="auto-scroll-title">PUNK REVOLUTION</h4>
+                                <div class="auto-scroll-meta">JUN 25, 2026 / MANILA</div>
+                                <div class="auto-scroll-countdown" data-countdown-date="2026-06-25">CALCULATING...</div>
+                            </div>
+                        </div>
+                        <div class="auto-scroll-item" data-date="2026-07-30" style="cursor: default;">
+                            <div class="auto-scroll-overlay"></div>
+                            <img src="https://images.unsplash.com/photo-1511735111819-9a3f77ebd235?w=400&h=600&fit=crop" alt="HEAVY METAL NIGHT" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=HEAVY+METAL+NIGHT'">
+                            <div class="auto-scroll-info">
+                                <h4 class="auto-scroll-title">HEAVY METAL NIGHT</h4>
+                                <div class="auto-scroll-meta">JUL 30, 2026 / JAKARTA</div>
+                                <div class="auto-scroll-countdown" data-countdown-date="2026-07-30">CALCULATING...</div>
+                            </div>
+                        </div>
+                        <div class="auto-scroll-item" data-date="2026-08-20" onclick="window.open('https://example.com/expo', '_blank')" style="cursor: pointer;">
+                            <div class="auto-scroll-overlay"></div>
+                            <img src="https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=400&h=600&fit=crop" alt="LIVE GIGS EXPO" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=LIVE+GIGS+EXPO'">
+                            <div class="auto-scroll-info">
+                                <h4 class="auto-scroll-title">LIVE GIGS EXPO</h4>
+                                <div class="auto-scroll-meta">AUG 20, 2026 / KUALA LUMPUR</div>
+                                <div class="auto-scroll-countdown" data-countdown-date="2026-08-20">CALCULATING...</div>
+                            </div>
+                        </div>
+                        <div class="auto-scroll-item" data-date="2026-09-15" style="cursor: default;">
+                            <div class="auto-scroll-overlay"></div>
+                            <img src="https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=400&h=600&fit=crop" alt="ROCK LEGENDS" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=ROCK+LEGENDS'">
+                            <div class="auto-scroll-info">
+                                <h4 class="auto-scroll-title">ROCK LEGENDS</h4>
+                                <div class="auto-scroll-meta">SEP 15, 2026 / SHANGHAI</div>
+                                <div class="auto-scroll-countdown" data-countdown-date="2026-09-15">CALCULATING...</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -293,32 +654,23 @@
                         <a href="https://wxaurl.cn/HMcAK6R7fou" target="_blank" class="poster-link" onclick="event.stopPropagation();">Get on WeChat →</a>
                     </div>
                 </div>
-
-                <!-- 海报2 - 5张轮播 -->
                 <div class="poster-item-alt" data-poster-id="2">
-                    <div class="poster-carousel-wrapper">
-                        <div class="poster-carousel" id="posterCarousel">
-                            <div class="poster-carousel-slide active"><img src="./image/2-old1.jpg" alt="Non Servium China Tour" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=Non+Servium'"></div>
-                            <div class="poster-carousel-slide"><img src="./image/2-old2.jpg" alt="Skarface China Tour" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=Skarface'"></div>
-                            <div class="poster-carousel-slide"><img src="./image/2-old3.jpg" alt="Acidez S.E Asia Tour" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=Acidez'"></div>
-                            <div class="poster-carousel-slide"><img src="./image/2-old4.jpg" alt="Epic Past Gigs" onerror="this.src='https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=600&h=800&fit=crop'"></div>
-                            <div class="poster-carousel-slide"><img src="./image/2-old5.jpg" alt="Epic Past Gigs" onerror="this.src='https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=600&h=800&fit=crop'"></div>
+                    <div class="poster-carousel" id="posterCarousel">
+                        <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&h=800&fit=crop" alt="Past Event 1" class="active">
+                        <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop" alt="Past Event 2">
+                        <img src="https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=600&h=800&fit=crop" alt="Past Event 3">
+                        <div class="carousel-dots">
+                            <span class="carousel-dot active" onclick="goToSlide(0)"></span>
+                            <span class="carousel-dot" onclick="goToSlide(1)"></span>
+                            <span class="carousel-dot" onclick="goToSlide(2)"></span>
                         </div>
-                        <div class="carousel-dots" id="carouselDots">
-                            <span class="carousel-dot active" data-slide="0"></span>
-                            <span class="carousel-dot" data-slide="1"></span>
-                            <span class="carousel-dot" data-slide="2"></span>
-                            <span class="carousel-dot" data-slide="3"></span>
-                            <span class="carousel-dot" data-slide="4"></span>
-                        </div>
-                        <div class="poster-overlay" id="poster2Overlay">
-                            <div class="poster-title" id="poster2Title">Non Servium China Tour</div>
-                            <span class="poster-link" id="poster2Link">w/The Noname →</span>
+                        <div class="poster-overlay">
+                            <div class="poster-title">Epic Past Gigs</div>
+                            <span class="poster-link">View Gallery →</span>
                         </div>
                     </div>
                     <div class="mobile-poster2-text"><h3>Legendary Live Events</h3></div>
                 </div>
-
                 <div class="poster-item-alt" data-poster-id="3" data-link="partners.html">
                     <img src="./image/xrebookingad.jpg" alt="XRE Booking" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=XRE+BOOKING'">
                     <div class="poster-overlay">
@@ -387,6 +739,21 @@
     </div>
 
     <script>
+        // 滚播活动数据（最少3个，最多12个）
+        const carouselEvents = [
+            { title: "PUNK HEART FESTIVAL", date: "2025-09-25", date_display: "SEP 25, 2025", city: "TAIPEI", image: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=400&h=600&fit=crop", link: "http://punkheartfest.com" },
+            { title: "METAL STORM", date: "2025-11-15", date_display: "NOV 15, 2025", city: "KAOHSIUNG", image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=600&fit=crop", link: "" },
+            { title: "ROCK NIGHT", date: "2025-12-20", date_display: "DEC 20, 2025", city: "TAICHUNG", image: "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=400&h=600&fit=crop", link: "https://example.com/rocknight" },
+            { title: "INDIE MUSIC FEST", date: "2026-01-15", date_display: "JAN 15, 2026", city: "HONG KONG", image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=400&h=600&fit=crop", link: "" },
+            { title: "HARD ROCK PARTY", date: "2026-02-28", date_display: "FEB 28, 2026", city: "SINGAPORE", image: "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=400&h=600&fit=crop", link: "https://example.com/hardrock" },
+            { title: "SUMMER MUSIC FEST", date: "2026-03-20", date_display: "MAR 20, 2026", city: "TOKYO", image: "https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=400&h=600&fit=crop", link: "" },
+            { title: "ROCK MARATHON", date: "2026-04-15", date_display: "APR 15, 2026", city: "SEOUL", image: "https://images.unsplash.com/photo-1506157786151-b8491531f063?w=400&h=600&fit=crop", link: "https://example.com/marathon" },
+            { title: "ASIA TOUR", date: "2026-05-10", date_display: "MAY 10, 2026", city: "BANGKOK", image: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=400&h=600&fit=crop", link: "" },
+            { title: "PUNK REVOLUTION", date: "2026-06-25", date_display: "JUN 25, 2026", city: "MANILA", image: "https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?w=400&h=600&fit=crop", link: "https://example.com/punkrev" },
+            { title: "HEAVY METAL NIGHT", date: "2026-07-30", date_display: "JUL 30, 2026", city: "JAKARTA", image: "https://images.unsplash.com/photo-1511735111819-9a3f77ebd235?w=400&h=600&fit=crop", link: "" },
+            { title: "LIVE GIGS EXPO", date: "2026-08-20", date_display: "AUG 20, 2026", city: "KUALA LUMPUR", image: "https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=400&h=600&fit=crop", link: "https://example.com/expo" },
+            { title: "ROCK LEGENDS", date: "2026-09-15", date_display: "SEP 15, 2026", city: "SHANGHAI", image: "https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=400&h=600&fit=crop", link: "" }
+        ];
 
         // 海报2轮播数据
         const poster2Data = [
@@ -399,6 +766,8 @@
 
         let currentSlide = 0;
         let carouselInterval;
+        let isFastScrolling = false;
+        let scrollDirection = 'normal'; // 'normal', 'left', 'right'
 
         function initCarousel() {
             const slides = document.querySelectorAll('.poster-carousel-slide');
@@ -406,12 +775,10 @@
 
             if (slides.length === 0) return;
 
-            // 自动轮播
             carouselInterval = setInterval(() => {
                 goToSlide(currentSlide + 1);
             }, 5000);
 
-            // 点击圆点切换
             dots.forEach((dot, index) => {
                 dot.addEventListener('click', () => {
                     clearInterval(carouselInterval);
@@ -422,7 +789,6 @@
                 });
             });
 
-            // 鼠标悬停暂停
             const carousel = document.getElementById('posterCarousel');
             if (carousel) {
                 carousel.addEventListener('mouseenter', () => {
@@ -444,22 +810,109 @@
 
             if (slides.length === 0) return;
 
-            // 移除当前active
             slides[currentSlide].classList.remove('active');
             dots[currentSlide].classList.remove('active');
 
-            // 计算新的索引
             currentSlide = (n + slides.length) % slides.length;
 
-            // 添加新的active
             slides[currentSlide].classList.add('active');
             dots[currentSlide].classList.add('active');
 
-            // 更新文字
             if (titleEl && linkEl && poster2Data[currentSlide]) {
                 titleEl.textContent = poster2Data[currentSlide].title;
                 linkEl.textContent = poster2Data[currentSlide].linkText;
             }
+        }
+
+        // 滚播区域倒计时更新
+        function updateCarouselCountdowns() {
+            const countdownElements = document.querySelectorAll('.auto-scroll-countdown');
+            const now = new Date();
+
+            countdownElements.forEach(el => {
+                const targetDate = el.getAttribute('data-countdown-date');
+                if (!targetDate) return;
+
+                const target = new Date(targetDate + 'T00:00:00');
+                const diff = target - now;
+
+                if (diff > 0) {
+                    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+                    if (days > 0) {
+                        el.textContent = days + 'D ' + hours + 'H ' + minutes + 'M';
+                    } else if (hours > 0) {
+                        el.textContent = hours + 'H ' + minutes + 'M';
+                    } else {
+                        el.textContent = minutes + 'M';
+                    }
+                } else if (diff <= 0 && diff > -86400000) {
+                    el.textContent = 'TODAY';
+                } else {
+                    el.textContent = 'PASSED';
+                }
+            });
+        }
+
+        // 滚播区域控制
+        function initAutoScroll() {
+            const track = document.getElementById('autoScrollTrack');
+            const container = document.getElementById('autoScrollContainer');
+            const leftBtn = document.getElementById('scrollLeftBtn');
+            const rightBtn = document.getElementById('scrollRightBtn');
+
+            if (!track || !container) return;
+
+            // 鼠标移至暂停
+            container.addEventListener('mouseenter', () => {
+                track.style.animationPlayState = 'paused';
+            });
+
+            // 鼠标离开继续
+            container.addEventListener('mouseleave', () => {
+                if (!isFastScrolling) {
+                    track.style.animationPlayState = 'running';
+                }
+            });
+
+            // 左箭头 - 加速向左（查看历史）
+            leftBtn.addEventListener('click', () => {
+                if (isFastScrolling) {
+                    // 如果已经在加速，恢复正常
+                    resetScrollSpeed(track);
+                } else {
+                    // 加速向左
+                    isFastScrolling = true;
+                    scrollDirection = 'left';
+                    track.classList.remove('fast-right');
+                    track.classList.add('fast-left');
+                    track.style.animationPlayState = 'running';
+                }
+            });
+
+            // 右箭头 - 加速向右
+            rightBtn.addEventListener('click', () => {
+                if (isFastScrolling) {
+                    // 如果已经在加速，恢复正常
+                    resetScrollSpeed(track);
+                } else {
+                    // 加速向右
+                    isFastScrolling = true;
+                    scrollDirection = 'right';
+                    track.classList.remove('fast-left');
+                    track.classList.add('fast-right');
+                    track.style.animationPlayState = 'running';
+                }
+            });
+        }
+
+        function resetScrollSpeed(track) {
+            isFastScrolling = false;
+            scrollDirection = 'normal';
+            track.classList.remove('fast-left', 'fast-right');
+            track.style.animationPlayState = 'running';
         }
 
         function openModal() { 
@@ -527,8 +980,13 @@
             });
         }
 
-        setInterval(updateCountdowns, 1000);
+        setInterval(() => {
+            updateCountdowns();
+            updateCarouselCountdowns();
+        }, 1000);
+
         updateCountdowns();
+        updateCarouselCountdowns();
 
         function loadMoreEvents() {
             const hiddenCards = document.querySelectorAll('.event-card.hidden');
@@ -536,38 +994,10 @@
             document.getElementById('loadMoreContainer').style.display = 'none';
         }
 
-        function scrollLeft() {
-            const track = document.getElementById('autoScrollTrack');
-            track.style.animationPlayState = 'paused';
-            track.style.transform = 'translateX(100px)';
-            setTimeout(() => {
-                track.style.transition = 'transform 0.5s ease';
-                track.style.transform = 'translateX(0)';
-                setTimeout(() => { track.style.animationPlayState = 'running'; track.style.transition = ''; }, 500);
-            }, 50);
-        }
-
-        function scrollRight() {
-            const track = document.getElementById('autoScrollTrack');
-            track.style.animationPlayState = 'paused';
-            track.style.transform = 'translateX(-100px)';
-            setTimeout(() => {
-                track.style.transition = 'transform 0.5s ease';
-                track.style.transform = 'translateX(0)';
-                setTimeout(() => { track.style.animationPlayState = 'running'; track.style.transition = ''; }, 500);
-            }, 50);
-        }
-
-        const autoScrollContainer = document.getElementById('autoScrollContainer');
-        const autoScrollTrack = document.getElementById('autoScrollTrack');
-        if (autoScrollContainer && autoScrollTrack) {
-            autoScrollContainer.addEventListener('mouseenter', () => { autoScrollTrack.classList.add('paused'); });
-            autoScrollContainer.addEventListener('mouseleave', () => { autoScrollTrack.classList.remove('paused'); });
-        }
-
-        // 初始化轮播
+        // 初始化
         document.addEventListener('DOMContentLoaded', function() {
             initCarousel();
+            initAutoScroll();
         });
     </script>
 </body>
