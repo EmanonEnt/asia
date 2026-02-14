@@ -290,7 +290,7 @@
                 <button class="scroll-arrow left" onclick="accelerateScroll('left')">❮</button>
                 <button class="scroll-arrow right" onclick="accelerateScroll('right')">❯</button>
                 <div class="auto-scroll-container" id="autoScrollContainer">
-                    <div class="auto-scroll-track auto-scrolling" id="autoScrollTrack">
+                    <div class="auto-scroll-track" id="autoScrollTrack">
                         <!-- 滚播项目将通过JS动态生成 -->
                     </div>
                 </div>
@@ -401,8 +401,15 @@
 
     <script>
 
-        // 滚播活动数据 - 12个活动，按日期排序
+        // 滚播活动数据 - 16个活动（4个过期 + 12个未举办）
         const carouselData = [
+            // 已过期活动（4个）
+            { title: "PUNK HEART WARM-UP", date: "2026.01.17", city: "未來俱樂部", image: "https://en.concerts-metal.com/images/flyers/202601/1768047587--PUNKHEART-_2026-WARM-UP.webp", link: "" },
+            { title: "ROCK STORM 2026", date: "2026.01.15", city: "TAIPEI", image: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&h=800&fit=crop", link: "" },
+            { title: "METAL STORM", date: "2026.02.10", city: "KAOHSIUNG", image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop", link: "" },
+            { title: "PUNK NIGHT", date: "2026.02.12", city: "TAICHUNG", image: "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=600&h=800&fit=crop", link: "" },
+
+            // 未举办活动（12个）
             { title: "PUNK HEART FESTIVAL 2026", date: "2026.09.25", city: "TBA", image: "./image/1-b-2.jpg", link: "http://punkheartfest.com" },
             { title: "PUNK HEART FESTIVAL 2026 WUHAN", date: "2026.09.27", city: "WUHAN", image: "./image/1-b-2.jpg", link: "http://punkheartfest.com" },
             { title: "NONAMEFEST 2026", date: "2026.10.15", city: "RIOT CITY", image: "./image/1-b-3.jpg", link: "http://nonamepunks.com" },
@@ -410,16 +417,18 @@
             { title: "ACIDEZ CHINA TOUR", date: "2026.12.05", city: "BEIJING", image: "./image/2-old3.jpg", link: "" },
             { title: "SKARFACE ASIA TOUR", date: "2027.01.15", city: "TOKYO", image: "./image/2-old2.jpg", link: "" },
             { title: "NON SERVIUM CHINA", date: "2027.02.20", city: "SHANGHAI", image: "./image/2-old1.jpg", link: "" },
-            { title: "PUNK HEART WARM-UP", date: "2026.01.17", city: "未來俱樂部", image: "https://en.concerts-metal.com/images/flyers/202601/1768047587--PUNKHEART-_2026-WARM-UP.webp", link: "" },
-            { title: "ROCK STORM 2026", date: "2026.01.15", city: "TAIPEI", image: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&h=800&fit=crop", link: "" },
-            { title: "METAL STORM", date: "2026.02.20", city: "KAOHSIUNG", image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop", link: "" },
-            { title: "PUNK NIGHT", date: "2026.03.10", city: "TAICHUNG", image: "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=600&h=800&fit=crop", link: "" },
-            { title: "INDIE MUSIC FEST", date: "2026.04.05", city: "HONG KONG", image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&h=800&fit=crop", link: "" }
+            { title: "INDIE MUSIC FEST", date: "2026.04.05", city: "HONG KONG", image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&h=800&fit=crop", link: "" },
+            { title: "HARDCORE REVOLUTION", date: "2026.05.20", city: "SINGAPORE", image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&h=800&fit=crop", link: "" },
+            { title: "METAL MAYHEM", date: "2026.06.15", city: "SEOUL", image: "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=600&h=800&fit=crop", link: "" },
+            { title: "ROCK THE WORLD", date: "2026.07.30", city: "OSAKA", image: "https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=600&h=800&fit=crop", link: "" },
+            { title: "PUNK REVIVAL", date: "2026.08.18", city: "MANILA", image: "https://images.unsplash.com/photo-1501612780327-45045538702b?w=600&h=800&fit=crop", link: "" }
         ];
 
         let isPaused = false;
         let countdownInterval;
-        let currentAnimation = 'autoScroll';
+        let scrollPosition = 0;
+        let animationId = null;
+        let accelerateInterval = null;
 
         // 解析日期
         function parseDate(dateStr) {
@@ -440,10 +449,7 @@
             const track = document.getElementById('autoScrollTrack');
             if (!track) return;
 
-            // 按日期排序（近到远）
             const sortedData = sortByDate(carouselData);
-
-            // 分离未过期和已过期
             const now = new Date();
             now.setHours(0, 0, 0, 0);
 
@@ -459,25 +465,15 @@
                 }
             });
 
-            // 已过期按日期从近到远排序（即倒序，因为passed里是按日期近到远，但过期的是过去时间）
             passed.sort((a, b) => parseDate(b.date) - parseDate(a.date));
-
-            // 合并：未过期（近到远）+ 已过期（近到远，即从最近过期到最早过期）
             const orderedData = [...upcoming, ...passed];
 
-            // 生成HTML
             let html = '';
-
-            // 如果少于3张，复制补足
             let displayData = [...orderedData];
             while (displayData.length < 3) {
                 displayData = [...displayData, ...orderedData];
             }
-
-            // 最多18张
-            displayData = displayData.slice(0, 18);
-
-            // 生成两倍用于无缝循环
+            displayData = displayData.slice(0, 16);
             const loopData = [...displayData, ...displayData];
 
             loopData.forEach((item, index) => {
@@ -485,7 +481,6 @@
                 const linkClass = hasLink ? '' : 'no-link';
                 const clickAttr = hasLink ? `onclick="window.open('${item.link}', '_blank')"` : '';
 
-                // 日期和城市显示 - 格式：日期 / 城市，任意留空则不显示
                 let metaText = '';
                 if (item.date && item.city) {
                     metaText = `${item.date} / ${item.city}`;
@@ -511,33 +506,43 @@
             });
 
             track.innerHTML = html;
-
-            // 启动倒计时
             updateCarouselCountdowns();
             countdownInterval = setInterval(updateCarouselCountdowns, 60000);
+            startAutoScroll();
 
-            // 鼠标悬停暂停
             const container = document.getElementById('autoScrollContainer');
-            container.addEventListener('mouseenter', () => {
-                track.classList.add('paused');
-                isPaused = true;
-            });
-            container.addEventListener('mouseleave', () => {
-                track.classList.remove('paused');
-                track.classList.remove('accelerate-left');
-                track.classList.remove('accelerate-right');
-                isPaused = false;
-            });
+            container.addEventListener('mouseenter', () => { isPaused = true; });
+            container.addEventListener('mouseleave', () => { isPaused = false; });
         }
 
-        // 更新滚播区域倒计时
+        // 自动滚动
+        function startAutoScroll() {
+            const track = document.getElementById('autoScrollTrack');
+            if (!track) return;
+
+            const itemWidth = track.children[0]?.offsetWidth || 300;
+            const totalWidth = itemWidth * (track.children.length / 2);
+            let speed = 0.5;
+
+            function animate() {
+                if (!isPaused && !accelerateInterval) {
+                    scrollPosition += speed;
+                    if (scrollPosition >= totalWidth) {
+                        scrollPosition = 0;
+                    }
+                    track.style.transform = `translateX(-${scrollPosition}px)`;
+                }
+                animationId = requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        // 更新倒计时
         function updateCarouselCountdowns() {
             const now = new Date();
             now.setHours(0, 0, 0, 0);
 
-            const countdownElements = document.querySelectorAll('.auto-scroll-countdown .countdown-text');
-
-            countdownElements.forEach(el => {
+            document.querySelectorAll('.auto-scroll-countdown .countdown-text').forEach(el => {
                 const dateStr = el.getAttribute('data-countdown-date');
                 if (!dateStr) return;
 
@@ -545,15 +550,12 @@
                 const diff = targetDate - now;
 
                 if (diff === 0) {
-                    // 当天
                     el.textContent = 'TODAY';
                     el.className = 'countdown-text today';
                 } else if (diff < 0) {
-                    // 已过期
                     el.textContent = 'COMPLETED';
                     el.className = 'countdown-text completed';
                 } else {
-                    // 未过期 - 显示天数
                     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
                     el.textContent = days + ' DAYS';
                     el.className = 'countdown-text';
@@ -562,31 +564,43 @@
         }
 
         // 加速滚动
-        // 左箭头：查看历史（向右滚动，即向过去时间）
-        // 右箭头：查看未来（向左滚动，即向未来时间）
         function accelerateScroll(direction) {
             const track = document.getElementById('autoScrollTrack');
             if (!track) return;
 
-            // 移除所有动画类
-            track.classList.remove('auto-scrolling');
-            track.classList.remove('accelerate-left');
-            track.classList.remove('accelerate-right');
-
-            // 强制重绘
-            void track.offsetWidth;
-
-            // 添加对应的加速动画
-            if (direction === 'left') {
-                // 左箭头：向右滚动（查看历史/过去）
-                track.classList.add('accelerate-left');
-            } else {
-                // 右箭头：向左滚动（查看未来）
-                track.classList.add('accelerate-right');
+            if (accelerateInterval) {
+                clearInterval(accelerateInterval);
             }
+
+            const itemWidth = track.children[0]?.offsetWidth || 300;
+            const totalWidth = itemWidth * (track.children.length / 2);
+            const accelerateSpeed = direction === 'left' ? -15 : 15;
+
+            let duration = 3000;
+            let startTime = Date.now();
+
+            accelerateInterval = setInterval(() => {
+                const elapsed = Date.now() - startTime;
+
+                if (elapsed >= duration) {
+                    clearInterval(accelerateInterval);
+                    accelerateInterval = null;
+                    return;
+                }
+
+                scrollPosition += accelerateSpeed;
+
+                if (scrollPosition >= totalWidth) {
+                    scrollPosition = 0;
+                } else if (scrollPosition < 0) {
+                    scrollPosition = totalWidth - 1;
+                }
+
+                track.style.transform = `translateX(-${scrollPosition}px)`;
+            }, 16);
         }
 
-        // 海报2轮播数据
+        // 海报2轮播
         const poster2Data = [
             { title: "Non Servium China Tour", linkText: "w/The Noname →", img: "./image/2-old1.jpg" },
             { title: "Skarface China Tour", linkText: "w/The Noname →", img: "./image/2-old2.jpg" },
@@ -601,33 +615,22 @@
         function initPoster2Carousel() {
             const slides = document.querySelectorAll('.poster-carousel-slide');
             const dots = document.querySelectorAll('.carousel-dot');
-
             if (slides.length === 0) return;
 
-            carouselSlideInterval = setInterval(() => {
-                goToSlide(currentSlide + 1);
-            }, 5000);
+            carouselSlideInterval = setInterval(() => { goToSlide(currentSlide + 1); }, 5000);
 
             dots.forEach((dot, index) => {
                 dot.addEventListener('click', () => {
                     clearInterval(carouselSlideInterval);
                     goToSlide(index);
-                    carouselSlideInterval = setInterval(() => {
-                        goToSlide(currentSlide + 1);
-                    }, 5000);
+                    carouselSlideInterval = setInterval(() => { goToSlide(currentSlide + 1); }, 5000);
                 });
             });
 
             const carousel = document.getElementById('posterCarousel');
             if (carousel) {
-                carousel.addEventListener('mouseenter', () => {
-                    clearInterval(carouselSlideInterval);
-                });
-                carousel.addEventListener('mouseleave', () => {
-                    carouselSlideInterval = setInterval(() => {
-                        goToSlide(currentSlide + 1);
-                    }, 5000);
-                });
+                carousel.addEventListener('mouseenter', () => { clearInterval(carouselSlideInterval); });
+                carousel.addEventListener('mouseleave', () => { carouselSlideInterval = setInterval(() => { goToSlide(currentSlide + 1); }, 5000); });
             }
         }
 
@@ -636,14 +639,11 @@
             const dots = document.querySelectorAll('.carousel-dot');
             const titleEl = document.getElementById('poster2Title');
             const linkEl = document.getElementById('poster2Link');
-
             if (slides.length === 0) return;
 
             slides[currentSlide].classList.remove('active');
             dots[currentSlide].classList.remove('active');
-
             currentSlide = (n + slides.length) % slides.length;
-
             slides[currentSlide].classList.add('active');
             dots[currentSlide].classList.add('active');
 
@@ -688,14 +688,11 @@
         function updateCountdowns() {
             const countdownElements = document.querySelectorAll('.event-status.countdown');
             const now = new Date();
-
             countdownElements.forEach(el => {
                 const targetDate = el.getAttribute('data-countdown-date');
                 if (!targetDate) return;
-
                 const target = new Date(targetDate);
                 const diff = target - now;
-
                 if (diff > 0) {
                     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
                     const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -719,8 +716,7 @@
         updateCountdowns();
 
         function loadMoreEvents() {
-            const hiddenCards = document.querySelectorAll('.event-card.hidden');
-            hiddenCards.forEach((card) => { card.classList.remove('hidden'); });
+            document.querySelectorAll('.event-card.hidden').forEach((card) => { card.classList.remove('hidden'); });
             document.getElementById('loadMoreContainer').style.display = 'none';
         }
 
