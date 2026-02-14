@@ -92,23 +92,70 @@
         @keyframes autoScrollLeft { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
         @keyframes autoScrollRight { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-        .auto-scroll-item { flex: 0 0 auto; width: 355px; aspect-ratio: 2/3; position: relative; overflow: hidden; cursor: pointer; transition: all 0.4s ease; }
+        .auto-scroll-item { 
+            flex: 0 0 auto; 
+            width: 355px;
+            aspect-ratio: 2/3;
+            position: relative; 
+            overflow: hidden; 
+            cursor: pointer; 
+            transition: all 0.4s ease; 
+        }
         .auto-scroll-item:hover { transform: scale(1.05); z-index: 10; }
         .auto-scroll-item.no-link { cursor: default; }
         .auto-scroll-item.no-link:hover { transform: scale(1.05); z-index: 10; }
         .auto-scroll-item.expired { cursor: default; }
         .auto-scroll-item.expired:hover { transform: none; z-index: 1; }
-        .auto-scroll-item img { width: 100%; height: 100%; object-fit: cover; object-position: center; filter: brightness(0.3); transition: all 0.4s ease; display: block; }
+        .auto-scroll-item img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            object-position: center;
+            filter: brightness(0.3); 
+            transition: all 0.4s ease; 
+            display: block; 
+        }
         .auto-scroll-item:hover img { filter: brightness(1); transform: scale(1.1); }
         .auto-scroll-item.no-link:hover img { filter: brightness(1); transform: scale(1.1); }
         .auto-scroll-item.expired img { filter: brightness(0.3); }
         .auto-scroll-item.expired:hover img { filter: brightness(0.3); transform: none; }
 
-        .auto-scroll-info { position: absolute; top: 20px; left: 0; right: 0; text-align: center; z-index: 2; transition: opacity 0.4s ease; padding: 0 20px; }
+        .auto-scroll-info { 
+            position: absolute; 
+            top: 15px; 
+            left: 0; 
+            right: 0; 
+            text-align: center; 
+            z-index: 2; 
+            transition: opacity 0.4s ease; 
+            padding: 0 15px;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
         .auto-scroll-item:hover .auto-scroll-info { opacity: 0; }
         .auto-scroll-item.expired:hover .auto-scroll-info { opacity: 1; }
-        .auto-scroll-title { font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; font-size: clamp(16px, 2vw, 22px); letter-spacing: 2px; text-transform: uppercase; color: #fff; margin-bottom: 8px; text-shadow: 0 0 20px rgba(139, 0, 0, 0.8), 0 2px 4px rgba(0,0,0,0.8); }
-        .auto-scroll-meta { font-size: 12px; color: var(--silver); letter-spacing: 1px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+        .auto-scroll-title { 
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; 
+            font-size: clamp(13px, 1.8vw, 18px); 
+            letter-spacing: 1px; 
+            text-transform: uppercase; 
+            color: #fff; 
+            margin-bottom: 6px; 
+            text-shadow: 0 0 20px rgba(139, 0, 0, 0.8), 0 2px 4px rgba(0,0,0,0.8);
+            line-height: 1.2;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .auto-scroll-meta { 
+            font-size: 11px; 
+            color: var(--silver); 
+            letter-spacing: 1px; 
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
         .auto-scroll-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); transition: all 0.4s ease; }
         .auto-scroll-item:hover .auto-scroll-overlay { background: rgba(0,0,0,0); }
         .auto-scroll-item.no-link:hover .auto-scroll-overlay { background: rgba(0,0,0,0); }
@@ -119,7 +166,15 @@
         .auto-scroll-countdown { position: absolute; bottom: 20px; left: 0; right: 0; text-align: center; z-index: 5; padding: 10px; background: rgba(0,0,0,0.7); transition: opacity 0.4s ease; }
         .auto-scroll-item:hover .auto-scroll-countdown { opacity: 0; }
         .auto-scroll-item.expired:hover .auto-scroll-countdown { opacity: 1; }
-        .countdown-text { font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; color: #fff; text-shadow: 0 0 10px rgba(139, 0, 0, 0.8); }
+        .countdown-text { 
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; 
+            font-size: 12px; 
+            letter-spacing: 1px; 
+            text-transform: uppercase; 
+            color: #fff; 
+            text-shadow: 0 0 10px rgba(139, 0, 0, 0.8);
+            white-space: nowrap;
+        }
         .countdown-text.completed { color: #888; }
         .countdown-text.today { color: #ff4444; animation: todayPulse 1s ease-in-out infinite; }
         @keyframes todayPulse { 0%, 100% { text-shadow: 0 0 10px rgba(255, 68, 68, 0.8); } 50% { text-shadow: 0 0 20px rgba(255, 68, 68, 1), 0 0 30px rgba(255, 68, 68, 0.5); } }
@@ -242,15 +297,13 @@
 
             /* 滚播区域 - 手机显示2个海报 */
             .auto-scroll-item { 
-                flex: 0 0 50%; 
+                flex: 0 0 50%;
                 aspect-ratio: 2/3;
-                min-width: auto;
             }
             .auto-scroll-item img {
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
-                object-fit: contain;
             }
             .auto-scroll-title {
                 font-size: 14px;
@@ -302,15 +355,13 @@
             /* 滚播区域 - 小手机显示1.5个海报（暗示可滑动） */
             .auto-scroll-section { padding: 0; }
             .auto-scroll-item { 
-                flex: 0 0 65%; 
+                flex: 0 0 65%;
                 aspect-ratio: 2/3;
-                min-width: auto;
             }
             .auto-scroll-item img {
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
-                object-fit: contain;
             }
             .auto-scroll-title {
                 font-size: 13px;
@@ -366,7 +417,7 @@
 
             /* 滚播区域 - 超小手机显示1个完整海报 */
             .auto-scroll-item { 
-                flex: 0 0 80%; 
+                flex: 0 0 80%;
                 aspect-ratio: 2/3;
             }
             .auto-scroll-title {
@@ -417,36 +468,45 @@
         .event-status, .event-btn { opacity: 1 !important; visibility: visible !important; }
         .event-card:hover .event-poster { filter: brightness(1) !important; }
     
-        /* 微信浏览器特定修复 */
+        /* 微信浏览器触摸支持 */
         .wechat .auto-scroll-item {
             -webkit-tap-highlight-color: transparent;
+            touch-action: pan-y pinch-zoom;
         }
-        .wechat .auto-scroll-item.touch-active {
+
+        .wechat .auto-scroll-item.touching {
             transform: scale(1.05);
-            z-index: 10;
+            z-index: 100;
         }
-        .wechat .auto-scroll-item.touch-active img {
-            filter: brightness(1);
+
+        .wechat .auto-scroll-item.touching img {
+            filter: brightness(1) !important;
             transform: scale(1.1);
         }
-        .wechat .auto-scroll-item.touch-active .auto-scroll-overlay {
-            background: rgba(0,0,0,0);
+
+        .wechat .auto-scroll-item.touching .auto-scroll-overlay {
+            background: rgba(0,0,0,0) !important;
         }
-        .wechat .auto-scroll-item.touch-active .auto-scroll-info,
-        .wechat .auto-scroll-item.touch-active .auto-scroll-countdown {
-            opacity: 0;
+
+        .wechat .auto-scroll-item.touching .auto-scroll-info,
+        .wechat .auto-scroll-item.touching .auto-scroll-countdown {
+            opacity: 0 !important;
         }
-        .wechat .auto-scroll-item.expired.touch-active {
+
+        /* 过期海报在微信中无效果 */
+        .wechat .auto-scroll-item.expired.touching {
             transform: none;
             z-index: 1;
         }
-        .wechat .auto-scroll-item.expired.touch-active img {
-            filter: brightness(0.3);
+
+        .wechat .auto-scroll-item.expired.touching img {
+            filter: brightness(0.3) !important;
             transform: none;
         }
-        .wechat .auto-scroll-item.expired.touch-active .auto-scroll-info,
-        .wechat .auto-scroll-item.expired.touch-active .auto-scroll-countdown {
-            opacity: 1;
+
+        .wechat .auto-scroll-item.expired.touching .auto-scroll-info,
+        .wechat .auto-scroll-item.expired.touching .auto-scroll-countdown {
+            opacity: 1 !important;
         }
 
     </style>
@@ -699,42 +759,52 @@
         // 初始化滚播区域
         
 
-        // 微信浏览器触摸支持
-        function initWechatTouch() {
+        // 微信浏览器支持
+        function initWechatSupport() {
             const isWechat = /MicroMessenger/i.test(navigator.userAgent);
             if (!isWechat) return;
 
             document.body.classList.add('wechat');
 
             const items = document.querySelectorAll('.auto-scroll-item');
+
             items.forEach(item => {
-                let touchStarted = false;
-
+                // 触摸开始
                 item.addEventListener('touchstart', function(e) {
-                    touchStarted = true;
-                    this.classList.add('touch-active');
+                    this.classList.add('touching');
                 }, {passive: true});
 
+                // 触摸结束
                 item.addEventListener('touchend', function(e) {
-                    touchStarted = false;
-                    // 延迟移除class，让用户看到效果
+                    const self = this;
                     setTimeout(() => {
-                        this.classList.remove('touch-active');
-                    }, 300);
+                        self.classList.remove('touching');
+                    }, 200);
                 });
 
+                // 触摸取消
                 item.addEventListener('touchcancel', function(e) {
-                    touchStarted = false;
-                    this.classList.remove('touch-active');
+                    this.classList.remove('touching');
                 });
 
-                // 防止触摸时页面滚动（可选）
-                item.addEventListener('touchmove', function(e) {
-                    if (touchStarted) {
-                        // 可以在这里添加滑动检测
+                // 点击支持（备用）
+                item.addEventListener('click', function(e) {
+                    if (this.classList.contains('expired')) return;
+
+                    const link = this.getAttribute('onclick');
+                    if (link && link.includes('window.open')) {
+                        // 让原有的onclick处理
+                    } else {
+                        // 没有链接的显示提示
+                        this.classList.add('touching');
+                        setTimeout(() => {
+                            this.classList.remove('touching');
+                        }, 300);
                     }
-                }, {passive: true});
+                });
             });
+
+            console.log('WeChat support initialized');
         }
 
         function initCarousel() {
@@ -916,40 +986,6 @@
         let currentSlide = 0;
         let carouselSlideInterval;
 
-        
-
-        // 微信浏览器poster2轮播支持
-        function initPoster2Wechat() {
-            const isWechat = /MicroMessenger/i.test(navigator.userAgent);
-            if (!isWechat) return;
-
-            const carousel = document.getElementById('posterCarousel');
-            if (!carousel) return;
-
-            let touchStartX = 0;
-            let touchEndX = 0;
-
-            carousel.addEventListener('touchstart', function(e) {
-                touchStartX = e.touches[0].clientX;
-                clearInterval(carouselSlideInterval);
-            }, {passive: true});
-
-            carousel.addEventListener('touchend', function(e) {
-                touchEndX = e.changedTouches[0].clientX;
-                const diff = touchStartX - touchEndX;
-
-                if (Math.abs(diff) > 50) {
-                    if (diff > 0) {
-                        goToSlide(currentSlide + 1);
-                    } else {
-                        goToSlide(currentSlide - 1);
-                    }
-                }
-
-                carouselSlideInterval = setInterval(() => { goToSlide(currentSlide + 1); }, 5000);
-            });
-        }
-
         function initPoster2Carousel() {
             const slides = document.querySelectorAll('.poster-carousel-slide');
             const dots = document.querySelectorAll('.carousel-dot');
@@ -1061,8 +1097,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             initCarousel();
             initPoster2Carousel();
-            initWechatTouch();
-            initPoster2Wechat();
+            initWechatSupport();
         });
     </script>
 </body>
