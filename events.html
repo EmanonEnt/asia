@@ -11,7 +11,7 @@
         html { scroll-behavior: smooth; }
         body { min-height: 100%; font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; background-color: var(--black); color: #fff; overflow-x: hidden; }
         nav { position: fixed; top: 0; width: 100%; height: 80px; padding: 0 50px; display: flex; justify-content: space-between; align-items: center; z-index: 9999; background: rgba(0, 0, 0, 0.5); }
-        .logo-img { height: 45px; width: auto; max-width: 180px; object-fit: cover; object-position: center; cursor: pointer; animation: logoBreathe 8s ease-in-out infinite, logoFlash 8s ease-in-out infinite; }
+        .logo-img { height: 45px; width: auto; max-width: 180px; object-fit: contain; cursor: pointer; animation: logoBreathe 8s ease-in-out infinite, logoFlash 8s ease-in-out infinite; }
         @keyframes logoBreathe { 0%, 100% { transform: scale(1); filter: drop-shadow(0 0 5px rgba(139, 0, 0, 0.4)); } 50% { transform: scale(1.03); filter: drop-shadow(0 0 15px rgba(139, 0, 0, 0.8)); } }
         @keyframes logoFlash { 0%, 90%, 100% { filter: drop-shadow(0 0 5px rgba(139, 0, 0, 0.4)); } 95% { filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.8)) drop-shadow(0 0 15px rgba(139, 0, 0, 1)); } }
         .nav-links { display: flex; gap: 40px; align-items: center; }
@@ -92,29 +92,55 @@
         @keyframes autoScrollLeft { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
         @keyframes autoScrollRight { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-        .auto-scroll-item { flex: 0 0 auto; height: 533px; position: relative; overflow: hidden; cursor: pointer; transition: all 0.4s ease; }
+        .auto-scroll-item { 
+            flex: 0 0 auto; 
+            width: 355px;
+            height: 500px;
+            position: relative; 
+            overflow: hidden; 
+            cursor: pointer; 
+            transition: all 0.4s ease;
+            background: #000;
+        }
         .auto-scroll-item:hover { transform: scale(1.05); z-index: 10; }
         .auto-scroll-item.no-link { cursor: default; }
         .auto-scroll-item.no-link:hover { transform: scale(1.05); z-index: 10; }
         .auto-scroll-item.expired { cursor: default; }
         .auto-scroll-item.expired:hover { transform: none; z-index: 1; }
-        .auto-scroll-item img { height: 100%; width: auto; object-fit: cover; object-position: center; filter: brightness(0.3); transition: all 0.4s ease; display: block; }
+        .auto-scroll-item img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            object-position: center;
+            filter: brightness(0.3); 
+            transition: all 0.4s ease; 
+            display: block;
+        }
         .auto-scroll-item:hover img { filter: brightness(1); transform: scale(1.1); }
         .auto-scroll-item.no-link:hover img { filter: brightness(1); transform: scale(1.1); }
         .auto-scroll-item.expired img { filter: brightness(0.3); }
         .auto-scroll-item.expired:hover img { filter: brightness(0.3); transform: none; }
 
-        .auto-scroll-info { position: absolute; top: 20px; left: 0; right: 0; text-align: center; z-index: 2; transition: opacity 0.4s ease; padding: 0 20px; }
+        .auto-scroll-info { 
+            position: absolute; 
+            top: 15px; 
+            left: 10px; 
+            right: 10px;
+            text-align: center; 
+            z-index: 2; 
+            transition: opacity 0.4s ease;
+        }
         .auto-scroll-item:hover .auto-scroll-info { opacity: 0; }
         .auto-scroll-item.expired:hover .auto-scroll-info { opacity: 1; }
         .auto-scroll-title { 
             font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; 
-            font-size: clamp(14px, 2vw, 20px); 
+            font-size: clamp(13px, 1.8vw, 18px); 
             letter-spacing: 1px; 
             text-transform: uppercase; 
             color: #fff; 
             margin-bottom: 6px; 
             text-shadow: 0 0 20px rgba(139, 0, 0, 0.8), 0 2px 4px rgba(0,0,0,0.8);
+            line-height: 1.2;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -136,12 +162,23 @@
         .auto-scroll-item.expired:hover .auto-scroll-overlay { background: rgba(0,0,0,0.6); }
 
         /* 倒计时样式 - 底部 */
-        .auto-scroll-countdown { position: absolute; bottom: 20px; left: 0; right: 0; text-align: center; z-index: 5; padding: 10px; background: rgba(0,0,0,0.7); transition: opacity 0.4s ease; }
+        .auto-scroll-countdown { 
+            position: absolute; 
+            bottom: 15px; 
+            left: 10px; 
+            right: 10px;
+            text-align: center; 
+            z-index: 5; 
+            padding: 8px; 
+            background: rgba(0,0,0,0.7); 
+            transition: opacity 0.4s ease;
+            border-radius: 4px;
+        }
         .auto-scroll-item:hover .auto-scroll-countdown { opacity: 0; }
         .auto-scroll-item.expired:hover .auto-scroll-countdown { opacity: 1; }
         .countdown-text { 
             font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; 
-            font-size: 13px; 
+            font-size: 12px; 
             letter-spacing: 1px; 
             text-transform: uppercase; 
             color: #fff; 
@@ -246,8 +283,9 @@
                 height: 400px;
             }
             .auto-scroll-item img {
+                width: 100%;
                 height: 100%;
-                width: auto;
+                object-fit: cover;
             }
 
             .footer-container { gap: 30px; }
@@ -269,14 +307,14 @@
 
             /* 滚播区域 - 手机显示2个海报 */
             .auto-scroll-item { 
-                flex: 0 0 50%; 
+                flex: 0 0 auto;
+                width: 248px;
                 height: 350px;
-                min-width: auto;
             }
             .auto-scroll-item img {
+                width: 100%;
                 height: 100%;
-                width: auto;
-                object-fit: cover; object-position: center;
+                object-fit: cover;
             }
             .auto-scroll-title {
                 font-size: 14px;
@@ -328,14 +366,14 @@
             /* 滚播区域 - 小手机显示1.5个海报（暗示可滑动） */
             .auto-scroll-section { padding: 0; }
             .auto-scroll-item { 
-                flex: 0 0 65%; 
+                flex: 0 0 auto;
+                width: 212px;
                 height: 300px;
-                min-width: auto;
             }
             .auto-scroll-item img {
+                width: 100%;
                 height: 100%;
-                width: auto;
-                object-fit: cover; object-position: center;
+                object-fit: cover;
             }
             .auto-scroll-title {
                 font-size: 13px;
@@ -391,7 +429,8 @@
 
             /* 滚播区域 - 超小手机显示1个完整海报 */
             .auto-scroll-item { 
-                flex: 0 0 80%; 
+                flex: 0 0 auto;
+                width: 198px;
                 height: 280px;
             }
             .auto-scroll-title {
