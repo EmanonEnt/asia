@@ -95,22 +95,30 @@
         .auto-scroll-item { flex: 0 0 20%; min-width: 250px; position: relative; overflow: hidden; cursor: pointer; transition: all 0.4s ease; }
         .auto-scroll-item:hover { transform: scale(1.05); z-index: 10; }
         .auto-scroll-item.no-link { cursor: default; }
-        .auto-scroll-item.no-link:hover { transform: none; }
+        .auto-scroll-item.no-link:hover { transform: scale(1.05); z-index: 10; }
+        .auto-scroll-item.expired { cursor: default; }
+        .auto-scroll-item.expired:hover { transform: none; z-index: 1; }
         .auto-scroll-item img { width: 100%; aspect-ratio: 2/3; object-fit: cover; filter: brightness(0.3); transition: all 0.4s ease; }
         .auto-scroll-item:hover img { filter: brightness(1); transform: scale(1.1); }
-        .auto-scroll-item.no-link:hover img { filter: brightness(0.3); transform: none; }
+        .auto-scroll-item.no-link:hover img { filter: brightness(1); transform: scale(1.1); }
+        .auto-scroll-item.expired img { filter: brightness(0.3); }
+        .auto-scroll-item.expired:hover img { filter: brightness(0.3); transform: none; }
 
         .auto-scroll-info { position: absolute; top: 20px; left: 0; right: 0; text-align: center; z-index: 2; transition: opacity 0.4s ease; padding: 0 20px; }
         .auto-scroll-item:hover .auto-scroll-info { opacity: 0; }
+        .auto-scroll-item.expired:hover .auto-scroll-info { opacity: 1; }
         .auto-scroll-title { font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; font-size: clamp(16px, 2vw, 22px); letter-spacing: 2px; text-transform: uppercase; color: #fff; margin-bottom: 8px; text-shadow: 0 0 20px rgba(139, 0, 0, 0.8), 0 2px 4px rgba(0,0,0,0.8); }
         .auto-scroll-meta { font-size: 12px; color: var(--silver); letter-spacing: 1px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
         .auto-scroll-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); transition: all 0.4s ease; }
         .auto-scroll-item:hover .auto-scroll-overlay { background: rgba(0,0,0,0); }
-        .auto-scroll-item.no-link:hover .auto-scroll-overlay { background: rgba(0,0,0,0.6); }
+        .auto-scroll-item.no-link:hover .auto-scroll-overlay { background: rgba(0,0,0,0); }
+        .auto-scroll-item.expired .auto-scroll-overlay { background: rgba(0,0,0,0.6); }
+        .auto-scroll-item.expired:hover .auto-scroll-overlay { background: rgba(0,0,0,0.6); }
 
         /* 倒计时样式 - 底部 */
         .auto-scroll-countdown { position: absolute; bottom: 20px; left: 0; right: 0; text-align: center; z-index: 5; padding: 10px; background: rgba(0,0,0,0.7); transition: opacity 0.4s ease; }
         .auto-scroll-item:hover .auto-scroll-countdown { opacity: 0; }
+        .auto-scroll-item.expired:hover .auto-scroll-countdown { opacity: 1; }
         .countdown-text { font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; color: #fff; text-shadow: 0 0 10px rgba(139, 0, 0, 0.8); }
         .countdown-text.completed { color: #888; }
         .countdown-text.today { color: #ff4444; animation: todayPulse 1s ease-in-out infinite; }
@@ -477,9 +485,21 @@
             const loopData = [...displayData, ...displayData];
 
             loopData.forEach((item, index) => {
+                const itemDate = parseDate(item.date);
+                const isExpired = itemDate < now;
                 const hasLink = item.link && item.link.trim() !== '';
-                const linkClass = hasLink ? '' : 'no-link';
-                const clickAttr = hasLink ? `onclick="window.open('${item.link}', '_blank')"` : '';
+
+                // 过期活动：expired类，无链接
+                // 未过期无链接：no-link类，但有hover效果
+                // 未过期有链接：正常类
+                let itemClass = '';
+                if (isExpired) {
+                    itemClass = 'expired';
+                } else if (!hasLink) {
+                    itemClass = 'no-link';
+                }
+
+                const clickAttr = (!isExpired && hasLink) ? `onclick="window.open('${item.link}', '_blank')"` : '';
 
                 let metaText = '';
                 if (item.date && item.city) {
@@ -491,9 +511,9 @@
                 }
 
                 html += `
-                    <div class="auto-scroll-item ${linkClass}" ${clickAttr} data-date="${item.date}" data-index="${index % displayData.length}">
+                    <div class="auto-scroll-item ${itemClass}" ${clickAttr} data-date="${item.date}" data-index="${index % displayData.length}">
                         <div class="auto-scroll-overlay"></div>
-                        <img src="${item.image}" alt="${item.title}" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=${encodeURIComponent(item.title)}'">
+                        <img src="./image/1-b-3.jpg" alt="${item.title}" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=${encodeURIComponent(item.title)}'">
                         <div class="auto-scroll-info">
                             <h4 class="auto-scroll-title">${item.title}</h4>
                             <div class="auto-scroll-meta">${metaText}</div>
