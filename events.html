@@ -92,13 +92,13 @@
         @keyframes autoScrollLeft { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
         @keyframes autoScrollRight { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-        .auto-scroll-item { flex: 0 0 20%; min-width: 250px; position: relative; overflow: hidden; cursor: pointer; transition: all 0.4s ease; }
+        .auto-scroll-item { flex: 0 0 auto; height: 400px; position: relative; overflow: hidden; cursor: pointer; transition: all 0.4s ease; }
         .auto-scroll-item:hover { transform: scale(1.05); z-index: 10; }
         .auto-scroll-item.no-link { cursor: default; }
         .auto-scroll-item.no-link:hover { transform: scale(1.05); z-index: 10; }
         .auto-scroll-item.expired { cursor: default; }
         .auto-scroll-item.expired:hover { transform: none; z-index: 1; }
-        .auto-scroll-item img { width: 100%; aspect-ratio: 2/3; object-fit: cover; filter: brightness(0.3); transition: all 0.4s ease; }
+        .auto-scroll-item img { height: 100%; width: auto; object-fit: contain; filter: brightness(0.3); transition: all 0.4s ease; display: block; }
         .auto-scroll-item:hover img { filter: brightness(1); transform: scale(1.1); }
         .auto-scroll-item.no-link:hover img { filter: brightness(1); transform: scale(1.1); }
         .auto-scroll-item.expired img { filter: brightness(0.3); }
