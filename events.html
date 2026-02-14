@@ -84,29 +84,34 @@
         .auto-scroll-wrapper { position: relative; width: 100%; }
         .auto-scroll-container { position: relative; width: 100%; overflow: hidden; }
         .auto-scroll-track { display: flex; gap: 0; will-change: transform; }
-        .auto-scroll-track.auto-scrolling { animation: autoScroll 40s linear infinite; }
-        .auto-scroll-track.paused { animation-play-state: paused; }
-        .auto-scroll-track.accelerate-left { animation: autoScrollLeft 3s linear infinite; }
-        .auto-scroll-track.accelerate-right { animation: autoScrollRight 3s linear infinite; }
-        @keyframes autoScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-        @keyframes autoScrollLeft { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
-        @keyframes autoScrollRight { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
         .auto-scroll-item { flex: 0 0 20%; min-width: 250px; position: relative; overflow: hidden; cursor: pointer; transition: all 0.4s ease; }
         .auto-scroll-item:hover { transform: scale(1.05); z-index: 10; }
         .auto-scroll-item.no-link { cursor: default; }
         .auto-scroll-item.no-link:hover { transform: none; }
-        .auto-scroll-item img { width: 100%; aspect-ratio: 2/3; object-fit: cover; filter: brightness(0.3); transition: all 0.4s ease; }
-        .auto-scroll-item:hover img { filter: brightness(1); transform: scale(1.1); }
-        .auto-scroll-item.no-link:hover img { filter: brightness(0.3); transform: none; }
+
+        /* 过期活动 - 无放大效果 */
+        .auto-scroll-item.expired { cursor: default; }
+        .auto-scroll-item.expired:hover { transform: none; z-index: 1; }
+        .auto-scroll-item.expired img { filter: brightness(0.3); transition: none; }
+        .auto-scroll-item.expired:hover img { filter: brightness(0.3); transform: none; }
+        .auto-scroll-item.expired .auto-scroll-overlay { background: rgba(0,0,0,0.6); }
+        .auto-scroll-item.expired:hover .auto-scroll-overlay { background: rgba(0,0,0,0.6); }
+
+        /* 未过期活动 - 有放大效果 */
+        .auto-scroll-item:not(.expired):hover { transform: scale(1.05); z-index: 10; }
+        .auto-scroll-item:not(.expired) img { filter: brightness(0.3); transition: all 0.4s ease; }
+        .auto-scroll-item:not(.expired):hover img { filter: brightness(1); transform: scale(1.1); }
+        .auto-scroll-item:not(.expired) .auto-scroll-overlay { background: rgba(0,0,0,0.6); transition: all 0.4s ease; }
+        .auto-scroll-item:not(.expired):hover .auto-scroll-overlay { background: rgba(0,0,0,0); }
+
+        .auto-scroll-item img { width: 100%; aspect-ratio: 2/3; object-fit: cover; }
+        .auto-scroll-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
 
         .auto-scroll-info { position: absolute; top: 20px; left: 0; right: 0; text-align: center; z-index: 2; transition: opacity 0.4s ease; padding: 0 20px; }
         .auto-scroll-item:hover .auto-scroll-info { opacity: 0; }
         .auto-scroll-title { font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; font-size: clamp(16px, 2vw, 22px); letter-spacing: 2px; text-transform: uppercase; color: #fff; margin-bottom: 8px; text-shadow: 0 0 20px rgba(139, 0, 0, 0.8), 0 2px 4px rgba(0,0,0,0.8); }
         .auto-scroll-meta { font-size: 12px; color: var(--silver); letter-spacing: 1px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
-        .auto-scroll-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); transition: all 0.4s ease; }
-        .auto-scroll-item:hover .auto-scroll-overlay { background: rgba(0,0,0,0); }
-        .auto-scroll-item.no-link:hover .auto-scroll-overlay { background: rgba(0,0,0,0.6); }
 
         /* 倒计时样式 - 底部 */
         .auto-scroll-countdown { position: absolute; bottom: 20px; left: 0; right: 0; text-align: center; z-index: 5; padding: 10px; background: rgba(0,0,0,0.7); transition: opacity 0.4s ease; }
@@ -402,26 +407,27 @@
     <script>
 
         // 滚播活动数据 - 16个活动（4个过期 + 12个未举办）
+        // 所有海报使用 ./image/1-b-3.jpg
         const carouselData = [
             // 已过期活动（4个）
-            { title: "PUNK HEART WARM-UP", date: "2026.01.17", city: "未來俱樂部", image: "https://en.concerts-metal.com/images/flyers/202601/1768047587--PUNKHEART-_2026-WARM-UP.webp", link: "" },
-            { title: "ROCK STORM 2026", date: "2026.01.15", city: "TAIPEI", image: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&h=800&fit=crop", link: "" },
-            { title: "METAL STORM", date: "2026.02.10", city: "KAOHSIUNG", image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop", link: "" },
-            { title: "PUNK NIGHT", date: "2026.02.12", city: "TAICHUNG", image: "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=600&h=800&fit=crop", link: "" },
+            { title: "PUNK HEART WARM-UP", date: "2026.01.17", city: "未來俱樂部", image: "./image/1-b-3.jpg", link: "", expired: true },
+            { title: "ROCK STORM 2026", date: "2026.01.15", city: "TAIPEI", image: "./image/1-b-3.jpg", link: "", expired: true },
+            { title: "METAL STORM", date: "2026.02.10", city: "KAOHSIUNG", image: "./image/1-b-3.jpg", link: "", expired: true },
+            { title: "PUNK NIGHT", date: "2026.02.12", city: "TAICHUNG", image: "./image/1-b-3.jpg", link: "", expired: true },
 
             // 未举办活动（12个）
-            { title: "PUNK HEART FESTIVAL 2026", date: "2026.09.25", city: "TBA", image: "./image/1-b-2.jpg", link: "http://punkheartfest.com" },
-            { title: "PUNK HEART FESTIVAL 2026 WUHAN", date: "2026.09.27", city: "WUHAN", image: "./image/1-b-2.jpg", link: "http://punkheartfest.com" },
-            { title: "NONAMEFEST 2026", date: "2026.10.15", city: "RIOT CITY", image: "./image/1-b-3.jpg", link: "http://nonamepunks.com" },
-            { title: "S.E.A TOUR 2026", date: "2026.11.20", city: "BANGKOK", image: "./image/2-old3.jpg", link: "" },
-            { title: "ACIDEZ CHINA TOUR", date: "2026.12.05", city: "BEIJING", image: "./image/2-old3.jpg", link: "" },
-            { title: "SKARFACE ASIA TOUR", date: "2027.01.15", city: "TOKYO", image: "./image/2-old2.jpg", link: "" },
-            { title: "NON SERVIUM CHINA", date: "2027.02.20", city: "SHANGHAI", image: "./image/2-old1.jpg", link: "" },
-            { title: "INDIE MUSIC FEST", date: "2026.04.05", city: "HONG KONG", image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&h=800&fit=crop", link: "" },
-            { title: "HARDCORE REVOLUTION", date: "2026.05.20", city: "SINGAPORE", image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&h=800&fit=crop", link: "" },
-            { title: "METAL MAYHEM", date: "2026.06.15", city: "SEOUL", image: "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=600&h=800&fit=crop", link: "" },
-            { title: "ROCK THE WORLD", date: "2026.07.30", city: "OSAKA", image: "https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=600&h=800&fit=crop", link: "" },
-            { title: "PUNK REVIVAL", date: "2026.08.18", city: "MANILA", image: "https://images.unsplash.com/photo-1501612780327-45045538702b?w=600&h=800&fit=crop", link: "" }
+            { title: "PUNK HEART FESTIVAL 2026", date: "2026.09.25", city: "TBA", image: "./image/1-b-3.jpg", link: "http://punkheartfest.com", expired: false },
+            { title: "PUNK HEART FESTIVAL 2026 WUHAN", date: "2026.09.27", city: "WUHAN", image: "./image/1-b-3.jpg", link: "http://punkheartfest.com", expired: false },
+            { title: "NONAMEFEST 2026", date: "2026.10.15", city: "RIOT CITY", image: "./image/1-b-3.jpg", link: "http://nonamepunks.com", expired: false },
+            { title: "S.E.A TOUR 2026", date: "2026.11.20", city: "BANGKOK", image: "./image/1-b-3.jpg", link: "", expired: false },
+            { title: "ACIDEZ CHINA TOUR", date: "2026.12.05", city: "BEIJING", image: "./image/1-b-3.jpg", link: "", expired: false },
+            { title: "SKARFACE ASIA TOUR", date: "2027.01.15", city: "TOKYO", image: "./image/1-b-3.jpg", link: "", expired: false },
+            { title: "NON SERVIUM CHINA", date: "2027.02.20", city: "SHANGHAI", image: "./image/1-b-3.jpg", link: "", expired: false },
+            { title: "INDIE MUSIC FEST", date: "2026.04.05", city: "HONG KONG", image: "./image/1-b-3.jpg", link: "", expired: false },
+            { title: "HARDCORE REVOLUTION", date: "2026.05.20", city: "SINGAPORE", image: "./image/1-b-3.jpg", link: "", expired: false },
+            { title: "METAL MAYHEM", date: "2026.06.15", city: "SEOUL", image: "./image/1-b-3.jpg", link: "", expired: false },
+            { title: "ROCK THE WORLD", date: "2026.07.30", city: "OSAKA", image: "./image/1-b-3.jpg", link: "", expired: false },
+            { title: "PUNK REVIVAL", date: "2026.08.18", city: "MANILA", image: "./image/1-b-3.jpg", link: "", expired: false }
         ];
 
         let isPaused = false;
@@ -459,9 +465,9 @@
             sortedData.forEach(item => {
                 const itemDate = parseDate(item.date);
                 if (itemDate >= now) {
-                    upcoming.push(item);
+                    upcoming.push({...item, expired: false});
                 } else {
-                    passed.push(item);
+                    passed.push({...item, expired: true});
                 }
             });
 
@@ -479,7 +485,8 @@
             loopData.forEach((item, index) => {
                 const hasLink = item.link && item.link.trim() !== '';
                 const linkClass = hasLink ? '' : 'no-link';
-                const clickAttr = hasLink ? `onclick="window.open('${item.link}', '_blank')"` : '';
+                const expiredClass = item.expired ? 'expired' : '';
+                const clickAttr = (hasLink && !item.expired) ? `onclick="window.open('${item.link}', '_blank')"` : '';
 
                 let metaText = '';
                 if (item.date && item.city) {
@@ -491,9 +498,9 @@
                 }
 
                 html += `
-                    <div class="auto-scroll-item ${linkClass}" ${clickAttr} data-date="${item.date}" data-index="${index % displayData.length}">
+                    <div class="auto-scroll-item ${linkClass} ${expiredClass}" ${clickAttr} data-date="${item.date}" data-index="${index % displayData.length}">
                         <div class="auto-scroll-overlay"></div>
-                        <img src="${item.image}" alt="${item.title}" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=${encodeURIComponent(item.title)}'">
+                        <img src="${item.image}" alt="${item.title}">
                         <div class="auto-scroll-info">
                             <h4 class="auto-scroll-title">${item.title}</h4>
                             <div class="auto-scroll-meta">${metaText}</div>
