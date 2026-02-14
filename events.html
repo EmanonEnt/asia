@@ -416,6 +416,39 @@
         .event-card:hover .event-name, .event-card:hover .event-details, .event-card:hover .event-venue { opacity: 0; visibility: hidden; transition: all 0.3s ease; }
         .event-status, .event-btn { opacity: 1 !important; visibility: visible !important; }
         .event-card:hover .event-poster { filter: brightness(1) !important; }
+    
+        /* 微信浏览器特定修复 */
+        .wechat .auto-scroll-item {
+            -webkit-tap-highlight-color: transparent;
+        }
+        .wechat .auto-scroll-item.touch-active {
+            transform: scale(1.05);
+            z-index: 10;
+        }
+        .wechat .auto-scroll-item.touch-active img {
+            filter: brightness(1);
+            transform: scale(1.1);
+        }
+        .wechat .auto-scroll-item.touch-active .auto-scroll-overlay {
+            background: rgba(0,0,0,0);
+        }
+        .wechat .auto-scroll-item.touch-active .auto-scroll-info,
+        .wechat .auto-scroll-item.touch-active .auto-scroll-countdown {
+            opacity: 0;
+        }
+        .wechat .auto-scroll-item.expired.touch-active {
+            transform: none;
+            z-index: 1;
+        }
+        .wechat .auto-scroll-item.expired.touch-active img {
+            filter: brightness(0.3);
+            transform: none;
+        }
+        .wechat .auto-scroll-item.expired.touch-active .auto-scroll-info,
+        .wechat .auto-scroll-item.expired.touch-active .auto-scroll-countdown {
+            opacity: 1;
+        }
+
     </style>
 </head>
 <body>
@@ -664,6 +697,46 @@
         }
 
         // 初始化滚播区域
+        
+
+        // 微信浏览器触摸支持
+        function initWechatTouch() {
+            const isWechat = /MicroMessenger/i.test(navigator.userAgent);
+            if (!isWechat) return;
+
+            document.body.classList.add('wechat');
+
+            const items = document.querySelectorAll('.auto-scroll-item');
+            items.forEach(item => {
+                let touchStarted = false;
+
+                item.addEventListener('touchstart', function(e) {
+                    touchStarted = true;
+                    this.classList.add('touch-active');
+                }, {passive: true});
+
+                item.addEventListener('touchend', function(e) {
+                    touchStarted = false;
+                    // 延迟移除class，让用户看到效果
+                    setTimeout(() => {
+                        this.classList.remove('touch-active');
+                    }, 300);
+                });
+
+                item.addEventListener('touchcancel', function(e) {
+                    touchStarted = false;
+                    this.classList.remove('touch-active');
+                });
+
+                // 防止触摸时页面滚动（可选）
+                item.addEventListener('touchmove', function(e) {
+                    if (touchStarted) {
+                        // 可以在这里添加滑动检测
+                    }
+                }, {passive: true});
+            });
+        }
+
         function initCarousel() {
             const track = document.getElementById('autoScrollTrack');
             if (!track) return;
@@ -843,6 +916,40 @@
         let currentSlide = 0;
         let carouselSlideInterval;
 
+        
+
+        // 微信浏览器poster2轮播支持
+        function initPoster2Wechat() {
+            const isWechat = /MicroMessenger/i.test(navigator.userAgent);
+            if (!isWechat) return;
+
+            const carousel = document.getElementById('posterCarousel');
+            if (!carousel) return;
+
+            let touchStartX = 0;
+            let touchEndX = 0;
+
+            carousel.addEventListener('touchstart', function(e) {
+                touchStartX = e.touches[0].clientX;
+                clearInterval(carouselSlideInterval);
+            }, {passive: true});
+
+            carousel.addEventListener('touchend', function(e) {
+                touchEndX = e.changedTouches[0].clientX;
+                const diff = touchStartX - touchEndX;
+
+                if (Math.abs(diff) > 50) {
+                    if (diff > 0) {
+                        goToSlide(currentSlide + 1);
+                    } else {
+                        goToSlide(currentSlide - 1);
+                    }
+                }
+
+                carouselSlideInterval = setInterval(() => { goToSlide(currentSlide + 1); }, 5000);
+            });
+        }
+
         function initPoster2Carousel() {
             const slides = document.querySelectorAll('.poster-carousel-slide');
             const dots = document.querySelectorAll('.carousel-dot');
@@ -954,6 +1061,8 @@
         document.addEventListener('DOMContentLoaded', function() {
             initCarousel();
             initPoster2Carousel();
+            initWechatTouch();
+            initPoster2Wechat();
         });
     </script>
 </body>
