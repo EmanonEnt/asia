@@ -78,26 +78,49 @@
         .load-more-btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); transition: left 0.5s; }
         .load-more-btn:hover::before { left: 100%; }
         .load-more-btn:hover { background: var(--dark-red); border-color: var(--dark-red); box-shadow: 0 0 30px rgba(139, 0, 0, 0.8), 0 0 60px rgba(139, 0, 0, 0.4); transform: scale(1.05); letter-spacing: 4px; }
-        .auto-scroll-section { width: 100%; background: var(--black); position: relative; overflow: hidden; padding: 0; margin: 0; }
+
+        /* 滚播区域样式 - 新版 */
+        .auto-scroll-section { width: 100%; background: var(--black); position: relative; overflow: hidden; padding: 40px 0; }
         .auto-scroll-wrapper { position: relative; width: 100%; }
         .auto-scroll-container { position: relative; width: 100%; overflow: hidden; }
-        .auto-scroll-track { display: flex; gap: 0; animation: autoScroll 40s linear infinite; will-change: transform; }
+        .auto-scroll-track { display: flex; gap: 0; will-change: transform; }
+        .auto-scroll-track.auto-scrolling { animation: autoScroll 40s linear infinite; }
         .auto-scroll-track.paused { animation-play-state: paused; }
+        .auto-scroll-track.accelerate-left { animation: autoScrollLeft 5s linear infinite; }
+        .auto-scroll-track.accelerate-right { animation: autoScrollRight 5s linear infinite; }
         @keyframes autoScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        @keyframes autoScrollLeft { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
+        @keyframes autoScrollRight { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
         .auto-scroll-item { flex: 0 0 20%; min-width: 250px; position: relative; overflow: hidden; cursor: pointer; transition: all 0.4s ease; }
         .auto-scroll-item:hover { transform: scale(1.05); z-index: 10; }
-        .auto-scroll-item img { width: 100%; aspect-ratio: 3/4; object-fit: cover; filter: brightness(0.3); transition: all 0.4s ease; }
+        .auto-scroll-item.no-link { cursor: default; }
+        .auto-scroll-item.no-link:hover { transform: none; }
+        .auto-scroll-item img { width: 100%; aspect-ratio: 2/3; object-fit: cover; filter: brightness(0.3); transition: all 0.4s ease; }
         .auto-scroll-item:hover img { filter: brightness(1); transform: scale(1.1); }
+        .auto-scroll-item.no-link:hover img { filter: brightness(0.3); transform: none; }
+
         .auto-scroll-info { position: absolute; top: 20px; left: 0; right: 0; text-align: center; z-index: 2; transition: opacity 0.4s ease; padding: 0 20px; }
         .auto-scroll-item:hover .auto-scroll-info { opacity: 0; }
         .auto-scroll-title { font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; font-size: clamp(16px, 2vw, 22px); letter-spacing: 2px; text-transform: uppercase; color: #fff; margin-bottom: 8px; text-shadow: 0 0 20px rgba(139, 0, 0, 0.8), 0 2px 4px rgba(0,0,0,0.8); }
         .auto-scroll-meta { font-size: 12px; color: var(--silver); letter-spacing: 1px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
         .auto-scroll-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); transition: all 0.4s ease; }
         .auto-scroll-item:hover .auto-scroll-overlay { background: rgba(0,0,0,0); }
+        .auto-scroll-item.no-link:hover .auto-scroll-overlay { background: rgba(0,0,0,0.6); }
+
+        /* 倒计时样式 - 底部 */
+        .auto-scroll-countdown { position: absolute; bottom: 20px; left: 0; right: 0; text-align: center; z-index: 5; padding: 10px; background: rgba(0,0,0,0.7); transition: opacity 0.4s ease; }
+        .auto-scroll-item:hover .auto-scroll-countdown { opacity: 0; }
+        .countdown-text { font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; color: #fff; text-shadow: 0 0 10px rgba(139, 0, 0, 0.8); }
+        .countdown-text.completed { color: #888; }
+        .countdown-text.today { color: #ff4444; animation: todayPulse 1s ease-in-out infinite; }
+        @keyframes todayPulse { 0%, 100% { text-shadow: 0 0 10px rgba(255, 68, 68, 0.8); } 50% { text-shadow: 0 0 20px rgba(255, 68, 68, 1), 0 0 30px rgba(255, 68, 68, 0.5); } }
+
         .scroll-arrow { position: absolute; top: 50%; transform: translateY(-50%); width: 50px; height: 80px; background: rgba(0, 0, 0, 0.7); border: 2px solid var(--dark-red); color: #fff; font-size: 24px; cursor: pointer; z-index: 100; display: flex; align-items: center; justify-content: center; transition: all 0.3s; opacity: 0.7; }
         .scroll-arrow:hover { background: var(--dark-red); opacity: 1; box-shadow: 0 0 20px rgba(139, 0, 0, 0.8); }
         .scroll-arrow.left { left: 0; border-radius: 0 8px 8px 0; border-left: none; }
         .scroll-arrow.right { right: 0; border-radius: 8px 0 0 8px; border-right: none; }
+
         .posters-showcase { width: 100%; padding: 0; background: linear-gradient(180deg, #050505 0%, #0a0a0a 50%, #050505 100%); position: relative; }
         .posters-container { width: 100%; max-width: none; margin: 0 auto; display: flex; justify-content: stretch; align-items: stretch; gap: 0; padding: 0; }
         .poster-item { flex: 1; min-width: 0; max-width: none; position: relative; overflow: hidden; cursor: default; background: #000; transition: all 0.4s ease; }
@@ -114,7 +137,7 @@
         .poster-item-alt img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; transition: filter 0.4s; }
         .poster-item-alt:hover img { filter: brightness(0.7); }
 
-        /* 海报2轮播样式 - 修复版 */
+        /* 海报2轮播样式 */
         .poster-carousel-wrapper { position: relative; width: 100%; height: 100%; overflow: hidden; }
         .poster-carousel { position: relative; width: 100%; height: 100%; }
         .poster-carousel-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 0.8s ease-in-out; z-index: 1; }
@@ -168,11 +191,11 @@
         .form-group textarea { min-height: 80px; resize: vertical; }
         .modal-content .neon-btn { width: 100%; margin-top: 10px; padding: 14px; font-size: 13px; background: transparent; color: #fff; border: 1px solid var(--darker-red); cursor: pointer; transition: all 0.3s; font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; letter-spacing: 2px; text-transform: uppercase; }
         .modal-content .neon-btn:hover { background: var(--dark-red); box-shadow: 0 0 20px rgba(139, 0, 0, 0.5); }
-        @media (min-width: 769px) and (max-width: 1024px) { .events-grid { grid-template-columns: repeat(2, 1fr); padding: 0 30px; } .event-card { max-width: none; } }
+        @media (min-width: 769px) and (max-width: 1024px) { .events-grid { grid-template-columns: repeat(2, 1fr); padding: 0 30px; } .event-card { max-width: none; } .auto-scroll-item { flex: 0 0 25%; } }
         @media (min-width: 1025px) { .events-grid { grid-template-columns: repeat(3, 1fr); padding: 0 40px; } .event-card { max-width: none; } }
         @media (max-width: 1024px) { nav { padding: 0 30px; height: 70px; } .logo-img { height: 40px; max-width: 150px; } .nav-links { gap: 25px; } .hero-content { margin-top: 100px; } .hero-title { font-size: clamp(70px, 13vw, 120px); } .hero-subtitle { font-size: clamp(20px, 3vw, 32px); margin-top: 60px; } .event-content { padding: 70px 15px 35px; } .event-name { font-size: clamp(18px, 3vw, 24px); } .auto-scroll-item { flex: 0 0 25%; } .footer-container { gap: 30px; } .scroll-arrow { width: 40px; height: 60px; font-size: 20px; } }
         @media (max-width: 768px) { nav { padding: 0 20px; height: 65px; } .logo-img { height: 35px; max-width: 130px; } .nav-links a { font-size: 11px; letter-spacing: 2px; } .nav-links .neon-btn { padding: 8px 16px; font-size: 10px; } .hero-content { margin-top: 80px; } .hero-title { font-size: clamp(55px, 14vw, 80px); letter-spacing: 5px; margin-bottom: 35px; } .hero-subtitle { font-size: clamp(16px, 3.5vw, 22px); letter-spacing: 2.5px; margin-top: 50px; } .section-title { font-size: clamp(28px, 5vw, 40px); } .event-status { top: 15px; right: 15px; padding: 6px 12px; font-size: 11px; } .event-content { padding: 60px 20px 30px; } .auto-scroll-item { flex: 0 0 33.333%; min-width: 200px; } .footer-gap { height: 100px; } .footer-main { padding: 40px 30px 30px; } .footer-container { flex-direction: column; gap: 30px; text-align: center; } .footer-contact-left, .footer-contact-right { text-align: center; flex: 1; width: 100%; } .social-links { margin-bottom: 20px; } .producer-section { text-align: center; } .footer-bottom { flex-direction: column; gap: 15px; padding: 20px 30px; text-align: center; } .footer-legal { flex-wrap: wrap; justify-content: center; gap: 20px; } .scroll-arrow { width: 35px; height: 50px; font-size: 18px; } .poster-carousel { display: block !important; } .mobile-poster2-text { display: none !important; } }
-        @media (max-width: 480px) { nav { padding: 0 15px; height: 60px; background: rgba(0, 0, 0, 0.5); } .logo-img { height: 32px; max-width: 120px; } .nav-links { gap: 12px; } .nav-links a { font-size: 10px; letter-spacing: 1px; } .nav-links .neon-btn { padding: 6px 14px; font-size: 9px; } .hero-content { margin-top: 60px; } .hero-title { font-size: clamp(45px, 13vw, 65px); letter-spacing: 4px; margin-bottom: 30px; } .hero-subtitle { font-size: clamp(13px, 3.5vw, 16px); letter-spacing: 2px; margin-top: 40px; line-height: 1.6; } .hero-subtitle .line1 { margin-bottom: 5px; } .smoke-container { opacity: 0.35; } .managed-events { padding: 60px 0; } .section-header { margin-bottom: 40px; } .section-subtitle { font-size: 12px; } .event-card { aspect-ratio: 2/3; } .event-status { font-size: 10px; padding: 5px 10px; top: 10px; right: 10px; } .event-content { padding: 50px 15px 25px; } .event-name { font-size: 18px; margin-bottom: 10px; } .event-details { font-size: 12px; } .event-venue { font-size: 11px; } .event-btn { padding: 10px 25px; font-size: 11px; margin-top: 20px; } .load-more-btn { padding: 12px 30px; font-size: 12px; } .auto-scroll-section { padding: 0; } .auto-scroll-item { flex: 0 0 50%; min-width: 150px; } .auto-scroll-title { font-size: 14px; } .posters-showcase { padding: 0; } .posters-container { padding: 0 20px; gap: 15px; justify-content: center; } .poster-item-alt { flex: 0 0 calc(33.333% - 10px); max-width: calc(33.333% - 10px); min-width: auto; border-radius: 4px; border: none; } .poster-item-alt:hover { transform: translateY(-12px); box-shadow: 0 25px 60px rgba(139, 0, 0, 0.4); } .poster-item-alt img { transition: all 0.4s; } .poster-item-alt:hover img { filter: brightness(0.65); transform: scale(1.08); } .poster-item-alt .poster-overlay { padding: 12px 6px 10px; } .poster-title { font-size: 10px; letter-spacing: 1px; margin-bottom: 4px; } .poster-link { font-size: 9px; letter-spacing: 0.5px; } .poster-overlay { padding: 12px 6px 10px; } .footer-gap { height: 80px; } .footer-main { padding: 35px 25px 25px; } .footer-logo { font-size: 28px; letter-spacing: 3px; margin-bottom: 15px; } .social-links { gap: 12px; margin-bottom: 20px; } .social-icon { width: 36px; height: 36px; } .social-icon svg { width: 14px; height: 14px; } .contact-item { font-size: 11px; margin-bottom: 8px; } .producer-label { font-size: 9px; letter-spacing: 2px; } .producer-logo { height: 30px; } .footer-bottom { padding: 15px 20px; gap: 12px; } .footer-legal { gap: 15px; } .footer-legal a { font-size: 10px; } .copyright { font-size: 10px; } .scroll-arrow { width: 30px; height: 45px; font-size: 16px; } }
+        @media (max-width: 480px) { nav { padding: 0 15px; height: 60px; background: rgba(0, 0, 0, 0.5); } .logo-img { height: 32px; max-width: 120px; } .nav-links { gap: 12px; } .nav-links a { font-size: 10px; letter-spacing: 1px; } .nav-links .neon-btn { padding: 6px 14px; font-size: 9px; } .hero-content { margin-top: 60px; } .hero-title { font-size: clamp(45px, 13vw, 65px); letter-spacing: 4px; margin-bottom: 30px; } .hero-subtitle { font-size: clamp(13px, 3.5vw, 16px); letter-spacing: 2px; margin-top: 40px; line-height: 1.6; } .hero-subtitle .line1 { margin-bottom: 5px; } .smoke-container { opacity: 0.35; } .managed-events { padding: 60px 0; } .section-header { margin-bottom: 40px; } .section-subtitle { font-size: 12px; } .event-card { aspect-ratio: 2/3; } .event-status { font-size: 10px; padding: 5px 10px; top: 10px; right: 10px; } .event-content { padding: 50px 15px 25px; } .event-name { font-size: 18px; margin-bottom: 10px; } .event-details { font-size: 12px; } .event-venue { font-size: 11px; } .event-btn { padding: 10px 25px; font-size: 11px; margin-top: 20px; } .load-more-btn { padding: 12px 30px; font-size: 12px; } .auto-scroll-section { padding: 20px 0; } .auto-scroll-item { flex: 0 0 50%; min-width: 150px; } .auto-scroll-title { font-size: 14px; } .auto-scroll-countdown { bottom: 10px; padding: 8px; } .countdown-text { font-size: 12px; } .posters-showcase { padding: 0; } .posters-container { padding: 0 20px; gap: 15px; justify-content: center; } .poster-item-alt { flex: 0 0 calc(33.333% - 10px); max-width: calc(33.333% - 10px); min-width: auto; border-radius: 4px; border: none; } .poster-item-alt:hover { transform: translateY(-12px); box-shadow: 0 25px 60px rgba(139, 0, 0, 0.4); } .poster-item-alt img { transition: all 0.4s; } .poster-item-alt:hover img { filter: brightness(0.65); transform: scale(1.08); } .poster-item-alt .poster-overlay { padding: 12px 6px 10px; } .poster-title { font-size: 10px; letter-spacing: 1px; margin-bottom: 4px; } .poster-link { font-size: 9px; letter-spacing: 0.5px; } .poster-overlay { padding: 12px 6px 10px; } .footer-gap { height: 80px; } .footer-main { padding: 35px 25px 25px; } .footer-logo { font-size: 28px; letter-spacing: 3px; margin-bottom: 15px; } .social-links { gap: 12px; margin-bottom: 20px; } .social-icon { width: 36px; height: 36px; } .social-icon svg { width: 14px; height: 14px; } .contact-item { font-size: 11px; margin-bottom: 8px; } .producer-label { font-size: 9px; letter-spacing: 2px; } .producer-logo { height: 30px; } .footer-bottom { padding: 15px 20px; gap: 12px; } .footer-legal { gap: 15px; } .footer-legal a { font-size: 10px; } .copyright { font-size: 10px; } .scroll-arrow { width: 30px; height: 45px; font-size: 16px; } }
         @media (max-width: 375px) { .hero-title { font-size: 38px; letter-spacing: 3px; } .hero-subtitle { font-size: 11px; } .events-grid { padding: 0 15px; } .event-name { font-size: 16px; } .posters-container { padding: 0 15px; gap: 12px; } .poster-item-alt { flex: 0 0 calc(33.333% - 8px); max-width: calc(33.333% - 8px); } .poster-title { font-size: 9px; } .poster-link { font-size: 8px; } .footer-logo { font-size: 24px; letter-spacing: 2px; } .social-icon { width: 34px; height: 34px; } .contact-item { font-size: 10px; } }
         .event-card:hover .event-name, .event-card:hover .event-details, .event-card:hover .event-venue { opacity: 0; visibility: hidden; transition: all 0.3s ease; }
         .event-status, .event-btn { opacity: 1 !important; visibility: visible !important; }
@@ -213,10 +236,10 @@
             <div class="events-grid" id="eventsGrid">
                 <div class="event-card" data-event-id="1">
                     <img src="./image/1-b-2.jpg" alt="PUNK HEART FESTIVAL 2026" class="event-poster">
-                    <div class="event-status countdown" data-countdown-date="09-25" id="status-1">CALCULATING...</div>
+                    <div class="event-status countdown" data-countdown-date="2026-09-25" id="status-1">CALCULATING...</div>
                     <div class="event-content">
                         <h3 class="event-name">PUNK HEART FESTIVAL 2026<br>TBA</h3>
-                        <div class="event-details">09.25 | TBA</div>
+                        <div class="event-details">2026.09.25 | TBA</div>
                         <div class="event-venue"></div>
                         <a href="http://punkheartfest.com" class="event-btn" target="_blank">朋克心2026</a>
                     </div>
@@ -224,10 +247,10 @@
 
                 <div class="event-card" data-event-id="2">
                     <img src="./image/1-b-2.jpg" alt="PUNK HEART FESTIVAL 2026 WUHAN" class="event-poster">
-                    <div class="event-status countdown" data-countdown-date="09-27" id="status-2">CALCULATING...</div>
+                    <div class="event-status countdown" data-countdown-date="2026-09-27" id="status-2">CALCULATING...</div>
                     <div class="event-content">
                         <h3 class="event-name">PUNK HEART FESTIVAL 2026<br>WUHAN</h3>
-                        <div class="event-details">09.27 | TBA</div>
+                        <div class="event-details">2026.09.27 | TBA</div>
                         <div class="event-venue"></div>
                         <a href="http://punkheartfest.com" class="event-btn" target="_blank">朋克心2026</a>
                     </div>
@@ -238,7 +261,7 @@
                     <div class="event-status ontour">ON TOUR</div>
                     <div class="event-content">
                         <h3 class="event-name">NONAMEFEST 2026<br>RIOT CITY</h3>
-                        <div class="event-details">10.?? | TBA</div>
+                        <div class="event-details">2026.10.?? | TBA</div>
                         <div class="event-venue"></div>
                         <a href="http://nonamepunks.com" class="event-btn" target="_blank">無名盛宴2026</a>
                     </div>
@@ -249,7 +272,7 @@
                     <div class="event-status soldout">SOLD OUT</div>
                     <div class="event-content">
                         <h3 class="event-name">PUNK HEART FESTIVAL 2026<br>WARM-UP Show</h3>
-                        <div class="event-details">01.17 | 未來俱樂部</div>
+                        <div class="event-details">2026.01.17 | 未來俱樂部</div>
                         <div class="event-venue"></div>
                         <span class="event-btn disabled">朋克心2026預熱派對</span>
                     </div>
@@ -261,24 +284,14 @@
             </div>
         </section>
 
+        <!-- 滚播海报区域 - 新版 -->
         <section class="auto-scroll-section">
             <div class="auto-scroll-wrapper">
-                <button class="scroll-arrow left" onclick="scrollLeft()">❮</button>
-                <button class="scroll-arrow right" onclick="scrollRight()">❯</button>
+                <button class="scroll-arrow left" onclick="accelerateScroll('left')">❮</button>
+                <button class="scroll-arrow right" onclick="accelerateScroll('right')">❯</button>
                 <div class="auto-scroll-container" id="autoScrollContainer">
-                    <div class="auto-scroll-track" id="autoScrollTrack">
-                        <div class="auto-scroll-item"><div class="auto-scroll-overlay"></div><img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&h=800&fit=crop" alt="Rock Storm 2026"><div class="auto-scroll-info"><h4 class="auto-scroll-title">ROCK STORM 2026</h4><div class="auto-scroll-meta">JAN 15, 2026 / TAIPEI</div></div></div>
-                        <div class="auto-scroll-item"><div class="auto-scroll-overlay"></div><img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop" alt="Metal Storm"><div class="auto-scroll-info"><h4 class="auto-scroll-title">METAL STORM</h4><div class="auto-scroll-meta">FEB 20, 2026 / KAOHSIUNG</div></div></div>
-                        <div class="auto-scroll-item"><div class="auto-scroll-overlay"></div><img src="https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=600&h=800&fit=crop" alt="Punk Night"><div class="auto-scroll-info"><h4 class="auto-scroll-title">PUNK NIGHT</h4><div class="auto-scroll-meta">MAR 10, 2026 / TAICHUNG</div></div></div>
-                        <div class="auto-scroll-item"><div class="auto-scroll-overlay"></div><img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&h=800&fit=crop" alt="Indie Music Fest"><div class="auto-scroll-info"><h4 class="auto-scroll-title">INDIE MUSIC FEST</h4><div class="auto-scroll-meta">APR 05, 2026 / HONG KONG</div></div></div>
-                        <div class="auto-scroll-item"><div class="auto-scroll-overlay"></div><img src="https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=600&h=800&fit=crop" alt="Hard Rock Party"><div class="auto-scroll-info"><h4 class="auto-scroll-title">HARD ROCK PARTY</h4><div class="auto-scroll-meta">MAY 18, 2026 / SINGAPORE</div></div></div>
-                        <div class="auto-scroll-item"><div class="auto-scroll-overlay"></div><img src="https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=600&h=800&fit=crop" alt="Summer Music Fest"><div class="auto-scroll-info"><h4 class="auto-scroll-title">SUMMER MUSIC FEST</h4><div class="auto-scroll-meta">JUN 22, 2026 / TOKYO</div></div></div>
-                        <div class="auto-scroll-item"><div class="auto-scroll-overlay"></div><img src="https://images.unsplash.com/photo-1506157786151-b8491531f063?w=600&h=800&fit=crop" alt="Rock Marathon"><div class="auto-scroll-info"><h4 class="auto-scroll-title">ROCK MARATHON</h4><div class="auto-scroll-meta">JUL 30, 2026 / SEOUL</div></div></div>
-                        <div class="auto-scroll-item"><div class="auto-scroll-overlay"></div><img src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=600&h=800&fit=crop" alt="Asia Tour"><div class="auto-scroll-info"><h4 class="auto-scroll-title">ASIA TOUR</h4><div class="auto-scroll-meta">AUG 15, 2026 / BANGKOK</div></div></div>
-                        <div class="auto-scroll-item"><div class="auto-scroll-overlay"></div><img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&h=800&fit=crop" alt="Rock Storm 2026"><div class="auto-scroll-info"><h4 class="auto-scroll-title">ROCK STORM 2026</h4><div class="auto-scroll-meta">JAN 15, 2026 / TAIPEI</div></div></div>
-                        <div class="auto-scroll-item"><div class="auto-scroll-overlay"></div><img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop" alt="Metal Storm"><div class="auto-scroll-info"><h4 class="auto-scroll-title">METAL STORM</h4><div class="auto-scroll-meta">FEB 20, 2026 / KAOHSIUNG</div></div></div>
-                        <div class="auto-scroll-item"><div class="auto-scroll-overlay"></div><img src="https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=600&h=800&fit=crop" alt="Punk Night"><div class="auto-scroll-info"><h4 class="auto-scroll-title">PUNK NIGHT</h4><div class="auto-scroll-meta">MAR 10, 2026 / TAICHUNG</div></div></div>
-                        <div class="auto-scroll-item"><div class="auto-scroll-overlay"></div><img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&h=800&fit=crop" alt="Indie Music Fest"><div class="auto-scroll-info"><h4 class="auto-scroll-title">INDIE MUSIC FEST</h4><div class="auto-scroll-meta">APR 05, 2026 / HONG KONG</div></div></div>
+                    <div class="auto-scroll-track auto-scrolling" id="autoScrollTrack">
+                        <!-- 滚播项目将通过JS动态生成 -->
                     </div>
                 </div>
             </div>
@@ -387,8 +400,181 @@
     </div>
 
     <script>
+        // 滚播活动数据 - 按日期排序（近到远）
+        const carouselData = [
+            { title: "PUNK HEART FESTIVAL 2026", date: "2026.09.25", city: "TBA", image: "./image/1-b-2.jpg", link: "http://punkheartfest.com" },
+            { title: "PUNK HEART FESTIVAL 2026 WUHAN", date: "2026.09.27", city: "WUHAN", image: "./image/1-b-2.jpg", link: "http://punkheartfest.com" },
+            { title: "NONAMEFEST 2026", date: "2026.10.15", city: "RIOT CITY", image: "./image/1-b-3.jpg", link: "http://nonamepunks.com" },
+            { title: "S.E.A TOUR 2026", date: "2026.11.20", city: "BANGKOK", image: "./image/2-old3.jpg", link: "" },
+            { title: "ACIDEZ CHINA TOUR", date: "2026.12.05", city: "BEIJING", image: "./image/2-old3.jpg", link: "" },
+            { title: "SKARFACE ASIA TOUR", date: "2027.01.15", city: "TOKYO", image: "./image/2-old2.jpg", link: "" },
+            { title: "NON SERVIUM CHINA", date: "2027.02.20", city: "SHANGHAI", image: "./image/2-old1.jpg", link: "" },
+            { title: "PUNK HEART WARM-UP", date: "2026.01.17", city: "未來俱樂部", image: "https://en.concerts-metal.com/images/flyers/202601/1768047587--PUNKHEART-_2026-WARM-UP.webp", link: "" },
+            { title: "ROCK STORM 2026", date: "2026.01.15", city: "TAIPEI", image: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&h=800&fit=crop", link: "" },
+            { title: "METAL STORM", date: "2026.02.20", city: "KAOHSIUNG", image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop", link: "" },
+            { title: "PUNK NIGHT", date: "2026.03.10", city: "TAICHUNG", image: "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=600&h=800&fit=crop", link: "" },
+            { title: "INDIE MUSIC FEST", date: "2026.04.05", city: "HONG KONG", image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&h=800&fit=crop", link: "" }
+        ];
 
-        // 海报2轮播数据
+        let isPaused = false;
+        let countdownInterval;
+
+        // 初始化滚播区域
+        function initCarousel() {
+            const track = document.getElementById('autoScrollTrack');
+            if (!track) return;
+
+            // 按日期排序（近到远）
+            const sortedData = sortByDate(carouselData);
+
+            // 分离未过期和已过期
+            const now = new Date();
+            now.setHours(0, 0, 0, 0);
+
+            const upcoming = [];
+            const passed = [];
+
+            sortedData.forEach(item => {
+                const itemDate = parseDate(item.date);
+                if (itemDate >= now) {
+                    upcoming.push(item);
+                } else {
+                    passed.push(item);
+                }
+            });
+
+            // 已过期按日期从近到远排序
+            passed.sort((a, b) => parseDate(b.date) - parseDate(a.date));
+
+            // 合并：未过期（近到远）+ 已过期（近到远）
+            const orderedData = [...upcoming, ...passed];
+
+            // 生成HTML
+            let html = '';
+
+            // 如果少于3张，复制补足
+            let displayData = [...orderedData];
+            while (displayData.length < 3) {
+                displayData = [...displayData, ...orderedData];
+            }
+
+            // 最多18张
+            displayData = displayData.slice(0, 18);
+
+            // 生成两倍用于无缝循环
+            const loopData = [...displayData, ...displayData];
+
+            loopData.forEach((item, index) => {
+                const hasLink = item.link && item.link.trim() !== '';
+                const linkClass = hasLink ? '' : 'no-link';
+                const clickAttr = hasLink ? `onclick="window.open('${item.link}', '_blank')"` : '';
+
+                // 日期和城市显示
+                let metaText = '';
+                if (item.date && item.city) {
+                    metaText = `${item.date} / ${item.city}`;
+                } else if (item.date) {
+                    metaText = item.date;
+                } else if (item.city) {
+                    metaText = item.city;
+                }
+
+                html += `
+                    <div class="auto-scroll-item ${linkClass}" ${clickAttr} data-date="${item.date}" data-index="${index % displayData.length}">
+                        <div class="auto-scroll-overlay"></div>
+                        <img src="${item.image}" alt="${item.title}" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=${encodeURIComponent(item.title)}'">
+                        <div class="auto-scroll-info">
+                            <h4 class="auto-scroll-title">${item.title}</h4>
+                            <div class="auto-scroll-meta">${metaText}</div>
+                        </div>
+                        <div class="auto-scroll-countdown">
+                            <div class="countdown-text" data-countdown-date="${item.date}">CALCULATING...</div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            track.innerHTML = html;
+
+            // 启动倒计时
+            updateCarouselCountdowns();
+            countdownInterval = setInterval(updateCarouselCountdowns, 60000);
+
+            // 鼠标悬停暂停
+            const container = document.getElementById('autoScrollContainer');
+            container.addEventListener('mouseenter', () => {
+                track.classList.add('paused');
+                isPaused = true;
+            });
+            container.addEventListener('mouseleave', () => {
+                track.classList.remove('paused');
+                track.classList.remove('accelerate-left');
+                track.classList.remove('accelerate-right');
+                isPaused = false;
+            });
+        }
+
+        // 解析日期
+        function parseDate(dateStr) {
+            const parts = dateStr.split('.');
+            if (parts.length >= 3) {
+                return new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+            }
+            return new Date();
+        }
+
+        // 按日期排序
+        function sortByDate(data) {
+            return [...data].sort((a, b) => parseDate(a.date) - parseDate(b.date));
+        }
+
+        // 更新滚播区域倒计时
+        function updateCarouselCountdowns() {
+            const now = new Date();
+            now.setHours(0, 0, 0, 0);
+
+            const countdownElements = document.querySelectorAll('.auto-scroll-countdown .countdown-text');
+
+            countdownElements.forEach(el => {
+                const dateStr = el.getAttribute('data-countdown-date');
+                if (!dateStr) return;
+
+                const targetDate = parseDate(dateStr);
+                const diff = targetDate - now;
+
+                if (diff === 0) {
+                    el.textContent = 'TODAY';
+                    el.className = 'countdown-text today';
+                } else if (diff < 0) {
+                    el.textContent = 'COMPLETED';
+                    el.className = 'countdown-text completed';
+                } else {
+                    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                    el.textContent = days + ' DAYS';
+                    el.className = 'countdown-text';
+                }
+            });
+        }
+
+        // 加速滚动
+        function accelerateScroll(direction) {
+            const track = document.getElementById('autoScrollTrack');
+            if (!track) return;
+
+            track.classList.remove('auto-scrolling');
+            track.classList.remove('accelerate-left');
+            track.classList.remove('accelerate-right');
+
+            void track.offsetWidth;
+
+            if (direction === 'left') {
+                track.classList.add('accelerate-left');
+            } else {
+                track.classList.add('accelerate-right');
+            }
+        }
+
+        // 海报2轮播
         const poster2Data = [
             { title: "Non Servium China Tour", linkText: "w/The Noname →", img: "./image/2-old1.jpg" },
             { title: "Skarface China Tour", linkText: "w/The Noname →", img: "./image/2-old2.jpg" },
@@ -398,38 +584,35 @@
         ];
 
         let currentSlide = 0;
-        let carouselInterval;
+        let carouselSlideInterval;
 
-        function initCarousel() {
+        function initPoster2Carousel() {
             const slides = document.querySelectorAll('.poster-carousel-slide');
             const dots = document.querySelectorAll('.carousel-dot');
 
             if (slides.length === 0) return;
 
-            // 自动轮播
-            carouselInterval = setInterval(() => {
+            carouselSlideInterval = setInterval(() => {
                 goToSlide(currentSlide + 1);
             }, 5000);
 
-            // 点击圆点切换
             dots.forEach((dot, index) => {
                 dot.addEventListener('click', () => {
-                    clearInterval(carouselInterval);
+                    clearInterval(carouselSlideInterval);
                     goToSlide(index);
-                    carouselInterval = setInterval(() => {
+                    carouselSlideInterval = setInterval(() => {
                         goToSlide(currentSlide + 1);
                     }, 5000);
                 });
             });
 
-            // 鼠标悬停暂停
             const carousel = document.getElementById('posterCarousel');
             if (carousel) {
                 carousel.addEventListener('mouseenter', () => {
-                    clearInterval(carouselInterval);
+                    clearInterval(carouselSlideInterval);
                 });
                 carousel.addEventListener('mouseleave', () => {
-                    carouselInterval = setInterval(() => {
+                    carouselSlideInterval = setInterval(() => {
                         goToSlide(currentSlide + 1);
                     }, 5000);
                 });
@@ -444,18 +627,14 @@
 
             if (slides.length === 0) return;
 
-            // 移除当前active
             slides[currentSlide].classList.remove('active');
             dots[currentSlide].classList.remove('active');
 
-            // 计算新的索引
             currentSlide = (n + slides.length) % slides.length;
 
-            // 添加新的active
             slides[currentSlide].classList.add('active');
             dots[currentSlide].classList.add('active');
 
-            // 更新文字
             if (titleEl && linkEl && poster2Data[currentSlide]) {
                 titleEl.textContent = poster2Data[currentSlide].title;
                 linkEl.textContent = poster2Data[currentSlide].linkText;
@@ -501,11 +680,8 @@
             countdownElements.forEach(el => {
                 const targetDate = el.getAttribute('data-countdown-date');
                 if (!targetDate) return;
-                const dateParts = targetDate.match(/(\d{2})[-\.](\d{2})/);
-                if (!dateParts) return;
-                const month = parseInt(dateParts[1]) - 1;
-                const day = parseInt(dateParts[2]);
-                const target = new Date(2026, month, day, 0, 0, 0);
+
+                const target = new Date(targetDate);
                 const diff = target - now;
 
                 if (diff > 0) {
@@ -522,7 +698,7 @@
                 } else if (diff <= 0 && diff > -86400000) {
                     el.textContent = 'TODAY';
                 } else {
-                    el.textContent = '2026';
+                    el.textContent = 'COMPLETED';
                 }
             });
         }
@@ -536,38 +712,9 @@
             document.getElementById('loadMoreContainer').style.display = 'none';
         }
 
-        function scrollLeft() {
-            const track = document.getElementById('autoScrollTrack');
-            track.style.animationPlayState = 'paused';
-            track.style.transform = 'translateX(100px)';
-            setTimeout(() => {
-                track.style.transition = 'transform 0.5s ease';
-                track.style.transform = 'translateX(0)';
-                setTimeout(() => { track.style.animationPlayState = 'running'; track.style.transition = ''; }, 500);
-            }, 50);
-        }
-
-        function scrollRight() {
-            const track = document.getElementById('autoScrollTrack');
-            track.style.animationPlayState = 'paused';
-            track.style.transform = 'translateX(-100px)';
-            setTimeout(() => {
-                track.style.transition = 'transform 0.5s ease';
-                track.style.transform = 'translateX(0)';
-                setTimeout(() => { track.style.animationPlayState = 'running'; track.style.transition = ''; }, 500);
-            }, 50);
-        }
-
-        const autoScrollContainer = document.getElementById('autoScrollContainer');
-        const autoScrollTrack = document.getElementById('autoScrollTrack');
-        if (autoScrollContainer && autoScrollTrack) {
-            autoScrollContainer.addEventListener('mouseenter', () => { autoScrollTrack.classList.add('paused'); });
-            autoScrollContainer.addEventListener('mouseleave', () => { autoScrollTrack.classList.remove('paused'); });
-        }
-
-        // 初始化轮播
         document.addEventListener('DOMContentLoaded', function() {
             initCarousel();
+            initPoster2Carousel();
         });
     </script>
 </body>
