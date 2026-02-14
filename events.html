@@ -79,15 +79,15 @@
         .load-more-btn:hover::before { left: 100%; }
         .load-more-btn:hover { background: var(--dark-red); border-color: var(--dark-red); box-shadow: 0 0 30px rgba(139, 0, 0, 0.8), 0 0 60px rgba(139, 0, 0, 0.4); transform: scale(1.05); letter-spacing: 4px; }
 
-        /* 滚播区域样式 - 新版 */
+        /* 滚播区域样式 */
         .auto-scroll-section { width: 100%; background: var(--black); position: relative; overflow: hidden; padding: 40px 0; }
         .auto-scroll-wrapper { position: relative; width: 100%; }
         .auto-scroll-container { position: relative; width: 100%; overflow: hidden; }
         .auto-scroll-track { display: flex; gap: 0; will-change: transform; }
         .auto-scroll-track.auto-scrolling { animation: autoScroll 40s linear infinite; }
         .auto-scroll-track.paused { animation-play-state: paused; }
-        .auto-scroll-track.accelerate-left { animation: autoScrollLeft 5s linear infinite; }
-        .auto-scroll-track.accelerate-right { animation: autoScrollRight 5s linear infinite; }
+        .auto-scroll-track.accelerate-left { animation: autoScrollLeft 3s linear infinite; }
+        .auto-scroll-track.accelerate-right { animation: autoScrollRight 3s linear infinite; }
         @keyframes autoScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         @keyframes autoScrollLeft { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
         @keyframes autoScrollRight { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
@@ -284,7 +284,7 @@
             </div>
         </section>
 
-        <!-- 滚播海报区域 - 新版 -->
+        <!-- 滚播海报区域 -->
         <section class="auto-scroll-section">
             <div class="auto-scroll-wrapper">
                 <button class="scroll-arrow left" onclick="accelerateScroll('left')">❮</button>
@@ -400,7 +400,8 @@
     </div>
 
     <script>
-        // 滚播活动数据 - 按日期排序（近到远）
+
+        // 滚播活动数据 - 12个活动，按日期排序
         const carouselData = [
             { title: "PUNK HEART FESTIVAL 2026", date: "2026.09.25", city: "TBA", image: "./image/1-b-2.jpg", link: "http://punkheartfest.com" },
             { title: "PUNK HEART FESTIVAL 2026 WUHAN", date: "2026.09.27", city: "WUHAN", image: "./image/1-b-2.jpg", link: "http://punkheartfest.com" },
@@ -418,6 +419,21 @@
 
         let isPaused = false;
         let countdownInterval;
+        let currentAnimation = 'autoScroll';
+
+        // 解析日期
+        function parseDate(dateStr) {
+            const parts = dateStr.split('.');
+            if (parts.length >= 3) {
+                return new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+            }
+            return new Date();
+        }
+
+        // 按日期排序（近到远）
+        function sortByDate(data) {
+            return [...data].sort((a, b) => parseDate(a.date) - parseDate(b.date));
+        }
 
         // 初始化滚播区域
         function initCarousel() {
@@ -443,10 +459,10 @@
                 }
             });
 
-            // 已过期按日期从近到远排序
+            // 已过期按日期从近到远排序（即倒序，因为passed里是按日期近到远，但过期的是过去时间）
             passed.sort((a, b) => parseDate(b.date) - parseDate(a.date));
 
-            // 合并：未过期（近到远）+ 已过期（近到远）
+            // 合并：未过期（近到远）+ 已过期（近到远，即从最近过期到最早过期）
             const orderedData = [...upcoming, ...passed];
 
             // 生成HTML
@@ -469,7 +485,7 @@
                 const linkClass = hasLink ? '' : 'no-link';
                 const clickAttr = hasLink ? `onclick="window.open('${item.link}', '_blank')"` : '';
 
-                // 日期和城市显示
+                // 日期和城市显示 - 格式：日期 / 城市，任意留空则不显示
                 let metaText = '';
                 if (item.date && item.city) {
                     metaText = `${item.date} / ${item.city}`;
@@ -514,20 +530,6 @@
             });
         }
 
-        // 解析日期
-        function parseDate(dateStr) {
-            const parts = dateStr.split('.');
-            if (parts.length >= 3) {
-                return new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
-            }
-            return new Date();
-        }
-
-        // 按日期排序
-        function sortByDate(data) {
-            return [...data].sort((a, b) => parseDate(a.date) - parseDate(b.date));
-        }
-
         // 更新滚播区域倒计时
         function updateCarouselCountdowns() {
             const now = new Date();
@@ -543,12 +545,15 @@
                 const diff = targetDate - now;
 
                 if (diff === 0) {
+                    // 当天
                     el.textContent = 'TODAY';
                     el.className = 'countdown-text today';
                 } else if (diff < 0) {
+                    // 已过期
                     el.textContent = 'COMPLETED';
                     el.className = 'countdown-text completed';
                 } else {
+                    // 未过期 - 显示天数
                     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
                     el.textContent = days + ' DAYS';
                     el.className = 'countdown-text';
@@ -557,24 +562,31 @@
         }
 
         // 加速滚动
+        // 左箭头：查看历史（向右滚动，即向过去时间）
+        // 右箭头：查看未来（向左滚动，即向未来时间）
         function accelerateScroll(direction) {
             const track = document.getElementById('autoScrollTrack');
             if (!track) return;
 
+            // 移除所有动画类
             track.classList.remove('auto-scrolling');
             track.classList.remove('accelerate-left');
             track.classList.remove('accelerate-right');
 
+            // 强制重绘
             void track.offsetWidth;
 
+            // 添加对应的加速动画
             if (direction === 'left') {
+                // 左箭头：向右滚动（查看历史/过去）
                 track.classList.add('accelerate-left');
             } else {
+                // 右箭头：向左滚动（查看未来）
                 track.classList.add('accelerate-right');
             }
         }
 
-        // 海报2轮播
+        // 海报2轮播数据
         const poster2Data = [
             { title: "Non Servium China Tour", linkText: "w/The Noname →", img: "./image/2-old1.jpg" },
             { title: "Skarface China Tour", linkText: "w/The Noname →", img: "./image/2-old2.jpg" },
