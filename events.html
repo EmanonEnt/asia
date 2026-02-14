@@ -79,7 +79,7 @@
         .load-more-btn:hover::before { left: 100%; }
         .load-more-btn:hover { background: var(--dark-red); border-color: var(--dark-red); box-shadow: 0 0 30px rgba(139, 0, 0, 0.8), 0 0 60px rgba(139, 0, 0, 0.4); transform: scale(1.05); letter-spacing: 4px; }
 
-        /* 滚播区域样式 - 支持触摸滑动 */
+        /* æ»æ­åºåæ ·å¼ - æ¯æè§¦æ¸æ»å¨ */
         .auto-scroll-section { width: 100%; background: var(--black); position: relative; overflow: hidden; padding: 0; }
         .auto-scroll-wrapper { position: relative; width: 100%; }
         .auto-scroll-container { position: relative; width: 100%; overflow: hidden; touch-action: pan-y; user-select: none; }
@@ -164,7 +164,7 @@
         .auto-scroll-item.expired .auto-scroll-overlay { background: rgba(0,0,0,0.6); }
         .auto-scroll-item.expired:hover .auto-scroll-overlay { background: rgba(0,0,0,0.6); }
 
-        /* 倒计时样式 - 底部 */
+        /* åè®¡æ¶æ ·å¼ - åºé¨ */
         .auto-scroll-countdown { 
             position: absolute; 
             bottom: 15px; 
@@ -215,7 +215,7 @@
         .poster-item-alt img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; transition: filter 0.4s; }
         .poster-item-alt:hover img { filter: brightness(0.7); }
 
-        /* 海报2轮播样式 */
+        /* æµ·æ¥2è½®æ­æ ·å¼ */
         .poster-carousel-wrapper { position: relative; width: 100%; height: 100%; overflow: hidden; }
         .poster-carousel { position: relative; width: 100%; height: 100%; }
         .poster-carousel-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 0.8s ease-in-out; z-index: 1; }
@@ -272,7 +272,7 @@
 
         @media (min-width: 769px) and (max-width: 1024px) { .events-grid { grid-template-columns: repeat(2, 1fr); padding: 0 30px; } .event-card { max-width: none; } .auto-scroll-item { flex: 0 0 25%; } }
         @media (min-width: 1025px) { .events-grid { grid-template-columns: repeat(3, 1fr); padding: 0 40px; } .event-card { max-width: none; } }
-        /* 平板端 (768px - 1024px) */
+        /* å¹³æ¿ç«¯ (768px - 1024px) */
         @media (max-width: 1024px) {
             nav { padding: 0 30px; height: 70px; }
             .logo-img { height: 40px; max-width: 150px; }
@@ -283,7 +283,7 @@
             .event-content { padding: 70px 15px 35px; }
             .event-name { font-size: clamp(18px, 3vw, 24px); }
 
-            /* 滚播区域 - 平板显示3个海报 */
+            /* æ»æ­åºå - å¹³æ¿æ¾ç¤º3ä¸ªæµ·æ¥ */
             .auto-scroll-item { 
                 flex: 0 0 33.333%; 
                 height: 400px;
@@ -298,7 +298,7 @@
             .scroll-arrow { width: 40px; height: 60px; font-size: 20px; }
         }
 
-        /* 手机横屏/大手机 (480px - 768px) */
+        /* ææºæ¨ªå±/å¤§ææº (480px - 768px) */
         @media (max-width: 768px) {
             nav { padding: 0 20px; height: 65px; }
             .logo-img { height: 35px; max-width: 130px; }
@@ -311,7 +311,7 @@
             .event-status { top: 15px; right: 15px; padding: 6px 12px; font-size: 11px; }
             .event-content { padding: 60px 20px 30px; }
 
-            /* 滚播区域 - 手机显示2个海报 */
+            /* æ»æ­åºå - ææºæ¾ç¤º2ä¸ªæµ·æ¥ */
             .auto-scroll-item { 
                 flex: 0 0 auto;
                 width: 248px;
@@ -345,7 +345,7 @@
             .mobile-poster2-text { display: none !important; }
         }
 
-        /* 小手机 (375px - 480px) */
+        /* å°ææº (375px - 480px) */
         @media (max-width: 480px) {
             nav { padding: 0 15px; height: 60px; background: rgba(0, 0, 0, 0.5); }
             .logo-img { height: 32px; max-width: 120px; }
@@ -369,7 +369,7 @@
             .event-btn { padding: 10px 25px; font-size: 11px; margin-top: 20px; }
             .load-more-btn { padding: 12px 30px; font-size: 12px; }
 
-            /* 滚播区域 - 小手机显示1.5个海报（暗示可滑动） */
+            /* æ»æ­åºå - å°ææºæ¾ç¤º1.5ä¸ªæµ·æ¥ï¼æç¤ºå¯æ»å¨ï¼ */
             .auto-scroll-section { padding: 0; }
             .auto-scroll-item { 
                 flex: 0 0 auto;
@@ -426,14 +426,14 @@
             .scroll-arrow { width: 30px; height: 45px; font-size: 16px; }
         }
 
-        /* 超小手机 (<375px) */
+        /* è¶å°ææº (<375px) */
         @media (max-width: 375px) {
             .hero-title { font-size: 38px; letter-spacing: 3px; }
             .hero-subtitle { font-size: 11px; }
             .events-grid { padding: 0 15px; }
             .event-name { font-size: 16px; }
 
-            /* 滚播区域 - 超小手机显示1个完整海报 */
+            /* æ»æ­åºå - è¶å°ææºæ¾ç¤º1ä¸ªå®æ´æµ·æ¥ */
             .auto-scroll-item { 
                 flex: 0 0 auto;
                 width: 198px;
@@ -452,9 +452,9 @@
             .contact-item { font-size: 10px; }
         }
 
-        /* 触摸设备优化 */
+        /* è§¦æ¸è®¾å¤ä¼å */
         @media (hover: none) and (pointer: coarse) {
-            /* 触摸设备上，hover效果改为点击效果 */
+            /* è§¦æ¸è®¾å¤ä¸ï¼hoveræææ¹ä¸ºç¹å»ææ */
             .auto-scroll-item:hover {
                 transform: none;
             }
@@ -487,7 +487,7 @@
         .event-status, .event-btn { opacity: 1 !important; visibility: visible !important; }
         .event-card:hover .event-poster { filter: brightness(1) !important; }
 
-        /* 微信浏览器触摸支持 */
+        /* å¾®ä¿¡æµè§å¨è§¦æ¸æ¯æ */
         .wechat .auto-scroll-item {
             -webkit-tap-highlight-color: transparent;
         }
@@ -567,7 +567,7 @@
                         <h3 class="event-name">PUNK HEART FESTIVAL 2026<br>TBA</h3>
                         <div class="event-details">2026.09.25 | TBA</div>
                         <div class="event-venue"></div>
-                        <a href="http://punkheartfest.com" class="event-btn" target="_blank">朋克心2026</a>
+                        <a href="http://punkheartfest.com" class="event-btn" target="_blank">æåå¿2026</a>
                     </div>
                 </div>
 
@@ -578,7 +578,7 @@
                         <h3 class="event-name">PUNK HEART FESTIVAL 2026<br>WUHAN</h3>
                         <div class="event-details">2026.09.27 | TBA</div>
                         <div class="event-venue"></div>
-                        <a href="http://punkheartfest.com" class="event-btn" target="_blank">朋克心2026</a>
+                        <a href="http://punkheartfest.com" class="event-btn" target="_blank">æåå¿2026</a>
                     </div>
                 </div>
 
@@ -589,7 +589,7 @@
                         <h3 class="event-name">NONAMEFEST 2026<br>RIOT CITY</h3>
                         <div class="event-details">2026.10.?? | TBA</div>
                         <div class="event-venue"></div>
-                        <a href="http://nonamepunks.com" class="event-btn" target="_blank">無名盛宴2026</a>
+                        <a href="http://nonamepunks.com" class="event-btn" target="_blank">ç¡åçå®´2026</a>
                     </div>
                 </div>
 
@@ -598,9 +598,9 @@
                     <div class="event-status soldout">SOLD OUT</div>
                     <div class="event-content">
                         <h3 class="event-name">PUNK HEART FESTIVAL 2026<br>WARM-UP Show</h3>
-                        <div class="event-details">2026.01.17 | 未來俱樂部</div>
+                        <div class="event-details">2026.01.17 | æªä¾ä¿±æ¨é¨</div>
                         <div class="event-venue"></div>
-                        <span class="event-btn disabled">朋克心2026預熱派對</span>
+                        <span class="event-btn disabled">æåå¿2026é ç±æ´¾å°</span>
                     </div>
                 </div>
             </div>
@@ -610,14 +610,14 @@
             </div>
         </section>
 
-        <!-- 滚播海报区域 -->
+        <!-- æ»æ­æµ·æ¥åºå -->
         <section class="auto-scroll-section">
             <div class="auto-scroll-wrapper">
-                <button class="scroll-arrow left" onclick="accelerateScroll('left')">❮</button>
-                <button class="scroll-arrow right" onclick="accelerateScroll('right')">❯</button>
+                <button class="scroll-arrow left" onclick="accelerateScroll('left')">â®</button>
+                <button class="scroll-arrow right" onclick="accelerateScroll('right')">â¯</button>
                 <div class="auto-scroll-container" id="autoScrollContainer">
                     <div class="auto-scroll-track" id="autoScrollTrack">
-                        <!-- 滚播项目将通过JS动态生成 -->
+                        <!-- æ»æ­é¡¹ç®å°éè¿JSå¨æçæ -->
                     </div>
                 </div>
             </div>
@@ -629,11 +629,11 @@
                     <img src="./image/livegigscn1.png" alt="LiveGigs WeChat" onerror="this.src='https://via.placeholder.com/400x600/8b0000/000?text=LiveGigs+WeChat'">
                     <div class="poster-overlay">
                         <div class="poster-title">LiveGigs CN</div>
-                        <a href="https://wxaurl.cn/HMcAK6R7fou" target="_blank" class="poster-link" onclick="event.stopPropagation();">Get on WeChat →</a>
+                        <a href="https://wxaurl.cn/HMcAK6R7fou" target="_blank" class="poster-link" onclick="event.stopPropagation();">Get on WeChat â</a>
                     </div>
                 </div>
 
-                <!-- 海报2 - 5张轮播 -->
+                <!-- æµ·æ¥2 - 5å¼ è½®æ­ -->
                 <div class="poster-item-alt" data-poster-id="2">
                     <div class="poster-carousel-wrapper">
                         <div class="poster-carousel" id="posterCarousel">
@@ -652,7 +652,7 @@
                         </div>
                         <div class="poster-overlay" id="poster2Overlay">
                             <div class="poster-title" id="poster2Title">Non Servium China Tour</div>
-                            <span class="poster-link" id="poster2Link">w/The Noname →</span>
+                            <span class="poster-link" id="poster2Link">w/The Noname â</span>
                         </div>
                     </div>
                     <div class="mobile-poster2-text"><h3>Legendary Live Events</h3></div>
@@ -662,7 +662,7 @@
                     <img src="./image/xrebookingad.jpg" alt="XRE Booking" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=XRE+BOOKING'">
                     <div class="poster-overlay">
                         <div class="poster-title">XRE Booking</div>
-                        <a href="partners.html" class="poster-link" onclick="event.stopPropagation();">Check Out More Partners →</a>
+                        <a href="partners.html" class="poster-link" onclick="event.stopPropagation();">Check Out More Partners â</a>
                     </div>
                 </div>
             </div>
@@ -691,7 +691,7 @@
                         </div>
                     </div>
                     <div class="footer-contact-right">
-                        <div class="contact-item">#303 TERRY FRANCINE STREET,<br>HONGKONG, CN 999077</div>
+                        <div class="contact-item">#303 TERRY FRANCINE STREET,<br>HONGKONG,<br>CN 999077</div>
                     </div>
                 </div>
             </div>
@@ -700,7 +700,7 @@
                     <a href="privacypolicy.html">Privacy Policy</a>
                     <a href="accessibilitystatement.html">Accessibility Statement</a>
                 </div>
-                <div class="copyright">Copyright © 2001-2026 EMANON ENT. - All Rights Reserved.</div>
+                <div class="copyright">Copyright Â© 2001-2026 EMANON ENT. - All Rights Reserved.</div>
             </div>
         </footer>
     </div>
@@ -718,7 +718,7 @@
                 <div class="form-group"><label for="memberEmail">Email</label><input type="email" id="memberEmail" name="email" required placeholder="Enter your email"></div>
                 <div class="form-group"><label for="memberPhone">Phone (Optional)</label><input type="tel" id="memberPhone" name="phone" placeholder="Enter your phone number"></div>
                 <div class="form-group"><label for="memberMessage">Message</label><textarea id="memberMessage" name="message" placeholder="Tell us what you are interested in..."></textarea></div>
-                <div id="formSuccess" style="display: none; text-align: center; padding: 15px; background: rgba(139, 0, 0, 0.2); border: 1px solid var(--dark-red); margin-bottom: 20px;"><p style="color: #fff; margin: 0; font-size: 14px;">✓ Application sent successfully! We will contact you soon.</p></div>
+                <div id="formSuccess" style="display: none; text-align: center; padding: 15px; background: rgba(139, 0, 0, 0.2); border: 1px solid var(--dark-red); margin-bottom: 20px;"><p style="color: #fff; margin: 0; font-size: 14px;">â Application sent successfully! We will contact you soon.</p></div>
                 <button type="submit" class="neon-btn">SUBMIT APPLICATION</button>
                 <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
             </form>
@@ -726,31 +726,27 @@
     </div>
 
     <script>
-        // 滚播活动数据 - 18个活动（4个过期 + 14个即将发生）
+        // æ»æ­æ´»å¨æ°æ® - 18ä¸ªæ´»å¨ï¼4ä¸ªè¿æ + 14ä¸ªå³å°åçï¼
         const carouselData = [
-            // 已过期活动（4个）- 无hover效果
-            { title: "PUNK HEART WARM-UP", date: "2026.01.17", city: "未來俱樂部", image: "https://en.concerts-metal.com/images/flyers/202601/1768047587--PUNKHEART-_2026-WARM-UP.webp", link: "" },
-            { title: "ROCK STORM 2026", date: "2026.01.15", city: "TAIPEI", image: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&h=800&fit=crop", link: "" },
-            { title: "METAL STORM", date: "2026.02.10", city: "KAOHSIUNG", image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop", link: "" },
-            { title: "PUNK NIGHT", date: "2026.02.12", city: "TAICHUNG", image: "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=600&h=800&fit=crop", link: "" },
-
-            // 即将发生的活动（14个）- 有hover效果
-            { title: "BABYMETAL WORLD TOUR AUSTRALIA 2026", date: "2026.03.12", city: "AUSTRALIA", image: "https://babymetal.com/contents/1/TO/babymetal_insta45_OSN%20(2).jpg", link: "https://babymetal.com" },
-            { title: "Kraanium Asia Slam Tour 2026", date: "2026.03.30", city: "ASIA", image: "https://en.concerts-metal.com/images/flyers/202510/1759884648--Kraanium---Asia-Slam-Tour-2026.webp", link: "" },
-            { title: "MONO Oath Latin America Tour 2026", date: "2026.04.15", city: "LATIN AMERICA", image: "https://img1.wsimg.com/isteam/ip/d3b0a7bc-ae98-44b3-90fd-0429527897cf/Mono%20SA%202026.jpg", link: "https://www.monoofjapan.com/" },
-            { title: "HARDCORE REVOLUTION", date: "2026.05.20", city: "SINGAPORE", image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&h=800&fit=crop", link: "" },
-            { title: "METAL MAYHEM", date: "2026.06.15", city: "SEOUL", image: "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=600&h=800&fit=crop", link: "" },
-            { title: "ROCK THE WORLD", date: "2026.07.30", city: "OSAKA", image: "https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=600&h=800&fit=crop", link: "" },
-            { title: "PUNK REVIVAL", date: "2026.08.18", city: "MANILA", image: "https://images.unsplash.com/photo-1501612780327-45045538702b?w=600&h=800&fit=crop", link: "" },
-            { title: "PUNK HEART FESTIVAL", date: "2026.09.25", city: "TBA", image: "./image/1-b-2.jpg", link: "http://punkheartfest.com" },
-            { title: "PUNK HEART WUHAN", date: "2026.09.27", city: "WUHAN", image: "./image/1-b-2.jpg", link: "http://punkheartfest.com" },
-            { title: "NONAMEFEST 2026", date: "2026.10.15", city: "RIOT CITY", image: "./image/1-b-3.jpg", link: "http://nonamepunks.com" },
-            { title: "S.E.A TOUR 2026", date: "2026.11.20", city: "BANGKOK", image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&h=800&fit=crop", link: "" },
-            { title: "XXXX???? CHINA TOUR", date: "2026.12.05", city: "BEIJING", image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop", link: "" },
-            { title: "Clockenflap 2026", date: "2026.12.20", city: "HONG KONG", image: "https://totalticketing-ets-ttlcom-prod-singapore-web-files.s3.amazonaws.com/media/uploads/images/056a1c096df6d1bd.jpeg", link: "" },
-            { title: "XXXX ASIA TOUR", date: "2027.01.15", city: "TOKYO", image: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&h=800&fit=crop", link: "" },
-            { title: "XXXXXXXX CHINA", date: "2027.02.20", city: "SHANGHAI", image: "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=600&h=800&fit=crop", link: "" }
-        ];
+                { title: "ROCK STORM 2026", date: "2026.01.15", city: "TAIPEI", image: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&h=800&fit=crop", link: "" },
+                { title: "PUNK HEART WARM-UP", date: "2026.01.17", city: "未來俱樂部", image: "https://en.concerts-metal.com/images/flyers/202601/1768047587--PUNKHEART-_2026-WARM-UP.webp", link: "" },
+                { title: "METAL STORM", date: "2026.02.10", city: "KAOHSIUNG", image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop", link: "" },
+                { title: "BABYMETAL WORLD TOUR AUSTRALIA 2026", date: "2026.03.12", city: "AUSTRALIA", image: "https://babymetal.com/contents/1/TO/babymetal_insta45_OSN%20(2).jpg", link: "https://babymetal.com" },
+                { title: "Kraanium Asia Slam Tour 2026", date: "2026.03.30", city: "ASIA", image: "https://en.concerts-metal.com/images/flyers/202510/1759884648--Kraanium---Asia-Slam-Tour-2026.webp", link: "" },
+                { title: "MONO Oath Latin America Tour 2026", date: "2026.04.15", city: "LATIN AMERICA", image: "https://img1.wsimg.com/isteam/ip/d3b0a7bc-ae98-44b3-90fd-0429527897cf/Mono%20SA%202026.jpg", link: "https://www.monoofjapan.com/" },
+                { title: "HARDCORE REVOLUTION", date: "2026.05.20", city: "SINGAPORE", image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&h=800&fit=crop", link: "" },
+                { title: "METAL MAYHEM", date: "2026.06.15", city: "SEOUL", image: "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=600&h=800&fit=crop", link: "" },
+                { title: "ROCK THE WORLD", date: "2026.07.30", city: "OSAKA", image: "https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=600&h=800&fit=crop", link: "" },
+                { title: "PUNK REVIVAL", date: "2026.08.18", city: "MANILA", image: "https://images.unsplash.com/photo-1501612780327-45045538702b?w=600&h=800&fit=crop", link: "" },
+                { title: "PUNK HEART FESTIVAL", date: "2026.09.25", city: "TBA", image: "./image/1-b-2.jpg", link: "http://punkheartfest.com" },
+                { title: "PUNK HEART WUHAN", date: "2026.09.27", city: "WUHAN", image: "./image/1-b-2.jpg", link: "http://punkheartfest.com" },
+                { title: "NONAMEFEST 2026", date: "2026.10.15", city: "RIOT CITY", image: "./image/1-b-3.jpg", link: "http://nonamepunks.com" },
+                { title: "S.E.A TOUR 2026", date: "2026.11.20", city: "BANGKOK", image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&h=800&fit=crop", link: "" },
+                { title: "XXXX???? CHINA TOUR", date: "2026.12.05", city: "BEIJING", image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop", link: "" },
+                { title: "Clockenflap 2026", date: "2026.12.20", city: "HONG KONG", image: "https://totalticketing-ets-ttlcom-prod-singapore-web-files.s3.amazonaws.com/media/uploads/images/056a1c096df6d1bd.jpeg", link: "" },
+                { title: "XXXX ASIA TOUR", date: "2027.01.15", city: "TOKYO", image: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&h=800&fit=crop", link: "" },
+                { title: "新活动121", date: "2027.07.18", city: "TBAAAA", image: "./image/1-b-3.jpg", link: "" }
+            ];
 
         let isPaused = false;
         let countdownInterval;
@@ -758,14 +754,14 @@
         let animationId = null;
         let accelerateInterval = null;
 
-        // 触摸滑动相关变量
+        // è§¦æ¸æ»å¨ç¸å³åé
         let touchStartX = 0;
         let touchStartY = 0;
         let isDragging = false;
         let dragStartX = 0;
         let dragStartScroll = 0;
 
-        // 解析日期
+        // è§£ææ¥æ
         function parseDate(dateStr) {
             const parts = dateStr.split('.');
             if (parts.length >= 3) {
@@ -774,12 +770,12 @@
             return new Date();
         }
 
-        // 按日期排序（近到远）
+        // ææ¥ææåºï¼è¿å°è¿ï¼
         function sortByDate(data) {
             return [...data].sort((a, b) => parseDate(a.date) - parseDate(b.date));
         }
 
-        // 微信浏览器支持
+        // å¾®ä¿¡æµè§å¨æ¯æ
         function initWechatSupport() {
             if (!/MicroMessenger/i.test(navigator.userAgent)) return;
             document.body.classList.add('wechat');
@@ -799,13 +795,13 @@
             });
         }
 
-        // 初始化触摸滑动支持
+        // åå§åè§¦æ¸æ»å¨æ¯æ
         function initTouchSwipe() {
             const container = document.getElementById('autoScrollContainer');
             const track = document.getElementById('autoScrollTrack');
             if (!container || !track) return;
 
-            // 触摸开始
+            // è§¦æ¸å¼å§
             container.addEventListener('touchstart', function(e) {
                 touchStartX = e.touches[0].clientX;
                 touchStartY = e.touches[0].clientY;
@@ -816,7 +812,7 @@
                 track.style.cursor = 'grabbing';
             }, {passive: true});
 
-            // 触摸移动
+            // è§¦æ¸ç§»å¨
             container.addEventListener('touchmove', function(e) {
                 if (!isDragging) return;
 
@@ -825,7 +821,7 @@
                 const diffX = touchStartX - touchX;
                 const diffY = touchStartY - touchY;
 
-                // 判断是否为水平滑动
+                // å¤æ­æ¯å¦ä¸ºæ°´å¹³æ»å¨
                 if (Math.abs(diffX) > Math.abs(diffY)) {
                     e.preventDefault();
                 }
@@ -835,7 +831,7 @@
 
                 scrollPosition = dragStartScroll + diffX;
 
-                // 循环滚动处理
+                // å¾ªç¯æ»å¨å¤ç
                 if (scrollPosition >= totalWidth) {
                     scrollPosition = 0;
                     dragStartScroll = -diffX;
@@ -847,19 +843,19 @@
                 track.style.transform = `translateX(-${scrollPosition}px)`;
             }, {passive: false});
 
-            // 触摸结束
+            // è§¦æ¸ç»æ
             container.addEventListener('touchend', function(e) {
                 if (!isDragging) return;
                 isDragging = false;
                 track.style.cursor = 'grab';
 
-                // 延迟恢复自动滚动
+                // å»¶è¿æ¢å¤èªå¨æ»å¨
                 setTimeout(() => {
                     isPaused = false;
                 }, 1000);
             }, {passive: true});
 
-            // 鼠标拖拽支持（桌面端）
+            // é¼ æ ææ½æ¯æï¼æ¡é¢ç«¯ï¼
             container.addEventListener('mousedown', function(e) {
                 isDragging = true;
                 dragStartX = e.clientX;
@@ -979,7 +975,7 @@
             container.addEventListener('mouseleave', () => { if (!isDragging) isPaused = false; });
         }
 
-        // 自动滚动
+        // èªå¨æ»å¨
         function startAutoScroll() {
             const track = document.getElementById('autoScrollTrack');
             if (!track) return;
@@ -1001,7 +997,7 @@
             animate();
         }
 
-        // 更新倒计时
+        // æ´æ°åè®¡æ¶
         function updateCarouselCountdowns() {
             const now = new Date();
             now.setHours(0, 0, 0, 0);
@@ -1027,7 +1023,7 @@
             });
         }
 
-        // 加速滚动
+        // å éæ»å¨
         function accelerateScroll(direction) {
             const track = document.getElementById('autoScrollTrack');
             if (!track) return;
@@ -1064,7 +1060,7 @@
             }, 16);
         }
 
-        // 海报2轮播
+        // æµ·æ¥2è½®æ­
         const poster2Data = [
             { title: "Non Servium China Tour", linkText: "w/The Noname →", img: "./image/2-old1.jpg" },
             { title: "Skarface China Tour", linkText: "w/The Noname →", img: "./image/2-old2.jpg" },
