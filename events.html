@@ -516,7 +516,7 @@
                 html += `
                     <div class="auto-scroll-item ${itemClass}" ${clickAttr} data-date="${item.date}" data-index="${index % displayData.length}">
                         <div class="auto-scroll-overlay"></div>
-                        <img src="./image/1-b-3.jpg" alt="${item.title}" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=${encodeURIComponent(item.title)}'">
+                        <img src="${item.image}" alt="${item.title}" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=${encodeURIComponent(item.title)}'">
                         <div class="auto-scroll-info">
                             <h4 class="auto-scroll-title">${item.title}</h4>
                             <div class="auto-scroll-meta">${metaText}</div>
