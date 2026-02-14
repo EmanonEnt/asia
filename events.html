@@ -80,7 +80,7 @@
         .load-more-btn:hover { background: var(--dark-red); border-color: var(--dark-red); box-shadow: 0 0 30px rgba(139, 0, 0, 0.8), 0 0 60px rgba(139, 0, 0, 0.4); transform: scale(1.05); letter-spacing: 4px; }
 
         /* 滚播区域样式 */
-        .auto-scroll-section { width: 100%; background: var(--black); position: relative; overflow: hidden; padding: 40px 0; }
+        .auto-scroll-section { width: 100%; background: var(--black); position: relative; overflow: hidden; padding: 0; }
         .auto-scroll-wrapper { position: relative; width: 100%; }
         .auto-scroll-container { position: relative; width: 100%; overflow: hidden; }
         .auto-scroll-track { display: flex; gap: 0; will-change: transform; }
@@ -409,27 +409,30 @@
 
     <script>
 
-        // 滚播活动数据 - 16个活动（4个过期 + 12个未举办）
+        // 滚播活动数据 - 18个活动（4个过期 + 14个即将发生）
         const carouselData = [
-            // 已过期活动（4个）
+            // 已过期活动（4个）- 无hover效果
             { title: "PUNK HEART WARM-UP", date: "2026.01.17", city: "未來俱樂部", image: "https://en.concerts-metal.com/images/flyers/202601/1768047587--PUNKHEART-_2026-WARM-UP.webp", link: "" },
             { title: "ROCK STORM 2026", date: "2026.01.15", city: "TAIPEI", image: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&h=800&fit=crop", link: "" },
             { title: "METAL STORM", date: "2026.02.10", city: "KAOHSIUNG", image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop", link: "" },
             { title: "PUNK NIGHT", date: "2026.02.12", city: "TAICHUNG", image: "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=600&h=800&fit=crop", link: "" },
 
-            // 未举办活动（12个）
-            { title: "PUNK HEART FESTIVAL 2026", date: "2026.09.25", city: "TBA", image: "./image/1-b-2.jpg", link: "http://punkheartfest.com" },
-            { title: "PUNK HEART FESTIVAL 2026 WUHAN", date: "2026.09.27", city: "WUHAN", image: "./image/1-b-2.jpg", link: "http://punkheartfest.com" },
-            { title: "NONAMEFEST 2026", date: "2026.10.15", city: "RIOT CITY", image: "./image/1-b-3.jpg", link: "http://nonamepunks.com" },
-            { title: "S.E.A TOUR 2026", date: "2026.11.20", city: "BANGKOK", image: "./image/2-old3.jpg", link: "" },
-            { title: "ACIDEZ CHINA TOUR", date: "2026.12.05", city: "BEIJING", image: "./image/2-old3.jpg", link: "" },
-            { title: "SKARFACE ASIA TOUR", date: "2027.01.15", city: "TOKYO", image: "./image/2-old2.jpg", link: "" },
-            { title: "NON SERVIUM CHINA", date: "2027.02.20", city: "SHANGHAI", image: "./image/2-old1.jpg", link: "" },
-            { title: "INDIE MUSIC FEST", date: "2026.04.05", city: "HONG KONG", image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&h=800&fit=crop", link: "" },
+            // 即将发生的活动（14个）- 有hover效果
+            { title: "BABYMETAL WORLD TOUR AUSTRALIA 2026", date: "2026.03.12", city: "AUSTRALIA", image: "https://babymetal.com/contents/1/TO/babymetal_insta45_OSN%20(2).jpg", link: "https://babymetal.com" },
+            { title: "Kraanium Asia Slam Tour 2026", date: "2026.03.30", city: "ASIA", image: "https://en.concerts-metal.com/images/flyers/202510/1759884648--Kraanium---Asia-Slam-Tour-2026.webp", link: "" },
+            { title: "MONO Oath Latin America Tour 2026", date: "2026.04.15", city: "LATIN AMERICA", image: "https://img1.wsimg.com/isteam/ip/d3b0a7bc-ae98-44b3-90fd-0429527897cf/Mono%20SA%202026.jpg", link: "https://www.monoofjapan.com/" },
             { title: "HARDCORE REVOLUTION", date: "2026.05.20", city: "SINGAPORE", image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&h=800&fit=crop", link: "" },
             { title: "METAL MAYHEM", date: "2026.06.15", city: "SEOUL", image: "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=600&h=800&fit=crop", link: "" },
             { title: "ROCK THE WORLD", date: "2026.07.30", city: "OSAKA", image: "https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=600&h=800&fit=crop", link: "" },
-            { title: "PUNK REVIVAL", date: "2026.08.18", city: "MANILA", image: "https://images.unsplash.com/photo-1501612780327-45045538702b?w=600&h=800&fit=crop", link: "" }
+            { title: "PUNK REVIVAL", date: "2026.08.18", city: "MANILA", image: "https://images.unsplash.com/photo-1501612780327-45045538702b?w=600&h=800&fit=crop", link: "" },
+            { title: "PUNK HEART FESTIVAL", date: "2026.09.25", city: "TBA", image: "./image/1-b-2.jpg", link: "http://punkheartfest.com" },
+            { title: "PUNK HEART WUHAN", date: "2026.09.27", city: "WUHAN", image: "./image/1-b-2.jpg", link: "http://punkheartfest.com" },
+            { title: "NONAMEFEST 2026", date: "2026.10.15", city: "RIOT CITY", image: "./image/1-b-3.jpg", link: "http://nonamepunks.com" },
+            { title: "S.E.A TOUR 2026", date: "2026.11.20", city: "BANGKOK", image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&h=800&fit=crop", link: "" },
+            { title: "XXXX???? CHINA TOUR", date: "2026.12.05", city: "BEIJING", image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop", link: "" },
+            { title: "Clockenflap 2026", date: "2026.12.20", city: "HONG KONG", image: "https://totalticketing-ets-ttlcom-prod-singapore-web-files.s3.amazonaws.com/media/uploads/images/056a1c096df6d1bd.jpeg", link: "" },
+            { title: "XXXX ASIA TOUR", date: "2027.01.15", city: "TOKYO", image: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&h=800&fit=crop", link: "" },
+            { title: "XXXXXXXX CHINA", date: "2027.02.20", city: "SHANGHAI", image: "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=600&h=800&fit=crop", link: "" }
         ];
 
         let isPaused = false;
