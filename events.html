@@ -49,7 +49,7 @@
         .section-title { font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; font-size: clamp(32px, 6vw, 56px); letter-spacing: clamp(3px, 1vw, 8px); text-transform: uppercase; color: var(--dark-red); margin-bottom: 20px; animation: titleRedGlow 4s ease-in-out infinite; position: relative; display: inline-block; text-shadow: 0 0 20px rgba(139, 0, 0, 0.6); }
         @keyframes titleRedGlow { 0%, 100% { text-shadow: 0 0 20px rgba(139, 0, 0, 0.6), 0 0 40px rgba(139, 0, 0, 0.3); color: var(--dark-red); } 50% { text-shadow: 0 0 30px rgba(139, 0, 0, 1), 0 0 60px rgba(139, 0, 0, 0.6), 0 0 5px rgba(192, 192, 192, 0.8); color: #a00000; } }
         .section-subtitle { font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; font-size: clamp(14px, 2vw, 18px); letter-spacing: clamp(2px, 0.5vw, 4px); text-transform: uppercase; color: rgba(255, 255, 255, 0.7); max-width: 900px; margin: 0 auto; line-height: 1.6; animation: subtitlePulse 6s ease-in-out infinite; }
-        @keyframes subtitlePulse { 0%, 100% { opacity: 0.7; text-shadow: 0 0 10px rgba(139, 0, 0, 0.2); } 50% { opacity: 1; text-shadow: 0 0 20px rgba(139, 0, 0, 0.5), 0 0 5px rgba(192, 192, 192, 0.3); color: rgba(192, 192, 192, 0.95); } }
+        @keyframes subtitlePulse { 0%, 100% { opacity: 0.7; text-shadow: 0 0 10px rgba(139, 0, 0, 0.2); } 50% { opacity: 1; text-shadow: 0 0 20px rgba(139, 0, 0, 0.5), 0 0 5px rgba(192, 192, 192,0.3); color: rgba(192, 192, 192, 0.95); } }
         .events-grid { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 30px; padding: 0 20px; }
         .event-card { position: relative; background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%); overflow: hidden; cursor: pointer; transition: all 0.4s ease; border: 1px solid rgba(139, 0, 0, 0.3); aspect-ratio: 3/4; max-width: 400px; margin: 0 auto; width: 100%; }
         .event-card:hover { transform: translateY(-10px); border-color: rgba(139, 0, 0, 0.8); box-shadow: 0 0 30px rgba(139, 0, 0, 0.3), inset 0 0 20px rgba(139, 0, 0, 0.1); }
@@ -70,7 +70,7 @@
         .event-btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); transition: left 0.5s; }
         .event-btn:hover::before { left: 100%; }
         .event-btn:hover { background: var(--dark-red); border-color: var(--dark-red); box-shadow: 0 0 30px rgba(139, 0, 0, 0.8), 0 0 60px rgba(139, 0, 0, 0.4); transform: scale(1.05); letter-spacing: 3px; }
-        .event-btn.disabled { pointer-events: none; cursor: default; }
+        .event-btn.disabled { cursor: default; }
         .event-card.hidden { display: none; }
         .load-more-container { text-align: center; margin-top: 60px; display: none; }
         .load-more-container.visible { display: block; }
@@ -345,7 +345,7 @@
             .mobile-poster2-text { display: none !important; }
         }
 
-        /* å°ææº (375px - 480px) */
+        /* å°ææº(375px - 480px) */
         @media (max-width: 480px) {
             nav { padding: 0 15px; height: 60px; background: rgba(0, 0, 0, 0.5); }
             .logo-img { height: 32px; max-width: 120px; }
@@ -369,7 +369,7 @@
             .event-btn { padding: 10px 25px; font-size: 11px; margin-top: 20px; }
             .load-more-btn { padding: 12px 30px; font-size: 12px; }
 
-            /* æ»æ­åºå - å°ææºæ¾ç¤º1.5ä¸ªæµ·æ¥ï¼æç¤ºå¯æ»å¨ï¼ */
+            /* æ»æ­åºå - å°ææºæ¾ç¤º1.5ã¾keymore buttonï¼ æ¡£ç¤ºå¯æ»å¨ï¼ */
             .auto-scroll-section { padding: 0; }
             .auto-scroll-item { 
                 flex: 0 0 auto;
@@ -426,14 +426,14 @@
             .scroll-arrow { width: 30px; height: 45px; font-size: 16px; }
         }
 
-        /* è¶å°ææº (<375px) */
+        /* è¶µå°ææº (<375px) */
         @media (max-width: 375px) {
             .hero-title { font-size: 38px; letter-spacing: 3px; }
             .hero-subtitle { font-size: 11px; }
             .events-grid { padding: 0 15px; }
             .event-name { font-size: 16px; }
 
-            /* æ»æ­åºå - è¶å°ææºæ¾ç¤º1ä¸ªå®æ´æµ·æ¥ */
+            /* æ»æ­åºå - è¶µå°ææºæ¾ç¤º1ä¸ªå®æ´æµ·æ¥ */
             .auto-scroll-item { 
                 flex: 0 0 auto;
                 width: 198px;
@@ -487,7 +487,7 @@
         .event-status, .event-btn { opacity: 1 !important; visibility: visible !important; }
         .event-card:hover .event-poster { filter: brightness(1) !important; }
 
-        /* å¾®ä¿¡æµè§å¨è§¦æ¸æ¯æ */
+        /* å¾®ä¿ æµè§å¨è§¦æ¸æ¯æ */
         .wechat .auto-scroll-item {
             -webkit-tap-highlight-color: transparent;
         }
@@ -561,11 +561,11 @@
 
             <div class="events-grid" id="eventsGrid">
                 <div class="event-card" data-event-id="5">
-                    <img src="https://img.redocn.com/sheji/20250723/manianxinnianchunjiezhufuyujinsechuangyihaibaosucaibeijing_13616973.jpg" alt="A知名A" class="event-poster" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=No+Image'">
+                    <img src="https://www.shutterstock.com/image-vector/punk-rock-show-gig-poster-600nw-2456710009.jpg" alt="***SSS***" class="event-poster" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=No+Image'">
                     <div class="event-status soldout">SOLD OUT</div>
                     <div class="event-content">
-                        <h3 class="event-name">A知名A<br>A天竺A</h3>
-                        <div class="event-details">2026.05.31 | HONGKONG</div>
+                        <h3 class="event-name">***SSS***<br>MINI TOUR</h3>
+                        <div class="event-details">2026.07.18 | HONGKONG</div>
                         <div class="event-venue"></div>
                         <span class="event-btn disabled">查看详情</span>
                     </div>
@@ -605,13 +605,13 @@
                 </div>
 
                 <div class="event-card" data-event-id="5">
-                    <img src="https://img.redocn.com/sheji/20250723/manianxinnianchunjiezhufuyujinsechuangyihaibaosucaibeijing_13616973.jpg" alt="特別行動MINI" class="event-poster" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=No+Image'">
+                    <img src="https://ih1.redbubble.net/image.2331556488.4898/flat,750x,075,f-pad,750x1000,f8f8f8.webp" alt="特別行動MINI" class="event-poster" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=No+Image'">
                     <div class="event-status ontour">ON TOUR</div>
                     <div class="event-content">
                         <h3 class="event-name">特別行動MINI<br>睿派藝族</h3>
                         <div class="event-details">2026.10.18 | HONG KONG</div>
                         <div class="event-venue"></div>
-                        <a href="baidu.com" class="event-btn" target="_blank">競猜抽獎</a>
+                        <a href="punknews.com" class="event-btn" target="_blank">競猜抽獎</a>
                     </div>
                 </div>
 
@@ -682,7 +682,7 @@
                 <button class="scroll-arrow right" onclick="accelerateScroll('right')">ë</button>
                 <div class="auto-scroll-container" id="autoScrollContainer">
                     <div class="auto-scroll-track" id="autoScrollTrack">
-                        <!-- æ»æ­é¡¹ç®å°éè¿JSå æçæ -->
+                        <!-- æ»æ­é¡¹ç®å°éè¿JSå æçæ -->
                     </div>
                 </div>
             </div>
@@ -698,14 +698,14 @@
                     </div>
                 </div>
 
-                <!-- æµ·æ¥2 - 5å¸ è½®æ­ -->
+                <!-- 5¦·æ¥2 - 5å¸ è½®æ­ -->
                 <div class="poster-item-alt" data-poster-id="2">
                     <div class="poster-carousel-wrapper">
                         <div class="poster-carousel" id="posterCarousel">
                             <div class="poster-carousel-slide active"><img src="./image/2-old1.jpg" alt="Non Servium China Tour" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=Non+Servium'"></div>
                             <div class="poster-carousel-slide"><img src="./image/2-old2.jpg" alt="Skarface China Tour" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=Skarface'"></div>
                             <div class="poster-carousel-slide"><img src="./image/2-old3.jpg" alt="Acidez S.E Asia Tour" onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=Acidez'"></div>
-                            <div class="poster-carousel-slide"><img src="./image/2-old4.jpg" alt="Epic Past Gigs" onerror="this.src='https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=600&h=800&fit=crop'"></div>
+                            <div class="poster-carousel-slide"><img src="./image/2-old4.jpg" alt="Epic Past Gigs" onerror="this.src='https://images.unsplash.com/photo-1459749411175-04bf592ceea?w=600&h=800&fit=crop'"></div>
                             <div class="poster-carousel-slide"><img src="./image/2-old5.jpg" alt="Epic Past Gigs" onerror="this.src='https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=600&h=800&fit=crop'"></div>
                         </div>
                         <div class="carousel-dots" id="carouselDots">
@@ -796,6 +796,7 @@
                 { title: 'HAPPY NEW YEAR新年快樂!!!', date: '2026.01.01', city: 'ASIA', image: 'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&h=800&fit=crop', link: '' },
                 { title: 'PUNK HEART WARM-UP', date: '2026.01.17', city: 'XI\'AN', image: 'https://en.concerts-metal.com/images/flyers/202601/1768047587--PUNKHEART-_2026-WARM-UP.webp', link: '' },
                 { title: 'METAL STORM', date: '2026.02.10', city: 'KAOHSIUNG', image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop', link: '' },
+                { title: '*新活动A+', date: '2026.03.1', city: 'SHANGHAI', image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop', link: '' },
                 { title: 'BABYMETAL WORLD TOUR AUSTRALIA 2026', date: '2026.03.12', city: 'AUSTRALIA', image: 'https://babymetal.com/contents/1/TO/babymetal_insta45_OSN%20(2).jpg', link: 'https://babymetal.com' },
                 { title: 'Kraanium Asia Slam Tour 2026', date: '2026.03.30', city: 'ASIA', image: 'https://en.concerts-metal.com/images/flyers/202510/1759884648--Kraanium---Asia-Slam-Tour-2026.webp', link: '' },
                 { title: 'MONO Oath Latin America Tour 2026', date: '2026.04.15', city: 'LATIN AMERICA', image: 'https://img1.wsimg.com/isteam/ip/d3b0a7bc-ae98-44b3-90fd-0429527897cf/Mono%20SA%202026.jpg', link: 'https://www.monoofjapan.com/' },
@@ -808,7 +809,6 @@
                 { title: 'NONAMEFEST 2026', date: '2026.10.15', city: 'RIOT CITY', image: './image/1-b-3.jpg', link: 'http://nonamepunks.com' },
                 { title: 'XXX嘉宾 CHINA TOUR', date: '2026.11.05', city: 'BEIJING', image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop', link: '' },
                 { title: '大牌S.E.A TOUR 2026', date: '2026.11.20', city: 'BANGKOK', image: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&h=800&fit=crop', link: '' },
-                { title: '*新活动A+', date: '2026.12.18', city: 'SHANGHAI', image: './image/1-b-3.jpg', link: '' },
                 { title: 'Clockenflap 2026', date: '2026.12.20', city: 'HONG KONG', image: 'https://totalticketing-ets-ttlcom-prod-singapore-web-files.s3.amazonaws.com/media/uploads/images/056a1c096df6d1bd.jpeg', link: '' },
                 { title: 'XXXXXX ASIA TOUR', date: '2027.05.15', city: 'TOKYO', image: 'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&h=800&fit=crop', link: '' }
             ];
@@ -1243,7 +1243,7 @@
 
         // ================== åå§åè®åDOMï¼éè¦å¯ä»¥å¼ºå¶å±æ§ï¼ ================
         // å é¤åé¦æ°æ®ï¼èªå¨èªå¨å è½½åæ°æ®
-        let loadedCount = 0;
+        let loadedCount =  3 ;
         const totalCards = document.querySelectorAll('.event-card').length;
 
         function getColumnsPerRow() {
@@ -1277,15 +1277,14 @@
         }
 
         function loadMoreEvents() {
-            const columns = getColumnsPerRow();
-            loadedCount += columns;
-            if (loadedCount > totalCards) loadedCount = totalCards;
-            updateDisplay();
-        }
+                        loadedCount += 3;
+                        if (loadedCount > totalCards) loadedCount = totalCards;
+                        updateDisplay();
+                    }
 
         // åå§åï¼å¯éè¿åå§åæ°æ®
         document.addEventListener('DOMContentLoaded', function() {
-            loadedCount = getColumnsPerRow();
+            loadedCount = 3;
             updateDisplay();
             window.addEventListener('resize', function() {
                 const newColumns = getColumnsPerRow();
