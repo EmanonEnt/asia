@@ -964,7 +964,53 @@
             .social-icon { width: 34px; height: 34px; }
             .contact-item { font-size: 10px; }
         }
-    </style>
+    
+        /* Banner 海报强制拉伸保持 1280*672 比例 */
+        .rebel-slide {
+            aspect-ratio: 1280/672;
+            min-height: 400px;
+        }
+
+        .rebel-poster {
+            width: 100%;
+            height: 100%;
+            object-fit: fill !important;
+            object-position: center;
+        }
+
+        @media (max-width: 768px) {
+            .rebel-slide {
+                min-height: 250px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .rebel-slide {
+                min-height: 200px;
+            }
+        }
+
+        /* 触摸滑动支持 */
+        .rebel-banner {
+            touch-action: pan-y;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .rebel-slider {
+            touch-action: pan-y pinch-zoom;
+            cursor: grab;
+        }
+
+        .rebel-slider.dragging {
+            cursor: grabbing;
+            transition: none;
+        }
+
+        .rebel-slide {
+            touch-action: pan-y;
+        }
+</style>
 </head>
 <body>
 
@@ -1009,26 +1055,43 @@
             <div class="rebel-banner">
                 <div class="rebel-slider" id="rebelSlider">
                     <div class="rebel-slide" data-editable="banner-slide-1">
-                        <img src="./image/thenonameanti-.jpg" alt="The Noname Anti-IPA" class="rebel-poster"
-                             onerror="this.src='https://via.placeholder.com/1920x1080/1a0000/8b0000?text=THE+NONAME '" data-editable="banner-1-image" data-src="./image/thenonameanti-.jpg">
+                        <img src="https://eplus.jp/s/oki_img/0000171052/thechats/main_img_v2.webp?v=260126" alt="The Chats JAPAN 2026" class="rebel-poster"
+                             onerror="this.src='https://via.placeholder.com/1280x672/1a0000/8b0000?text=BANNER+1'" data-editable="banner-1-image" data-src="https://eplus.jp/s/oki_img/0000171052/thechats/main_img_v2.webp?v=260126">
                         <div class="rebel-content">
-                            <h2 data-editable="banner-1-title" data-text="THE NONAME ANTI-IPA">THE NONAME ANTI-IPA</h2>
-                            <button class="neon-btn" onclick="window.open('https://emanonent.wixstudio.com/livegigs/antiipa', '_blank')" data-editable="banner-1-btn" data-text="無名逆襲社交 IPA" data-href="https://emanonent.wixstudio.com/livegigs/antiipa">無名逆襲社交 IPA</button>
+                            <h2 data-editable="banner-1-title" data-text="The Chats JAPAN 2026">The Chats JAPAN 2026</h2>
+                            <button class="neon-btn" onclick="window.open('https://eplus.jp/sf/word/0000171052', '_blank')" data-editable="banner-1-btn" data-text="公演情報" data-href="https://eplus.jp/sf/word/0000171052">公演情報</button>
                         </div>
                     </div>
                     <div class="rebel-slide" data-editable="banner-slide-2">
-                        <img src="./image/punkheartbanner.jpg" alt="Punk Heart Festival 2026" class="rebel-poster"
-                             onerror="this.src='https://via.placeholder.com/1920x1080/1a0000/8b0000?text=PUNK+HEART '" data-editable="banner-2-image" data-src="./image/punkheartbanner.jpg">
+                        <img src="https://bandmaid.tokyo/s3/skiyaki/uploads/ckeditor/pictures/825706/content_260212_bm_worldtour_2026_rgb_01_X.jpg" alt="BAND-MAID WORLD TOUR 2026" class="rebel-poster"
+                             onerror="this.src='https://via.placeholder.com/1280x672/1a0000/8b0000?text=BANNER+2'" data-editable="banner-2-image" data-src="https://bandmaid.tokyo/s3/skiyaki/uploads/ckeditor/pictures/825706/content_260212_bm_worldtour_2026_rgb_01_X.jpg">
                         <div class="rebel-content">
-                            <h2 data-editable="banner-2-title" data-text="朋克心音樂節 2026">朋克心音樂節 2026</h2>
-                            <button class="neon-btn" onclick="window.open('http://punkheartfest.com', '_blank')" data-editable="banner-2-btn" data-text="PUNK HEART FESTIVAL" data-href="http://punkheartfest.com">PUNK HEART FESTIVAL</button>
+                            <h2 data-editable="banner-2-title" data-text="BAND-MAID WORLD TOUR 2026">BAND-MAID WORLD TOUR 2026</h2>
+                            <button class="neon-btn" onclick="window.open('https://bandmaid.tokyo/s3/skiyaki/uploads/ckeditor/pictures/825706/content_260212_bm_worldtour_2026_rgb_01_X.jpg', '_blank')" data-editable="banner-2-btn" data-text="HK Show Details Announced" data-href="https://bandmaid.tokyo/s3/skiyaki/uploads/ckeditor/pictures/825706/content_260212_bm_worldtour_2026_rgb_01_X.jpg">HK Show Details Announced</button>
                         </div>
-                    </div>                    <div class="rebel-slide" data-editable="banner-slide-3">
-                        <img src="https://scontent-lax3-2.xx.fbcdn.net/v/t39.30808-6/517369470_733088476152026_6933477700912273419_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=833d8c&_nc_ohc=5vejWm0NNAoQ7kNvwFcnF-x&_nc_oc=Adl5NGs1NgQHAHW7lzXpW_9QmaGsxh2DXPddNjkiVtuVPeyCUS0k_H26IrabWYJLAsg&_nc_zt=23&_nc_ht=scontent-lax3-2.xx&_nc_gid=6DLj67-tiVHtp2w1ppodQA&oh=00_Afu-x53jo5lsME3h932drg8ZZTMkYefd_W8eAeYw1CXUKw&oe=699513E7" alt="My Chemical Romance" class="rebel-poster"
-                             onerror="this.src='https://via.placeholder.com/1920x1080/1a0000/8b0000?text=MCR+TOUR '" data-editable="banner-3-image" data-src="https://scontent-lax3-2.xx.fbcdn.net/v/t39.30808-6/517369470_733088476152026_6933477700912273419_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=833d8c&_nc_ohc=5vejWm0NNAoQ7kNvwFcnF-x&_nc_oc=Adl5NGs1NgQHAHW7lzXpW_9QmaGsxh2DXPddNjkiVtuVPeyCUS0k_H26IrabWYJLAsg&_nc_zt=23&_nc_ht=scontent-lax3-2.xx&_nc_gid=6DLj67-tiVHtp2w1ppodQA&oh=00_Afu-x53jo5lsME3h932drg8ZZTMkYefd_W8eAeYw1CXUKw&oe=699513E7">
+                    </div>
+                    <div class="rebel-slide" data-editable="banner-slide-3">
+                        <img src="./image/punkheartbanner.jpg" alt="朋克心音樂節 2026" class="rebel-poster"
+                             onerror="this.src='https://via.placeholder.com/1280x672/1a0000/8b0000?text=BANNER+3'" data-editable="banner-3-image" data-src="./image/punkheartbanner.jpg">
                         <div class="rebel-content">
-                            <h2 data-editable="banner-3-title" data-text="My Chemical Romance S.E Asia Tour 2026">My Chemical Romance<br>S.E Asia Tour 2026</h2>
-                            <button class="neon-btn" onclick="window.open('https://www.mychemicalromance.com/', '_blank')" data-editable="banner-3-btn" data-text="MORE INFOS" data-href="https://www.mychemicalromance.com/">MORE INFOS</button>
+                            <h2 data-editable="banner-3-title" data-text="朋克心音樂節 2026">朋克心音樂節 2026</h2>
+                            <button class="neon-btn" onclick="window.open('http://Punkheartfest.com', '_blank')" data-editable="banner-3-btn" data-text="PUNK HEART FESTIVAL" data-href="http://Punkheartfest.com">PUNK HEART FESTIVAL</button>
+                        </div>
+                    </div>
+                    <div class="rebel-slide" data-editable="banner-slide-4">
+                        <img src="https://scontent-lax3-2.xx.fbcdn.net/v/t39.30808-6/517369470_733088476152026_6933477700912273419_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=833d8c&_nc_ohc=5vejWm0NNAoQ7kNvwFcnF-x&_nc_oc=Adl5NGs1NgQHAHW7lzXpW_9QmaGsxh2DXPddNjkiVtuVPeyCUS0k_H26IrabWYJLAsg&_nc_zt=23&_nc_ht=scontent-lax3-2.xx&_nc_gid=6DLj67-tiVHtp2w1ppodQA&oh=00_Afu-x53jo5lsME3h932drg8ZZTMkYefd_W8eAeYw1CXUKw&oe=699513E7" alt="My Chemical Romance S.E Asia Tour 2026" class="rebel-poster"
+                             onerror="this.src='https://via.placeholder.com/1280x672/1a0000/8b0000?text=BANNER+4'" data-editable="banner-4-image" data-src="https://scontent-lax3-2.xx.fbcdn.net/v/t39.30808-6/517369470_733088476152026_6933477700912273419_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=833d8c&_nc_ohc=5vejWm0NNAoQ7kNvwFcnF-x&_nc_oc=Adl5NGs1NgQHAHW7lzXpW_9QmaGsxh2DXPddNjkiVtuVPeyCUS0k_H26IrabWYJLAsg&_nc_zt=23&_nc_ht=scontent-lax3-2.xx&_nc_gid=6DLj67-tiVHtp2w1ppodQA&oh=00_Afu-x53jo5lsME3h932drg8ZZTMkYefd_W8eAeYw1CXUKw&oe=699513E7">
+                        <div class="rebel-content">
+                            <h2 data-editable="banner-4-title" data-text="My Chemical Romance S.E Asia Tour 2026">My Chemical Romance S.E Asia Tour 2026</h2>
+                            <button class="neon-btn" onclick="window.open('https://www.mychemicalromance.com/#tour', '_blank')" data-editable="banner-4-btn" data-text="MORE INFOS" data-href="https://www.mychemicalromance.com/#tour">MORE INFOS</button>
+                        </div>
+                    </div>
+                    <div class="rebel-slide" data-editable="banner-slide-5">
+                        <img src="./image/thenonameanti-.jpg" alt="THE NONAME ANTI IPA" class="rebel-poster"
+                             onerror="this.src='https://via.placeholder.com/1280x672/1a0000/8b0000?text=BANNER+5'" data-editable="banner-5-image" data-src="./image/thenonameanti-.jpg">
+                        <div class="rebel-content">
+                            <h2 data-editable="banner-5-title" data-text="THE NONAME ANTI IPA">THE NONAME ANTI IPA</h2>
+                            <button class="neon-btn" onclick="window.open('http://Nonamepunks.com', '_blank')" data-editable="banner-5-btn" data-text="無名逆襲社交 IPA" data-href="http://Nonamepunks.com">無名逆襲社交 IPA</button>
                         </div>
                     </div>
                 </div>
@@ -1247,13 +1310,127 @@
         let currentSlide = 0;
         const slides = document.querySelectorAll('.rebel-slide');
         const totalSlides = slides.length;
+        let autoSlideInterval;
 
-        function nextSlide() {
-            currentSlide = (currentSlide + 1) % totalSlides;
+        // 触摸滑动变量
+        let startX = 0;
+        let currentX = 0;
+        let isDragging = false;
+        let startTranslate = 0;
+
+        function goToSlide(index) {
+            currentSlide = index;
+            if (currentSlide < 0) currentSlide = totalSlides - 1;
+            if (currentSlide >= totalSlides) currentSlide = 0;
             slider.style.transform = `translateX(-${currentSlide * 100}%)`;
         }
 
-        setInterval(nextSlide, 5000);
+        function nextSlide() {
+            goToSlide(currentSlide + 1);
+        }
+
+        function prevSlide() {
+            goToSlide(currentSlide - 1);
+        }
+
+        function startAutoSlide() {
+            autoSlideInterval = setInterval(nextSlide, 5000);
+        }
+
+        function stopAutoSlide() {
+            clearInterval(autoSlideInterval);
+        }
+
+        // 触摸事件处理
+        slider.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            currentX = startX;
+            isDragging = true;
+            stopAutoSlide();
+            slider.classList.add('dragging');
+        }, { passive: true });
+
+        slider.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            currentX = e.touches[0].clientX;
+            const diff = currentX - startX;
+            const slideWidth = slider.offsetWidth;
+            const translate = -(currentSlide * 100) + (diff / slideWidth * 100);
+            slider.style.transform = `translateX(${translate}%)`;
+        }, { passive: true });
+
+        slider.addEventListener('touchend', (e) => {
+            if (!isDragging) return;
+            isDragging = false;
+            slider.classList.remove('dragging');
+
+            const diff = currentX - startX;
+            const threshold = slider.offsetWidth * 0.15; // 15% 滑动阈值
+
+            if (Math.abs(diff) > threshold) {
+                if (diff > 0) {
+                    prevSlide();
+                } else {
+                    nextSlide();
+                }
+            } else {
+                goToSlide(currentSlide);
+            }
+
+            startAutoSlide();
+        });
+
+        // 鼠标拖拽支持（桌面端）
+        slider.addEventListener('mousedown', (e) => {
+            startX = e.clientX;
+            currentX = startX;
+            isDragging = true;
+            stopAutoSlide();
+            slider.classList.add('dragging');
+            e.preventDefault();
+        });
+
+        slider.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            currentX = e.clientX;
+            const diff = currentX - startX;
+            const slideWidth = slider.offsetWidth;
+            const translate = -(currentSlide * 100) + (diff / slideWidth * 100);
+            slider.style.transform = `translateX(${translate}%)`;
+        });
+
+        slider.addEventListener('mouseup', (e) => {
+            if (!isDragging) return;
+            isDragging = false;
+            slider.classList.remove('dragging');
+
+            const diff = currentX - startX;
+            const threshold = slider.offsetWidth * 0.15;
+
+            if (Math.abs(diff) > threshold) {
+                if (diff > 0) {
+                    prevSlide();
+                } else {
+                    nextSlide();
+                }
+            } else {
+                goToSlide(currentSlide);
+            }
+
+            startAutoSlide();
+        });
+
+        slider.addEventListener('mouseleave', () => {
+            if (isDragging) {
+                isDragging = false;
+                slider.classList.remove('dragging');
+                goToSlide(currentSlide);
+                startAutoSlide();
+            }
+        });
+
+        // 启动自动轮播
+        startAutoSlide();
 
         function updateContent(editableId, newValue, type = 'text') {
             const element = document.querySelector(`[data-editable="${editableId}"]`);
