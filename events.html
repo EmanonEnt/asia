@@ -531,6 +531,13 @@
 
         .event-btn.disabled { pointer-events: auto; cursor: default; }
         .event-btn.disabled:hover { background: var(--dark-red); border-color: var(--dark-red); box-shadow: 0 0 30px rgba(139, 0, 0, 0.8), 0 0 60px rgba(139, 0, 0, 0.4); transform: scale(1.05); letter-spacing: 3px; }
+
+        .event-card.expired:hover { transform: none; border-color: rgba(139, 0, 0, 0.3); box-shadow: none; }
+        .event-card.expired:hover .event-poster { filter: brightness(0.7); transform: none; }
+        .event-card.expired:hover .event-content { background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0.6) 70%, rgba(0,0,0,0.8) 100%); }
+        .event-card.expired:hover .event-name,
+        .event-card.expired:hover .event-details,
+        .event-card.expired:hover .event-venue { opacity: 1; visibility: visible; }
 </style>
 </head>
 <body>
@@ -565,7 +572,7 @@
             </div>
 
             <div class="events-grid" id="eventsGrid">
-                <div class="event-card" data-event-id="5">
+                <div class="event-card " data-event-id="5">
                     <img src="https://www.shutterstock.com/image-vector/punk-rock-show-gig-poster-600nw-2456710009.jpg" alt="***AAA***" class="event-poster" onerror="this.src='./image/asia-asiaad.jpg'">
                     <div class="event-status soldout">SOLD OUT</div>
                     <div class="event-content">
@@ -576,7 +583,7 @@
                     </div>
                 </div>
 
-                <div class="event-card" data-event-id="1">
+                <div class="event-card " data-event-id="1">
                     <img src="./image/1-b-2.jpg" alt="PUNK HEART FESTIVAL 2026" class="event-poster" onerror="this.src='./image/asia-asiaad.jpg'">
                     <div class="event-status countdown" data-countdown-date="2026-09-25" id="status-1">CALCULATING...</div>
                     <div class="event-content">
@@ -587,7 +594,7 @@
                     </div>
                 </div>
 
-                <div class="event-card" data-event-id="2">
+                <div class="event-card " data-event-id="2">
                     <img src="./image/1-b-2.jpg" alt="PUNK HEART FESTIVAL 2026 WUHAN" class="event-poster" onerror="this.src='./image/asia-asiaad.jpg'">
                     <div class="event-status countdown" data-countdown-date="2026-09-27" id="status-2">CALCULATING...</div>
                     <div class="event-content">
@@ -598,7 +605,7 @@
                     </div>
                 </div>
 
-                <div class="event-card" data-event-id="3">
+                <div class="event-card " data-event-id="3">
                     <img src="./image/1-b-3.jpg" alt="NONAMEFEST 2026" class="event-poster" onerror="this.src='./image/asia-asiaad.jpg'">
                     <div class="event-status ontour">ON TOUR</div>
                     <div class="event-content">
@@ -609,7 +616,7 @@
                     </div>
                 </div>
 
-                <div class="event-card" data-event-id="5">
+                <div class="event-card " data-event-id="5">
                     <img src="https://ih1.redbubble.net/image.2331556488.4898/flat,750x,075,f-pad,750x1000,f8f8f8.webp" alt="特別行動MINI" class="event-poster" onerror="this.src='./image/asia-asiaad.jpg'">
                     <div class="event-status ontour">ON TOUR</div>
                     <div class="event-content">
@@ -620,7 +627,7 @@
                     </div>
                 </div>
 
-                <div class="event-card" data-event-id="8">
+                <div class="event-card " data-event-id="8">
                     <img src="https://img.redocn.com/sheji/20250723/manianxinnianchunjiezhufuyujinsechuangyihaibaosucaibeijing_13616973.jpg" alt="X内部活動X" class="event-poster" onerror="this.src='./image/asia-asiaad.jpg'">
                     <div class="event-status soldout">SOLD OUT</div>
                     <div class="event-content">
@@ -631,7 +638,7 @@
                     </div>
                 </div>
 
-                <div class="event-card" data-event-id="7">
+                <div class="event-card " data-event-id="7">
                     <img src="https://img.redocn.com/sheji/20250723/manianxinnianchunjiezhufuyujinsechuangyihaibaosucaibeijing_13616973.jpg" alt="XX待定XX" class="event-poster" onerror="this.src='./image/asia-asiaad.jpg'">
                     <div class="event-status ontour">ON TOUR</div>
                     <div class="event-content">
@@ -642,7 +649,7 @@
                     </div>
                 </div>
 
-                <div class="event-card" data-event-id="6">
+                <div class="event-card " data-event-id="6">
                     <img src="https://img.redocn.com/sheji/20250723/manianxinnianchunjiezhufuyujinsechuangyihaibaosucaibeijing_13616973.jpg" alt="XXX大牌到來XXX" class="event-poster" onerror="this.src='./image/asia-asiaad.jpg'">
                     <div class="event-status countdown" data-countdown-date="2027-05-11" id="status-6">CALCULATING...</div>
                     <div class="event-content">
@@ -653,7 +660,7 @@
                     </div>
                 </div>
 
-                <div class="event-card" data-event-id="4">
+                <div class="event-card expired" data-event-id="4">
                     <img src="https://en.concerts-metal.com/images/flyers/202601/1768047587--PUNKHEART-_2026-WARM-UP.webp" alt="PUNK HEART FESTIVAL 2026 WARM-UP" class="event-poster" onerror="this.src='./image/asia-asiaad.jpg'">
                     <div class="event-status soldout">SOLD OUT</div>
                     <div class="event-content">
@@ -664,7 +671,7 @@
                     </div>
                 </div>
 
-                <div class="event-card" data-event-id="9">
+                <div class="event-card expired" data-event-id="9">
                     <img src="https://img.redocn.com/sheji/20250723/manianxinnianchunjiezhufuyujinsechuangyihaibaosucaibeijing_13616973.jpg" alt="HAPPY NEW YEAR！" class="event-poster" onerror="this.src='./image/asia-asiaad.jpg'">
                     <div class="event-status soldout">SOLD OUT</div>
                     <div class="event-content">
@@ -798,9 +805,9 @@
     <script>
         // æ»æ­æ´»å¨æ°æ® - 18ä¸ªæ´»å¨ï¼4ä¸ªè¿æ + 14ä¸ªå³å°åçï¼
         const carouselData = [
-                { title: 'HAPPY NEW YEAR新年快樂!!!', date: '2026.01.01', city: 'ASIA', image: 'https://img.redocn.com/sheji/20250723/manianxinnianchunjiezhufuyujinsechuangyihaibaosucaibeijing_13616973.jpg', link: '' },
+                { title: 'HAPPY NEW YEAR新年快樂!!!', date: '2026.01.01', city: 'ASIA', image: 'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&h=800&fit=crop', link: '' },
                 { title: 'PUNK HEART WARM-UP', date: '2026.01.17', city: 'XI\'AN', image: 'https://en.concerts-metal.com/images/flyers/202601/1768047587--PUNKHEART-_2026-WARM-UP.webp', link: '' },
-                { title: 'METAL STORM', date: '2026.02.10', city: 'KAOHSIUNG', image: 'https://img.redocn.com/sheji/20250723/manianxinnianchunjiezhufuyujinsechuangyihaibaosucaibeijing_13616973.jpg', link: '' },
+                { title: 'METAL STORM', date: '2026.02.10', city: 'KAOHSIUNG', image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop', link: '' },
                 { title: '*S活动S+', date: '2026.03.07', city: 'SHANGHAI', image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop', link: '' },
                 { title: 'BABYMETAL WORLD TOUR AUSTRALIA 2026', date: '2026.03.12', city: 'AUSTRALIA', image: 'https://babymetal.com/contents/1/TO/babymetal_insta45_OSN%20(2).jpg', link: 'https://babymetal.com' },
                 { title: 'Kraanium Asia Slam Tour 2026', date: '2026.03.30', city: 'ASIA', image: 'https://en.concerts-metal.com/images/flyers/202510/1759884648--Kraanium---Asia-Slam-Tour-2026.webp', link: '' },
@@ -808,14 +815,14 @@
                 { title: '*HARDCORE REVOLUTION*', date: '2026.05.21', city: 'SINGAPORE', image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&h=800&fit=crop', link: '' },
                 { title: '凸METAL MAYHEM凸', date: '2026.06.15', city: 'SEOUL', image: 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=600&h=800&fit=crop', link: '' },
                 { title: 'ROCK HEART FEST', date: '2026.07.30', city: 'OSAKA', image: 'https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=600&h=800&fit=crop', link: '' },
-                { title: 'PUNK REVIVAL', date: '2026.08.18', city: 'MANILA', image: './image/asia-asiaad.jpg', link: '' },
+                { title: 'PUNK REVIVAL', date: '2026.08.18', city: 'MANILA', image: 'https://images.unsplash.com/photo-1501612780327-45045538702b?w=600&h=800&fit=crop', link: '' },
                 { title: 'PUNK HEART FESTIVAL', date: '2026.09.25', city: 'TBA', image: './image/1-b-2.jpg', link: 'http://punkheartfest.com' },
                 { title: 'PUNK HEART WUHAN', date: '2026.09.27', city: 'WUHAN', image: './image/1-b-2.jpg', link: 'http://punkheartfest.com' },
                 { title: 'NONAMEFEST 2026', date: '2026.10.15', city: 'RIOT CITY', image: './image/1-b-3.jpg', link: 'http://nonamepunks.com' },
                 { title: 'XXX嘉宾 CHINA TOUR', date: '2026.11.05', city: 'BEIJING', image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop', link: '' },
                 { title: '大牌S.E.A TOUR 2026', date: '2026.11.20', city: 'BANGKOK', image: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&h=800&fit=crop', link: '' },
                 { title: 'Clockenflap 2026', date: '2026.12.20', city: 'HONG KONG', image: 'https://totalticketing-ets-ttlcom-prod-singapore-web-files.s3.amazonaws.com/media/uploads/images/056a1c096df6d1bd.jpeg', link: '' },
-                { title: 'XXXXXX ASIA TOUR', date: '2027.05.15', city: 'TOKYO', image: 'https://img.redocn.com/sheji/20250723/manianxinnianchunjiezhufuyujinsechuangyihaibaosucaibeijing_13616973.jpg', link: '' }
+                { title: 'XXXXXX ASIA TOUR', date: '2027.05.15', city: 'TOKYO', image: 'https://img.freepik.com/premium-vector/hand-drawn-goat-zodiac-sign-chinese-horoscope-symbol-new-year-2027-eastern-banner_595023-498.jpg', link: '' }
             ];
 
         let isPaused = false;
@@ -1230,7 +1237,7 @@
                     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
                     if (days > 0) {
                         el.textContent = days + 'D ' + hours + 'H ' + minutes + 'M';
-                    } else if (lours > 0) {
+                    } else if (hours > 0) {
                         el.textContent = hours + 'H ' + minutes + 'M';
                     } else {
                         el.textContent = minutes + 'M';
