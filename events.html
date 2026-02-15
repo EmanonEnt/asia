@@ -798,9 +798,9 @@
     <script>
         // æ»æ­æ´»å¨æ°æ® - 18ä¸ªæ´»å¨ï¼4ä¸ªè¿æ + 14ä¸ªå³å°åçï¼
         const carouselData = [
-                { title: 'HAPPY NEW YEAR新年快樂!!!', date: '2026.01.01', city: 'ASIA', image: 'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&h=800&fit=crop', link: '' },
+                { title: 'HAPPY NEW YEAR新年快樂!!!', date: '2026.01.01', city: 'ASIA', image: 'https://img.redocn.com/sheji/20250723/manianxinnianchunjiezhufuyujinsechuangyihaibaosucaibeijing_13616973.jpg', link: '' },
                 { title: 'PUNK HEART WARM-UP', date: '2026.01.17', city: 'XI\'AN', image: 'https://en.concerts-metal.com/images/flyers/202601/1768047587--PUNKHEART-_2026-WARM-UP.webp', link: '' },
-                { title: 'METAL STORM', date: '2026.02.10', city: 'KAOHSIUNG', image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop', link: '' },
+                { title: 'METAL STORM', date: '2026.02.10', city: 'KAOHSIUNG', image: 'https://img.redocn.com/sheji/20250723/manianxinnianchunjiezhufuyujinsechuangyihaibaosucaibeijing_13616973.jpg', link: '' },
                 { title: '*S活动S+', date: '2026.03.07', city: 'SHANGHAI', image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop', link: '' },
                 { title: 'BABYMETAL WORLD TOUR AUSTRALIA 2026', date: '2026.03.12', city: 'AUSTRALIA', image: 'https://babymetal.com/contents/1/TO/babymetal_insta45_OSN%20(2).jpg', link: 'https://babymetal.com' },
                 { title: 'Kraanium Asia Slam Tour 2026', date: '2026.03.30', city: 'ASIA', image: 'https://en.concerts-metal.com/images/flyers/202510/1759884648--Kraanium---Asia-Slam-Tour-2026.webp', link: '' },
@@ -815,7 +815,7 @@
                 { title: 'XXX嘉宾 CHINA TOUR', date: '2026.11.05', city: 'BEIJING', image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop', link: '' },
                 { title: '大牌S.E.A TOUR 2026', date: '2026.11.20', city: 'BANGKOK', image: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&h=800&fit=crop', link: '' },
                 { title: 'Clockenflap 2026', date: '2026.12.20', city: 'HONG KONG', image: 'https://totalticketing-ets-ttlcom-prod-singapore-web-files.s3.amazonaws.com/media/uploads/images/056a1c096df6d1bd.jpeg', link: '' },
-                { title: 'XXXXXX ASIA TOUR', date: '2027.05.15', city: 'TOKYO', image: 'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&h=800&fit=crop', link: '' }
+                { title: 'XXXXXX ASIA TOUR', date: '2027.05.15', city: 'TOKYO', image: 'https://img.redocn.com/sheji/20250723/manianxinnianchunjiezhufuyujinsechuangyihaibaosucaibeijing_13616973.jpg', link: '' }
             ];
 
         let isPaused = false;
@@ -1230,7 +1230,7 @@
                     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
                     if (days > 0) {
                         el.textContent = days + 'D ' + hours + 'H ' + minutes + 'M';
-                    } else if (hours > 0) {
+                    } else if (lours > 0) {
                         el.textContent = hours + 'H ' + minutes + 'M';
                     } else {
                         el.textContent = minutes + 'M';
