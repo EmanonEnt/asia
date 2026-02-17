@@ -1320,6 +1320,7 @@
         const carouselData = [
                 { title: 'HAPPY NEW YEAR新年快樂!!!', date: '2026.01.01', city: 'ASIA', image: 'https://img.redocn.com/sheji/20250723/manianxinnianchunjiezhufuyujinsechuangyihaibaosucaibeijing_13616973.jpg', link: '' },
                 { title: 'PUNK HEART WARM-UP', date: '2026.01.17', city: 'XI\'AN', image: 'https://en.concerts-metal.com/images/flyers/202601/1768047587--PUNKHEART-_2026-WARM-UP.webp', link: '' },
+                { title: 'METAL STORM', date: '2026.02.10', city: 'KAOHSIUNG', image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop', link: '' },
                 { title: 'BABYMETAL WORLD TOUR AUSTRALIA 2026', date: '2026.03.12', city: 'AUSTRALIA', image: 'https://babymetal.com/contents/1/TO/babymetal_insta45_OSN%20(2).jpg', link: 'https://babymetal.com' },
                 { title: 'Kraanium Asia Slam Tour 2026', date: '2026.03.30', city: 'ASIA', image: 'https://en.concerts-metal.com/images/flyers/202510/1759884648--Kraanium---Asia-Slam-Tour-2026.webp', link: '' },
                 { title: 'MONO Oath Latin America Tour 2026', date: '2026.04.15', city: 'LATIN AMERICA', image: 'https://img1.wsimg.com/isteam/ip/d3b0a7bc-ae98-44b3-90fd-0429527897cf/Mono%20SA%202026.jpg', link: 'https://www.monoofjapan.com/' },
@@ -1334,7 +1335,6 @@
                 { title: 'XXX嘉宾 CHINA TOUR', date: '2026.11.05', city: 'BEIJING', image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop', link: '' },
                 { title: '大牌S.E.A TOUR 2026', date: '2026.11.20', city: 'BANGKOK', image: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&h=800&fit=crop', link: '' },
                 { title: 'Clockenflap 2026', date: '2026.12.20', city: 'HONG KONG', image: 'https://totalticketing-ets-ttlcom-prod-singapore-web-files.s3.amazonaws.com/media/uploads/images/056a1c096df6d1bd.jpeg', link: '' },
-                { title: 'NEW YEAR PARTY', date: '2027.01.01', city: 'TBA', image: 'https://img.freepik.com/premium-vector/hand-drawn-goat-zodiac-sign-chinese-horoscope-symbol-new-year-2027-eastern-banner_595023-498.jpg', link: '' },
                 { title: 'XXXXXX ASIA TOUR', date: '2027.05.15', city: 'TOKYO', image: 'https://img.freepik.com/premium-vector/hand-drawn-goat-zodiac-sign-chinese-horoscope-symbol-new-year-2027-eastern-banner_595023-498.jpg', link: '' }
             ];
 
@@ -2019,18 +2019,21 @@
 
         function shareToPlatform(platform) {
             const modal = document.getElementById('shareModal');
-            const title = modal.dataset.title;
-            const city = modal.dataset.city;
-            const date = modal.dataset.date;
-            const link = modal.dataset.link;
+            const title = modal.dataset.title || '';
+            const city = modal.dataset.city || '';
+            const date = modal.dataset.date || '';
+            const image = modal.dataset.image || '';
+            const link = modal.dataset.link || '';
 
             const tags = generateTags(title, city);
             const tagsStr = tags.map(function(t) { return '#' + t; }).join(' ');
 
+            // æå»ºåäº«ææ¬ï¼åå«ææä¿¡æ¯
             let shareText = title;
             if (city) shareText += ' - ' + city;
             if (date) shareText += ' (' + date + ')';
             shareText += '\n\n' + tagsStr;
+            if (image) shareText += '\n\nPoster: ' + image;
             shareText += '\n\nCheck out more events at ' + LIVEGIGS_URL;
             if (link) shareText += '\nEvent link: ' + link;
 
@@ -2042,17 +2045,15 @@
 
             switch(platform) {
                 case 'facebook':
-                    // Facebookåäº« - ä½¿ç¨sharer.php
-                    // æ³¨æï¼Facebook sharer.phpä¸åæ¯æpictureåæ°ï¼å¾çéè¦éè¿OG metaæ ç­¾è®¾ç½®
-                    // æä»¬ä½¿ç¨quoteåæ°ä¼ éå®æ´çæå­æè¿°
-                    const fbText = modal.dataset.description || encodedText;
-                    url = 'https://www.facebook.com/sharer/sharer.php?u=' + shareUrl + '&quote=' + encodeURIComponent(fbText);
+                    // Facebookåäº« - ä½¿ç¨quoteåæ°ä¼ éå®æ´æå­æè¿°ï¼åå«tagsåå¾çURLï¼
+                    url = 'https://www.facebook.com/sharer/sharer.php?u=' + shareUrl + '&quote=' + encodedText;
                     window.open(url, '_blank', 'width=600,height=400');
                     break;
 
                 case 'instagram':
+                    // Instagramæ²¡æç´æ¥åäº«URLï¼å¤å¶åå®¹å°åªè´´æ¿
                     copyToClipboard(shareText);
-                    alert('Content copied! Open Instagram to share.');
+                    alert('Content copied to clipboard!\n\nPlease open Instagram app and paste to share.\n\nContent includes:\n- Event title, city, date\n- Tags\n- Poster image URL\n- LiveGigs link');
                     break;
 
                 case 'whatsapp':
@@ -2077,26 +2078,50 @@
 
                 case 'wechat-friend':
                 case 'wechat-moments':
-                    handleWeChatShare(shareText);
+                    handleWeChatShare(shareText, image);
                     break;
             }
 
             closeShareModal();
         }
 
-        function handleWeChatShare(text) {
+        function handleWeChatShare(text, image) {
             const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            const isWeChat = /MicroMessenger/i.test(navigator.userAgent);
 
-            if (isMobile) {
-                const wechatUrl = 'weixin://dl/officialaccounts';
+            // åå¤åäº«åå®¹
+            let shareContent = text;
+            if (image && !text.includes(image)) {
+                shareContent += '\n\nPoster: ' + image;
+            }
+
+            if (isWeChat) {
+                // å·²ç»å¨å¾®ä¿¡åï¼æç¤ºç¨æ·ä½¿ç¨å¾®ä¿¡åçåäº«
+                copyToClipboard(shareContent);
+                alert('You are in WeChat!\n\nContent copied to clipboard.\nPlease use WeChat\'s native share button (top right menu) to share this event.\n\nContent includes event details and poster image URL.');
+            } else if (isMobile) {
+                // ç§»å¨ç«¯ä½ä¸å¨å¾®ä¿¡å
+                copyToClipboard(shareContent);
+
+                // å°è¯æå¼å¾®ä¿¡
+                const wechatUrl = 'weixin://';
                 window.location.href = wechatUrl;
-                copyToClipboard(text);
+
                 setTimeout(function() {
-                    alert('Please paste the content in WeChat to share.');
-                }, 500);
+                    alert('Content copied to clipboard!\n\nIf WeChat didn\'t open automatically, please:\n1. Open WeChat app manually\n2. Paste the copied content to share\n\nContent includes event details and poster image URL.');
+                }, 1000);
             } else {
-                document.getElementById('wechatQRModal').classList.add('active');
-                copyToClipboard(text);
+                // æ¡é¢ç«¯ - æ¾ç¤ºäºç»´ç å¼¹çª
+                copyToClipboard(shareContent);
+
+                // æ´æ°æç¤ºææ¬
+                const qrModal = document.getElementById('wechatQRModal');
+                const qrHint = qrModal.querySelector('.wechat-qr-hint');
+                if (qrHint) {
+                    qrHint.innerHTML = 'Content copied to clipboard!<br>Open WeChat on your phone and paste to share.<br><br>Content includes: Event details, tags, and poster image URL.';
+                }
+
+                qrModal.classList.add('active');
             }
         }
 
@@ -2283,149 +2308,5 @@
             <button class="wechat-qr-close" onclick="closeWeChatQR()">Got it</button>
         </div>
     </div>
-
-        <!-- 增强分享脚本：确保所有平台分享带标签、Facebook正确文字、微信二维码真实有效 -->
-        <script>
-        (function() {
-            // 保存原始函数
-            const originalShareToPlatform = window.shareToPlatform;
-            const originalHandleWeChatShare = window.handleWeChatShare;
-            const originalOpenShareModal = window.openShareModal;
-
-            // 重写openShareModal，在标签中增加固定品牌标签
-            window.openShareModal = function(title, city, date, image, link) {
-                if (originalOpenShareModal) {
-                    originalOpenShareModal(title, city, date, image, link);
-                }
-                // 额外添加 #LiveGigsAsia 标签
-                const tagsEl = document.getElementById('shareEventTags');
-                if (tagsEl) {
-                    const existing = tagsEl.innerHTML;
-                    if (existing && !existing.includes('LiveGigsAsia')) {
-                        tagsEl.innerHTML = existing + '<span class="share-tag">LiveGigsAsia</span>';
-                    } else if (!existing) {
-                        tagsEl.innerHTML = '<span class="share-tag">LiveGigsAsia</span>';
-                    }
-                }
-            };
-
-            // 重写handleWeChatShare，电脑端显示真实二维码（Google Charts）
-            window.handleWeChatShare = function(text) {
-                const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-                const shareText = text || "Share this event on WeChat";
-
-                if (isMobile) {
-                    location.href = "weixin://";
-                    copyToClipboard(shareText);
-                    setTimeout(() => {
-                        alert("Please paste the content in WeChat to share.");
-                    }, 500);
-                } else {
-                    // 显示二维码模态框，使用Google Charts API生成真实QR
-                    const modal = document.getElementById('wechatQRModal');
-                    if (!modal) return;
-                    // 重构内容
-                    modal.innerHTML = `
-                        <div class="wechat-qr-content" style="background:#fff; border-radius:12px; padding:30px; text-align:center; max-width:300px; margin:auto;">
-                            <h3 style="font-size:18px; color:#333; margin-bottom:15px;">Scan to Share on WeChat</h3>
-                            <img src="https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=${encodeURIComponent(shareText)}" alt="QR Code" style="width:200px; height:200px; margin:0 auto 15px;">
-                            <p style="font-size:12px; color:#666;">Content copied to clipboard.<br>Open WeChat and scan this code.</p>
-                            <button onclick="document.getElementById('wechatQRModal').style.display='none'" style="margin-top:15px; padding:8px 24px; background:#07c160; color:#fff; border:none; border-radius:4px; cursor:pointer;">Got it</button>
-                        </div>
-                    `;
-                    modal.style.display = 'flex';
-                    copyToClipboard(shareText);
-                }
-            };
-
-            // 重写shareToPlatform，确保所有平台分享文字统一并带标签，Facebook正确
-            window.shareToPlatform = function(platform) {
-                const modal = document.getElementById('shareModal');
-                if (!modal) return;
-
-                const title = modal.dataset.title || 'Event';
-                const city = modal.dataset.city || '';
-                const date = modal.dataset.date || '';
-                const link = modal.dataset.link || '';
-                
-                // 生成标签，强制加入品牌标签
-                const tags = (window.generateTags && window.generateTags(title, city)) || [];
-                const tagsStr = tags.map(t => '#' + t).join(' ') + ' #LiveGigsAsia';
-
-                let shareText = title;
-                if (city) shareText += ' - ' + city;
-                if (date) shareText += ' (' + date + ')';
-                shareText += '\n\n' + tagsStr;
-                shareText += '\n\nCheck out more events at ' + LIVE_GIGS_URL;
-                if (link) shareText += '\nEvent link: ' + link;
-
-                const shareUrl = encodeURIComponent(LIVE_GIGS_URL);
-                const encodedText = encodeURIComponent(shareText);
-
-                let url = '';
-                switch(platform) {
-                    case 'facebook':
-                        // 正确传递quote参数（不双重编码）
-                        url = 'https://www.facebook.com/sharer/sharer.php?u=' + shareUrl + '&quote=' + encodedText;
-                        window.open(url, '_blank', 'width=600,height=400');
-                        break;
-                    case 'instagram':
-                        copyToClipboard(shareText);
-                        alert('Content copied! Open Instagram to share.');
-                        break;
-                    case 'whatsapp':
-                        url = 'https://wa.me/?text=' + encodedText;
-                        window.open(url, '_blank');
-                        break;
-                    case 'reddit':
-                        url = 'https://reddit.com/submit?url=' + shareUrl + '&title=' + encodeURIComponent(title);
-                        window.open(url, '_blank', 'width=600,height=400');
-                        break;
-                    case 'telegram':
-                        url = 'https://t.me/share/url?url=' + shareUrl + '&text=' + encodedText;
-                        window.open(url, '_blank');
-                        break;
-                    case 'line':
-                        url = 'https://social-plugins.line.me/lineit/share?url=' + shareUrl;
-                        window.open(url, '_blank');
-                        break;
-                    case 'wechat-friend':
-                    case 'wechat-moments':
-                        window.handleWeChatShare(shareText);
-                        break;
-                    default:
-                        if (originalShareToPlatform) originalShareToPlatform(platform);
-                }
-                window.closeShareModal();
-            };
-
-            // 辅助复制函数（复用已有或定义）
-            function copyToClipboard(text) {
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
-                } else {
-                    fallbackCopy(text);
-                }
-            }
-            function fallbackCopy(text) {
-                const textarea = document.createElement('textarea');
-                textarea.value = text;
-                textarea.style.position = 'fixed';
-                textarea.style.opacity = '0';
-                document.body.appendChild(textarea);
-                textarea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textarea);
-            }
-
-            // 确保livegigs_url存在
-            if (typeof LIVE_GIGS_URL === 'undefined') {
-                window.LIVE_GIGS_URL = 'https://livegigs.asia';
-            }
-
-            // 为已有的分享按钮重新绑定？不需要，因为点击时会调用新函数
-        })();
-        </script>
-                
 </body>
 </html>
