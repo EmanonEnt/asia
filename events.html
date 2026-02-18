@@ -1227,11 +1227,11 @@
                 <div class="poster-item-alt" data-poster-id="2">
                     <div class="poster-carousel-wrapper">
                         <div class="poster-carousel" id="posterCarousel">
-                            <div class="poster-carousel-slide active"><img src="asia-asiaad.jpg" alt="Epic Past Gigs" onerror="this.src='./image/asia-asiaad.jpg'"></div>
-                            <div class="poster-carousel-slide"><img src="./image/2-old1.jpg" alt="Non Servium China Tour" onerror="this.src='./image/asia-asiaad.jpg'"></div>
+                            <div class="poster-carousel-slide active"><img src="./image/2-old1.jpg" alt="Non Servium China Tour" onerror="this.src='./image/asia-asiaad.jpg'"></div>
                             <div class="poster-carousel-slide"><img src="./image/2-old2.jpg" alt="Skarface China Tour" onerror="this.src='./image/asia-asiaad.jpg'"></div>
                             <div class="poster-carousel-slide"><img src="./image/2-old3.jpg" alt="Acidez S.E Asia Tour" onerror="this.src='./image/asia-asiaad.jpg'"></div>
-                            <div class="poster-carousel-slide"><img src="cn-asiaad.jpg" alt="Epic Past Gigs" onerror="this.src='./image/asia-asiaad.jpg'"></div>
+                            <div class="poster-carousel-slide"><img src="./image/2-old4.jpg" alt="Epic Past Gigs" onerror="this.src='./image/asia-asiaad.jpg'"></div>
+                            <div class="poster-carousel-slide"><img src="./image/2-old5.jpg" alt="Epic Past Gigs" onerror="this.src='./image/asia-asiaad.jpg'"></div>
                         </div>
                         <div class="carousel-dots" id="carouselDots">
                             <span class="carousel-dot active" data-slide="0"></span>
@@ -1242,7 +1242,7 @@
                         </div>
                         <div class="poster-overlay" id="poster2Overlay">
                             <div class="poster-title" id="poster2Title">Epic Past Gigs</div>
-                            <span class="poster-link" id="poster2Link">View Gallery →</span>
+                            <a href="#" class="poster-link" id="poster2Link" target="_blank" style="text-decoration:none;color:var(--silver);">w/The Noname â</a>
                         </div>
                     </div>
                     <div class="mobile-poster2-text"><h3>Legendary Live Events</h3></div>
@@ -1332,9 +1332,9 @@
                 { title: 'PUNK HEART WUHAN', date: '2026.09.27', city: 'WUHAN', image: './image/1-b-2.jpg', link: 'http://punkheartfest.com' },
                 { title: 'NONAMEFEST 2026', date: '2026.10.15', city: 'RIOT CITY', image: './image/1-b-3.jpg', link: 'http://nonamepunks.com' },
                 { title: 'XXX嘉宾 CHINA TOUR', date: '2026.11.05', city: 'BEIJING', image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop', link: '' },
+                { title: '新活动A', date: '2026.11.11', city: 'TBA', image: './image/asia-asiaad.jpg', link: '' },
+                { title: '新活动B', date: '2026.11.12', city: 'TBA', image: './image/asia-asiaad.jpg', link: '' },
                 { title: '大牌S.E.A TOUR 2026', date: '2026.11.20', city: 'BANGKOK', image: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&h=800&fit=crop', link: '' },
-                { title: '新活动B', date: '2026.11.29', city: 'TBA', image: './image/asia-asiaad.jpg', link: '' },
-                { title: '新活动A', date: '2026.11.30', city: 'TBA', image: './image/asia-asiaad.jpg', link: '' },
                 { title: 'Clockenflap 2026', date: '2026.12.20', city: 'HONG KONG', image: 'https://totalticketing-ets-ttlcom-prod-singapore-web-files.s3.amazonaws.com/media/uploads/images/056a1c096df6d1bd.jpeg', link: '' },
                 { title: 'NEW YEAR PARTY', date: '2027.01.01', city: 'XI\'AN', image: 'https://img.freepik.com/premium-vector/hand-drawn-goat-zodiac-sign-chinese-horoscope-symbol-new-year-2027-eastern-banner_595023-498.jpg', link: '' },
                 { title: 'XXXXXX ASIA TOUR', date: '2027.05.15', city: 'TOKYO', image: 'https://img.freepik.com/premium-vector/hand-drawn-goat-zodiac-sign-chinese-horoscope-symbol-new-year-2027-eastern-banner_595023-498.jpg', link: '' }
@@ -1670,11 +1670,11 @@
 
         // æµ·æ¥2è½®æ­
         const poster2Data = [
-            { title: 'Epic Past Gigs', linkText: 'View Gallery →', img: 'asia-asiaad.jpg' },
-            { title: 'Non Servium China Tour', linkText: 'w/The Noname →', img: './image/2-old1.jpg' },
-            { title: 'Skarface China Tour', linkText: 'w/The Noname →', img: './image/2-old2.jpg' },
-            { title: 'Acidez S.E Asia Tour', linkText: 'w/The Noname →', img: './image/2-old3.jpg' },
-            { title: 'Epic Past Gigs', linkText: 'View Gallery →', img: 'cn-asiaad.jpg' }
+            { title: 'Epic Past Gigs', linkText: 'View Gallery →', img: 'asia-asiaad.jpg', link: '' },
+            { title: 'Non Servium China Tour', linkText: 'w/The Noname →', img: './image/2-old1.jpg', link: '' },
+            { title: 'Skarface China Tour', linkText: 'w/The Noname →', img: './image/2-old2.jpg', link: '' },
+            { title: 'Epic Past Gigs', linkText: 'View Gallery →', img: './image/asia-asiaad.jpg', link: '' },
+            { title: 'Acidez S.E Asia Tour', linkText: 'w/The Noname →', img: './image/2-old3.jpg', link: '' }
         ];
 
         let currentSlide = 0;
@@ -1718,6 +1718,14 @@
             if (titleEl && linkEl && poster2Data[currentSlide]) {
                 titleEl.textContent = poster2Data[currentSlide].title;
                 linkEl.textContent = poster2Data[currentSlide].linkText;
+                // æ´æ°é¾æ¥å°å
+                if (poster2Data[currentSlide].link && poster2Data[currentSlide].link.trim() !== '') {
+                    linkEl.href = poster2Data[currentSlide].link;
+                    linkEl.style.pointerEvents = 'auto';
+                } else {
+                    linkEl.href = '#';
+                    linkEl.style.pointerEvents = 'none';
+                }
             }
         }
 
