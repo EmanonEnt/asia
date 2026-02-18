@@ -1093,7 +1093,7 @@
                 </div>
 
                 <div class="event-card " data-event-id="8" data-title="X内部活動X" data-city="XI&#039;AN" data-date="2026.12.31" data-image="https://img.redocn.com/sheji/20250723/manianxinnianchunjiezhufuyujinsechuangyihaibaosucaibeijing_13616973.jpg" data-link="">
-                    <button class="event-share-btn" onclick="event.stopPropagation(); openShareModal('X内部活動X', 'XI&#039;AN', '2026.12.31', 'https://img.redocn.com/sheji/20250723/manianxinnianchunjiezhufuyujinsechuangyihaibaosucaibeijing_13616973.jpg', '')" title="Share">
+                    <button class="event-share-btn" onclick="event.stopPropagation(); openShareModal('X内部活動X', 'XI\'AN', '2026.12.31', 'https://img.redocn.com/sheji/20250723/manianxinnianchunjiezhufuyujinsechuangyihaibaosucaibeijing_13616973.jpg', '')" title="Share">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <circle cx="18" cy="5" r="3"></circle>
                             <circle cx="6" cy="12" r="3"></circle>
@@ -1227,22 +1227,23 @@
                 <div class="poster-item-alt" data-poster-id="2">
                     <div class="poster-carousel-wrapper">
                         <div class="poster-carousel" id="posterCarousel">
-                            <div class="poster-carousel-slide active"><img src="./image/2-old1.jpg" alt="Non Servium China Tour" onerror="this.src='./image/asia-asiaad.jpg'"></div>
+<div class="poster-carousel-slide active"><img src="asia-asiaad.jpg" alt="Epic Past Gigs" onerror="this.src='./image/asia-asiaad.jpg'"></div>
+                            <div class="poster-carousel-slide"><img src="./image/2-old1.jpg" alt="Non Servium China Tour" onerror="this.src='./image/asia-asiaad.jpg'"></div>
                             <div class="poster-carousel-slide"><img src="./image/2-old2.jpg" alt="Skarface China Tour" onerror="this.src='./image/asia-asiaad.jpg'"></div>
                             <div class="poster-carousel-slide"><img src="./image/2-old3.jpg" alt="Acidez S.E Asia Tour" onerror="this.src='./image/asia-asiaad.jpg'"></div>
-                            <div class="poster-carousel-slide"><img src="./image/2-old4.jpg" alt="Epic Past Gigs" onerror="this.src='./image/asia-asiaad.jpg'"></div>
-                            <div class="poster-carousel-slide"><img src="./image/2-old5.jpg" alt="Epic Past Gigs" onerror="this.src='./image/asia-asiaad.jpg'"></div>
+                            <div class="poster-carousel-slide"><img src="asia-asiaad.jpg" alt="Epic Past Gigs" onerror="this.src='./image/asia-asiaad.jpg'"></div>
+                        </div>
                         </div>
                         <div class="carousel-dots" id="carouselDots">
-                            <span class="carousel-dot active" data-slide="0"></span>
+<span class="carousel-dot active" data-slide="0"></span>
                             <span class="carousel-dot" data-slide="1"></span>
                             <span class="carousel-dot" data-slide="2"></span>
                             <span class="carousel-dot" data-slide="3"></span>
                             <span class="carousel-dot" data-slide="4"></span>
                         </div>
                         <div class="poster-overlay" id="poster2Overlay">
-                            <div class="poster-title" id="poster2Title">Non Servium China Tour</div>
-                            <span class="poster-link" id="poster2Link">w/The Noname →</span>
+                            <div class="poster-title" id="poster2Title">Epic Past Gigs</div>
+                            <span class="poster-link" id="poster2Link">View Gallery →</span>
                         </div>
                     </div>
                     <div class="mobile-poster2-text"><h3>Legendary Live Events</h3></div>
@@ -1887,7 +1888,7 @@
             eventName.textContent = title;
             eventMeta.textContent = date + (city ? ' | ' + city : '');
 
-            const tags = generateTags(title, city, image, link);
+            const tags = generateTags(title, city);
             eventTags.innerHTML = tags.map(tag => '<span class="share-tag">' + tag + '</span>').join('');
 
             modal.dataset.title = title;
@@ -2025,10 +2026,10 @@
             const image = modal.dataset.image || '';
             const link = modal.dataset.link || '';
 
-            const tags = generateTags(title, city, image, link);
+            const tags = generateTags(title, city);
             const tagsStr = tags.map(function(t) { return '#' + t; }).join(' ');
 
-            // 构建分享文本，包含所有信息
+            // æå»ºåäº«ææ¬ï¼åå«ææä¿¡æ¯
             let shareText = title;
             if (city) shareText += ' - ' + city;
             if (date) shareText += ' (' + date + ')';
@@ -2040,59 +2041,36 @@
             const shareUrl = encodeURIComponent(LIVEGIGS_URL);
             const encodedText = encodeURIComponent(shareText);
             const encodedTitle = encodeURIComponent(title);
-            const encodedImage = encodeURIComponent(image);
-
-            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            const encodedTags = encodeURIComponent(tagsStr);
 
             let url = '';
 
             switch(platform) {
                 case 'facebook':
-                    // Facebook分享 - 移动端直接打开应用，桌面端使用网页分享（包含文字描述）
-                    if (isMobile) {
-                        // 移动端尝试打开Facebook应用
-                        url = 'fb://share?text=' + encodedText;
-                        window.location.href = url;
-                        // 如果应用未安装，fallback到网页版
-                        setTimeout(function() {
-                            url = 'https://www.facebook.com/sharer/sharer.php?u=' + shareUrl + '&quote=' + encodedText;
-                            window.open(url, '_blank');
-                        }, 500);
-                    } else {
-                        // 桌面端使用quote参数传递完整文字描述
-                        url = 'https://www.facebook.com/sharer/sharer.php?u=' + shareUrl + '&quote=' + encodedText;
-                        window.open(url, '_blank', 'width=600,height=400');
-                    }
+                    // Facebookåäº« - åªåäº«tagsï¼æ æå­æè¿°
+                    url = 'https://www.facebook.com/sharer/sharer.php?u=' + shareUrl + '&quote=' + encodedTags;
+                    window.open(url, '_blank', 'width=600,height=400');
                     break;
 
                 case 'instagram':
-                    // Instagram移动端直接打开应用
-                    if (isMobile) {
-                        copyToClipboard(shareText);
-                        // 尝试打开Instagram应用
-                        url = 'instagram://';
-                        window.location.href = url;
-                        setTimeout(function() {
-                            // 如果应用未安装，打开下载页面
-                            window.open('https://apps.apple.com/app/instagram/id389801252', '_blank');
-                        }, 500);
-                    } else {
-                        // 桌面端复制内容
-                        copyToClipboard(shareText);
-                        alert('Content copied to clipboard!\n\nPlease open Instagram app and paste to share.\n\nContent includes:\n- Event title, city, date\n- Tags\n- Poster image URL\n- LiveGigs link');
-                    }
+                    // Instagramæ²¡æç´æ¥åäº«URLï¼å¤å¶åå®¹å°åªè´´æ¿
+                    copyToClipboard(shareText);
+                    alert('Content copied to clipboard!\n\nPlease open Instagram app and paste to share.\n\nContent includes:\n- Event title, city, date\n- Tags\n- Poster image URL\n- LiveGigs link');
                     break;
 
                 case 'whatsapp':
-                    // WhatsApp移动端直接打开应用
+                    // æ£æµç§»å¨è®¾å¤å¹¶ä½¿ç¨éå½çåäº«æ¹å¼
+                    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
                     if (isMobile) {
+                        // ç§»å¨ç«¯ä½¿ç¨whatsapp://åè®®
                         url = 'whatsapp://send?text=' + encodedText;
                         window.location.href = url;
+                        // å¦æåè®®æ æ³æå¼ï¼3ç§åå°è¯webçæ¬
                         setTimeout(function() {
-                            // 如果应用未安装，打开下载页面
                             window.open('https://wa.me/?text=' + encodedText, '_blank');
-                        }, 500);
+                        }, 3000);
                     } else {
+                        // æ¡é¢ç«¯ä½¿ç¨webçæ¬
                         url = 'https://wa.me/?text=' + encodedText;
                         window.open(url, '_blank');
                     }
@@ -2100,95 +2078,69 @@
 
                 case 'reddit':
                     url = 'https://reddit.com/submit?url=' + shareUrl + '&title=' + encodedTitle;
-                    if (isMobile) {
-                        window.location.href = url;
-                    } else {
-                        window.open(url, '_blank', 'width=600,height=400');
-                    }
+                    window.open(url, '_blank', 'width=600,height=400');
                     break;
 
                 case 'telegram':
                     url = 'https://t.me/share/url?url=' + shareUrl + '&text=' + encodedText;
-                    if (isMobile) {
-                        // 移动端尝试打开Telegram应用
-                        const tgUrl = 'tg://msg_url?url=' + shareUrl + '&text=' + encodedText;
-                        window.location.href = tgUrl;
-                        setTimeout(function() {
-                            window.open(url, '_blank');
-                        }, 500);
-                    } else {
-                        window.open(url, '_blank');
-                    }
+                    window.open(url, '_blank');
                     break;
 
                 case 'line':
                     url = 'https://social-plugins.line.me/lineit/share?url=' + shareUrl;
-                    if (isMobile) {
-                        // 移动端尝试打开LINE应用
-                        const lineUrl = 'line://msg/text/' + encodedText;
-                        window.location.href = lineUrl;
-                        setTimeout(function() {
-                            window.open(url, '_blank');
-                        }, 500);
-                    } else {
-                        window.open(url, '_blank');
-                    }
+                    window.open(url, '_blank');
                     break;
 
                 case 'wechat-friend':
                 case 'wechat-moments':
-                    handleWeChatShare(shareText, image, link);
+                    handleWeChatShare(shareText, image);
                     break;
             }
 
             closeShareModal();
         }
 
-        function handleWeChatShare(text, image, link) {
+        function handleWeChatShare(text, image) {
             const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
             const isWeChat = /MicroMessenger/i.test(navigator.userAgent);
 
-            // 准备分享内容（包含文字和海报）
+            // åå¤åäº«åå®¹
             let shareContent = text;
             if (image && !text.includes(image)) {
                 shareContent += '\n\nPoster: ' + image;
             }
-            if (link && !text.includes(link)) {
-                shareContent += '\n\nLink: ' + link;
-            }
-
-            // 复制到剪贴板
-            copyToClipboard(shareContent);
 
             if (isWeChat) {
-                // 已经在微信内，提示使用原生分享
-                alert('You are in WeChat!\n\nContent (including text and poster URL) has been copied to clipboard.\nPlease use WeChat\'s native share button (top right menu) to share this event.\n\nYou can paste the content including event details, tags, and poster image URL.');
+                // å·²ç»å¨å¾®ä¿¡åï¼æç¤ºç¨æ·ä½¿ç¨å¾®ä¿¡åçåäº«
+                copyToClipboard(shareContent);
+                alert('You are in WeChat!\n\nContent copied to clipboard.\nPlease use WeChat\'s native share button (top right menu) to share this event.\n\nContent includes event details and poster image URL.');
             } else if (isMobile) {
-                // 移动端但不在微信内，尝试打开微信应用
+                // ç§»å¨ç«¯ä½ä¸å¨å¾®ä¿¡å
+                copyToClipboard(shareContent);
+
+                // å°è¯æå¼å¾®ä¿¡
                 const wechatUrl = 'weixin://';
                 window.location.href = wechatUrl;
+
                 setTimeout(function() {
-                    alert('Content (including text and poster URL) has been copied to clipboard!\n\nIf WeChat didn\'t open automatically, please:\n1. Open WeChat app manually\n2. Paste the copied content to share\n\nContent includes event details, tags, poster image URL, and link.');
+                    alert('Content copied to clipboard!\n\nIf WeChat didn\'t open automatically, please:\n1. Open WeChat app manually\n2. Paste the copied content to share\n\nContent includes event details and poster image URL.');
                 }, 1000);
             } else {
-                // 桌面端 - 显示二维码（修复二维码显示）
+                // æ¡é¢ç«¯ - ä½¿ç¨Google Chart APIçæçæ­£çäºç»´ç 
+                copyToClipboard(shareContent);
+
+                // æ´æ°æç¤ºææ¬
                 const qrModal = document.getElementById('wechatQRModal');
                 const qrHint = qrModal.querySelector('.wechat-qr-hint');
                 if (qrHint) {
-                    qrHint.innerHTML = 'Content (including text and poster URL) has been copied to clipboard!<br>Open WeChat on your phone and paste to share.<br><br>Content includes: Event details, tags, poster image URL, and link.';
+                    qrHint.innerHTML = 'Content copied to clipboard!<br>Open WeChat on your phone and paste to share.<br><br>Content includes: Event details, tags, and poster image URL.';
                 }
 
-                // 生成二维码（使用在线API生成真实二维码）
-                const qrCodeElement = qrModal.querySelector('.wechat-qr-code');
-                if (qrCodeElement) {
-                    // 使用在线QR码API生成二维码图片
-                    const qrApiUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(LIVEGIGS_URL);
-                    qrCodeElement.innerHTML = '<img src="' + qrApiUrl + '" alt="QR Code" style="width:200px;height:200px;display:block;margin:0 auto;" onerror="this.parentElement.innerHTML='<div style=\'padding:20px;color:#666;font-size:14px;\'>Content copied!<br><br>Open WeChat on your phone<br>and paste to share.</div>';">';
-                }
+                // çæäºç»´ç 
+                generateWeChatQR(shareContent);
 
                 qrModal.classList.add('active');
             }
-        }
         }
 
         // çæå¾®ä¿¡åäº«äºç»´ç 
