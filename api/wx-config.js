@@ -15,8 +15,8 @@ module.exports = async (req, res) => {
     return res.status(400).json({ error: 'Missing url parameter' });
   }
 
-  const appId = process.env.APPID;
-  const appSecret = process.env.APPSECRET;
+  const appId = process.env.wx019d141a63482cd8;
+  const appSecret = process.env.180374121eb3edf8a8070891be064ed4;
 
   if (!appId || !appSecret) {
     return res.status(500).json({ error: 'Missing environment variables' });
