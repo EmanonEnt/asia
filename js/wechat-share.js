@@ -3,7 +3,7 @@
 // ============================================
 
 // 部署后替换为你的Vercel API地址
-const WX_API_URL = 'https://asia-on8u8wzmz-emanonents-projects.vercel.app/api/wx-config';
+const WX_API_URL = 'https://asia-h44vm1f8d-emanonents-projects.vercel.app/api/wx-config';
 
 // 初始化微信分享
 async function initWeChatShare() {
