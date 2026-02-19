@@ -9,5 +9,12 @@
         }
       ]
     }
+  ],
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "https://livegigsasia.com/cn.html",
+      "permanent": true
+    }
   ]
 }
