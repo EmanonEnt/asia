@@ -1,4 +1,5 @@
 {
+  "version": 2,
   "headers": [
     {
       "source": "/MP_verify_YJilisx0VRq4L4Bz.txt",
@@ -16,5 +17,10 @@
       "destination": "https://livegigsasia.com/cn.html",
       "permanent": true
     }
-  ]
+  ],
+  "functions": {
+    "api/wx-config.js": {
+      "maxDuration": 10
+    }
+  }
 }
