@@ -3,7 +3,7 @@ import crypto from 'crypto';
 
 // 1. 配置微信公众号参数（优先从Vercel环境变量读取，本地调试用备用值）
 const APPID = process.env.WECHAT_APPID || 'wx019d141a63482cd8'; // 你的AppID（已填）
-const APPSECRET = process.env.WECHAT_SECRET || ''; // 👉 替换为你的真实AppSecret，或在Vercel添加WECHAT_SECRET环境变量
+const APPSECRET = process.env.WECHAT_SECRET || '180374121eb3edf8a8070891be064ed4'; // 👉 替换为你的真实AppSecret，或在Vercel添加WECHAT_SECRET环境变量
 
 // 2. 缓存ticket（避免频繁调用微信接口）
 let jsapi_ticket = '';
