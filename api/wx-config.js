@@ -1,10 +1,8 @@
 const crypto = require('crypto');
 
 module.exports = async (req, res) => {
-  // 允许跨域
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
@@ -23,7 +21,6 @@ module.exports = async (req, res) => {
   }
 
   try {
-    // 获取 access_token
     const tokenRes = await fetch(
       `https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${appId}&secret=${appSecret}`
     );
@@ -33,7 +30,6 @@ module.exports = async (req, res) => {
       return res.status(500).json({ error: 'Failed to get access_token', details: tokenData });
     }
 
-    // 获取 jsapi_ticket
     const ticketRes = await fetch(
       `https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=${tokenData.access_token}&type=jsapi`
     );
@@ -43,7 +39,6 @@ module.exports = async (req, res) => {
       return res.status(500).json({ error: 'Failed to get ticket', details: ticketData });
     }
 
-    // 生成签名
     const nonceStr = Math.random().toString(36).substr(2, 15);
     const timestamp = Math.floor(Date.now() / 1000);
     const ticket = ticketData.ticket;
