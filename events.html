@@ -518,6 +518,14 @@
             .auto-scroll-item.expired {
                 cursor: default;
                 touch-action: pan-y;
+                transition: all 0.4s ease, opacity 3s ease !important;
+            }
+
+            /* å»¶é¿hoveræææç»­æ¶é´ */
+            .auto-scroll-item .auto-scroll-info,
+            .auto-scroll-item .carousel-actions,
+            .auto-scroll-item .auto-scroll-countdown {
+                transition: opacity 3s ease !important;
             }
 
             /* hoveræ¶å®å± - æææµ·æ¥é½ä¸å¨ */
@@ -526,6 +534,7 @@
             .auto-scroll-item.expired:hover {
                 transform: none !important;
                 z-index: 1 !important;
+                transition: all 0.4s ease !important;
             }
 
             .auto-scroll-item:hover img,
@@ -533,41 +542,48 @@
             .auto-scroll-item.expired:hover img {
                 filter: brightness(0.3) !important;
                 transform: none !important;
+                transition: all 0.4s ease !important;
             }
 
-            /* hoveræ¶æ¾ç¤ºinfo */
+            /* hoveræ¶æ¾ç¤ºinfo - 3ç§è¿æ¸¡ */
             .auto-scroll-item:hover .auto-scroll-info,
             .auto-scroll-item.no-link:hover .auto-scroll-info,
             .auto-scroll-item.expired:hover .auto-scroll-info {
                 opacity: 1 !important;
+                transition: opacity 3s ease !important;
             }
 
-            /* hoveræ¶éèåè®¡æ¶ */
+            /* hoveræ¶éèåè®¡æ¶ - 3ç§è¿æ¸¡ */
             .auto-scroll-item:hover .auto-scroll-countdown,
             .auto-scroll-item.no-link:hover .auto-scroll-countdown {
                 opacity: 0 !important;
+                transition: opacity 3s ease !important;
             }
 
             /* è¿ææµ·æ¥hoveræ¶æ¾ç¤ºåè®¡æ¶ */
             .auto-scroll-item.expired:hover .auto-scroll-countdown {
                 opacity: 1 !important;
+                transition: opacity 3s ease !important;
             }
 
-            /* hoveræ¶æ¾ç¤ºcarousel-actionsæé® */
+            /* hoveræ¶æ¾ç¤ºcarousel-actionsæé® - 3ç§è¿æ¸¡ */
             .auto-scroll-item:hover .carousel-actions {
                 opacity: 1 !important;
                 pointer-events: auto !important;
                 display: flex !important;
+                transition: opacity 3s ease !important;
             }
 
             /* é»è®¤ç¶æï¼éèæé®ï¼æ¾ç¤ºåè®¡æ¶ */
             .auto-scroll-item .carousel-actions {
                 opacity: 0 !important;
                 pointer-events: none !important;
+                transition: opacity 3s ease !important;
             }
 
             .auto-scroll-item .auto-scroll-countdown {
                 opacity: 1 !important;
+                transition: opacity 3s ease !important;
             }
 
             /* è§¦æ¸æ¶ä½¿ç¨activeä»£æ¿hover - æ¾å¤§ææ */
@@ -575,12 +591,14 @@
             .auto-scroll-item.no-link:active {
                 transform: scale(1.05) !important;
                 z-index: 100 !important;
+                transition: all 0.2s ease !important;
             }
 
             .auto-scroll-item:active img,
             .auto-scroll-item.no-link:active img {
                 filter: brightness(1) !important;
                 transform: scale(1.1) !important;
+                transition: all 0.2s ease !important;
             }
 
             .auto-scroll-item:active .auto-scroll-info,
@@ -588,28 +606,33 @@
             .auto-scroll-item.no-link:active .auto-scroll-info,
             .auto-scroll-item.no-link:active .auto-scroll-countdown {
                 opacity: 0 !important;
+                transition: opacity 0.2s ease !important;
             }
 
             .auto-scroll-item:active .carousel-actions,
             .auto-scroll-item.no-link:active .carousel-actions {
                 opacity: 0 !important;
                 pointer-events: none !important;
+                transition: opacity 0.2s ease !important;
             }
 
             /* è¿ææµ·æ¥activeç¶æ */
             .auto-scroll-item.expired:active {
                 transform: none !important;
                 z-index: 1 !important;
+                transition: all 0.2s ease !important;
             }
 
             .auto-scroll-item.expired:active img {
                 filter: brightness(0.3) !important;
                 transform: none !important;
+                transition: all 0.2s ease !important;
             }
 
             .auto-scroll-item.expired:active .auto-scroll-info,
             .auto-scroll-item.expired:active .auto-scroll-countdown {
                 opacity: 1 !important;
+                transition: opacity 0.2s ease !important;
             }
         }
         .event-card:hover .event-name, .event-card:hover .event-details, .event-card:hover .event-venue { opacity: 0; visibility: hidden; transition: all 0.3s ease; }
