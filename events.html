@@ -512,7 +512,7 @@
 
         /* è§¦æ¸è¯¢åä¼å */
         @media (hover: none) and (pointer: coarse) {
-            /* è§¦æ¸è®¾å¤ä¸ï¼æææµ·æ¥hoveræ¶ä¿æå®å±ï¼ä½ä¿çæé® */
+            /* è§¦æ¸è®¾å¤ä¸ï¼hoveræ¶å®å±ï¼æ¾ç¤ºæé®ï¼éèåè®¡æ¶ */
             .auto-scroll-item,
             .auto-scroll-item.no-link,
             .auto-scroll-item.expired {
@@ -520,7 +520,7 @@
                 touch-action: pan-y;
             }
 
-            /* æææµ·æ¥hoveræ¶å®å¨ä¸å¨ï¼åno-linkä¸æ ·ï¼ */
+            /* hoveræ¶å®å± - æææµ·æ¥é½ä¸å¨ */
             .auto-scroll-item:hover,
             .auto-scroll-item.no-link:hover,
             .auto-scroll-item.expired:hover {
@@ -535,35 +535,42 @@
                 transform: none !important;
             }
 
-            .auto-scroll-item:hover .auto-scroll-overlay,
-            .auto-scroll-item.no-link:hover .auto-scroll-overlay,
-            .auto-scroll-item.expired:hover .auto-scroll-overlay {
-                background: rgba(0,0,0,0.6) !important;
+            /* hoveræ¶æ¾ç¤ºinfo */
+            .auto-scroll-item:hover .auto-scroll-info,
+            .auto-scroll-item.no-link:hover .auto-scroll-info,
+            .auto-scroll-item.expired:hover .auto-scroll-info {
+                opacity: 1 !important;
             }
 
-            .auto-scroll-item:hover .auto-scroll-info,
+            /* hoveræ¶éèåè®¡æ¶ */
             .auto-scroll-item:hover .auto-scroll-countdown,
-            .auto-scroll-item.no-link:hover .auto-scroll-info,
-            .auto-scroll-item.no-link:hover .auto-scroll-countdown,
-            .auto-scroll-item.expired:hover .auto-scroll-info,
+            .auto-scroll-item.no-link:hover .auto-scroll-countdown {
+                opacity: 0 !important;
+            }
+
+            /* è¿ææµ·æ¥hoveræ¶æ¾ç¤ºåè®¡æ¶ */
             .auto-scroll-item.expired:hover .auto-scroll-countdown {
                 opacity: 1 !important;
             }
 
-            /* ä¿æcarousel-actionsæé®å¯è§ */
-            .auto-scroll-item .carousel-actions {
-                opacity: 1 !important;
-                pointer-events: auto !important;
-                display: flex !important;
-            }
-
+            /* hoveræ¶æ¾ç¤ºcarousel-actionsæé® */
             .auto-scroll-item:hover .carousel-actions {
                 opacity: 1 !important;
                 pointer-events: auto !important;
                 display: flex !important;
             }
 
-            /* è§¦æ¸æ¶ä½¿ç¨activeä»£æ¿hover */
+            /* é»è®¤ç¶æï¼éèæé®ï¼æ¾ç¤ºåè®¡æ¶ */
+            .auto-scroll-item .carousel-actions {
+                opacity: 0 !important;
+                pointer-events: none !important;
+            }
+
+            .auto-scroll-item .auto-scroll-countdown {
+                opacity: 1 !important;
+            }
+
+            /* è§¦æ¸æ¶ä½¿ç¨activeä»£æ¿hover - æ¾å¤§ææ */
             .auto-scroll-item:active,
             .auto-scroll-item.no-link:active {
                 transform: scale(1.05) !important;
@@ -576,16 +583,17 @@
                 transform: scale(1.1) !important;
             }
 
-            .auto-scroll-item:active .auto-scroll-overlay,
-            .auto-scroll-item.no-link:active .auto-scroll-overlay {
-                background: rgba(0,0,0,0) !important;
-            }
-
             .auto-scroll-item:active .auto-scroll-info,
             .auto-scroll-item:active .auto-scroll-countdown,
             .auto-scroll-item.no-link:active .auto-scroll-info,
             .auto-scroll-item.no-link:active .auto-scroll-countdown {
                 opacity: 0 !important;
+            }
+
+            .auto-scroll-item:active .carousel-actions,
+            .auto-scroll-item.no-link:active .carousel-actions {
+                opacity: 0 !important;
+                pointer-events: none !important;
             }
 
             /* è¿ææµ·æ¥activeç¶æ */
