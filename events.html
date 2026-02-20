@@ -570,14 +570,16 @@
                 opacity: 1 !important;
             }
 
-            .auto-scroll-item:active .carousel-actions {
+            .auto-scroll-item:active .carousel-actions,
+            .auto-scroll-item:hover .carousel-actions {
                 opacity: 1 !important;
                 pointer-events: auto !important;
                 display: flex !important;
             }
 
             .auto-scroll-item:active .auto-scroll-countdown,
-            .auto-scroll-item.no-link:active .auto-scroll-countdown {
+            .auto-scroll-item.no-link:active .auto-scroll-countdown,
+            .auto-scroll-item:hover .auto-scroll-countdown {
                 opacity: 0 !important;
             }
 
@@ -685,6 +687,16 @@
             opacity: 0;
             transition: opacity 0.4s ease;
             pointer-events: none;
+        }
+
+        /* ä¿®å¤ï¼hoveræ¶æ¾ç¤ºcarousel-actions */
+        .auto-scroll-item:hover .carousel-actions {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .auto-scroll-item:hover .auto-scroll-countdown {
+            opacity: 0;
         }
 
         .auto-scroll-item:hover .carousel-actions {
