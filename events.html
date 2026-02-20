@@ -512,7 +512,7 @@
 
         /* è§¦æ¸è¯¢åä¼å */
         @media (hover: none) and (pointer: coarse) {
-            /* è§¦æ¸è®¾å¤ä¸ï¼æææµ·æ¥hoveræ¶é½ä¸è§¦åææï¼ä¿æå®å± */
+            /* è§¦æ¸è®¾å¤ä¸ï¼æææµ·æ¥hoveræ¶ä¿æå®å±ï¼ä½ä¿çæé® */
             .auto-scroll-item,
             .auto-scroll-item.no-link,
             .auto-scroll-item.expired {
@@ -550,12 +550,17 @@
                 opacity: 1 !important;
             }
 
-            /* éèææcarousel-actions */
-            .auto-scroll-item .carousel-actions,
+            /* ä¿æcarousel-actionsæé®å¯è§ */
+            .auto-scroll-item .carousel-actions {
+                opacity: 1 !important;
+                pointer-events: auto !important;
+                display: flex !important;
+            }
+
             .auto-scroll-item:hover .carousel-actions {
-                opacity: 0 !important;
-                pointer-events: none !important;
-                display: none !important;
+                opacity: 1 !important;
+                pointer-events: auto !important;
+                display: flex !important;
             }
 
             /* è§¦æ¸æ¶ä½¿ç¨activeä»£æ¿hover */
