@@ -1345,7 +1345,6 @@
                     </div>
                 </div>
             </div>
-            <!-- UPLOAD EVENT æé® -->
             <div class="load-more-container visible" style="padding: 30px 0; background: var(--black);">
                 <button class="load-more-btn" onclick="openUploadModal()">UPLOAD EVENT</button>
             </div>
@@ -2507,43 +2506,37 @@
         <button class="share-modal-close" onclick="closeUploadModal()">&times;</button>
         <h3 class="share-modal-title">UPLOAD EVENT</h3>
 
-        <!-- æ­¥éª¤1: å¡«åè¡¨å -->
-        <div id="uploadFormStep">
+        <!-- Step 1: Form -->
+        <div id="uploadStep1">
             <div style="margin-bottom: 15px;">
                 <label style="display:block;color:#888;font-size:11px;margin-bottom:5px;text-transform:uppercase;">Event Name *</label>
                 <input type="text" id="uploadTitle" placeholder="Enter event name" style="width:100%;padding:10px;background:rgba(255,255,255,0.05);border:1px solid #333;border-radius:6px;color:#fff;font-size:13px;box-sizing:border-box;">
             </div>
-
             <div style="margin-bottom: 15px;">
                 <label style="display:block;color:#888;font-size:11px;margin-bottom:5px;text-transform:uppercase;">Date * (YYYY.MM.DD)</label>
                 <input type="text" id="uploadDate" placeholder="2026.12.31" style="width:100%;padding:10px;background:rgba(255,255,255,0.05);border:1px solid #333;border-radius:6px;color:#fff;font-size:13px;box-sizing:border-box;">
             </div>
-
             <div style="margin-bottom: 15px;">
                 <label style="display:block;color:#888;font-size:11px;margin-bottom:5px;text-transform:uppercase;">City *</label>
                 <input type="text" id="uploadCity" placeholder="Enter city" style="width:100%;padding:10px;background:rgba(255,255,255,0.05);border:1px solid #333;border-radius:6px;color:#fff;font-size:13px;box-sizing:border-box;">
             </div>
-
             <div style="margin-bottom: 15px;">
                 <label style="display:block;color:#888;font-size:11px;margin-bottom:5px;text-transform:uppercase;">Poster Image URL *</label>
                 <input type="text" id="uploadImage" placeholder="https://example.com/poster.jpg" style="width:100%;padding:10px;background:rgba(255,255,255,0.05);border:1px solid #333;border-radius:6px;color:#fff;font-size:13px;box-sizing:border-box;">
             </div>
-
             <div style="margin-bottom: 20px;">
                 <label style="display:block;color:#888;font-size:11px;margin-bottom:5px;text-transform:uppercase;">Event Link (Optional)</label>
                 <input type="text" id="uploadLink" placeholder="https://example.com/event" style="width:100%;padding:10px;background:rgba(255,255,255,0.05);border:1px solid #333;border-radius:6px;color:#fff;font-size:13px;box-sizing:border-box;">
             </div>
-
-            <button onclick="goToPayment()" class="load-more-btn" style="width:100%;padding:12px;font-size:13px;">CONTINUE TO PAYMENT</button>
+            <button onclick="goToPaymentStep()" class="load-more-btn" style="width:100%;padding:12px;font-size:13px;">CONTINUE TO PAYMENT</button>
         </div>
 
-        <!-- æ­¥éª¤2: æ¯ä» -->
-        <div id="paymentStep" style="display:none;">
+        <!-- Step 2: Payment -->
+        <div id="uploadStep2" style="display:none;">
             <div style="text-align:center;margin-bottom:20px;">
                 <p style="color:#888;font-size:13px;margin-bottom:10px;">Upload Fee: <span id="uploadFee" style="color:#fff;font-size:20px;font-weight:bold;">CNY 1.00</span></p>
                 <p style="color:#666;font-size:11px;">Scan QR code with WeChat to pay</p>
             </div>
-
             <div style="background:#fff;padding:15px;border-radius:8px;margin-bottom:20px;text-align:center;">
                 <img src="./image/Wechat-QR.png" alt="WeChat Pay QR Code" style="max-width:180px;width:100%;display:block;margin:0 auto;" onerror="this.style.display='none';document.getElementById('qrFallback').style.display='block';">
                 <div id="qrFallback" style="display:none;padding:15px;color:#8b0000;">
@@ -2551,58 +2544,54 @@
                     <p style="font-size:11px;">Please contact admin for payment</p>
                 </div>
             </div>
-
             <div style="display:flex;gap:10px;">
-                <button onclick="backToForm()" class="load-more-btn" style="flex:1;padding:10px;font-size:12px;background:transparent;">BACK</button>
-                <button onclick="showTransactionStep()" class="load-more-btn" style="flex:1;padding:10px;font-size:12px;">I HAVE PAID</button>
+                <button onclick="backToStep1()" class="load-more-btn" style="flex:1;padding:10px;font-size:12px;background:transparent;">BACK</button>
+                <button onclick="goToTransactionStep()" class="load-more-btn" style="flex:1;padding:10px;font-size:12px;">I HAVE PAID</button>
             </div>
         </div>
 
-        <!-- æ­¥éª¤3: è¾å¥äº¤æåå· -->
-        <div id="transactionStep" style="display:none;">
+        <!-- Step 3: Transaction ID -->
+        <div id="uploadStep3" style="display:none;">
             <div style="text-align:center;margin-bottom:15px;">
                 <p style="color:#888;font-size:12px;margin-bottom:10px;">Please enter your WeChat Pay Transaction ID</p>
                 <p style="color:#666;font-size:10px;">(28 digits, find in WeChat Pay bill)</p>
             </div>
-
             <div style="margin-bottom:15px;">
-                <input type="text" id="transactionId" placeholder="420000xxxxxxxxxxxxxxxxxxxxxxxx" style="width:100%;padding:10px;background:rgba(255,255,255,0.05);border:1px solid #333;border-radius:6px;color:#fff;font-size:13px;box-sizing:border-box;text-align:center;letter-spacing:1px;">
+                <input type="text" id="transactionId" placeholder="420000xxxxxxxxxxxxxxxxxxxxxxxx" style="width:100%;padding:10px;background:rgba(255,255,255,0.05);border:1px solid #333;border-radius:6px;color:#fff;font-size:13px;box-sizing:border-box;text-align:center;">
             </div>
-
             <div style="background:rgba(139,0,0,0.1);border:1px solid rgba(139,0,0,0.3);border-radius:6px;padding:12px;margin-bottom:20px;">
                 <p style="color:#888;font-size:10px;margin:0;line-height:1.4;">
                     <b style="color:#fff;">How to find Transaction ID:</b><br>
-                    WeChat â Me â Pay â Wallet â Bills â Find payment â Copy Transaction ID
+                    WeChat -> Me -> Pay -> Wallet -> Bills -> Find payment -> Copy Transaction ID
                 </p>
             </div>
-
             <div style="display:flex;gap:10px;">
-                <button onclick="backToPayment()" class="load-more-btn" style="flex:1;padding:10px;font-size:12px;background:transparent;">BACK</button>
+                <button onclick="backToStep2()" class="load-more-btn" style="flex:1;padding:10px;font-size:12px;background:transparent;">BACK</button>
                 <button onclick="verifyAndUpload()" class="load-more-btn" style="flex:1;padding:10px;font-size:12px;">VERIFY & UPLOAD</button>
             </div>
         </div>
 
-        <!-- æ­¥éª¤4: ä¸ä¼ ä¸­ -->
-        <div id="uploadingStep" style="display:none;text-align:center;padding:20px;">
+        <!-- Step 4: Uploading -->
+        <div id="uploadStep4" style="display:none;text-align:center;padding:20px;">
             <div style="font-size:40px;color:#8b0000;margin-bottom:15px;">...</div>
             <h4 style="color:#fff;font-size:16px;margin-bottom:10px;">Uploading...</h4>
             <p style="color:#888;font-size:12px;">Please wait</p>
         </div>
 
-        <!-- æ­¥éª¤5: æå -->
-        <div id="successStep" style="display:none;text-align:center;padding:20px;">
+        <!-- Step 5: Success -->
+        <div id="uploadStep5" style="display:none;text-align:center;padding:20px;">
             <div style="font-size:50px;color:#28a745;margin-bottom:15px;">OK</div>
             <h4 style="color:#fff;font-size:16px;margin-bottom:10px;">Upload Successful!</h4>
             <p style="color:#888;font-size:12px;margin-bottom:20px;">Your event has been submitted for review.</p>
             <button onclick="closeUploadModal()" class="load-more-btn" style="padding:10px 25px;font-size:12px;">CLOSE</button>
         </div>
 
-        <!-- æ­¥éª¤6: éè¯¯ -->
-        <div id="errorStep" style="display:none;text-align:center;padding:20px;">
+        <!-- Step 6: Error -->
+        <div id="uploadStep6" style="display:none;text-align:center;padding:20px;">
             <div style="font-size:50px;color:#dc3545;margin-bottom:15px;">X</div>
             <h4 style="color:#fff;font-size:16px;margin-bottom:10px;">Upload Failed</h4>
-            <p id="errorMessage" style="color:#888;font-size:12px;margin-bottom:20px;">Please try again later</p>
-            <button onclick="backToTransaction()" class="load-more-btn" style="padding:10px 25px;font-size:12px;">TRY AGAIN</button>
+            <p id="uploadErrorMsg" style="color:#888;font-size:12px;margin-bottom:20px;">Please try again later</p>
+            <button onclick="backToStep3()" class="load-more-btn" style="padding:10px 25px;font-size:12px;">TRY AGAIN</button>
         </div>
     </div>
 </div>
@@ -2697,6 +2686,10 @@
 // ==================== Upload Event Function ====================
 let uploadData = {};
 
+// jsonbin.io configuration
+const JSONBIN_API_KEY = '$2a$10$YourApiKeyHere'; // Replace with your API key
+const JSONBIN_BIN_ID = 'your-bin-id-here'; // Replace with your Bin ID
+
 function openUploadModal() {
     const modal = document.getElementById('uploadModal');
     if (modal) {
@@ -2713,25 +2706,27 @@ function closeUploadModal() {
 }
 
 function resetUploadModal() {
-    const steps = ['uploadFormStep', 'paymentStep', 'transactionStep', 'uploadingStep', 'successStep', 'errorStep'];
-    steps.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.style.display = id === 'uploadFormStep' ? 'block' : 'none';
-    });
+    document.getElementById('uploadStep1').style.display = 'block';
+    document.getElementById('uploadStep2').style.display = 'none';
+    document.getElementById('uploadStep3').style.display = 'none';
+    document.getElementById('uploadStep4').style.display = 'none';
+    document.getElementById('uploadStep5').style.display = 'none';
+    document.getElementById('uploadStep6').style.display = 'none';
 
-    const inputs = ['uploadTitle', 'uploadDate', 'uploadCity', 'uploadImage', 'uploadLink', 'transactionId'];
-    inputs.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.value = '';
-    });
+    document.getElementById('uploadTitle').value = '';
+    document.getElementById('uploadDate').value = '';
+    document.getElementById('uploadCity').value = '';
+    document.getElementById('uploadImage').value = '';
+    document.getElementById('uploadLink').value = '';
+    document.getElementById('transactionId').value = '';
 }
 
-function goToPayment() {
-    const title = document.getElementById('uploadTitle')?.value.trim() || '';
-    const date = document.getElementById('uploadDate')?.value.trim() || '';
-    const city = document.getElementById('uploadCity')?.value.trim() || '';
-    const image = document.getElementById('uploadImage')?.value.trim() || '';
-    const link = document.getElementById('uploadLink')?.value.trim() || '';
+function goToPaymentStep() {
+    const title = document.getElementById('uploadTitle').value.trim();
+    const date = document.getElementById('uploadDate').value.trim();
+    const city = document.getElementById('uploadCity').value.trim();
+    const image = document.getElementById('uploadImage').value.trim();
+    const link = document.getElementById('uploadLink').value.trim();
 
     if (!title || !date || !city || !image) {
         alert('Please fill in all required fields (*)');
@@ -2746,50 +2741,48 @@ function goToPayment() {
 
     uploadData = { title, date, city, image, link };
 
-    document.getElementById('uploadFormStep').style.display = 'none';
-    document.getElementById('paymentStep').style.display = 'block';
+    document.getElementById('uploadStep1').style.display = 'none';
+    document.getElementById('uploadStep2').style.display = 'block';
 }
 
-function backToForm() {
-    document.getElementById('paymentStep').style.display = 'none';
-    document.getElementById('uploadFormStep').style.display = 'block';
+function backToStep1() {
+    document.getElementById('uploadStep2').style.display = 'none';
+    document.getElementById('uploadStep1').style.display = 'block';
 }
 
-function showTransactionStep() {
-    document.getElementById('paymentStep').style.display = 'none';
-    document.getElementById('transactionStep').style.display = 'block';
+function goToTransactionStep() {
+    document.getElementById('uploadStep2').style.display = 'none';
+    document.getElementById('uploadStep3').style.display = 'block';
 }
 
-function backToPayment() {
-    document.getElementById('transactionStep').style.display = 'none';
-    document.getElementById('paymentStep').style.display = 'block';
+function backToStep2() {
+    document.getElementById('uploadStep3').style.display = 'none';
+    document.getElementById('uploadStep2').style.display = 'block';
 }
 
-function backToTransaction() {
-    document.getElementById('errorStep').style.display = 'none';
-    document.getElementById('transactionStep').style.display = 'block';
+function backToStep3() {
+    document.getElementById('uploadStep6').style.display = 'none';
+    document.getElementById('uploadStep3').style.display = 'block';
 }
 
-function verifyAndUpload() {
-    const transactionId = document.getElementById('transactionId')?.value.trim() || '';
+async function verifyAndUpload() {
+    const transactionId = document.getElementById('transactionId').value.trim();
 
     if (!transactionId) {
         alert('Please enter your WeChat Pay Transaction ID');
         return;
     }
 
-    // éªè¯äº¤æåå·æ ¼å¼ï¼20-32ä½æ°å­ï¼
     const transactionRegex = /^[0-9]{20,32}$/;
     if (!transactionRegex.test(transactionId)) {
         alert('Invalid Transaction ID. Please check and try again.\nTransaction ID should be 20-32 digits.');
         return;
     }
 
-    document.getElementById('transactionStep').style.display = 'none';
-    document.getElementById('uploadingStep').style.display = 'block';
+    document.getElementById('uploadStep3').style.display = 'none';
+    document.getElementById('uploadStep4').style.display = 'block';
 
     try {
-        // çæä¸ä¼ è®°å½
         const uploadRecord = {
             id: 'upload_' + Date.now(),
             title: uploadData.title,
@@ -2800,30 +2793,28 @@ function verifyAndUpload() {
             transactionId: transactionId,
             status: 'pending',
             uploadTime: new Date().toISOString(),
-            paid: true,
-            userAgent: navigator.userAgent
+            paid: true
         };
 
-        // ä¿å­å°localStorage
-        let pendingUploads = JSON.parse(localStorage.getItem('livegigs_uploads') || '[]');
-        pendingUploads.push(uploadRecord);
-        localStorage.setItem('livegigs_uploads', JSON.stringify(pendingUploads));
+        // Save to localStorage
+        let uploads = JSON.parse(localStorage.getItem('livegigs_uploads') || '[]');
+        uploads.push(uploadRecord);
+        localStorage.setItem('livegigs_uploads', JSON.stringify(uploads));
 
-        console.log('Upload saved:', uploadRecord);
+        console.log('Upload saved to localStorage:', uploadRecord);
 
-        // æ¾ç¤ºæå
-        document.getElementById('uploadingStep').style.display = 'none';
-        document.getElementById('successStep').style.display = 'block';
+        document.getElementById('uploadStep4').style.display = 'none';
+        document.getElementById('uploadStep5').style.display = 'block';
 
     } catch (error) {
         console.error('Upload failed:', error);
-        document.getElementById('uploadingStep').style.display = 'none';
-        document.getElementById('errorStep').style.display = 'block';
-        document.getElementById('errorMessage').textContent = 'Error: ' + error.message;
+        document.getElementById('uploadStep4').style.display = 'none';
+        document.getElementById('uploadStep6').style.display = 'block';
+        document.getElementById('uploadErrorMsg').textContent = 'Error: ' + error.message;
     }
 }
 
-// ç¹å»èæ¯å³é­å¼¹çª
+// Close modal when clicking outside
 document.addEventListener('click', function(e) {
     const modal = document.getElementById('uploadModal');
     if (modal && e.target === modal) {
@@ -2831,7 +2822,7 @@ document.addEventListener('click', function(e) {
     }
 });
 
-// ESCé®å³é­å¼¹çª
+// ESC key to close modals
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         closeUploadModal();
