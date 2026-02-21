@@ -2609,7 +2609,7 @@
 <!-- ä¸ä¼ æ´»å¨å¼¹çª - v8.8.0 -->
 <div id="uploadModal" class="upload-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:100000;justify-content:center;align-items:center;padding:20px;box-sizing:border-box;">
     <div class="upload-modal-content" style="background:linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);border:2px solid #8b0000;border-radius:16px;padding:35px;max-width:500px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 0 60px rgba(139,0,0,0.6);position:relative;box-sizing:border-box;">
-        <button onclick="closeUploadModal()" style="position:absolute;top:15px;right:15px;background:none;border:none;color:#666;font-size:28px;cursor:pointer;z-index:10;">&times;</button>
+        <button onclick="closeUploadModal()" style="position:absolute;top:15px;right:15px;background:none;border:none;color:#666;font-size:28px;cursor:pointer;z-index:10;">X</button>
 
         <h3 style="margin:0 0 25px 0;color:#fff;font-family:Impact, Haettenschweiler, Arial Narrow Bold, sans-serif;letter-spacing:3px;text-transform:uppercase;font-size:20px;text-align:center;text-shadow:0 0 20px rgba(139,0,0,0.8);">
             UPLOAD EVENT
@@ -2624,7 +2624,7 @@
 
             <div style="margin-bottom:20px;">
                 <label style="display:block;color:#888;font-size:12px;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">Date * (YYYY.MM.DD)</label>
-                <input type="text" id="uploadDate" placeholder="2026.07.24" style="width:100%;padding:12px;background:rgba(255,255,255,0.05);border:1px solid #333;border-radius:8px;color:#fff;font-size:14px;box-sizing:border-box;" onfocus="this.style.borderColor='#8b0000'" onblur="this.style.borderColor='#333'">
+                <input type="text" id="uploadDate" placeholder="2026.12.31" style="width:100%;padding:12px;background:rgba(255,255,255,0.05);border:1px solid #333;border-radius:8px;color:#fff;font-size:14px;box-sizing:border-box;" onfocus="this.style.borderColor='#8b0000'" onblur="this.style.borderColor='#333'">
             </div>
 
             <div style="margin-bottom:20px;">
@@ -2650,7 +2650,7 @@
         <!-- æ­¥éª¤2: æ¯ä» -->
         <div id="paymentStep" style="display:none;">
             <div style="text-align:center;margin-bottom:25px;">
-                <p style="color:#888;font-size:14px;margin-bottom:15px;">Upload Fee: <span id="uploadFee" style="color:#fff;font-size:24px;font-weight:bold;">&#165;1.00</span></p>
+                <p style="color:#888;font-size:14px;margin-bottom:15px;">Upload Fee: <span id="uploadFee" style="color:#fff;font-size:24px;font-weight:bold;">CNY 1.00</span></p>
                 <p style="color:#666;font-size:12px;">Scan QR code with WeChat to pay</p>
             </div>
 
@@ -2667,7 +2667,7 @@
                     BACK
                 </button>
                 <button onclick="showTransactionStep()" style="flex:1;padding:12px;background:#8b0000;color:#fff;border:none;border-radius:8px;font-family:Impact, Haettenschweiler, Arial Narrow Bold, sans-serif;font-size:14px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all 0.3s;" onmouseover="this.style.background='#a00000';this.style.boxShadow='0 0 20px rgba(139,0,0,0.5)';" onmouseout="this.style.background='#8b0000';this.style.boxShadow='none';">
-                    I'VE PAID
+                    I HAVE PAID
                 </button>
             </div>
         </div>
@@ -2688,9 +2688,9 @@
                 <p style="color:#888;font-size:11px;margin:0;line-height:1.5;">
                     <b style="color:#fff;">How to find Transaction ID:</b><br>
                     1. Open WeChat -> Me -> Pay -> Wallet -> Bills<br>
-                    2. Find your payment to "LiveGigsç°åºç§"<br>
+                    2. Find your payment to "LiveGigs"<br>
                     3. Tap to view details<br>
-                    4. Copy the "Transaction ID" (äº¤æåå·)
+                    4. Copy the "Transaction ID"
                 </p>
             </div>
 
@@ -2706,14 +2706,14 @@
 
         <!-- æ­¥éª¤4: ä¸ä¼ ä¸­ -->
         <div id="uploadingStep" style="display:none;text-align:center;">
-            <div style="font-size:50px;color:#8b0000;margin-bottom:20px;animation:spin 1s linear infinite;">&#8635;</div>
+            <div style="font-size:50px;color:#8b0000;margin-bottom:20px;">*</div>
             <h4 style="color:#fff;font-size:18px;margin-bottom:15px;">Uploading...</h4>
             <p style="color:#888;font-size:14px;">Please wait while we verify your payment</p>
         </div>
 
         <!-- æ­¥éª¤5: æå -->
         <div id="successStep" style="display:none;text-align:center;">
-            <div style="font-size:60px;color:#28a745;margin-bottom:20px;">&#10003;</div>
+            <div style="font-size:60px;color:#28a745;margin-bottom:20px;">OK</div>
             <h4 style="color:#fff;font-size:18px;margin-bottom:15px;">Upload Successful!</h4>
             <p style="color:#888;font-size:14px;margin-bottom:25px;">Your event has been submitted for review. It will appear on the site after approval.</p>
             <button onclick="closeUploadModal()" style="padding:12px 30px;background:#8b0000;color:#fff;border:none;border-radius:8px;font-family:Impact, Haettenschweiler, Arial Narrow Bold, sans-serif;font-size:14px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;">
@@ -2723,7 +2723,7 @@
 
         <!-- æ­¥éª¤6: éè¯¯ -->
         <div id="errorStep" style="display:none;text-align:center;">
-            <div style="font-size:60px;color:#dc3545;margin-bottom:20px;">&#10007;</div>
+            <div style="font-size:60px;color:#dc3545;margin-bottom:20px;">X</div>
             <h4 style="color:#fff;font-size:18px;margin-bottom:15px;">Upload Failed</h4>
             <p id="errorMessage" style="color:#888;font-size:14px;margin-bottom:25px;">Please try again later</p>
             <button onclick="backToTransaction()" style="padding:12px 30px;background:#8b0000;color:#fff;border:none;border-radius:8px;font-family:Impact, Haettenschweiler, Arial Narrow Bold, sans-serif;font-size:14px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;">
@@ -2733,23 +2733,14 @@
     </div>
 </div>
 
-<style>
-@keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-</style>
-
 <script>
 // ==================== ä¸ä¼ æ´»å¨åè½ - v8.8.0 ====================
 let uploadData = {};
 
-// ===== éç½®ï¼äºç«¯å­å¨ =====
-// ä½¿ç¨ GitHub Gist API ä½ä¸ºäºç«¯å­å¨
-// ç®¡çåéè¦éç½® GitHub Personal Access Token
-const GITHUB_TOKEN = localStorage.getItem('githubToken') || ''; // ä»æ¬å°å­å¨è¯»å
-const GIST_ID = localStorage.getItem('gistId') || ''; // Gist ID
+// GitHub Gist éç½® - å·²é¢éç½®
+const GITHUB_TOKEN = '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';
 const GIST_FILENAME = 'livegigs_uploads.json';
+let GIST_ID = localStorage.getItem('livegists_gist_id') || '';
 
 // æ£æµç¨æ·å°åºå¹¶è®¾ç½®è´§å¸
 function detectCurrency() {
@@ -2759,25 +2750,16 @@ function detectCurrency() {
     if (userTimezone.includes('Asia/Shanghai') || userTimezone.includes('Asia/Hong_Kong') || 
         userTimezone.includes('Asia/Taipei') || userTimezone.includes('Asia/Macau') ||
         userLang.startsWith('zh')) {
-        return { currency: 'CNY', symbol: '&#165;', amount: '1.00' };
-    } else if (userTimezone.includes('Asia/Tokyo') || userTimezone.includes('Asia/Osaka') ||
-               userLang.startsWith('ja')) {
-        return { currency: 'JPY', symbol: '&#165;', amount: '20' };
+        return { currency: 'CNY', symbol: 'CNY', amount: '1.00' };
+    } else if (userTimezone.includes('Asia/Tokyo') || userLang.startsWith('ja')) {
+        return { currency: 'JPY', symbol: 'JPY', amount: '20' };
     } else if (userTimezone.includes('Asia/Seoul') || userLang.startsWith('ko')) {
-        return { currency: 'KRW', symbol: '&#8361;', amount: '200' };
-    } else if (userTimezone.includes('Asia/Singapore') || userTimezone.includes('Asia/Kuala_Lumpur') ||
-               userTimezone.includes('Asia/Bangkok') || userTimezone.includes('Asia/Jakarta') ||
-               userTimezone.includes('Asia/Manila')) {
-        return { currency: 'USD', symbol: '$', amount: '0.15' };
+        return { currency: 'KRW', symbol: 'KRW', amount: '200' };
     } else if (userTimezone.includes('Europe') || userLang.startsWith('en-GB') ||
-               userLang.startsWith('de') || userLang.startsWith('fr') || userLang.startsWith('es') ||
-               userLang.startsWith('it')) {
-        return { currency: 'EUR', symbol: '&#8364;', amount: '0.13' };
-    } else if (userTimezone.includes('America') || userTimezone.includes('US/') ||
-               userLang.startsWith('en-US')) {
-        return { currency: 'USD', symbol: '$', amount: '0.15' };
+               userLang.startsWith('de') || userLang.startsWith('fr')) {
+        return { currency: 'EUR', symbol: 'EUR', amount: '0.13' };
     } else {
-        return { currency: 'USD', symbol: '$', amount: '0.15' };
+        return { currency: 'USD', symbol: 'USD', amount: '0.15' };
     }
 }
 
@@ -2792,14 +2774,12 @@ function openUploadModal() {
 }
 
 function resetModal() {
-    // éç½®æææ­¥éª¤
     const steps = ['uploadFormStep', 'paymentStep', 'transactionStep', 'uploadingStep', 'successStep', 'errorStep'];
     steps.forEach(id => {
         const el = document.getElementById(id);
         if (el) el.style.display = id === 'uploadFormStep' ? 'block' : 'none';
     });
 
-    // æ¸ç©ºè¡¨å
     const inputs = ['uploadTitle', 'uploadDate', 'uploadCity', 'uploadImage', 'uploadLink', 'transactionId'];
     inputs.forEach(id => {
         const el = document.getElementById(id);
@@ -2834,7 +2814,7 @@ function goToPayment() {
 
     const currency = detectCurrency();
     const feeEl = document.getElementById('uploadFee');
-    if (feeEl) feeEl.innerHTML = currency.symbol + currency.amount + ' ' + currency.currency;
+    if (feeEl) feeEl.textContent = currency.symbol + ' ' + currency.amount;
 
     document.getElementById('uploadFormStep').style.display = 'none';
     document.getElementById('paymentStep').style.display = 'block';
@@ -2876,12 +2856,10 @@ async function verifyAndUpload() {
         return;
     }
 
-    // æ¾ç¤ºä¸ä¼ ä¸­
     document.getElementById('transactionStep').style.display = 'none';
     document.getElementById('uploadingStep').style.display = 'block';
 
     try {
-        // åå¤ä¸ä¼ æ°æ®
         const uploadRecord = {
             id: 'upload_' + Date.now(),
             title: uploadData.title,
@@ -2894,16 +2872,15 @@ async function verifyAndUpload() {
             uploadTime: new Date().toISOString(),
             paid: true,
             userAgent: navigator.userAgent,
-            ip: 'unknown' // IP will be recorded server-side
+            ip: 'unknown'
         };
 
-        // ä¸ä¼ å°äºç«¯å­å¨
+        // ä¸ä¼ å°äºç«¯
         await uploadToCloud(uploadRecord);
 
         // åæ¶ä¿å­å°æ¬å°
         saveToLocalStorage(uploadRecord);
 
-        // æ¾ç¤ºæå
         document.getElementById('uploadingStep').style.display = 'none';
         document.getElementById('successStep').style.display = 'block';
 
@@ -2917,25 +2894,17 @@ async function verifyAndUpload() {
     }
 }
 
-// ä¸ä¼ å°äºç«¯å­å¨ (GitHub Gist)
+// ä¸ä¼ å° GitHub Gist
 async function uploadToCloud(uploadRecord) {
-    const token = localStorage.getItem('githubToken');
-    const gistId = localStorage.getItem('gistId');
-
-    if (!token) {
-        console.log('GitHub Token not configured, saving to localStorage only');
-        return true; // åªä¿å­å°æ¬å°
-    }
-
     try {
         let existingData = { uploads: [] };
 
-        // å¦ææ gistIdï¼åè·åç°ææ°æ®
-        if (gistId) {
-            const getResponse = await fetch(`https://api.github.com/gists/${gistId}`, {
+        // å¦ææ GIST_IDï¼åè·åç°ææ°æ®
+        if (GIST_ID) {
+            const getResponse = await fetch(`https://api.github.com/gists/${GIST_ID}`, {
                 method: 'GET',
                 headers: {
-                    'Authorization': `token ${token}`,
+                    'Authorization': `token ${GITHUB_TOKEN}`,
                     'Accept': 'application/vnd.github.v3+json'
                 }
             });
@@ -2960,12 +2929,11 @@ async function uploadToCloud(uploadRecord) {
         const updatedContent = JSON.stringify(existingData, null, 2);
 
         // æ´æ°æåå»º Gist
-        if (gistId) {
-            // æ´æ°ç°æ Gist
-            const patchResponse = await fetch(`https://api.github.com/gists/${gistId}`, {
+        if (GIST_ID) {
+            const patchResponse = await fetch(`https://api.github.com/gists/${GIST_ID}`, {
                 method: 'PATCH',
                 headers: {
-                    'Authorization': `token ${token}`,
+                    'Authorization': `token ${GITHUB_TOKEN}`,
                     'Accept': 'application/vnd.github.v3+json',
                     'Content-Type': 'application/json'
                 },
@@ -2982,11 +2950,10 @@ async function uploadToCloud(uploadRecord) {
                 throw new Error('Failed to update Gist: ' + patchResponse.statusText);
             }
         } else {
-            // åå»ºæ° Gist
             const createResponse = await fetch('https://api.github.com/gists', {
                 method: 'POST',
                 headers: {
-                    'Authorization': `token ${token}`,
+                    'Authorization': `token ${GITHUB_TOKEN}`,
                     'Accept': 'application/vnd.github.v3+json',
                     'Content-Type': 'application/json'
                 },
@@ -3003,8 +2970,9 @@ async function uploadToCloud(uploadRecord) {
 
             if (createResponse.ok) {
                 const newGist = await createResponse.json();
-                localStorage.setItem('gistId', newGist.id);
-                console.log('Created new Gist:', newGist.id);
+                GIST_ID = newGist.id;
+                localStorage.setItem('livegists_gist_id', GIST_ID);
+                console.log('Created new Gist:', GIST_ID);
             } else {
                 throw new Error('Failed to create Gist: ' + createResponse.statusText);
             }
@@ -3013,8 +2981,7 @@ async function uploadToCloud(uploadRecord) {
         return true;
     } catch (error) {
         console.error('Cloud upload error:', error);
-        // äºç«¯ä¸ä¼ å¤±è´¥ï¼ä½æ¬å°å­å¨æå
-        return true;
+        throw error;
     }
 }
 
