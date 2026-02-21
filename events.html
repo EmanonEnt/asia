@@ -2000,41 +2000,164 @@
         // ================== åäº«åè½ ==================
         const LIVEGIGS_URL = 'https://livegigsasia.com';
 
-        function generateTags(title, city) {
-            const tags = ['livegigsasia']; // é»è®¤ç¬¬ä¸ä¸ªtag
-            const lowerTitle = title.toLowerCase();
-            const lowerCity = city.toLowerCase();
+        function generateTags(title, city, date, link, subtitle) {
+            const tags = [];
+            const fullText = (title + ' ' + (subtitle || '') + ' ' + city + ' ' + (date || '') + ' ' + (link || '')).toLowerCase();
 
-            // æ ¹æ®æ é¢çææ ç­¾
-            if (lowerTitle.includes('punk')) tags.push('Punk');
-            if (lowerTitle.includes('metal')) tags.push('Metal');
-            if (lowerTitle.includes('rock')) tags.push('Rock');
-            if (lowerTitle.includes('hardcore')) tags.push('Hardcore');
-            if (lowerTitle.includes('festival')) tags.push('Festival');
-            if (lowerTitle.includes('tour')) tags.push('Tour');
-            if (lowerTitle.includes('concert')) tags.push('Concert');
-            if (lowerTitle.includes('gig')) tags.push('Gig');
+            // ä»æ é¢åå¯æ é¢æåå³é®è¯ä½ä¸ºTAG
+            const allText = title + ' ' + (subtitle || '');
+            const titleWords = allText.toLowerCase().split(/[\s\-'"]+/).filter(w => w.length >= 3);
+            const commonWords = new Set(['the', 'and', 'for', 'with', 'live', 'show', 'gig', 'band', 'new', 'year', 'party']);
 
-            // æ ¹æ®åå¸çææ ç­¾
-            if (lowerCity.includes('china') || lowerCity.includes('beijing') || lowerCity.includes('shanghai') || 
-                lowerCity.includes('guangzhou') || lowerCity.includes('shenzhen') || lowerCity.includes('wuhan') ||
-                lowerCity.includes('xian') || lowerCity.includes('hongkong') || lowerCity.includes('hong kong')) {
-                tags.push('China');
-            }
-            if (lowerCity.includes('japan') || lowerCity.includes('tokyo') || lowerCity.includes('osaka')) tags.push('Japan');
-            if (lowerCity.includes('korea') || lowerCity.includes('seoul')) tags.push('Korea');
-            if (lowerCity.includes('taiwan') || lowerCity.includes('taipei') || lowerCity.includes('kaohsiung')) tags.push('Taiwan');
-            if (lowerCity.includes('thailand') || lowerCity.includes('bangkok')) tags.push('Thailand');
-            if (lowerCity.includes('singapore')) tags.push('Singapore');
-            if (lowerCity.includes('australia')) tags.push('Australia');
+            titleWords.forEach(word => {
+                // è¿æ»¤æåªåå«ç¹æ®å­ç¬¦ææ°å­çè¯
+                const cleanWord = word.replace(/[^a-z0-9]/g, '');
+                if (cleanWord.length < 2) return;
+                if (commonWords.has(cleanWord)) return;
 
-            // é»è®¤æ ç­¾
-            if (tags.length === 1) tags.push('LiveMusic');
+                const capitalized = cleanWord.charAt(0).toUpperCase() + cleanWord.slice(1);
+                if (!tags.includes(capitalized)) {
+                    tags.push(capitalized);
+                }
+            });
 
-            return tags.slice(0, 4);
+            // é³ä¹é£æ ¼æ ç­¾
+            const genreKeywords = {
+                'punk': 'Punk', 'metal': 'Metal', 'rock': 'Rock', 'hardcore': 'Hardcore',
+                'slam': 'SlamMetal', 'death': 'DeathMetal', 'black': 'BlackMetal',
+                'thrash': 'ThrashMetal', 'grind': 'Grindcore', 'crust': 'Crust',
+                'emo': 'Emo', 'indie': 'Indie', 'alternative': 'AltRock',
+                'post': 'PostRock', 'progressive': 'ProgRock', 'psychedelic': 'Psychedelic',
+                'stoner': 'Stoner', 'doom': 'DoomMetal', 'gothic': 'Gothic',
+                'industrial': 'Industrial', 'electronic': 'Electronic', 'synth': 'Synth',
+                'noise': 'Noise', 'experimental': 'Experimental', 'ambient': 'Ambient',
+                'jazz': 'Jazz', 'blues': 'Blues', 'folk': 'Folk', 'country': 'Country',
+                'reggae': 'Reggae', 'ska': 'Ska', 'funk': 'Funk', 'soul': 'Soul',
+                'hiphop': 'HipHop', 'rap': 'Rap', 'trap': 'Trap',
+                'edm': 'EDM', 'techno': 'Techno', 'house': 'House', 'trance': 'Trance',
+                'dubstep': 'Dubstep', 'drumnbass': 'DnB', 'garage': 'Garage', 'grime': 'Grime',
+                'grindcore': 'Grindcore', 'deathcore': 'Deathcore', 'metalcore': 'Metalcore',
+                'skatepunk': 'SkatePunk', 'streetpunk': 'StreetPunk', 'oipunk': 'Oi',
+                'anarchopunk': 'AnarchoPunk', 'crustpunk': 'CrustPunk',
+                'poppunk': 'PopPunk', 'melodichardcore': 'MelodicHardcore',
+                'folkmetal': 'FolkMetal', 'viking': 'VikingMetal', 'pagan': 'PaganMetal',
+                'powermetal': 'PowerMetal', 'speedmetal': 'SpeedMetal', 'glam': 'GlamMetal',
+                'nwobhm': 'NWOBHM', 'heavymetal': 'HeavyMetal', 'numetal': 'NuMetal',
+                'rapmetal': 'RapMetal', 'funkmetal': 'FunkMetal', 'altmetal': 'AltMetal',
+                'industrialmetal': 'IndustrialMetal', 'gothicmetal': 'GothicMetal',
+                'doommetal': 'DoomMetal', 'stonermetal': 'StonerMetal', 'sludge': 'Sludge',
+                'postmetal': 'PostMetal', 'avantgarde': 'AvantGarde', 'mathrock': 'MathRock',
+                'midwestemo': 'MidwestEmo', 'screamo': 'Screamo', 'skramz': 'Skramz',
+                'easycore': 'Easycore', 'positive': 'PositiveHardcore',
+                'youthcrew': 'YouthCrew', 'straightedge': 'StraightEdge',
+                'garagepunk': 'GaragePunk', 'psychobilly': 'Psychobilly', 'horrorpunk': 'HorrorPunk',
+                'deathrock': 'Deathrock', 'goth': 'Goth', 'darkwave': 'Darkwave',
+                'coldwave': 'Coldwave', 'minimal': 'Minimal', 'synthpunk': 'SynthPunk',
+                'electropunk': 'ElectroPunk', 'digital': 'DigitalHardcore', 'breakcore': 'Breakcore',
+                'jungle': 'Jungle', 'hardstyle': 'Hardstyle', 'hardcoretechno': 'HardcoreTechno',
+                'gabber': 'Gabber', 'speedcore': 'Speedcore', 'extratone': 'Extratone',
+                'industrialtechno': 'IndustrialTechno', 'ebm': 'EBM', 'darktechno': 'DarkTechno',
+                'acid': 'Acid', 'detroit': 'DetroitTechno', 'berlin': 'BerlinTechno',
+                'deep': 'DeepHouse', 'progressivehouse': 'ProgHouse', 'techhouse': 'TechHouse',
+                'ukgarage': 'UKGarage', 'bassline': 'Bassline', 'dub': 'Dub',
+                'reggaeton': 'Reggaeton', 'dancehall': 'Dancehall', 'soca': 'Soca',
+                'calypso': 'Calypso', 'zouk': 'Zouk', 'compas': 'Compas',
+                'afrobeat': 'Afrobeat', 'highlife': 'Highlife', 'juju': 'Juju',
+                'world': 'WorldMusic', 'ethnic': 'Ethnic', 'traditional': 'Traditional',
+                'celtic': 'Celtic', 'balkan': 'Balkan', 'klezmer': 'Klezmer',
+                'gypsy': 'GypsyPunk', 'flamenco': 'Flamenco', 'fado': 'Fado',
+                'tango': 'Tango', 'samba': 'Samba', 'bossanova': 'BossaNova',
+                'mpb': 'MPB', 'cumbia': 'Cumbia', 'salsa': 'Salsa', 'merengue': 'Merengue',
+                'bachata': 'Bachata', 'dembow': 'Dembow', 'moombahton': 'Moombahton',
+                'tribal': 'Tribal', 'guaracha': 'Guaracha', 'riddim': 'Riddim'
+            };
+
+            // æ´»å¨ç±»åæ ç­¾
+            const eventKeywords = {
+                'fest': 'Festival', 'festival': 'Festival', 'tour': 'Tour', 'show': 'LiveShow',
+                'gig': 'Gig', 'concert': 'Concert', 'party': 'Party', 'warmup': 'WarmUp',
+                'revival': 'Revival', 'reunion': 'Reunion', 'anniversary': 'Anniversary',
+                'benefit': 'Benefit', 'charity': 'Charity', 'release': 'ReleaseParty',
+                'album': 'AlbumRelease', 'ep': 'EPRelease', 'single': 'SingleRelease',
+                'premiere': 'Premiere', 'screening': 'Screening', 'exhibition': 'Exhibition',
+                'market': 'Market', 'fair': 'Fair', 'convention': 'Convention',
+                'conference': 'Conference', 'seminar': 'Seminar', 'workshop': 'Workshop',
+                'masterclass': 'Masterclass', 'competition': 'Competition', 'contest': 'Contest',
+                'battle': 'Battle', 'jam': 'JamSession', 'openmic': 'OpenMic',
+                'audition': 'Audition', 'casting': 'Casting', 'meetup': 'Meetup',
+                'gathering': 'Gathering', 'rally': 'Rally', 'protest': 'Protest',
+                'march': 'March', 'demonstration': 'Demonstration', 'fundraiser': 'Fundraiser',
+                'auction': 'Auction', 'sale': 'Sale', 'popup': 'PopUp', 'launch': 'Launch',
+                'opening': 'Opening', 'closing': 'Closing', 'finale': 'GrandFinale',
+                'ceremony': 'Ceremony', 'awards': 'Awards', 'nomination': 'Nomination',
+                'voting': 'Voting', 'election': 'Election', 'rave': 'Rave',
+                'warehouse': 'WarehouseParty', 'underground': 'Underground',
+                'secret': 'SecretParty', 'private': 'PrivateEvent', 'vip': 'VIP',
+                'exclusive': 'Exclusive', 'limited': 'Limited', 'special': 'SpecialEvent',
+                'annual': 'Annual', 'monthly': 'Monthly', 'weekly': 'Weekly', 'daily': 'Daily',
+                'seasonal': 'Seasonal', 'holiday': 'Holiday', 'christmas': 'Christmas',
+                'newyear': 'NewYear', 'halloween': 'Halloween', 'summer': 'Summer',
+                'winter': 'Winter', 'spring': 'Spring', 'fall': 'Fall', 'autumn': 'Autumn'
+            };
+
+            // å°åºæ ç­¾
+            const regionKeywords = {
+                'asia': 'Asia', 'china': 'China', 'hongkong': 'HongKong', 'hong kong': 'HongKong', 'taiwan': 'Taiwan',
+                'macau': 'Macau', 'japan': 'Japan', 'tokyo': 'Tokyo', 'osaka': 'Osaka', 'korea': 'Korea', 'seoul': 'Seoul',
+                'thailand': 'Thailand', 'bangkok': 'Bangkok', 'singapore': 'Singapore',
+                'malaysia': 'Malaysia', 'indonesia': 'Indonesia', 'philippines': 'Philippines',
+                'vietnam': 'Vietnam', 'cambodia': 'Cambodia', 'myanmar': 'Myanmar', 'laos': 'Laos',
+                'brunei': 'Brunei', 'india': 'India', 'nepal': 'Nepal', 'bangladesh': 'Bangladesh',
+                'srilanka': 'SriLanka', 'pakistan': 'Pakistan', 'australia': 'Australia',
+                'newzealand': 'NewZealand', 'usa': 'USA', 'uk': 'UK', 'europe': 'Europe',
+                'germany': 'Germany', 'france': 'France', 'italy': 'Italy', 'spain': 'Spain',
+                'netherlands': 'Netherlands', 'belgium': 'Belgium', 'switzerland': 'Switzerland',
+                'austria': 'Austria', 'sweden': 'Sweden', 'norway': 'Norway', 'denmark': 'Denmark',
+                'finland': 'Finland', 'poland': 'Poland', 'czech': 'Czech', 'hungary': 'Hungary',
+                'romania': 'Romania', 'bulgaria': 'Bulgaria', 'greece': 'Greece', 'turkey': 'Turkey',
+                'russia': 'Russia', 'ukraine': 'Ukraine', 'canada': 'Canada', 'mexico': 'Mexico',
+                'brazil': 'Brazil', 'argentina': 'Argentina', 'chile': 'Chile', 'peru': 'Peru',
+                'colombia': 'Colombia', 'venezuela': 'Venezuela', 'ecuador': 'Ecuador',
+                'bolivia': 'Bolivia', 'paraguay': 'Paraguay', 'uruguay': 'Uruguay',
+                'latin': 'LatinAmerica', 'southamerica': 'SouthAmerica', 'northamerica': 'NorthAmerica',
+                'centralamerica': 'CentralAmerica', 'caribbean': 'Caribbean', 'africa': 'Africa',
+                'middleeast': 'MiddleEast', 'dubai': 'Dubai', 'uae': 'UAE', 'qatar': 'Qatar',
+                'saudi': 'SaudiArabia', 'israel': 'Israel', 'iran': 'Iran', 'egypt': 'Egypt',
+                'morocco': 'Morocco', 'southafrica': 'SouthAfrica', 'nigeria': 'Nigeria', 'kenya': 'Kenya'
+            };
+
+            // æåæ ç­¾
+            Object.entries(genreKeywords).forEach(([keyword, tag]) => {
+                if (fullText.includes(keyword) && !tags.includes(tag)) {
+                    tags.push(tag);
+                }
+            });
+
+            Object.entries(eventKeywords).forEach(([keyword, tag]) => {
+                if (fullText.includes(keyword) && !tags.includes(tag)) {
+                    tags.push(tag);
+                }
+            });
+
+            Object.entries(regionKeywords).forEach(([keyword, tag]) => {
+                if (fullText.includes(keyword) && !tags.includes(tag)) {
+                    tags.push(tag);
+                }
+            });
+
+            // ç¡®ä¿æè¶³å¤æ°éçTAGï¼è³å°3ä¸ªï¼
+            if (tags.length === 0) tags.push('LiveMusic');
+            if (tags.length < 2) tags.push('LiveEvent');
+            if (tags.length < 3) tags.push('Concert');
+
+            // å§ç»æ·»å åçTAG
+            tags.push('LiveGigsAsia');
+
+            // éå¶æå¤æ¾ç¤º6ä¸ªTAG
+            return tags.slice(0, 6);
         }
 
-        function openShareModal(title, city, date, image, link) {
+        function openShareModal(title, city, date, image, link, subtitle) {
             const modal = document.getElementById('shareModal');
             const eventImg = document.getElementById('shareEventImg');
             const eventName = document.getElementById('shareEventName');
@@ -2046,7 +2169,7 @@
             eventName.textContent = title;
             eventMeta.textContent = date + (city ? ' | ' + city : '');
 
-            const tags = generateTags(title, city);
+            const tags = generateTags(title, city, date, link, subtitle);
             eventTags.innerHTML = tags.map(tag => '<span class="share-tag">' + tag + '</span>').join('');
 
             modal.dataset.title = title;
@@ -2184,7 +2307,7 @@
             const image = modal.dataset.image || '';
             const link = modal.dataset.link || '';
 
-            const tags = generateTags(title, city);
+            const tags = generateTags(title, city, date, link, subtitle);
             const tagsStr = tags.map(function(t) { return '#' + t; }).join(' ');
 
             // æå»ºåäº«ææ¬ï¼åå«ææä¿¡æ¯
