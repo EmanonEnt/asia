@@ -538,19 +538,6 @@
                 transition: opacity 0.3s ease !important;
             }
 
-            /* ä¿®å¤åäº«æé®ç¹å»é®é¢ - v8.8.0 */
-            .auto-scroll-item .carousel-actions .share-btn {
-                pointer-events: auto !important;
-                z-index: 1000 !important;
-                position: relative !important;
-            }
-
-            .auto-scroll-item .carousel-actions .info-btn {
-                pointer-events: auto !important;
-                z-index: 1000 !important;
-                position: relative !important;
-            }
-
             .auto-scroll-item .auto-scroll-countdown {
                 opacity: 1 !important;
                 transition: opacity 0.3s ease !important;
@@ -794,9 +781,6 @@
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
-            pointer-events: auto !important;
-            z-index: 1000 !important;
-            position: relative !important;
         }
 
         .share-btn:hover {
@@ -1350,29 +1334,9 @@
                 <button class="scroll-arrow right" onclick="accelerateScroll('right')">→</button>
                 <div class="auto-scroll-container" id="autoScrollContainer">
                     <div class="auto-scroll-track" id="autoScrollTrack">
-                        <!-- æ»æ­é¡¹ç®éè¿JSå¨æçæ -->
+                        <!-- æ»æ­é¡¹ç®å°éè¿JSå æçæ -->
                     </div>
                 </div>
-            </div>
-            <!-- UPLOAD EVENT æé® - v8.8.0 -->
-            <div class="upload-event-container" style="text-align: center; padding: 30px 0; background: var(--black);">
-                <button class="upload-event-btn" onclick="openUploadModal()" style="
-                    background: transparent;
-                    color: var(--silver);
-                    border: 2px solid var(--dark-red);
-                    padding: 15px 50px;
-                    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-                    font-size: 16px;
-                    letter-spacing: 3px;
-                    text-transform: uppercase;
-                    cursor: pointer;
-                    transition: all 0.3s ease;
-                    position: relative;
-                    overflow: hidden;
-                " onmouseover="this.style.background='var(--dark-red)';this.style.color='#fff';this.style.boxShadow='0 0 30px rgba(139,0,0,0.6)';" 
-                onmouseout="this.style.background='transparent';this.style.color='var(--silver)';this.style.boxShadow='none';">
-                    UPLOAD EVENT
-                </button>
             </div>
         </section>
 
@@ -2612,253 +2576,5 @@
             <button class="wechat-qr-close" onclick="closeWeChatQR()">Got it</button>
         </div>
     </div>
-
-<!-- ä¸ä¼ æ´»å¨å¼¹çª - v8.8.0 -->
-<div id="uploadModal" class="upload-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:100000;justify-content:center;align-items:center;padding:20px;box-sizing:border-box;">
-    <div class="upload-modal-content" style="background:linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);border:2px solid #8b0000;border-radius:16px;padding:35px;max-width:500px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 0 60px rgba(139,0,0,0.6);position:relative;box-sizing:border-box;">
-        <button onclick="closeUploadModal()" style="position:absolute;top:15px;right:15px;background:none;border:none;color:#666;font-size:28px;cursor:pointer;z-index:10;">&times;</button>
-
-        <h3 style="margin:0 0 25px 0;color:#fff;font-family:Impact, Haettenschweiler, Arial Narrow Bold, sans-serif;letter-spacing:3px;text-transform:uppercase;font-size:20px;text-align:center;text-shadow:0 0 20px rgba(139,0,0,0.8);">
-            UPLOAD EVENT
-        </h3>
-
-        <div id="uploadFormStep" style="display:block;">
-            <div style="margin-bottom:20px;">
-                <label style="display:block;color:#888;font-size:12px;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">Event Name *</label>
-                <input type="text" id="uploadTitle" placeholder="Enter event name" style="width:100%;padding:12px;background:rgba(255,255,255,0.05);border:1px solid #333;border-radius:8px;color:#fff;font-size:14px;box-sizing:border-box;" onfocus="this.style.borderColor='#8b0000'" onblur="this.style.borderColor='#333'">
-            </div>
-
-            <div style="margin-bottom:20px;">
-                <label style="display:block;color:#888;font-size:12px;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">Date * (YYYY.MM.DD)</label>
-                <input type="text" id="uploadDate" placeholder="2026.07.24" style="width:100%;padding:12px;background:rgba(255,255,255,0.05);border:1px solid #333;border-radius:8px;color:#fff;font-size:14px;box-sizing:border-box;" onfocus="this.style.borderColor='#8b0000'" onblur="this.style.borderColor='#333'">
-            </div>
-
-            <div style="margin-bottom:20px;">
-                <label style="display:block;color:#888;font-size:12px;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">City *</label>
-                <input type="text" id="uploadCity" placeholder="Enter city" style="width:100%;padding:12px;background:rgba(255,255,255,0.05);border:1px solid #333;border-radius:8px;color:#fff;font-size:14px;box-sizing:border-box;" onfocus="this.style.borderColor='#8b0000'" onblur="this.style.borderColor='#333'">
-            </div>
-
-            <div style="margin-bottom:20px;">
-                <label style="display:block;color:#888;font-size:12px;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">Poster Image URL *</label>
-                <input type="text" id="uploadImage" placeholder="https://example.com/poster.jpg" style="width:100%;padding:12px;background:rgba(255,255,255,0.05);border:1px solid #333;border-radius:8px;color:#fff;font-size:14px;box-sizing:border-box;" onfocus="this.style.borderColor='#8b0000'" onblur="this.style.borderColor='#333'">
-            </div>
-
-            <div style="margin-bottom:25px;">
-                <label style="display:block;color:#888;font-size:12px;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">Event Link (Optional)</label>
-                <input type="text" id="uploadLink" placeholder="https://example.com/event" style="width:100%;padding:12px;background:rgba(255,255,255,0.05);border:1px solid #333;border-radius:8px;color:#fff;font-size:14px;box-sizing:border-box;" onfocus="this.style.borderColor='#8b0000'" onblur="this.style.borderColor='#333'">
-            </div>
-
-            <button onclick="goToPayment()" style="width:100%;padding:15px;background:#8b0000;color:#fff;border:none;border-radius:8px;font-family:Impact, Haettenschweiler, Arial Narrow Bold, sans-serif;font-size:16px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all 0.3s;" onmouseover="this.style.background='#a00000';this.style.boxShadow='0 0 20px rgba(139,0,0,0.5)';" onmouseout="this.style.background='#8b0000';this.style.boxShadow='none';">
-                CONTINUE TO PAYMENT
-            </button>
-        </div>
-
-        <div id="paymentStep" style="display:none;">
-            <div style="text-align:center;margin-bottom:25px;">
-                <p style="color:#888;font-size:14px;margin-bottom:15px;">Upload Fee: <span id="uploadFee" style="color:#fff;font-size:24px;font-weight:bold;">&#165;1.00</span></p>
-                <p style="color:#666;font-size:12px;">Scan QR code with WeChat to pay</p>
-            </div>
-
-            <div style="background:#fff;padding:20px;border-radius:12px;margin-bottom:25px;text-align:center;">
-                <img src="Wechat-QR.png" alt="WeChat Pay QR Code" style="max-width:200px;width:100%;display:block;margin:0 auto;" onerror="this.style.display='none';document.getElementById('qrFallback').style.display='block';">
-                <div id="qrFallback" style="display:none;padding:20px;color:#8b0000;">
-                    <p>WeChat Pay QR Code</p>
-                    <p style="font-size:12px;">Please contact admin for payment</p>
-                </div>
-            </div>
-
-            <div style="display:flex;gap:10px;">
-                <button onclick="backToForm()" style="flex:1;padding:12px;background:transparent;color:#fff;border:2px solid #444;border-radius:8px;font-family:Impact, Haettenschweiler, Arial Narrow Bold, sans-serif;font-size:14px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all 0.3s;" onmouseover="this.style.borderColor='#8b0000';" onmouseout="this.style.borderColor='#444';">
-                    BACK
-                </button>
-                <button onclick="confirmUpload()" style="flex:1;padding:12px;background:#8b0000;color:#fff;border:none;border-radius:8px;font-family:Impact, Haettenschweiler, Arial Narrow Bold, sans-serif;font-size:14px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all 0.3s;" onmouseover="this.style.background='#a00000';this.style.boxShadow='0 0 20px rgba(139,0,0,0.5)';" onmouseout="this.style.background='#8b0000';this.style.boxShadow='none';">
-                    I'VE PAID
-                </button>
-            </div>
-        </div>
-
-        <div id="successStep" style="display:none;text-align:center;">
-            <div style="font-size:60px;color:#8b0000;margin-bottom:20px;">&#10003;</div>
-            <h4 style="color:#fff;font-size:18px;margin-bottom:15px;">Upload Successful!</h4>
-            <p style="color:#888;font-size:14px;margin-bottom:25px;">Your event has been submitted for review. It will appear on the site after approval.</p>
-            <button onclick="closeUploadModal()" style="padding:12px 30px;background:#8b0000;color:#fff;border:none;border-radius:8px;font-family:Impact, Haettenschweiler, Arial Narrow Bold, sans-serif;font-size:14px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;">
-                CLOSE
-            </button>
-        </div>
-    </div>
-</div>
-
-<script>
-// ä¸ä¼ æ´»å¨åè½ - v8.8.0
-let uploadData = {};
-
-// æ£æµç¨æ·å°åºå¹¶è®¾ç½®è´§å¸
-function detectCurrency() {
-    const userLang = navigator.language || navigator.userLanguage;
-    const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
-    // æ ¹æ®æ¶åºåè¯­è¨æ£æµå°åº
-    if (userTimezone.includes('Asia/Shanghai') || userTimezone.includes('Asia/Hong_Kong') || 
-        userTimezone.includes('Asia/Taipei') || userTimezone.includes('Asia/Macau') ||
-        userLang.startsWith('zh')) {
-        return { currency: 'CNY', symbol: '&#165;', amount: '1.00' };
-    } else if (userTimezone.includes('Asia/Tokyo') || userTimezone.includes('Asia/Osaka') ||
-               userLang.startsWith('ja')) {
-        return { currency: 'JPY', symbol: '&#165;', amount: '20' };
-    } else if (userTimezone.includes('Asia/Seoul') || userLang.startsWith('ko')) {
-        return { currency: 'KRW', symbol: '&#8361;', amount: '200' };
-    } else if (userTimezone.includes('Asia/Singapore') || userTimezone.includes('Asia/Kuala_Lumpur') ||
-               userTimezone.includes('Asia/Bangkok') || userTimezone.includes('Asia/Jakarta') ||
-               userTimezone.includes('Asia/Manila')) {
-        return { currency: 'USD', symbol: '$', amount: '0.15' };
-    } else if (userTimezone.includes('Europe') || userLang.startsWith('en-GB') ||
-               userLang.startsWith('de') || userLang.startsWith('fr') || userLang.startsWith('es') ||
-               userLang.startsWith('it')) {
-        return { currency: 'EUR', symbol: '&#8364;', amount: '0.13' };
-    } else if (userTimezone.includes('America') || userTimezone.includes('US/') ||
-               userLang.startsWith('en-US')) {
-        return { currency: 'USD', symbol: '$', amount: '0.15' };
-    } else {
-        return { currency: 'USD', symbol: '$', amount: '0.15' };
-    }
-}
-
-function openUploadModal() {
-    const modal = document.getElementById('uploadModal');
-    if (!modal) {
-        console.error('Upload modal not found');
-        return;
-    }
-    modal.style.display = 'flex';
-
-    // éç½®è¡¨å
-    const formStep = document.getElementById('uploadFormStep');
-    const paymentStep = document.getElementById('paymentStep');
-    const successStep = document.getElementById('successStep');
-
-    if (formStep) formStep.style.display = 'block';
-    if (paymentStep) paymentStep.style.display = 'none';
-    if (successStep) successStep.style.display = 'none';
-
-    const titleInput = document.getElementById('uploadTitle');
-    const dateInput = document.getElementById('uploadDate');
-    const cityInput = document.getElementById('uploadCity');
-    const imageInput = document.getElementById('uploadImage');
-    const linkInput = document.getElementById('uploadLink');
-
-    if (titleInput) titleInput.value = '';
-    if (dateInput) dateInput.value = '';
-    if (cityInput) cityInput.value = '';
-    if (imageInput) imageInput.value = '';
-    if (linkInput) linkInput.value = '';
-}
-
-function closeUploadModal() {
-    const modal = document.getElementById('uploadModal');
-    if (modal) modal.style.display = 'none';
-}
-
-function goToPayment() {
-    const titleInput = document.getElementById('uploadTitle');
-    const dateInput = document.getElementById('uploadDate');
-    const cityInput = document.getElementById('uploadCity');
-    const imageInput = document.getElementById('uploadImage');
-    const linkInput = document.getElementById('uploadLink');
-
-    const title = titleInput ? titleInput.value.trim() : '';
-    const date = dateInput ? dateInput.value.trim() : '';
-    const city = cityInput ? cityInput.value.trim() : '';
-    const image = imageInput ? imageInput.value.trim() : '';
-    const link = linkInput ? linkInput.value.trim() : '';
-
-    if (!title || !date || !city || !image) {
-        alert('Please fill in all required fields (*)');
-        return;
-    }
-
-    // éªè¯æ¥ææ ¼å¼
-    const dateRegex = /^[0-9]{4}\.[0-9]{2}\.[0-9]{2}$/;
-    if (!dateRegex.test(date)) {
-        alert('Please enter date in format: YYYY.MM.DD');
-        return;
-    }
-
-    uploadData = { title, date, city, image, link };
-
-    // è®¾ç½®è´§å¸
-    const currency = detectCurrency();
-    const feeEl = document.getElementById('uploadFee');
-    if (feeEl) feeEl.innerHTML = currency.symbol + currency.amount + ' ' + currency.currency;
-
-    const formStep = document.getElementById('uploadFormStep');
-    const paymentStep = document.getElementById('paymentStep');
-
-    if (formStep) formStep.style.display = 'none';
-    if (paymentStep) paymentStep.style.display = 'block';
-}
-
-function backToForm() {
-    const paymentStep = document.getElementById('paymentStep');
-    const formStep = document.getElementById('uploadFormStep');
-
-    if (paymentStep) paymentStep.style.display = 'none';
-    if (formStep) formStep.style.display = 'block';
-}
-
-function confirmUpload() {
-    // çæå¯ä¸ID
-    const uploadId = 'upload_' + Date.now();
-
-    // ä¿å­å°localStorage
-    let pendingUploads = [];
-    try {
-        pendingUploads = JSON.parse(localStorage.getItem('pendingUploads') || '[]');
-    } catch(e) {
-        pendingUploads = [];
-    }
-
-    pendingUploads.push({
-        id: uploadId,
-        title: uploadData.title,
-        date: uploadData.date,
-        city: uploadData.city,
-        image: uploadData.image,
-        link: uploadData.link || '',
-        status: 'pending',
-        uploadTime: new Date().toISOString(),
-        paid: true
-    });
-
-    try {
-        localStorage.setItem('pendingUploads', JSON.stringify(pendingUploads));
-    } catch(e) {
-        console.error('Failed to save upload:', e);
-    }
-
-    // æ¾ç¤ºæåé¡µé¢
-    const paymentStep = document.getElementById('paymentStep');
-    const successStep = document.getElementById('successStep');
-
-    if (paymentStep) paymentStep.style.display = 'none';
-    if (successStep) successStep.style.display = 'block';
-
-    console.log('Event uploaded:', uploadData);
-}
-
-// ç¹å»èæ¯å³é­å¼¹çª
-document.addEventListener('click', function(e) {
-    const modal = document.getElementById('uploadModal');
-    if (modal && e.target === modal) {
-        closeUploadModal();
-    }
-});
-
-// ESCé®å³é­å¼¹çª
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-        closeUploadModal();
-    }
-});
-</script>
 </body>
 </html>
