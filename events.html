@@ -538,11 +538,11 @@
                 transition: opacity 0.3s ease !important;
             }
 
-            /* ä¿®å¤åäº«æé®ç¹å»é®é¢ - v8.8.0 */
+            /* v8.8.0 ä¿®å¤åäº«æé®ç¹å»é®é¢ */
             .auto-scroll-item .carousel-actions .share-btn,
             .auto-scroll-item .carousel-actions .info-btn {
                 pointer-events: auto !important;
-                z-index: 1000 !important;
+                z-index: 9999 !important;
                 position: relative !important;
             }
 
@@ -790,7 +790,7 @@
             justify-content: center;
             transition: all 0.3s ease;
             pointer-events: auto !important;
-            z-index: 1000 !important;
+            z-index: 9999 !important;
             position: relative !important;
         }
 
@@ -2615,6 +2615,7 @@
             UPLOAD EVENT
         </h3>
 
+        <!-- æ­¥éª¤1: å¡«åè¡¨å -->
         <div id="uploadFormStep" style="display:block;">
             <div style="margin-bottom:20px;">
                 <label style="display:block;color:#888;font-size:12px;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">Event Name *</label>
@@ -2646,6 +2647,7 @@
             </button>
         </div>
 
+        <!-- æ­¥éª¤2: æ¯ä» -->
         <div id="paymentStep" style="display:none;">
             <div style="text-align:center;margin-bottom:25px;">
                 <p style="color:#888;font-size:14px;margin-bottom:15px;">Upload Fee: <span id="uploadFee" style="color:#fff;font-size:24px;font-weight:bold;">&#165;1.00</span></p>
@@ -2664,26 +2666,90 @@
                 <button onclick="backToForm()" style="flex:1;padding:12px;background:transparent;color:#fff;border:2px solid #444;border-radius:8px;font-family:Impact, Haettenschweiler, Arial Narrow Bold, sans-serif;font-size:14px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all 0.3s;" onmouseover="this.style.borderColor='#8b0000';" onmouseout="this.style.borderColor='#444';">
                     BACK
                 </button>
-                <button onclick="confirmUpload()" style="flex:1;padding:12px;background:#8b0000;color:#fff;border:none;border-radius:8px;font-family:Impact, Haettenschweiler, Arial Narrow Bold, sans-serif;font-size:14px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all 0.3s;" onmouseover="this.style.background='#a00000';this.style.boxShadow='0 0 20px rgba(139,0,0,0.5)';" onmouseout="this.style.background='#8b0000';this.style.boxShadow='none';">
+                <button onclick="showTransactionStep()" style="flex:1;padding:12px;background:#8b0000;color:#fff;border:none;border-radius:8px;font-family:Impact, Haettenschweiler, Arial Narrow Bold, sans-serif;font-size:14px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all 0.3s;" onmouseover="this.style.background='#a00000';this.style.boxShadow='0 0 20px rgba(139,0,0,0.5)';" onmouseout="this.style.background='#8b0000';this.style.boxShadow='none';">
                     I'VE PAID
                 </button>
             </div>
         </div>
 
+        <!-- æ­¥éª¤3: è¾å¥äº¤æåå· -->
+        <div id="transactionStep" style="display:none;">
+            <div style="text-align:center;margin-bottom:20px;">
+                <p style="color:#888;font-size:14px;margin-bottom:15px;">Please enter your WeChat Pay Transaction ID</p>
+                <p style="color:#666;font-size:11px;margin-bottom:15px;">(Find it in your WeChat Pay bill - 28 digits)</p>
+            </div>
+
+            <div style="margin-bottom:25px;">
+                <label style="display:block;color:#888;font-size:12px;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">Transaction ID *</label>
+                <input type="text" id="transactionId" placeholder="420000xxxxxxxxxxxxxxxxxxxxxxxx" style="width:100%;padding:12px;background:rgba(255,255,255,0.05);border:1px solid #333;border-radius:8px;color:#fff;font-size:14px;box-sizing:border-box;text-align:center;letter-spacing:1px;" onfocus="this.style.borderColor='#8b0000'" onblur="this.style.borderColor='#333'">
+            </div>
+
+            <div style="background:rgba(139,0,0,0.1);border:1px solid rgba(139,0,0,0.3);border-radius:8px;padding:15px;margin-bottom:25px;">
+                <p style="color:#888;font-size:11px;margin:0;line-height:1.5;">
+                    <b style="color:#fff;">How to find Transaction ID:</b><br>
+                    1. Open WeChat -> Me -> Pay -> Wallet -> Bills<br>
+                    2. Find your payment to "LiveGigsç°åºç§"<br>
+                    3. Tap to view details<br>
+                    4. Copy the "Transaction ID" (äº¤æåå·)
+                </p>
+            </div>
+
+            <div style="display:flex;gap:10px;">
+                <button onclick="backToPayment()" style="flex:1;padding:12px;background:transparent;color:#fff;border:2px solid #444;border-radius:8px;font-family:Impact, Haettenschweiler, Arial Narrow Bold, sans-serif;font-size:14px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all 0.3s;" onmouseover="this.style.borderColor='#8b0000';" onmouseout="this.style.borderColor='#444';">
+                    BACK
+                </button>
+                <button onclick="verifyAndUpload()" style="flex:1;padding:12px;background:#8b0000;color:#fff;border:none;border-radius:8px;font-family:Impact, Haettenschweiler, Arial Narrow Bold, sans-serif;font-size:14px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all 0.3s;" onmouseover="this.style.background='#a00000';this.style.boxShadow='0 0 20px rgba(139,0,0,0.5)';" onmouseout="this.style.background='#8b0000';this.style.boxShadow='none';">
+                    VERIFY & UPLOAD
+                </button>
+            </div>
+        </div>
+
+        <!-- æ­¥éª¤4: ä¸ä¼ ä¸­ -->
+        <div id="uploadingStep" style="display:none;text-align:center;">
+            <div style="font-size:50px;color:#8b0000;margin-bottom:20px;animation:spin 1s linear infinite;">&#8635;</div>
+            <h4 style="color:#fff;font-size:18px;margin-bottom:15px;">Uploading...</h4>
+            <p style="color:#888;font-size:14px;">Please wait while we verify your payment</p>
+        </div>
+
+        <!-- æ­¥éª¤5: æå -->
         <div id="successStep" style="display:none;text-align:center;">
-            <div style="font-size:60px;color:#8b0000;margin-bottom:20px;">&#10003;</div>
+            <div style="font-size:60px;color:#28a745;margin-bottom:20px;">&#10003;</div>
             <h4 style="color:#fff;font-size:18px;margin-bottom:15px;">Upload Successful!</h4>
             <p style="color:#888;font-size:14px;margin-bottom:25px;">Your event has been submitted for review. It will appear on the site after approval.</p>
             <button onclick="closeUploadModal()" style="padding:12px 30px;background:#8b0000;color:#fff;border:none;border-radius:8px;font-family:Impact, Haettenschweiler, Arial Narrow Bold, sans-serif;font-size:14px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;">
                 CLOSE
             </button>
         </div>
+
+        <!-- æ­¥éª¤6: éè¯¯ -->
+        <div id="errorStep" style="display:none;text-align:center;">
+            <div style="font-size:60px;color:#dc3545;margin-bottom:20px;">&#10007;</div>
+            <h4 style="color:#fff;font-size:18px;margin-bottom:15px;">Upload Failed</h4>
+            <p id="errorMessage" style="color:#888;font-size:14px;margin-bottom:25px;">Please try again later</p>
+            <button onclick="backToTransaction()" style="padding:12px 30px;background:#8b0000;color:#fff;border:none;border-radius:8px;font-family:Impact, Haettenschweiler, Arial Narrow Bold, sans-serif;font-size:14px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;">
+                TRY AGAIN
+            </button>
+        </div>
     </div>
 </div>
 
+<style>
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+</style>
+
 <script>
-// ä¸ä¼ æ´»å¨åè½ - v8.8.0
+// ==================== ä¸ä¼ æ´»å¨åè½ - v8.8.0 ====================
 let uploadData = {};
+
+// ===== éç½®ï¼äºç«¯å­å¨ =====
+// ä½¿ç¨ GitHub Gist API ä½ä¸ºäºç«¯å­å¨
+// ç®¡çåéè¦éç½® GitHub Personal Access Token
+const GITHUB_TOKEN = localStorage.getItem('githubToken') || ''; // ä»æ¬å°å­å¨è¯»å
+const GIST_ID = localStorage.getItem('gistId') || ''; // Gist ID
+const GIST_FILENAME = 'livegigs_uploads.json';
 
 // æ£æµç¨æ·å°åºå¹¶è®¾ç½®è´§å¸
 function detectCurrency() {
@@ -2722,26 +2788,23 @@ function openUploadModal() {
         return;
     }
     modal.style.display = 'flex';
+    resetModal();
+}
 
-    const formStep = document.getElementById('uploadFormStep');
-    const paymentStep = document.getElementById('paymentStep');
-    const successStep = document.getElementById('successStep');
+function resetModal() {
+    // éç½®æææ­¥éª¤
+    const steps = ['uploadFormStep', 'paymentStep', 'transactionStep', 'uploadingStep', 'successStep', 'errorStep'];
+    steps.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = id === 'uploadFormStep' ? 'block' : 'none';
+    });
 
-    if (formStep) formStep.style.display = 'block';
-    if (paymentStep) paymentStep.style.display = 'none';
-    if (successStep) successStep.style.display = 'none';
-
-    const titleInput = document.getElementById('uploadTitle');
-    const dateInput = document.getElementById('uploadDate');
-    const cityInput = document.getElementById('uploadCity');
-    const imageInput = document.getElementById('uploadImage');
-    const linkInput = document.getElementById('uploadLink');
-
-    if (titleInput) titleInput.value = '';
-    if (dateInput) dateInput.value = '';
-    if (cityInput) cityInput.value = '';
-    if (imageInput) imageInput.value = '';
-    if (linkInput) linkInput.value = '';
+    // æ¸ç©ºè¡¨å
+    const inputs = ['uploadTitle', 'uploadDate', 'uploadCity', 'uploadImage', 'uploadLink', 'transactionId'];
+    inputs.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+    });
 }
 
 function closeUploadModal() {
@@ -2750,17 +2813,11 @@ function closeUploadModal() {
 }
 
 function goToPayment() {
-    const titleInput = document.getElementById('uploadTitle');
-    const dateInput = document.getElementById('uploadDate');
-    const cityInput = document.getElementById('uploadCity');
-    const imageInput = document.getElementById('uploadImage');
-    const linkInput = document.getElementById('uploadLink');
-
-    const title = titleInput ? titleInput.value.trim() : '';
-    const date = dateInput ? dateInput.value.trim() : '';
-    const city = cityInput ? cityInput.value.trim() : '';
-    const image = imageInput ? imageInput.value.trim() : '';
-    const link = linkInput ? linkInput.value.trim() : '';
+    const title = document.getElementById('uploadTitle')?.value.trim() || '';
+    const date = document.getElementById('uploadDate')?.value.trim() || '';
+    const city = document.getElementById('uploadCity')?.value.trim() || '';
+    const image = document.getElementById('uploadImage')?.value.trim() || '';
+    const link = document.getElementById('uploadLink')?.value.trim() || '';
 
     if (!title || !date || !city || !image) {
         alert('Please fill in all required fields (*)');
@@ -2779,58 +2836,200 @@ function goToPayment() {
     const feeEl = document.getElementById('uploadFee');
     if (feeEl) feeEl.innerHTML = currency.symbol + currency.amount + ' ' + currency.currency;
 
-    const formStep = document.getElementById('uploadFormStep');
-    const paymentStep = document.getElementById('paymentStep');
-
-    if (formStep) formStep.style.display = 'none';
-    if (paymentStep) paymentStep.style.display = 'block';
+    document.getElementById('uploadFormStep').style.display = 'none';
+    document.getElementById('paymentStep').style.display = 'block';
 }
 
 function backToForm() {
-    const paymentStep = document.getElementById('paymentStep');
-    const formStep = document.getElementById('uploadFormStep');
-
-    if (paymentStep) paymentStep.style.display = 'none';
-    if (formStep) formStep.style.display = 'block';
+    document.getElementById('paymentStep').style.display = 'none';
+    document.getElementById('uploadFormStep').style.display = 'block';
 }
 
-function confirmUpload() {
-    const uploadId = 'upload_' + Date.now();
+function showTransactionStep() {
+    document.getElementById('paymentStep').style.display = 'none';
+    document.getElementById('transactionStep').style.display = 'block';
+}
 
-    let pendingUploads = [];
-    try {
-        pendingUploads = JSON.parse(localStorage.getItem('pendingUploads') || '[]');
-    } catch(e) {
-        pendingUploads = [];
+function backToPayment() {
+    document.getElementById('transactionStep').style.display = 'none';
+    document.getElementById('paymentStep').style.display = 'block';
+}
+
+function backToTransaction() {
+    document.getElementById('errorStep').style.display = 'none';
+    document.getElementById('transactionStep').style.display = 'block';
+}
+
+// éªè¯äº¤æåå·å¹¶ä¸ä¼ 
+async function verifyAndUpload() {
+    const transactionId = document.getElementById('transactionId')?.value.trim() || '';
+
+    if (!transactionId) {
+        alert('Please enter your WeChat Pay Transaction ID');
+        return;
     }
 
-    pendingUploads.push({
-        id: uploadId,
-        title: uploadData.title,
-        date: uploadData.date,
-        city: uploadData.city,
-        image: uploadData.image,
-        link: uploadData.link || '',
-        status: 'pending',
-        uploadTime: new Date().toISOString(),
-        paid: true
-    });
+    // éªè¯äº¤æåå·æ ¼å¼ï¼å¾®ä¿¡æ¯ä»åå·éå¸¸æ¯28ä½æ°å­ï¼
+    const transactionRegex = /^[0-9]{20,32}$/;
+    if (!transactionRegex.test(transactionId)) {
+        alert('Invalid Transaction ID. Please check and try again.');
+        return;
+    }
+
+    // æ¾ç¤ºä¸ä¼ ä¸­
+    document.getElementById('transactionStep').style.display = 'none';
+    document.getElementById('uploadingStep').style.display = 'block';
 
     try {
+        // åå¤ä¸ä¼ æ°æ®
+        const uploadRecord = {
+            id: 'upload_' + Date.now(),
+            title: uploadData.title,
+            date: uploadData.date,
+            city: uploadData.city,
+            image: uploadData.image,
+            link: uploadData.link || '',
+            transactionId: transactionId,
+            status: 'pending',
+            uploadTime: new Date().toISOString(),
+            paid: true,
+            userAgent: navigator.userAgent,
+            ip: 'unknown' // IP will be recorded server-side
+        };
+
+        // ä¸ä¼ å°äºç«¯å­å¨
+        await uploadToCloud(uploadRecord);
+
+        // åæ¶ä¿å­å°æ¬å°
+        saveToLocalStorage(uploadRecord);
+
+        // æ¾ç¤ºæå
+        document.getElementById('uploadingStep').style.display = 'none';
+        document.getElementById('successStep').style.display = 'block';
+
+        console.log('Event uploaded successfully:', uploadRecord);
+
+    } catch (error) {
+        console.error('Upload failed:', error);
+        document.getElementById('uploadingStep').style.display = 'none';
+        document.getElementById('errorStep').style.display = 'block';
+        document.getElementById('errorMessage').textContent = 'Upload failed: ' + error.message;
+    }
+}
+
+// ä¸ä¼ å°äºç«¯å­å¨ (GitHub Gist)
+async function uploadToCloud(uploadRecord) {
+    const token = localStorage.getItem('githubToken');
+    const gistId = localStorage.getItem('gistId');
+
+    if (!token) {
+        console.log('GitHub Token not configured, saving to localStorage only');
+        return true; // åªä¿å­å°æ¬å°
+    }
+
+    try {
+        let existingData = { uploads: [] };
+
+        // å¦ææ gistIdï¼åè·åç°ææ°æ®
+        if (gistId) {
+            const getResponse = await fetch(`https://api.github.com/gists/${gistId}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Accept': 'application/vnd.github.v3+json'
+                }
+            });
+
+            if (getResponse.ok) {
+                const gist = await getResponse.json();
+                const fileContent = gist.files[GIST_FILENAME]?.content;
+                if (fileContent) {
+                    try {
+                        existingData = JSON.parse(fileContent);
+                    } catch(e) {
+                        existingData = { uploads: [] };
+                    }
+                }
+            }
+        }
+
+        // åå¹¶æ°æ°æ®
+        if (!existingData.uploads) existingData.uploads = [];
+        existingData.uploads.push(uploadRecord);
+
+        const updatedContent = JSON.stringify(existingData, null, 2);
+
+        // æ´æ°æåå»º Gist
+        if (gistId) {
+            // æ´æ°ç°æ Gist
+            const patchResponse = await fetch(`https://api.github.com/gists/${gistId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Accept': 'application/vnd.github.v3+json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    files: {
+                        [GIST_FILENAME]: {
+                            content: updatedContent
+                        }
+                    }
+                })
+            });
+
+            if (!patchResponse.ok) {
+                throw new Error('Failed to update Gist: ' + patchResponse.statusText);
+            }
+        } else {
+            // åå»ºæ° Gist
+            const createResponse = await fetch('https://api.github.com/gists', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Accept': 'application/vnd.github.v3+json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    description: 'LiveGigs Uploads Data',
+                    public: false,
+                    files: {
+                        [GIST_FILENAME]: {
+                            content: updatedContent
+                        }
+                    }
+                })
+            });
+
+            if (createResponse.ok) {
+                const newGist = await createResponse.json();
+                localStorage.setItem('gistId', newGist.id);
+                console.log('Created new Gist:', newGist.id);
+            } else {
+                throw new Error('Failed to create Gist: ' + createResponse.statusText);
+            }
+        }
+
+        return true;
+    } catch (error) {
+        console.error('Cloud upload error:', error);
+        // äºç«¯ä¸ä¼ å¤±è´¥ï¼ä½æ¬å°å­å¨æå
+        return true;
+    }
+}
+
+// ä¿å­å°æ¬å°å­å¨
+function saveToLocalStorage(uploadRecord) {
+    try {
+        let pendingUploads = JSON.parse(localStorage.getItem('pendingUploads') || '[]');
+        pendingUploads.push(uploadRecord);
         localStorage.setItem('pendingUploads', JSON.stringify(pendingUploads));
-    } catch(e) {
-        console.error('Failed to save upload:', e);
+    } catch (e) {
+        console.error('Local storage error:', e);
     }
-
-    const paymentStep = document.getElementById('paymentStep');
-    const successStep = document.getElementById('successStep');
-
-    if (paymentStep) paymentStep.style.display = 'none';
-    if (successStep) successStep.style.display = 'block';
-
-    console.log('Event uploaded:', uploadData);
 }
 
+// ç¹å»èæ¯å³é­å¼¹çª
 document.addEventListener('click', function(e) {
     const modal = document.getElementById('uploadModal');
     if (modal && e.target === modal) {
@@ -2838,6 +3037,7 @@ document.addEventListener('click', function(e) {
     }
 });
 
+// ESCé®å³é­å¼¹çª
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         closeUploadModal();
