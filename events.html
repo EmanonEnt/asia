@@ -539,9 +539,16 @@
             }
 
             /* ä¿®å¤åäº«æé®ç¹å»é®é¢ - v8.8.0 */
-            .auto-scroll-item .share-btn {
+            .auto-scroll-item .carousel-actions .share-btn {
                 pointer-events: auto !important;
-                z-index: 100 !important;
+                z-index: 1000 !important;
+                position: relative !important;
+            }
+
+            .auto-scroll-item .carousel-actions .info-btn {
+                pointer-events: auto !important;
+                z-index: 1000 !important;
+                position: relative !important;
             }
 
             .auto-scroll-item .auto-scroll-countdown {
@@ -787,6 +794,9 @@
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
+            pointer-events: auto !important;
+            z-index: 1000 !important;
+            position: relative !important;
         }
 
         .share-btn:hover {
@@ -1115,27 +1125,7 @@
             <h1 class="hero-title"><span class="gray">LIVEGIGS</span><span class="red">ASIA</span></h1>
             <p class="hero-subtitle"><span class="line1">Concerts, Festivals, Tickets, Tour Dates</span><span class="line2">- Live Gigs</span></p>
         </div>
-    
-            <!-- UPLOAD EVENT æé® - v8.8.0 -->
-            <div class="upload-event-container" style="text-align: center; padding: 30px 0; background: var(--black);">
-                <button class="upload-event-btn" onclick="openUploadModal()" style="
-                    background: transparent;
-                    color: var(--silver);
-                    border: 2px solid var(--dark-red);
-                    padding: 15px 50px;
-                    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-                    font-size: 16px;
-                    letter-spacing: 3px;
-                    text-transform: uppercase;
-                    cursor: pointer;
-                    transition: all 0.3s ease;
-                    position: relative;
-                    overflow: hidden;
-                " onmouseover="this.style.background='var(--dark-red)';this.style.color='#fff';this.style.boxShadow='0 0 30px rgba(139,0,0,0.6)';" 
-                onmouseout="this.style.background='transparent';this.style.color='var(--silver)';this.style.boxShadow='none';">
-                    UPLOAD EVENT
-                </button>
-            </div></section>
+    </section>
 
     <div class="content-wrapper">
         <section class="managed-events">
@@ -1360,9 +1350,29 @@
                 <button class="scroll-arrow right" onclick="accelerateScroll('right')">→</button>
                 <div class="auto-scroll-container" id="autoScrollContainer">
                     <div class="auto-scroll-track" id="autoScrollTrack">
-                        <!-- æ»æ­é¡¹ç®å°éè¿JSå æçæ -->
+                        <!-- æ»æ­é¡¹ç®éè¿JSå¨æçæ -->
                     </div>
                 </div>
+            </div>
+            <!-- UPLOAD EVENT æé® - v8.8.0 -->
+            <div class="upload-event-container" style="text-align: center; padding: 30px 0; background: var(--black);">
+                <button class="upload-event-btn" onclick="openUploadModal()" style="
+                    background: transparent;
+                    color: var(--silver);
+                    border: 2px solid var(--dark-red);
+                    padding: 15px 50px;
+                    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+                    font-size: 16px;
+                    letter-spacing: 3px;
+                    text-transform: uppercase;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    position: relative;
+                    overflow: hidden;
+                " onmouseover="this.style.background='var(--dark-red)';this.style.color='#fff';this.style.boxShadow='0 0 30px rgba(139,0,0,0.6)';" 
+                onmouseout="this.style.background='transparent';this.style.color='var(--silver)';this.style.boxShadow='none';">
+                    UPLOAD EVENT
+                </button>
             </div>
         </section>
 
@@ -2604,9 +2614,9 @@
     </div>
 
 <!-- ä¸ä¼ æ´»å¨å¼¹çª - v8.8.0 -->
-<div id="uploadModal" class="upload-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:10000;justify-content:center;align-items:center;padding:20px;">
-    <div class="upload-modal-content" style="background:linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);border:2px solid #8b0000;border-radius:16px;padding:35px;max-width:500px;width:90%;box-shadow:0 0 60px rgba(139,0,0,0.6);position:relative;">
-        <button onclick="closeUploadModal()" style="position:absolute;top:15px;right:15px;background:none;border:none;color:#666;font-size:24px;cursor:pointer;">&times;</button>
+<div id="uploadModal" class="upload-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:100000;justify-content:center;align-items:center;padding:20px;box-sizing:border-box;">
+    <div class="upload-modal-content" style="background:linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);border:2px solid #8b0000;border-radius:16px;padding:35px;max-width:500px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 0 60px rgba(139,0,0,0.6);position:relative;box-sizing:border-box;">
+        <button onclick="closeUploadModal()" style="position:absolute;top:15px;right:15px;background:none;border:none;color:#666;font-size:28px;cursor:pointer;z-index:10;">&times;</button>
 
         <h3 style="margin:0 0 25px 0;color:#fff;font-family:Impact, Haettenschweiler, Arial Narrow Bold, sans-serif;letter-spacing:3px;text-transform:uppercase;font-size:20px;text-align:center;text-shadow:0 0 20px rgba(139,0,0,0.8);">
             UPLOAD EVENT
@@ -2619,8 +2629,8 @@
             </div>
 
             <div style="margin-bottom:20px;">
-                <label style="display:block;color:#888;font-size:12px;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">Date *</label>
-                <input type="text" id="uploadDate" placeholder="YYYY.MM.DD" style="width:100%;padding:12px;background:rgba(255,255,255,0.05);border:1px solid #333;border-radius:8px;color:#fff;font-size:14px;box-sizing:border-box;" onfocus="this.style.borderColor='#8b0000'" onblur="this.style.borderColor='#333'">
+                <label style="display:block;color:#888;font-size:12px;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">Date * (YYYY.MM.DD)</label>
+                <input type="text" id="uploadDate" placeholder="2026.07.24" style="width:100%;padding:12px;background:rgba(255,255,255,0.05);border:1px solid #333;border-radius:8px;color:#fff;font-size:14px;box-sizing:border-box;" onfocus="this.style.borderColor='#8b0000'" onblur="this.style.borderColor='#333'">
             </div>
 
             <div style="margin-bottom:20px;">
@@ -2645,14 +2655,14 @@
 
         <div id="paymentStep" style="display:none;">
             <div style="text-align:center;margin-bottom:25px;">
-                <p style="color:#888;font-size:14px;margin-bottom:15px;">Upload Fee: <span id="uploadFee" style="color:#fff;font-size:24px;font-weight:bold;">Â¥1.00</span></p>
-                <p style="color:#666;font-size:12px;">Scan QR code with Alipay to pay</p>
+                <p style="color:#888;font-size:14px;margin-bottom:15px;">Upload Fee: <span id="uploadFee" style="color:#fff;font-size:24px;font-weight:bold;">&#165;1.00</span></p>
+                <p style="color:#666;font-size:12px;">Scan QR code with WeChat to pay</p>
             </div>
 
             <div style="background:#fff;padding:20px;border-radius:12px;margin-bottom:25px;text-align:center;">
-                <img src="./image/alipay-qr.png" alt="Alipay QR Code" style="max-width:200px;width:100%;" onerror="this.style.display='none';document.getElementById('qrFallback').style.display='block';">
+                <img src="Wechat-QR.png" alt="WeChat Pay QR Code" style="max-width:200px;width:100%;display:block;margin:0 auto;" onerror="this.style.display='none';document.getElementById('qrFallback').style.display='block';">
                 <div id="qrFallback" style="display:none;padding:20px;color:#8b0000;">
-                    <p>Alipay QR Code</p>
+                    <p>WeChat Pay QR Code</p>
                     <p style="font-size:12px;">Please contact admin for payment</p>
                 </div>
             </div>
@@ -2668,7 +2678,7 @@
         </div>
 
         <div id="successStep" style="display:none;text-align:center;">
-            <div style="font-size:60px;color:#8b0000;margin-bottom:20px;">â</div>
+            <div style="font-size:60px;color:#8b0000;margin-bottom:20px;">&#10003;</div>
             <h4 style="color:#fff;font-size:18px;margin-bottom:15px;">Upload Successful!</h4>
             <p style="color:#888;font-size:14px;margin-bottom:25px;">Your event has been submitted for review. It will appear on the site after approval.</p>
             <button onclick="closeUploadModal()" style="padding:12px 30px;background:#8b0000;color:#fff;border:none;border-radius:8px;font-family:Impact, Haettenschweiler, Arial Narrow Bold, sans-serif;font-size:14px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;">
@@ -2691,12 +2701,12 @@ function detectCurrency() {
     if (userTimezone.includes('Asia/Shanghai') || userTimezone.includes('Asia/Hong_Kong') || 
         userTimezone.includes('Asia/Taipei') || userTimezone.includes('Asia/Macau') ||
         userLang.startsWith('zh')) {
-        return { currency: 'CNY', symbol: 'Â¥', amount: '1.00' };
+        return { currency: 'CNY', symbol: '&#165;', amount: '1.00' };
     } else if (userTimezone.includes('Asia/Tokyo') || userTimezone.includes('Asia/Osaka') ||
                userLang.startsWith('ja')) {
-        return { currency: 'JPY', symbol: 'Â¥', amount: '20' };
+        return { currency: 'JPY', symbol: '&#165;', amount: '20' };
     } else if (userTimezone.includes('Asia/Seoul') || userLang.startsWith('ko')) {
-        return { currency: 'KRW', symbol: 'â©', amount: '200' };
+        return { currency: 'KRW', symbol: '&#8361;', amount: '200' };
     } else if (userTimezone.includes('Asia/Singapore') || userTimezone.includes('Asia/Kuala_Lumpur') ||
                userTimezone.includes('Asia/Bangkok') || userTimezone.includes('Asia/Jakarta') ||
                userTimezone.includes('Asia/Manila')) {
@@ -2704,7 +2714,7 @@ function detectCurrency() {
     } else if (userTimezone.includes('Europe') || userLang.startsWith('en-GB') ||
                userLang.startsWith('de') || userLang.startsWith('fr') || userLang.startsWith('es') ||
                userLang.startsWith('it')) {
-        return { currency: 'EUR', symbol: 'â¬', amount: '0.13' };
+        return { currency: 'EUR', symbol: '&#8364;', amount: '0.13' };
     } else if (userTimezone.includes('America') || userTimezone.includes('US/') ||
                userLang.startsWith('en-US')) {
         return { currency: 'USD', symbol: '$', amount: '0.15' };
@@ -2715,29 +2725,51 @@ function detectCurrency() {
 
 function openUploadModal() {
     const modal = document.getElementById('uploadModal');
+    if (!modal) {
+        console.error('Upload modal not found');
+        return;
+    }
     modal.style.display = 'flex';
 
     // éç½®è¡¨å
-    document.getElementById('uploadFormStep').style.display = 'block';
-    document.getElementById('paymentStep').style.display = 'none';
-    document.getElementById('successStep').style.display = 'none';
-    document.getElementById('uploadTitle').value = '';
-    document.getElementById('uploadDate').value = '';
-    document.getElementById('uploadCity').value = '';
-    document.getElementById('uploadImage').value = '';
-    document.getElementById('uploadLink').value = '';
+    const formStep = document.getElementById('uploadFormStep');
+    const paymentStep = document.getElementById('paymentStep');
+    const successStep = document.getElementById('successStep');
+
+    if (formStep) formStep.style.display = 'block';
+    if (paymentStep) paymentStep.style.display = 'none';
+    if (successStep) successStep.style.display = 'none';
+
+    const titleInput = document.getElementById('uploadTitle');
+    const dateInput = document.getElementById('uploadDate');
+    const cityInput = document.getElementById('uploadCity');
+    const imageInput = document.getElementById('uploadImage');
+    const linkInput = document.getElementById('uploadLink');
+
+    if (titleInput) titleInput.value = '';
+    if (dateInput) dateInput.value = '';
+    if (cityInput) cityInput.value = '';
+    if (imageInput) imageInput.value = '';
+    if (linkInput) linkInput.value = '';
 }
 
 function closeUploadModal() {
-    document.getElementById('uploadModal').style.display = 'none';
+    const modal = document.getElementById('uploadModal');
+    if (modal) modal.style.display = 'none';
 }
 
 function goToPayment() {
-    const title = document.getElementById('uploadTitle').value.trim();
-    const date = document.getElementById('uploadDate').value.trim();
-    const city = document.getElementById('uploadCity').value.trim();
-    const image = document.getElementById('uploadImage').value.trim();
-    const link = document.getElementById('uploadLink').value.trim();
+    const titleInput = document.getElementById('uploadTitle');
+    const dateInput = document.getElementById('uploadDate');
+    const cityInput = document.getElementById('uploadCity');
+    const imageInput = document.getElementById('uploadImage');
+    const linkInput = document.getElementById('uploadLink');
+
+    const title = titleInput ? titleInput.value.trim() : '';
+    const date = dateInput ? dateInput.value.trim() : '';
+    const city = cityInput ? cityInput.value.trim() : '';
+    const image = imageInput ? imageInput.value.trim() : '';
+    const link = linkInput ? linkInput.value.trim() : '';
 
     if (!title || !date || !city || !image) {
         alert('Please fill in all required fields (*)');
@@ -2745,7 +2777,7 @@ function goToPayment() {
     }
 
     // éªè¯æ¥ææ ¼å¼
-    const dateRegex = /^\d{4}\.\d{2}\.\d{2}$/;
+    const dateRegex = /^[0-9]{4}\.[0-9]{2}\.[0-9]{2}$/;
     if (!dateRegex.test(date)) {
         alert('Please enter date in format: YYYY.MM.DD');
         return;
@@ -2755,42 +2787,68 @@ function goToPayment() {
 
     // è®¾ç½®è´§å¸
     const currency = detectCurrency();
-    document.getElementById('uploadFee').textContent = currency.symbol + currency.amount + ' ' + currency.currency;
+    const feeEl = document.getElementById('uploadFee');
+    if (feeEl) feeEl.innerHTML = currency.symbol + currency.amount + ' ' + currency.currency;
 
-    document.getElementById('uploadFormStep').style.display = 'none';
-    document.getElementById('paymentStep').style.display = 'block';
+    const formStep = document.getElementById('uploadFormStep');
+    const paymentStep = document.getElementById('paymentStep');
+
+    if (formStep) formStep.style.display = 'none';
+    if (paymentStep) paymentStep.style.display = 'block';
 }
 
 function backToForm() {
-    document.getElementById('paymentStep').style.display = 'none';
-    document.getElementById('uploadFormStep').style.display = 'block';
+    const paymentStep = document.getElementById('paymentStep');
+    const formStep = document.getElementById('uploadFormStep');
+
+    if (paymentStep) paymentStep.style.display = 'none';
+    if (formStep) formStep.style.display = 'block';
 }
 
 function confirmUpload() {
     // çæå¯ä¸ID
     const uploadId = 'upload_' + Date.now();
 
-    // ä¿å­å°localStorageï¼æ¨¡æä¸ä¼ å°æå¡å¨ï¼
-    const pendingUploads = JSON.parse(localStorage.getItem('pendingUploads') || '[]');
+    // ä¿å­å°localStorage
+    let pendingUploads = [];
+    try {
+        pendingUploads = JSON.parse(localStorage.getItem('pendingUploads') || '[]');
+    } catch(e) {
+        pendingUploads = [];
+    }
+
     pendingUploads.push({
         id: uploadId,
-        ...uploadData,
-        status: 'pending', // pending, approved, rejected
+        title: uploadData.title,
+        date: uploadData.date,
+        city: uploadData.city,
+        image: uploadData.image,
+        link: uploadData.link || '',
+        status: 'pending',
         uploadTime: new Date().toISOString(),
         paid: true
     });
-    localStorage.setItem('pendingUploads', JSON.stringify(pendingUploads));
+
+    try {
+        localStorage.setItem('pendingUploads', JSON.stringify(pendingUploads));
+    } catch(e) {
+        console.error('Failed to save upload:', e);
+    }
 
     // æ¾ç¤ºæåé¡µé¢
-    document.getElementById('paymentStep').style.display = 'none';
-    document.getElementById('successStep').style.display = 'block';
+    const paymentStep = document.getElementById('paymentStep');
+    const successStep = document.getElementById('successStep');
+
+    if (paymentStep) paymentStep.style.display = 'none';
+    if (successStep) successStep.style.display = 'block';
 
     console.log('Event uploaded:', uploadData);
 }
 
 // ç¹å»èæ¯å³é­å¼¹çª
-document.getElementById('uploadModal').addEventListener('click', function(e) {
-    if (e.target === this) {
+document.addEventListener('click', function(e) {
+    const modal = document.getElementById('uploadModal');
+    if (modal && e.target === modal) {
         closeUploadModal();
     }
 });
