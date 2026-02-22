@@ -1096,74 +1096,12 @@
         .event-btn.disabled { pointer-events: auto; cursor: default; }
         .event-btn.disabled:hover { background: var(--dark-red); border-color: var(--dark-red); box-shadow: 0 0 30px rgba(139, 0, 0, 0.8), 0 0 60px rgba(139, 0, 0, 0.4); transform: scale(1.05); letter-spacing: 3px; }
 
-        /* 过期活动样式 - 强制无hover效果 */
-        .event-card.expired {
-            cursor: default !important;
-            pointer-events: none !important;
-            transform: none !important;
-            border-color: rgba(139, 0, 0, 0.2) !important;
-            box-shadow: none !important;
-            z-index: 1 !important;
-            filter: brightness(0.7) !important;
-            opacity: 0.8 !important;
-        }
-        .event-card.expired:hover {
-            transform: none !important;
-            border-color: rgba(139, 0, 0, 0.2) !important;
-            box-shadow: none !important;
-            z-index: 1 !important;
-            filter: brightness(0.7) !important;
-            opacity: 0.8 !important;
-        }
-        .event-card.expired .event-poster {
-            filter: brightness(0.3) !important;
-            transform: none !important;
-            transition: none !important;
-        }
-        .event-card.expired:hover .event-poster {
-            filter: brightness(0.3) !important;
-            transform: none !important;
-        }
-        .event-card.expired .event-content {
-            background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,0.7) 70%, rgba(0,0,0,0.9) 100%) !important;
-        }
-        .event-card.expired:hover .event-content {
-            background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,0.7) 70%, rgba(0,0,0,0.9) 100%) !important;
-        }
-        .event-card.expired .event-name,
-        .event-card.expired .event-details,
-        .event-card.expired .event-venue {
-            opacity: 0.7 !important;
-            visibility: visible !important;
-        }
+        .event-card.expired:hover { transform: none; border-color: rgba(139, 0, 0, 0.3); box-shadow: none; }
+        .event-card.expired:hover .event-poster { filter: brightness(0.7); transform: none; }
+        .event-card.expired:hover .event-content { background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0.6) 70%, rgba(0,0,0,0.8) 100%); }
         .event-card.expired:hover .event-name,
         .event-card.expired:hover .event-details,
-        .event-card.expired:hover .event-venue {
-            opacity: 0.7 !important;
-            visibility: visible !important;
-        }
-        .event-card.expired .event-status {
-            opacity: 0.8 !important;
-        }
-        .event-card.expired:hover .event-status {
-            opacity: 0.8 !important;
-        }
-        /* 强制隐藏过期活动的分享按钮 - 包括hover状态 */
-        .event-card.expired .event-share-btn {
-            display: none !important;
-            opacity: 0 !important;
-            visibility: hidden !important;
-        }
-        .event-card.expired:hover .event-share-btn {
-            display: none !important;
-            opacity: 0 !important;
-            visibility: hidden !important;
-        }
-        /* 禁用所有过渡动画 */
-        .event-card.expired,
-        .event-card.expired * {
-            transition: none !important;
-        }
+        .event-card.expired:hover .event-venue { opacity: 1; visibility: visible; }
 </style>
 </head>
 <body>
@@ -1218,8 +1156,8 @@
                     </div>
                 </div>
 
-                <div class="event-card " data-event-id="1" data-title="PUNK HEART FESTIVAL 2026" data-city="待定" data-date="2026.09.25~27" data-image="./image/1-b-2.png" data-link="http://punkheartfest.com">
-                    <button class="event-share-btn" onclick="event.stopPropagation(); openShareModal('PUNK HEART FESTIVAL 2026', '待定', '2026.09.25~27', './image/1-b-2.png', 'http://punkheartfest.com')" title="Share">
+                <div class="event-card " data-event-id="1" data-title="PUNK HEART FESTIVAL 2026" data-city="待定" data-date="2026.09.25" data-image="./image/1-b-2.png" data-link="http://punkheartfest.com">
+                    <button class="event-share-btn" onclick="event.stopPropagation(); openShareModal('PUNK HEART FESTIVAL 2026', '待定', '2026.09.25', './image/1-b-2.png', 'http://punkheartfest.com')" title="Share">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <circle cx="18" cy="5" r="3"></circle>
                             <circle cx="6" cy="12" r="3"></circle>
@@ -1232,14 +1170,14 @@
                     <div class="event-status countdown" data-countdown-date="2026.09.25" id="status-1">CALCULATING...</div>
                     <div class="event-content">
                         <h3 class="event-name">PUNK HEART FESTIVAL 2026<br>TBA</h3>
-                        <div class="event-details">2026.09.25~27 | 待定</div>
+                        <div class="event-details">2026.09.25 | 待定</div>
                         <div class="event-venue"></div>
                         <a href="http://punkheartfest.com" class="event-btn" target="_blank">朋克心2026</a>
                     </div>
                 </div>
 
-                <div class="event-card " data-event-id="2" data-title="PUNK HEART FESTIVAL 2026" data-city="待定" data-date="2026.09.27" data-image="./image/1-b-2.png" data-link="http://punkheartfest.com">
-                    <button class="event-share-btn" onclick="event.stopPropagation(); openShareModal('PUNK HEART FESTIVAL 2026', '待定', '2026.09.27', './image/1-b-2.png', 'http://punkheartfest.com')" title="Share">
+                <div class="event-card " data-event-id="2" data-title="PUNK HEART FESTIVAL 2026" data-city="WUHAN" data-date="2026.09.27" data-image="./image/1-b-2.png" data-link="http://punkheartfest.com">
+                    <button class="event-share-btn" onclick="event.stopPropagation(); openShareModal('PUNK HEART FESTIVAL 2026', 'WUHAN', '2026.09.27', './image/1-b-2.png', 'http://punkheartfest.com')" title="Share">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <circle cx="18" cy="5" r="3"></circle>
                             <circle cx="6" cy="12" r="3"></circle>
@@ -1252,7 +1190,7 @@
                     <div class="event-status countdown" data-countdown-date="2026.09.27" id="status-2">CALCULATING...</div>
                     <div class="event-content">
                         <h3 class="event-name">PUNK HEART FESTIVAL 2026<br>WUHAN</h3>
-                        <div class="event-details">2026.09.27 | 待定</div>
+                        <div class="event-details">2026.09.27 | WUHAN</div>
                         <div class="event-venue"></div>
                         <a href="http://punkheartfest.com" class="event-btn" target="_blank">朋克心2026</a>
                     </div>
@@ -1338,7 +1276,7 @@
                     </div>
                 </div>
 
-                <div class="event-card " data-event-id="4" data-title="PUNK HEART FESTIVAL 2026" data-city="未來俱樂部" data-date="2026.01.17" data-image="https://en.concerts-metal.com/images/flyers/202601/1768047587--PUNKHEART-_2026-WARM-UP.webp" data-link="">
+                <div class="event-card expired" data-event-id="4" data-title="PUNK HEART FESTIVAL 2026" data-city="未來俱樂部" data-date="2026.01.17" data-image="https://en.concerts-metal.com/images/flyers/202601/1768047587--PUNKHEART-_2026-WARM-UP.webp" data-link="">
                     <button class="event-share-btn" onclick="event.stopPropagation(); openShareModal('PUNK HEART FESTIVAL 2026', '未來俱樂部', '2026.01.17', 'https://en.concerts-metal.com/images/flyers/202601/1768047587--PUNKHEART-_2026-WARM-UP.webp', '')" title="Share">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <circle cx="18" cy="5" r="3"></circle>
@@ -1358,7 +1296,7 @@
                     </div>
                 </div>
 
-                <div class="event-card " data-event-id="6" data-title="HAPPY NEW YEAR！" data-city="CHINA" data-date="2026.01.01" data-image="https://img.redocn.com/sheji/20250723/manianxinnianchunjiezhufuyujinsechuangyihaibaosucaibeijing_13616973.jpg" data-link="">
+                <div class="event-card expired" data-event-id="9" data-title="HAPPY NEW YEAR！" data-city="CHINA" data-date="2026.01.01" data-image="https://img.redocn.com/sheji/20250723/manianxinnianchunjiezhufuyujinsechuangyihaibaosucaibeijing_13616973.jpg" data-link="">
                     <button class="event-share-btn" onclick="event.stopPropagation(); openShareModal('HAPPY NEW YEAR！', 'CHINA', '2026.01.01', 'https://img.redocn.com/sheji/20250723/manianxinnianchunjiezhufuyujinsechuangyihaibaosucaibeijing_13616973.jpg', '')" title="Share">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <circle cx="18" cy="5" r="3"></circle>
@@ -1374,7 +1312,7 @@
                         <h3 class="event-name">HAPPY NEW YEAR！<br>新年快樂</h3>
                         <div class="event-details">2026.01.01 | CHINA</div>
                         <div class="event-venue"></div>
-                        <span class="event-btn disabled">查看详情</span>
+                        <span class="event-btn disabled">恭喜發財</span>
                     </div>
                 </div>
 
@@ -1505,7 +1443,7 @@
         // æ»æ­æ´»å¨æ°æ® - 18ä¸ªæ´»å¨ï¼4ä¸ªè¿æ + 14ä¸ªå³å°åçï¼
         const carouselData = [
                 { title: 'HAPPY NEW YEAR新年快樂!!!', date: '2026.01.01', city: 'ASIA', image: 'https://img.redocn.com/sheji/20250723/manianxinnianchunjiezhufuyujinsechuangyihaibaosucaibeijing_13616973.jpg', link: '' },
-                { title: 'PUNK HEART WARM-UP', date: '2026.01.17', city: 'XI\'AN', image: 'https://en.concerts-metal.com/images/flyers/202601/1768047587--PUNKHEART-_2026-WARM-UP.webp', link: '' },
+                { title: 'PUNK HEART WARM-UP PARTY', date: '2026.01.17', city: 'XI\'AN', image: 'https://en.concerts-metal.com/images/flyers/202601/1768047587--PUNKHEART-_2026-WARM-UP.webp', link: '' },
                 { title: 'BABYMETAL WORLD TOUR AUSTRALIA 2026', date: '2026.03.12~22', city: 'AUSTRALIA', image: 'https://babymetal.com/contents/1/TO/babymetal_insta45_OSN%20(2).jpg', link: 'https://babymetal.com' },
                 { title: 'Kraanium Asia Slam Tour 2026', date: '2026.03.20~30', city: 'ASIA', image: 'https://en.concerts-metal.com/images/flyers/202510/1759884648--Kraanium---Asia-Slam-Tour-2026.webp', link: '' },
                 { title: 'Arch Enemy announce 2026 China Tour', date: '2026.03.27~04.10', city: 'CHINA', image: 'https://i.redd.it/uzm4o4z64okg1.png', link: '' },
