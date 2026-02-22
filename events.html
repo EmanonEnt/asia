@@ -2267,6 +2267,9 @@
             modal.dataset.link = link;
 
             modal.classList.add('active');
+
+            // æ·»å ESCé®çå¬
+            document.addEventListener('keydown', handleShareModalKeydown);
         }
 
         
@@ -2381,10 +2384,43 @@
 
         function closeShareModal() {
             document.getElementById('shareModal').classList.remove('active');
+            // ç§»é¤ESCé®çå¬
+            document.removeEventListener('keydown', handleShareModalKeydown);
         }
+        // å¤çåäº«å¼¹çªé®çäºä»¶ï¼ESCå³é­ï¼
+        function handleShareModalKeydown(e) {
+            if (e.key === 'Escape' || e.keyCode === 27) {
+                closeShareModal();
+            }
+        }
+
+        // å¤çåäº«å¼¹çªç¹å»äºä»¶ï¼ç¹å»ç©ºç½åºåå³é­ï¼
+        
+        // å¤çå¾®ä¿¡å¼¹çªé®çäºä»¶ï¼ESCå³é­ï¼
+        function handleWechatModalKeydown(e) {
+            if (e.key === 'Escape' || e.keyCode === 27) {
+                closeWeChatQR();
+            }
+        }
+        // å¤çå¾®ä¿¡å¼¹çªç¹å»äºä»¶ï¼ç¹å»ç©ºç½åºåå³é­ï¼
+        function handleWechatModalClick(e) {
+            if (e.target === e.currentTarget) {
+                closeWeChatQR();
+            }
+        }
+
+function handleShareModalClick(e) {
+            // å¦æç¹å»çæ¯å¼¹çªèæ¯ï¼ä¸æ¯åå®¹åºåï¼ï¼åå³é­
+            if (e.target === e.currentTarget) {
+                closeShareModal();
+            }
+        }
+
 
         function closeWeChatQR() {
             document.getElementById('wechatQRModal').classList.remove('active');
+            // ç§»é¤ESCé®çå¬
+            document.removeEventListener('keydown', handleWechatModalKeydown);
         }
 
         function shareToPlatform(platform) {
@@ -2567,7 +2603,7 @@
 </script>
 
     <!-- Share Modal -->
-    <div class="share-modal" id="shareModal">
+    <div class="share-modal" id="shareModal" onclick="handleShareModalClick(event)">
         <div class="share-modal-content">
             <button class="share-modal-close" onclick="closeShareModal()">&times;</button>
             <h3 class="share-modal-title">SHARE THIS EVENT</h3>
@@ -2651,7 +2687,7 @@
     </div>
 
     <!-- WeChat QR Modal -->
-    <div class="wechat-qr-modal" id="wechatQRModal">
+    <div class="wechat-qr-modal" id="wechatQRModal" onclick="handleWechatModalClick(event)">
         <div class="wechat-qr-content">
             <h3 class="wechat-qr-title">Scan to Share on WeChat</h3>
             <div class="wechat-qr-code" id="wechatQRCode">
