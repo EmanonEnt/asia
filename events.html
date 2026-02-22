@@ -1048,6 +1048,63 @@
                 font-size: 12px;
             }
         }
+        /* ==================== ææ½æ»å¨ä¿®å¤ - é²æ­¢éªå¨ ==================== */
+
+        /* é²æ­¢ææ¬éæ© */
+        .auto-scroll-container,
+        .auto-scroll-track {
+            user-select: none !important;
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+        }
+
+        /* ææ½æ¶çåæ  */
+        .auto-scroll-container.dragging,
+        .auto-scroll-track.dragging {
+            cursor: grabbing !important;
+        }
+
+        /* ææ½æ¶ç¦ç¨ææhoverææ - å³é®ä¿®å¤ */
+        .auto-scroll-track.dragging .auto-scroll-item {
+            pointer-events: none !important;
+            transform: none !important;
+            transition: none !important;
+        }
+
+        .auto-scroll-track.dragging .auto-scroll-item img {
+            transform: none !important;
+            transition: none !important;
+            filter: brightness(0.3) !important;
+        }
+
+        /* ææ½æ¶éèinfoåcountdown */
+        .auto-scroll-track.dragging .auto-scroll-info,
+        .auto-scroll-track.dragging .auto-scroll-countdown {
+            opacity: 0 !important;
+            transition: none !important;
+        }
+
+        /* ææ½æ¶ç¦ç¨overlayåå */
+        .auto-scroll-track.dragging .auto-scroll-overlay {
+            background: rgba(0,0,0,0.6) !important;
+            transition: none !important;
+        }
+
+        /* ææ½æ¶éècarousel-actions */
+        .auto-scroll-track.dragging .carousel-actions {
+            opacity: 0 !important;
+            pointer-events: none !important;
+            transition: none !important;
+        }
+
+        /* ç¡®ä¿ç®­å¤´æé®å¨ææ½æ¶å¯ç¨ */
+        .scroll-arrow {
+            pointer-events: auto !important;
+            z-index: 1000 !important;
+        }
+
+
         .load-more-container { text-align: center !important; width: 100%; }
 
         .event-btn.disabled { pointer-events: auto; cursor: default; }
@@ -1496,6 +1553,12 @@
             const track = document.getElementById('autoScrollTrack');
             if (!container || !track) return;
 
+            // é²æ­¢ææ¬éæ©ï¼ä¿®å¤éªå¨é®é¢ï¼
+            container.style.userSelect = 'none';
+            container.style.webkitUserSelect = 'none';
+            track.style.userSelect = 'none';
+            track.style.webkitUserSelect = 'none';
+
             // åå§åï¼ä¸ºææauto-scroll-itemæ·»å äºä»¶ï¼åªæ§è¡ä¸æ¬¡ï¼
             function initItemTouchEffects() {
                 document.querySelectorAll('.auto-scroll-item').forEach(item => {
@@ -1684,46 +1747,97 @@
                 }, 1000);
             }, {passive: true});
 
-            // é¼ æ ææ½æ¯æï¼æ¡é¢ç«¯ï¼
+            // ==================== é¼ æ ææ½æ¯æï¼æ¡é¢ç«¯ï¼- ä¿®å¤éªå¨é®é¢ ====================
+            let hasDragged = false; // æ è®°æ¯å¦çæ­£ææ½è¿
+            const DRAG_THRESHOLD = 5; // ææ½éå¼ï¼åç´ ï¼
+
             container.addEventListener('mousedown', function(e) {
+                // åªååºå·¦é®ï¼ä¸ä¸æ¯ç¹å»æé®
+                if (e.button !== 0) return;
+                if (e.target.closest('.share-btn') || e.target.closest('.carousel-actions') || e.target.closest('.scroll-arrow')) return;
+
                 isDragging = true;
+                hasDragged = false;
                 dragStartX = e.clientX;
                 dragStartScroll = scrollPosition;
                 isPaused = true;
+
+                // æ·»å ææ½ç¶æç±»ï¼ç¨äºCSSæ§å¶hoverææ
+                track.classList.add('dragging');
+                container.classList.add('dragging');
+
                 track.style.cursor = 'grabbing';
                 e.preventDefault();
+
+                // æåèªå¨æ»å¨å¨ç»
+                track.style.animationPlayState = 'paused';
             });
 
             document.addEventListener('mousemove', function(e) {
                 if (!isDragging) return;
 
                 const diffX = dragStartX - e.clientX;
-                const itemWidth = track.children[0]?.offsetWidth || 300;
-                const totalWidth = itemWidth * (track.children.length / 2);
 
-                scrollPosition = dragStartScroll + diffX;
-
-                if (scrollPosition >= totalWidth) {
-                    scrollPosition = 0;
-                } else if (scrollPosition < 0) {
-                    scrollPosition = totalWidth - 1;
+                // æ£æ¥æ¯å¦è¶è¿éå¼
+                if (Math.abs(diffX) > DRAG_THRESHOLD) {
+                    hasDragged = true;
                 }
 
-                track.style.transform = `translateX(-${scrollPosition}px)`;
+                // åªæå¨çæ­£ææ½åææ´æ°ä½ç½®
+                if (hasDragged) {
+                    const itemWidth = track.children[0]?.offsetWidth || 300;
+                    const totalWidth = itemWidth * (track.children.length / 2);
+
+                    scrollPosition = dragStartScroll + diffX;
+
+                    if (scrollPosition >= totalWidth) {
+                        scrollPosition = 0;
+                    } else if (scrollPosition < 0) {
+                        scrollPosition = totalWidth - 1;
+                    }
+
+                    track.style.transform = `translateX(-${scrollPosition}px)`;
+                    track.style.transition = 'none'; // ææ½æ¶ç¦ç¨è¿æ¸¡å¨ç»
+                }
             });
 
             document.addEventListener('mouseup', function() {
                 if (isDragging) {
                     isDragging = false;
+                    hasDragged = false;
+
+                    // ç§»é¤ææ½ç¶æç±»
+                    track.classList.remove('dragging');
+                    container.classList.remove('dragging');
+
                     track.style.cursor = 'grab';
+                    track.style.transition = ''; // æ¢å¤è¿æ¸¡å¨ç»
+                    track.style.animationPlayState = 'running';
+
+                    setTimeout(() => {
+                        if (!track.classList.contains('dragging')) {
+                            isPaused = false;
+                        }
+                    }, 1000);
+                }
+            });
+
+            // é¼ æ ç¦»å¼çªå£æ¶ç»æææ½
+            document.addEventListener('mouseleave', function() {
+                if (isDragging) {
+                    isDragging = false;
+                    hasDragged = false;
+                    track.classList.remove('dragging');
+                    container.classList.remove('dragging');
+                    track.style.cursor = 'grab';
+                    track.style.transition = '';
+                    track.style.animationPlayState = 'running';
                     setTimeout(() => {
                         isPaused = false;
                     }, 1000);
                 }
             });
-        }
-
-        function initCarousel() {
+        }function initCarousel() {
             const track = document.getElementById('autoScrollTrack');
             if (!track) return;
 
