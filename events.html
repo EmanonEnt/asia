@@ -1496,30 +1496,30 @@
             const track = document.getElementById('autoScrollTrack');
             if (!container || !track) return;
 
-            // åå§åï¼ä¸ºææéè¿æçauto-scroll-itemæ·»å ç¹å»ææï¼åªæ§è¡ä¸æ¬¡ï¼
+            // åå§åï¼ä¸ºææauto-scroll-itemæ·»å äºä»¶ï¼åªæ§è¡ä¸æ¬¡ï¼
             function initItemTouchEffects() {
                 document.querySelectorAll('.auto-scroll-item').forEach(item => {
                     // é¿åéå¤æ·»å 
                     if (item.dataset.touchInitialized) return;
                     item.dataset.touchInitialized = 'true';
 
-                    // è¿ææµ·æ¥ä¸æ·»å ç¹å»ææ
-                    if (item.classList.contains('expired')) return;
-
+                    const isExpired = item.classList.contains('expired');
                     let touchTimer = null;
                     let itemTouchStartX = 0;
                     let itemTouchStartY = 0;
                     let isItemTouchMoved = false;
                     const TOUCH_MOVE_THRESHOLD = 10; // ç§»å¨è¶è¿10pxè®¤ä¸ºæ¯æ»å¨
 
-                    // è§¦æ¸å¼å§ - æ·»å touchedç±»
+                    // è§¦æ¸å¼å§
                     item.addEventListener('touchstart', function(e) {
                         itemTouchStartX = e.touches[0].clientX;
                         itemTouchStartY = e.touches[0].clientY;
                         isItemTouchMoved = false;
 
-                        // æ·»å touchedç±»ï¼ç¹äº®ï¼
-                        this.classList.add('touched');
+                        // éè¿ææµ·æ¥ï¼æ·»å touchedç±»ï¼ç¹äº®ï¼
+                        if (!isExpired) {
+                            this.classList.add('touched');
+                        }
                         isPaused = true;
 
                         // åæ¶åå§åcontainerçæ»å¨åéï¼åè®¸æ»å¨
@@ -1538,13 +1538,12 @@
                         const diffX = Math.abs(touchX - itemTouchStartX);
                         const diffY = Math.abs(touchY - itemTouchStartY);
 
-                        // å¦æç§»å¨è¶è¿éå¼ï¼è®¤ä¸ºæ¯æ»å¨ï¼åæ¶touchedç¶æ
+                        // å¦æç§»å¨è¶è¿éå¼ï¼è®¤ä¸ºæ¯æ»å¨
                         if (!isItemTouchMoved && (diffX > TOUCH_MOVE_THRESHOLD || diffY > TOUCH_MOVE_THRESHOLD)) {
                             isItemTouchMoved = true;
-                            // å¦ææ¯æ°´å¹³æ»å¨ï¼åæ¶touchedç¶æ
-                            if (diffX > diffY) {
+                            // éè¿ææµ·æ¥ï¼å¦ææ¯æ°´å¹³æ»å¨ï¼åæ¶touchedç¶æ
+                            if (!isExpired && diffX > diffY) {
                                 this.classList.remove('touched');
-                                // ä¸æ¢å¤isPausedï¼å ä¸ºæ­£å¨æ»å¨
                             }
                         }
 
@@ -1570,21 +1569,29 @@
 
                     // è§¦æ¸ç»æ
                     item.addEventListener('touchend', function(e) {
-                        const self = this;
+                        // éè¿ææµ·æ¥ï¼å¤çtouchedç¶æ
+                        if (!isExpired) {
+                            const self = this;
 
-                        // å¦ææ¯ç¹å»ï¼æ²¡æç§»å¨ï¼ï¼ä¿ætouchedç¶æ3ç§
-                        if (!isItemTouchMoved) {
-                            if (touchTimer) clearTimeout(touchTimer);
-                            touchTimer = setTimeout(() => {
-                                self.classList.remove('touched');
-                                isPaused = false;
-                            }, 3000);
+                            // å¦ææ¯ç¹å»ï¼æ²¡æç§»å¨ï¼ï¼ä¿ætouchedç¶æ3ç§
+                            if (!isItemTouchMoved) {
+                                if (touchTimer) clearTimeout(touchTimer);
+                                touchTimer = setTimeout(() => {
+                                    self.classList.remove('touched');
+                                    isPaused = false;
+                                }, 3000);
+                            } else {
+                                // å¦ææ¯æ»å¨ï¼ç«å³æ¢å¤
+                                this.classList.remove('touched');
+                                setTimeout(() => {
+                                    isPaused = false;
+                                }, 500);
+                            }
                         } else {
-                            // å¦ææ¯æ»å¨ï¼ç«å³æ¢å¤
-                            this.classList.remove('touched');
+                            // è¿ææµ·æ¥ï¼ç«å³æ¢å¤æ»å¨
                             setTimeout(() => {
                                 isPaused = false;
-                            }, 500);
+                            }, 100);
                         }
 
                         isDragging = false;
@@ -1593,9 +1600,10 @@
 
                     // è§¦æ¸åæ¶ - ç«å³æ¢å¤
                     item.addEventListener('touchcancel', function(e) {
-                        const self = this;
-                        if (touchTimer) clearTimeout(touchTimer);
-                        this.classList.remove('touched');
+                        if (!isExpired) {
+                            if (touchTimer) clearTimeout(touchTimer);
+                            this.classList.remove('touched');
+                        }
                         setTimeout(() => {
                             isPaused = false;
                         }, 100);
