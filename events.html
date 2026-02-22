@@ -512,7 +512,7 @@
 
         /* è§¦æ¸è¯¢åä¼å */
         @media (hover: none) and (pointer: coarse) {
-            /* è§¦æ¸è®¾å¤ä¸ï¼ç¹å»äº¤äºææ */
+            /* è§¦æ¸è®¾å¤ä¸ï¼ææitemé½å¯ä»¥æ»å¨ */
             .auto-scroll-item,
             .auto-scroll-item.no-link,
             .auto-scroll-item.expired {
@@ -550,69 +550,60 @@
                 transition: opacity 0.3s ease !important;
             }
 
-            /* ========== ç¹å»æ¶ï¼active/touchedï¼ï¼éèæ é¢/æ¥æ/å°ç¹/åè®¡æ¶ï¼æ¾ç¤ºæé®ï¼æ èçï¼äº® ========== */
-            .auto-scroll-item:active,
-            .auto-scroll-item.no-link:active,
-            .auto-scroll-item.expired:active,
-            .auto-scroll-item.touched,
-            .auto-scroll-item.no-link.touched,
-            .auto-scroll-item.expired.touched {
+            /* ========== ç¹å»æ¶ï¼active/touchedï¼ï¼ä»éè¿ææµ·æ¥æææ ========== */
+            /* è¿ææµ·æ¥æ²¡æ:activeå.touchedææï¼ä¿æé»è®¤ç¶æ */
+
+            .auto-scroll-item:not(.expired):active,
+            .auto-scroll-item.no-link:not(.expired):active,
+            .auto-scroll-item:not(.expired).touched,
+            .auto-scroll-item.no-link:not(.expired).touched {
                 transform: scale(1.02) !important;
                 z-index: 100 !important;
             }
 
-            /* ç¹å»æ¶ï¼ç§»é¤èçï¼äº®ï¼ */
-            .auto-scroll-item:active .auto-scroll-overlay,
-            .auto-scroll-item.no-link:active .auto-scroll-overlay,
-            .auto-scroll-item.expired:active .auto-scroll-overlay,
-            .auto-scroll-item.touched .auto-scroll-overlay,
-            .auto-scroll-item.no-link.touched .auto-scroll-overlay,
-            .auto-scroll-item.expired.touched .auto-scroll-overlay {
+            /* ç¹å»æ¶ï¼ç§»é¤èçï¼äº®ï¼- ä»éè¿ææµ·æ¥ */
+            .auto-scroll-item:not(.expired):active .auto-scroll-overlay,
+            .auto-scroll-item.no-link:not(.expired):active .auto-scroll-overlay,
+            .auto-scroll-item:not(.expired).touched .auto-scroll-overlay,
+            .auto-scroll-item.no-link:not(.expired).touched .auto-scroll-overlay {
                 background: rgba(0,0,0,0) !important;
             }
 
-            /* ç¹å»æ¶ï¼å¾çåäº®å¹¶æ¾å¤§ */
-            .auto-scroll-item:active img,
-            .auto-scroll-item.no-link:active img,
-            .auto-scroll-item.expired:active img,
-            .auto-scroll-item.touched img,
-            .auto-scroll-item.no-link.touched img,
-            .auto-scroll-item.expired.touched img {
+            /* ç¹å»æ¶ï¼å¾çåäº®å¹¶æ¾å¤§ - ä»éè¿ææµ·æ¥ */
+            .auto-scroll-item:not(.expired):active img,
+            .auto-scroll-item.no-link:not(.expired):active img,
+            .auto-scroll-item:not(.expired).touched img,
+            .auto-scroll-item.no-link:not(.expired).touched img {
                 filter: brightness(1) !important;
                 transform: scale(1.1) !important;
             }
 
-            /* ç¹å»æ¶ï¼éèæ é¢/æ¥æ/å°ç¹ */
-            .auto-scroll-item:active .auto-scroll-info,
-            .auto-scroll-item.no-link:active .auto-scroll-info,
-            .auto-scroll-item.expired:active .auto-scroll-info,
-            .auto-scroll-item.touched .auto-scroll-info,
-            .auto-scroll-item.no-link.touched .auto-scroll-info,
-            .auto-scroll-item.expired.touched .auto-scroll-info {
+            /* ç¹å»æ¶ï¼éèæ é¢/æ¥æ/å°ç¹ - ä»éè¿ææµ·æ¥ */
+            .auto-scroll-item:not(.expired):active .auto-scroll-info,
+            .auto-scroll-item.no-link:not(.expired):active .auto-scroll-info,
+            .auto-scroll-item:not(.expired).touched .auto-scroll-info,
+            .auto-scroll-item.no-link:not(.expired).touched .auto-scroll-info {
                 opacity: 0 !important;
             }
 
-            /* ç¹å»æ¶ï¼éèåè®¡æ¶ï¼è¿ææµ·æ¥é¤å¤ï¼ */
-            .auto-scroll-item:active .auto-scroll-countdown,
-            .auto-scroll-item.no-link:active .auto-scroll-countdown,
-            .auto-scroll-item.touched .auto-scroll-countdown,
-            .auto-scroll-item.no-link.touched .auto-scroll-countdown {
+            /* ç¹å»æ¶ï¼éèåè®¡æ¶ - ä»éè¿ææµ·æ¥ */
+            .auto-scroll-item:not(.expired):active .auto-scroll-countdown,
+            .auto-scroll-item.no-link:not(.expired):active .auto-scroll-countdown,
+            .auto-scroll-item:not(.expired).touched .auto-scroll-countdown,
+            .auto-scroll-item.no-link:not(.expired).touched .auto-scroll-countdown {
                 opacity: 0 !important;
             }
 
-            /* è¿ææµ·æ¥ç¹å»æ¶ä»æ¾ç¤ºåè®¡æ¶ */
-            .auto-scroll-item.expired:active .auto-scroll-countdown,
-            .auto-scroll-item.expired.touched .auto-scroll-countdown {
-                opacity: 1 !important;
-            }
-
-            /* ç¹å»æ¶ï¼æ¾ç¤ºinfoæé®ååäº«æé® */
-            .auto-scroll-item:active .carousel-actions,
-            .auto-scroll-item.touched .carousel-actions {
+            /* ç¹å»æ¶ï¼æ¾ç¤ºinfoæé®ååäº«æé® - ä»éè¿ææµ·æ¥ */
+            .auto-scroll-item:not(.expired):active .carousel-actions,
+            .auto-scroll-item:not(.expired).touched .carousel-actions {
                 opacity: 1 !important;
                 pointer-events: auto !important;
                 display: flex !important;
             }
+
+            /* è¿ææµ·æ¥ç:activeææè¢«ç¦ç¨ï¼éè¿JSä¸æ·»å touchedç±»ï¼ */
+            /* è¿ææµ·æ¥ä¿æé»è®¤ç¶æï¼æèçãæ¾ç¤ºåè®¡æ¶ãæ æé® */
         }
         .event-card:hover .event-name, .event-card:hover .event-details, .event-card:hover .event-venue { opacity: 0; visibility: hidden; transition: all 0.3s ease; }
         .event-status, .event-btn { opacity: 1 !important; visibility: visible !important; }
@@ -1505,12 +1496,15 @@
             const track = document.getElementById('autoScrollTrack');
             if (!container || !track) return;
 
-            // åå§åï¼ä¸ºææauto-scroll-itemæ·»å ç¹å»ææï¼åªæ§è¡ä¸æ¬¡ï¼
+            // åå§åï¼ä¸ºææéè¿æçauto-scroll-itemæ·»å ç¹å»ææï¼åªæ§è¡ä¸æ¬¡ï¼
             function initItemTouchEffects() {
                 document.querySelectorAll('.auto-scroll-item').forEach(item => {
                     // é¿åéå¤æ·»å 
                     if (item.dataset.touchInitialized) return;
                     item.dataset.touchInitialized = 'true';
+
+                    // è¿ææµ·æ¥ä¸æ·»å ç¹å»ææ
+                    if (item.classList.contains('expired')) return;
 
                     let touchTimer = null;
 
@@ -1568,11 +1562,8 @@
             });
             observer.observe(track, { childList: true });
 
-            // è§¦æ¸å¼å§ï¼ç¨äºææ½æ»å¨ï¼
+            // è§¦æ¸å¼å§ï¼ç¨äºææ½æ»å¨ï¼- å¨containerä¸çå¬ï¼ä½itemä¸çäºä»¶ä¼åæ³¡æè¢«é»æ­¢
             container.addEventListener('touchstart', function(e) {
-                // å¦æç¹å»çæ¯itemåé¨ï¼ä¸å¤çææ½
-                if (e.target.closest('.auto-scroll-item')) return;
-
                 touchStartX = e.touches[0].clientX;
                 touchStartY = e.touches[0].clientY;
                 isDragging = true;
@@ -1591,7 +1582,7 @@
                 const diffX = touchStartX - touchX;
                 const diffY = touchStartY - touchY;
 
-                // å¤æ­æ¯å¦ä¸ºæ°´å¹³æ»å¨
+                // å¤æ­æ¯å¦ä¸ºæ°´å¹³æ»å¨ï¼å¦ææ¯åé»æ­¢é»è®¤è¡ä¸ºï¼é²æ­¢é¡µé¢æ»å¨ï¼
                 if (Math.abs(diffX) > Math.abs(diffY)) {
                     e.preventDefault();
                 }
