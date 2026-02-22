@@ -538,6 +538,13 @@
                 transition: opacity 0.3s ease !important;
             }
 
+            .auto-scroll-item .carousel-actions .share-btn,
+            .auto-scroll-item .carousel-actions .info-btn {
+                pointer-events: auto !important;
+                z-index: 9999 !important;
+                position: relative !important;
+            }
+
             .auto-scroll-item .auto-scroll-countdown {
                 opacity: 1 !important;
                 transition: opacity 0.3s ease !important;
@@ -1334,9 +1341,12 @@
                 <button class="scroll-arrow right" onclick="accelerateScroll('right')">→</button>
                 <div class="auto-scroll-container" id="autoScrollContainer">
                     <div class="auto-scroll-track" id="autoScrollTrack">
-                        <!-- æ»æ­é¡¹ç®å°éè¿JSå æçæ -->
+                        <!-- æ»æ­é¡¹ç®éè¿JSå¨æçæ -->
                     </div>
                 </div>
+            </div>
+            <div class="load-more-container visible" style="padding: 30px 0; background: var(--black);">
+                <button class="load-more-btn" onclick="openUploadModal()">UPLOAD EVENT</button>
             </div>
         </section>
 
@@ -1702,7 +1712,6 @@
                         <div class="auto-scroll-countdown">
                             <div class="countdown-text" data-countdown-date="${item.date}">CALCULATING...</div>
                         </div>
-                        ${!isExpired ? `
                         <div class="carousel-actions">
                             <button class="info-btn ${hasLink ? 'has-link' : 'no-link'}" ${hasLink ? `onclick="window.open('${item.link}', '_blank')"` : ''} title="${hasLink ? 'View Event Details' : 'Info'}">
                                 <span class="info-btn-text">INFO</span>
@@ -1718,7 +1727,6 @@
                                 </svg>
                             </button>
                         </div>
-                        ` : ''}
                     </div>
                 `;
             });
@@ -2491,6 +2499,103 @@
                 <div class="share-event-details">
                     <div class="share-event-name" id="shareEventName"></div>
                     <div class="share-event-meta" id="shareEventMeta"></div>
+
+<!-- Upload Modal -->
+<div class="share-modal" id="uploadModal">
+    <div class="share-modal-content" style="max-width: 450px;">
+        <button class="share-modal-close" onclick="closeUploadModal()">&times;</button>
+        <h3 class="share-modal-title">UPLOAD EVENT</h3>
+
+        <!-- Step 1: Form -->
+        <div id="uploadStep1">
+            <div style="margin-bottom: 15px;">
+                <label style="display:block;color:#888;font-size:11px;margin-bottom:5px;text-transform:uppercase;">Event Name *</label>
+                <input type="text" id="uploadTitle" placeholder="Enter event name" style="width:100%;padding:10px;background:rgba(255,255,255,0.05);border:1px solid #333;border-radius:6px;color:#fff;font-size:13px;box-sizing:border-box;">
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label style="display:block;color:#888;font-size:11px;margin-bottom:5px;text-transform:uppercase;">Date * (YYYY.MM.DD)</label>
+                <input type="text" id="uploadDate" placeholder="2026.12.31" style="width:100%;padding:10px;background:rgba(255,255,255,0.05);border:1px solid #333;border-radius:6px;color:#fff;font-size:13px;box-sizing:border-box;">
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label style="display:block;color:#888;font-size:11px;margin-bottom:5px;text-transform:uppercase;">City *</label>
+                <input type="text" id="uploadCity" placeholder="Enter city" style="width:100%;padding:10px;background:rgba(255,255,255,0.05);border:1px solid #333;border-radius:6px;color:#fff;font-size:13px;box-sizing:border-box;">
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label style="display:block;color:#888;font-size:11px;margin-bottom:5px;text-transform:uppercase;">Poster Image URL *</label>
+                <input type="text" id="uploadImage" placeholder="https://example.com/poster.jpg" style="width:100%;padding:10px;background:rgba(255,255,255,0.05);border:1px solid #333;border-radius:6px;color:#fff;font-size:13px;box-sizing:border-box;">
+            </div>
+            <div style="margin-bottom: 20px;">
+                <label style="display:block;color:#888;font-size:11px;margin-bottom:5px;text-transform:uppercase;">Event Link (Optional)</label>
+                <input type="text" id="uploadLink" placeholder="https://example.com/event" style="width:100%;padding:10px;background:rgba(255,255,255,0.05);border:1px solid #333;border-radius:6px;color:#fff;font-size:13px;box-sizing:border-box;">
+            </div>
+            <button onclick="goToPaymentStep()" class="load-more-btn" style="width:100%;padding:12px;font-size:13px;">CONTINUE TO PAYMENT</button>
+        </div>
+
+        <!-- Step 2: Payment -->
+        <div id="uploadStep2" style="display:none;">
+            <div style="text-align:center;margin-bottom:20px;">
+                <p style="color:#888;font-size:13px;margin-bottom:10px;">Upload Fee: <span id="uploadFee" style="color:#fff;font-size:20px;font-weight:bold;">CNY 1.00</span></p>
+                <p style="color:#666;font-size:11px;">Scan QR code with WeChat to pay</p>
+            </div>
+            <div style="background:#fff;padding:15px;border-radius:8px;margin-bottom:20px;text-align:center;">
+                <img src="./image/Wechat-QR.png" alt="WeChat Pay QR Code" style="max-width:180px;width:100%;display:block;margin:0 auto;" onerror="this.style.display='none';document.getElementById('qrFallback').style.display='block';">
+                <div id="qrFallback" style="display:none;padding:15px;color:#8b0000;">
+                    <p>WeChat Pay QR Code</p>
+                    <p style="font-size:11px;">Please contact admin for payment</p>
+                </div>
+            </div>
+            <div style="display:flex;gap:10px;">
+                <button onclick="backToStep1()" class="load-more-btn" style="flex:1;padding:10px;font-size:12px;background:transparent;">BACK</button>
+                <button onclick="goToTransactionStep()" class="load-more-btn" style="flex:1;padding:10px;font-size:12px;">I HAVE PAID</button>
+            </div>
+        </div>
+
+        <!-- Step 3: Transaction ID -->
+        <div id="uploadStep3" style="display:none;">
+            <div style="text-align:center;margin-bottom:15px;">
+                <p style="color:#888;font-size:12px;margin-bottom:10px;">Please enter your WeChat Pay Transaction ID</p>
+                <p style="color:#666;font-size:10px;">(28 digits, find in WeChat Pay bill)</p>
+            </div>
+            <div style="margin-bottom:15px;">
+                <input type="text" id="transactionId" placeholder="420000xxxxxxxxxxxxxxxxxxxxxxxx" style="width:100%;padding:10px;background:rgba(255,255,255,0.05);border:1px solid #333;border-radius:6px;color:#fff;font-size:13px;box-sizing:border-box;text-align:center;">
+            </div>
+            <div style="background:rgba(139,0,0,0.1);border:1px solid rgba(139,0,0,0.3);border-radius:6px;padding:12px;margin-bottom:20px;">
+                <p style="color:#888;font-size:10px;margin:0;line-height:1.4;">
+                    <b style="color:#fff;">How to find Transaction ID:</b><br>
+                    WeChat -> Me -> Pay -> Wallet -> Bills -> Find payment -> Copy Transaction ID
+                </p>
+            </div>
+            <div style="display:flex;gap:10px;">
+                <button onclick="backToStep2()" class="load-more-btn" style="flex:1;padding:10px;font-size:12px;background:transparent;">BACK</button>
+                <button onclick="verifyAndUpload()" class="load-more-btn" style="flex:1;padding:10px;font-size:12px;">VERIFY & UPLOAD</button>
+            </div>
+        </div>
+
+        <!-- Step 4: Uploading -->
+        <div id="uploadStep4" style="display:none;text-align:center;padding:20px;">
+            <div style="font-size:40px;color:#8b0000;margin-bottom:15px;">...</div>
+            <h4 style="color:#fff;font-size:16px;margin-bottom:10px;">Uploading...</h4>
+            <p style="color:#888;font-size:12px;">Please wait</p>
+        </div>
+
+        <!-- Step 5: Success -->
+        <div id="uploadStep5" style="display:none;text-align:center;padding:20px;">
+            <div style="font-size:50px;color:#28a745;margin-bottom:15px;">OK</div>
+            <h4 style="color:#fff;font-size:16px;margin-bottom:10px;">Upload Successful!</h4>
+            <p style="color:#888;font-size:12px;margin-bottom:20px;">Your event has been submitted for review.</p>
+            <button onclick="closeUploadModal()" class="load-more-btn" style="padding:10px 25px;font-size:12px;">CLOSE</button>
+        </div>
+
+        <!-- Step 6: Error -->
+        <div id="uploadStep6" style="display:none;text-align:center;padding:20px;">
+            <div style="font-size:50px;color:#dc3545;margin-bottom:15px;">X</div>
+            <h4 style="color:#fff;font-size:16px;margin-bottom:10px;">Upload Failed</h4>
+            <p id="uploadErrorMsg" style="color:#888;font-size:12px;margin-bottom:20px;">Please try again later</p>
+            <button onclick="backToStep3()" class="load-more-btn" style="padding:10px 25px;font-size:12px;">TRY AGAIN</button>
+        </div>
+    </div>
+</div>
+
                     <div class="share-event-tags" id="shareEventTags"></div>
                 </div>
             </div>
@@ -2576,5 +2681,154 @@
             <button class="wechat-qr-close" onclick="closeWeChatQR()">Got it</button>
         </div>
     </div>
+
+<script>
+// ==================== Upload Event Function ====================
+let uploadData = {};
+
+// jsonbin.io configuration
+const JSONBIN_API_KEY = '$2a$10$YourApiKeyHere'; // Replace with your API key
+const JSONBIN_BIN_ID = 'your-bin-id-here'; // Replace with your Bin ID
+
+function openUploadModal() {
+    const modal = document.getElementById('uploadModal');
+    if (modal) {
+        modal.classList.add('active');
+        resetUploadModal();
+    }
+}
+
+function closeUploadModal() {
+    const modal = document.getElementById('uploadModal');
+    if (modal) {
+        modal.classList.remove('active');
+    }
+}
+
+function resetUploadModal() {
+    document.getElementById('uploadStep1').style.display = 'block';
+    document.getElementById('uploadStep2').style.display = 'none';
+    document.getElementById('uploadStep3').style.display = 'none';
+    document.getElementById('uploadStep4').style.display = 'none';
+    document.getElementById('uploadStep5').style.display = 'none';
+    document.getElementById('uploadStep6').style.display = 'none';
+
+    document.getElementById('uploadTitle').value = '';
+    document.getElementById('uploadDate').value = '';
+    document.getElementById('uploadCity').value = '';
+    document.getElementById('uploadImage').value = '';
+    document.getElementById('uploadLink').value = '';
+    document.getElementById('transactionId').value = '';
+}
+
+function goToPaymentStep() {
+    const title = document.getElementById('uploadTitle').value.trim();
+    const date = document.getElementById('uploadDate').value.trim();
+    const city = document.getElementById('uploadCity').value.trim();
+    const image = document.getElementById('uploadImage').value.trim();
+    const link = document.getElementById('uploadLink').value.trim();
+
+    if (!title || !date || !city || !image) {
+        alert('Please fill in all required fields (*)');
+        return;
+    }
+
+    const dateRegex = /^[0-9]{4}\.[0-9]{2}\.[0-9]{2}$/;
+    if (!dateRegex.test(date)) {
+        alert('Please enter date in format: YYYY.MM.DD');
+        return;
+    }
+
+    uploadData = { title, date, city, image, link };
+
+    document.getElementById('uploadStep1').style.display = 'none';
+    document.getElementById('uploadStep2').style.display = 'block';
+}
+
+function backToStep1() {
+    document.getElementById('uploadStep2').style.display = 'none';
+    document.getElementById('uploadStep1').style.display = 'block';
+}
+
+function goToTransactionStep() {
+    document.getElementById('uploadStep2').style.display = 'none';
+    document.getElementById('uploadStep3').style.display = 'block';
+}
+
+function backToStep2() {
+    document.getElementById('uploadStep3').style.display = 'none';
+    document.getElementById('uploadStep2').style.display = 'block';
+}
+
+function backToStep3() {
+    document.getElementById('uploadStep6').style.display = 'none';
+    document.getElementById('uploadStep3').style.display = 'block';
+}
+
+async function verifyAndUpload() {
+    const transactionId = document.getElementById('transactionId').value.trim();
+
+    if (!transactionId) {
+        alert('Please enter your WeChat Pay Transaction ID');
+        return;
+    }
+
+    const transactionRegex = /^[0-9]{20,32}$/;
+    if (!transactionRegex.test(transactionId)) {
+        alert('Invalid Transaction ID. Please check and try again.\nTransaction ID should be 20-32 digits.');
+        return;
+    }
+
+    document.getElementById('uploadStep3').style.display = 'none';
+    document.getElementById('uploadStep4').style.display = 'block';
+
+    try {
+        const uploadRecord = {
+            id: 'upload_' + Date.now(),
+            title: uploadData.title,
+            date: uploadData.date,
+            city: uploadData.city,
+            image: uploadData.image,
+            link: uploadData.link || '',
+            transactionId: transactionId,
+            status: 'pending',
+            uploadTime: new Date().toISOString(),
+            paid: true
+        };
+
+        // Save to localStorage
+        let uploads = JSON.parse(localStorage.getItem('livegigs_uploads') || '[]');
+        uploads.push(uploadRecord);
+        localStorage.setItem('livegigs_uploads', JSON.stringify(uploads));
+
+        console.log('Upload saved to localStorage:', uploadRecord);
+
+        document.getElementById('uploadStep4').style.display = 'none';
+        document.getElementById('uploadStep5').style.display = 'block';
+
+    } catch (error) {
+        console.error('Upload failed:', error);
+        document.getElementById('uploadStep4').style.display = 'none';
+        document.getElementById('uploadStep6').style.display = 'block';
+        document.getElementById('uploadErrorMsg').textContent = 'Error: ' + error.message;
+    }
+}
+
+// Close modal when clicking outside
+document.addEventListener('click', function(e) {
+    const modal = document.getElementById('uploadModal');
+    if (modal && e.target === modal) {
+        closeUploadModal();
+    }
+});
+
+// ESC key to close modals
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeUploadModal();
+        closeShareModal();
+    }
+});
+</script>
 </body>
 </html>
