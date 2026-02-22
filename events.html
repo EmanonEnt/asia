@@ -1508,7 +1508,7 @@
                     let itemTouchStartX = 0;
                     let itemTouchStartY = 0;
                     let isItemTouchMoved = false;
-                    const TOUCH_MOVE_THRESHOLD = 10; // ç§»å¨è¶è¿10pxè®¤ä¸ºæ¯æ»å¨
+                    const TOUCH_MOVE_THRESHOLD = 10;
 
                     // è§¦æ¸å¼å§
                     item.addEventListener('touchstart', function(e) {
@@ -1522,7 +1522,7 @@
                         }
                         isPaused = true;
 
-                        // åæ¶åå§åcontainerçæ»å¨åéï¼åè®¸æ»å¨
+                        // åæ¶åå§åcontainerçæ»å¨åé
                         touchStartX = itemTouchStartX;
                         touchStartY = itemTouchStartY;
                         isDragging = true;
@@ -1531,36 +1531,40 @@
                         track.style.cursor = 'grabbing';
                     }, {passive: true});
 
-                    // è§¦æ¸ç§»å¨ - æ£æµæ¯å¦ä¸ºæ»å¨
+                    // è§¦æ¸ç§»å¨
                     item.addEventListener('touchmove', function(e) {
+                        if (!isDragging) return;
+
                         const touchX = e.touches[0].clientX;
                         const touchY = e.touches[0].clientY;
-                        const diffX = Math.abs(touchX - itemTouchStartX);
-                        const diffY = Math.abs(touchY - itemTouchStartY);
+                        const diffX = itemTouchStartX - touchX;
+                        const diffY = itemTouchStartY - touchY;
+                        const absDiffX = Math.abs(diffX);
+                        const absDiffY = Math.abs(diffY);
 
-                        // å¦æç§»å¨è¶è¿éå¼ï¼è®¤ä¸ºæ¯æ»å¨
-                        if (!isItemTouchMoved && (diffX > TOUCH_MOVE_THRESHOLD || diffY > TOUCH_MOVE_THRESHOLD)) {
+                        // æ£æµæ¯å¦ç§»å¨è¶è¿éå¼
+                        if (!isItemTouchMoved && (absDiffX > TOUCH_MOVE_THRESHOLD || absDiffY > TOUCH_MOVE_THRESHOLD)) {
                             isItemTouchMoved = true;
-                            // éè¿ææµ·æ¥ï¼å¦ææ¯æ°´å¹³æ»å¨ï¼åæ¶touchedç¶æ
-                            if (!isExpired && diffX > diffY) {
-                                this.classList.remove('touched');
-                            }
                         }
 
-                        // å¦ææ­£å¨æ»å¨ï¼æ§è¡æ»å¨é»è¾
-                        if (isItemTouchMoved && diffX > diffY) {
+                        // æ°´å¹³æ»å¨æ¶æ§è¡æ»å¨ï¼æææµ·æ¥é½å¯ä»¥ï¼
+                        if (absDiffX > absDiffY) {
+                            // éè¿ææµ·æ¥ï¼åæ¶touchedç¶æ
+                            if (!isExpired) {
+                                this.classList.remove('touched');
+                            }
+
                             const itemWidth = track.children[0]?.offsetWidth || 300;
                             const totalWidth = itemWidth * (track.children.length / 2);
-                            const moveDiffX = itemTouchStartX - touchX;
 
-                            scrollPosition = dragStartScroll + moveDiffX;
+                            scrollPosition = dragStartScroll + diffX;
 
                             if (scrollPosition >= totalWidth) {
                                 scrollPosition = 0;
-                                dragStartScroll = -moveDiffX;
+                                dragStartScroll = -diffX;
                             } else if (scrollPosition < 0) {
                                 scrollPosition = totalWidth - 1;
-                                dragStartScroll = totalWidth - 1 + moveDiffX;
+                                dragStartScroll = totalWidth - 1 + diffX;
                             }
 
                             track.style.transform = `translateX(-${scrollPosition}px)`;
@@ -1569,6 +1573,9 @@
 
                     // è§¦æ¸ç»æ
                     item.addEventListener('touchend', function(e) {
+                        isDragging = false;
+                        track.style.cursor = 'grab';
+
                         // éè¿ææµ·æ¥ï¼å¤çtouchedç¶æ
                         if (!isExpired) {
                             const self = this;
@@ -1593,13 +1600,13 @@
                                 isPaused = false;
                             }, 100);
                         }
-
-                        isDragging = false;
-                        track.style.cursor = 'grab';
                     }, {passive: true});
 
-                    // è§¦æ¸åæ¶ - ç«å³æ¢å¤
+                    // è§¦æ¸åæ¶
                     item.addEventListener('touchcancel', function(e) {
+                        isDragging = false;
+                        track.style.cursor = 'grab';
+
                         if (!isExpired) {
                             if (touchTimer) clearTimeout(touchTimer);
                             this.classList.remove('touched');
@@ -1607,8 +1614,6 @@
                         setTimeout(() => {
                             isPaused = false;
                         }, 100);
-                        isDragging = false;
-                        track.style.cursor = 'grab';
                     }, {passive: true});
                 });
             }
@@ -1622,7 +1627,7 @@
             });
             observer.observe(track, { childList: true });
 
-            // è§¦æ¸å¼å§ï¼ç¨äºææ½æ»å¨ï¼- å¨ç©ºç½åºåæ»å¨
+            // è§¦æ¸å¼å§ï¼ç¨äºç©ºç½åºåæ»å¨ï¼
             container.addEventListener('touchstart', function(e) {
                 // å¦æç¹å»çæ¯itemåé¨ï¼ä¸å¤çï¼ç±itemèªå·±çäºä»¶å¤çï¼
                 if (e.target.closest('.auto-scroll-item')) return;
@@ -1636,7 +1641,7 @@
                 track.style.cursor = 'grabbing';
             }, {passive: true});
 
-            // è§¦æ¸ç§»å¨
+            // è§¦æ¸ç§»å¨ï¼ç©ºç½åºåï¼
             container.addEventListener('touchmove', function(e) {
                 if (!isDragging) return;
 
@@ -1645,7 +1650,7 @@
                 const diffX = touchStartX - touchX;
                 const diffY = touchStartY - touchY;
 
-                // å¤æ­æ¯å¦ä¸ºæ°´å¹³æ»å¨ï¼å¦ææ¯åé»æ­¢é»è®¤è¡ä¸ºï¼é²æ­¢é¡µé¢æ»å¨ï¼
+                // æ°´å¹³æ»å¨æ¶é»æ­¢é»è®¤è¡ä¸º
                 if (Math.abs(diffX) > Math.abs(diffY)) {
                     e.preventDefault();
                 }
@@ -1655,7 +1660,6 @@
 
                 scrollPosition = dragStartScroll + diffX;
 
-                // å¾ªç¯æ»å¨å¤ç
                 if (scrollPosition >= totalWidth) {
                     scrollPosition = 0;
                     dragStartScroll = -diffX;
@@ -1667,13 +1671,12 @@
                 track.style.transform = `translateX(-${scrollPosition}px)`;
             }, {passive: false});
 
-            // è§¦æ¸ç»æ
+            // è§¦æ¸ç»æï¼ç©ºç½åºåï¼
             container.addEventListener('touchend', function(e) {
                 if (!isDragging) return;
                 isDragging = false;
                 track.style.cursor = 'grab';
 
-                // å»¶è¿æ¢å¤èªå¨æ»å¨
                 setTimeout(() => {
                     if (!document.querySelector('.auto-scroll-item.touched')) {
                         isPaused = false;
