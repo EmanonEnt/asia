@@ -1338,9 +1338,7 @@
 
         <!-- UPLOAD EVENT Button -->
         <div class="upload-event-container" id="uploadEventContainer" style="text-align: center; padding: 30px 0; background: var(--black);">
-            <button class="upload-event-btn" id="uploadEventBtn" onclick="openUploadModal()" style="background: rgba(139, 0, 0, 0.3); color: #fff; border: 2px solid #8b0000; padding: 15px 40px; font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; font-size: 14px; letter-spacing: 3px; text-transform: uppercase; cursor: pointer; transition: all 0.4s; position: relative; overflow: hidden;">
-                UPLOAD EVENT
-            </button>
+            <button class="load-more-btn" id="uploadEventBtn" onclick="openUploadModal()" style="margin-top: 0;">UPLOAD EVENT</button>
         </div>
 
 
@@ -2868,7 +2866,326 @@ function handleShareModalClick(e) {
             });
         });
 
-    </script>
+    
+// Upload Event Modal Functions v8.8.1
+let currentUploadType = '';
+let selectedPackage = null;
+let formDataCache = {};
+
+function openUploadModal() {
+    const modal = document.getElementById('uploadEventModal');
+    if (modal) {
+        modal.style.display = 'flex';
+        // Restore cached data if exists
+        restoreFormData();
+    }
+}
+
+function closeUploadModal() {
+    const modal = document.getElementById('uploadEventModal');
+    if (modal) {
+        // Save current form data before closing
+        saveFormData();
+        modal.style.display = 'none';
+    }
+}
+
+function saveFormData() {
+    // Save all input values to cache
+    const inputs = document.querySelectorAll('#uploadEventForm input[type="text"], #uploadEventForm input[type="url"], #uploadEventForm input[type="email"]');
+    inputs.forEach(input => {
+        if (input.value) {
+            formDataCache[input.id] = input.value;
+        }
+    });
+}
+
+function restoreFormData() {
+    // Restore cached values to inputs
+    for (let id in formDataCache) {
+        const input = document.getElementById(id);
+        if (input && formDataCache[id]) {
+            input.value = formDataCache[id];
+        }
+    }
+}
+
+function resetUploadForm() {
+    currentUploadType = '';
+    selectedPackage = null;
+    document.getElementById('uploadEventForm').reset();
+    document.getElementById('uploadType').value = '';
+    document.getElementById('uploadPackage').value = '';
+    document.getElementById('uploadPrice').value = '';
+
+    // Reset UI steps
+    document.getElementById('uploadTypeSelection').style.display = 'block';
+    document.getElementById('packageSelection').style.display = 'none';
+    document.getElementById('paymentQRStep').style.display = 'none';
+    document.getElementById('uploadEventForm').style.display = 'none';
+    document.getElementById('uploadError').style.display = 'none';
+    document.getElementById('uploadSuccess').style.display = 'none';
+
+    // Reset buttons
+    document.querySelectorAll('.upload-type-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+
+    // Reset packages
+    document.querySelectorAll('.package-option').forEach(opt => {
+        opt.classList.remove('active');
+    });
+
+    // Hide all conditional fields
+    document.getElementById('subtitleGroup').style.display = 'none';
+    document.getElementById('endDateGroup').style.display = 'none';
+    document.getElementById('btnTextGroup').style.display = 'none';
+    document.getElementById('linkTextGroup').style.display = 'none';
+    document.getElementById('dateGroup').style.display = 'block';
+    document.getElementById('cityGroup').style.display = 'block';
+    document.getElementById('imageGroup').style.display = 'block';
+    document.getElementById('linkGroup').style.display = 'block';
+    document.getElementById('paymentOrderGroup').style.display = 'block';
+    document.getElementById('emailGroup').style.display = 'block';
+}
+
+function selectUploadType(type) {
+    currentUploadType = type;
+    document.getElementById('uploadType').value = type;
+
+    // Highlight selected button
+    document.querySelectorAll('.upload-type-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    document.querySelector('.upload-type-btn[data-type="' + type + '"]').classList.add('active');
+
+    if (type === 'carousel') {
+        // Carousel: Show package selection
+        document.getElementById('uploadTypeSelection').style.display = 'none';
+        document.getElementById('packageSelection').style.display = 'block';
+        document.getElementById('paymentQRStep').style.display = 'none';
+        document.getElementById('uploadEventForm').style.display = 'none';
+
+    } else if (type === 'managed') {
+        // Managed: Fixed price CNY 18, go directly to payment
+        selectedPackage = { name: 'Managed Event', price: '18', cny: '18' };
+        document.getElementById('uploadPackage').value = 'Managed Event';
+        document.getElementById('uploadPrice').value = '18';
+        showPaymentQR('18', 'Managed Event');
+
+    } else if (type === 'poster1') {
+        // Poster #1: Fixed price CNY 28, go directly to payment
+        selectedPackage = { name: 'Poster #1', price: '28', cny: '28' };
+        document.getElementById('uploadPackage').value = 'Poster #1';
+        document.getElementById('uploadPrice').value = '28';
+        showPaymentQR('28', 'Poster #1');
+    }
+}
+
+function selectPackage(element) {
+    selectedPackage = {
+        name: element.dataset.package,
+        price: element.dataset.price,
+        cny: element.dataset.cny
+    };
+
+    document.getElementById('uploadPackage').value = selectedPackage.name;
+    document.getElementById('uploadPrice').value = selectedPackage.price;
+
+    // Highlight selected
+    document.querySelectorAll('.package-option').forEach(opt => {
+        opt.classList.remove('active');
+    });
+    element.classList.add('active');
+
+    // Show payment QR after short delay
+    setTimeout(() => {
+        showPaymentQR(selectedPackage.cny, selectedPackage.name);
+    }, 300);
+}
+
+function showPaymentQR(amount, packageName) {
+    document.getElementById('uploadTypeSelection').style.display = 'none';
+    document.getElementById('packageSelection').style.display = 'none';
+    document.getElementById('paymentQRStep').style.display = 'block';
+    document.getElementById('uploadEventForm').style.display = 'none';
+
+    document.getElementById('qrPaymentAmount').textContent = amount;
+    document.getElementById('qrPackageName').textContent = packageName + ' Package';
+}
+
+function backToPackage() {
+    if (currentUploadType === 'carousel') {
+        document.getElementById('uploadTypeSelection').style.display = 'none';
+        document.getElementById('packageSelection').style.display = 'block';
+        document.getElementById('paymentQRStep').style.display = 'none';
+        document.getElementById('uploadEventForm').style.display = 'none';
+    } else {
+        // For managed and poster1, go back to type selection
+        resetUploadForm();
+    }
+}
+
+function proceedToForm() {
+    document.getElementById('uploadTypeSelection').style.display = 'none';
+    document.getElementById('packageSelection').style.display = 'none';
+    document.getElementById('paymentQRStep').style.display = 'none';
+    document.getElementById('uploadEventForm').style.display = 'block';
+
+    // Configure form fields based on type
+    configureFormFields();
+
+    // Restore cached data
+    restoreFormData();
+}
+
+function configureFormFields() {
+    const type = currentUploadType;
+
+    // Reset all fields to default
+    document.getElementById('subtitleGroup').style.display = 'none';
+    document.getElementById('endDateGroup').style.display = 'none';
+    document.getElementById('btnTextGroup').style.display = 'none';
+    document.getElementById('linkTextGroup').style.display = 'none';
+    document.getElementById('dateGroup').style.display = 'block';
+    document.getElementById('cityGroup').style.display = 'block';
+    document.getElementById('imageGroup').style.display = 'block';
+    document.getElementById('linkGroup').style.display = 'block';
+
+    if (type === 'carousel') {
+        // Carousel: Title, Date, End Date, City, Image, Link
+        document.getElementById('endDateGroup').style.display = 'block';
+
+    } else if (type === 'managed') {
+        // Managed: Title, Subtitle, Date, End Date, City, Image, Button Text, Link
+        document.getElementById('subtitleGroup').style.display = 'block';
+        document.getElementById('endDateGroup').style.display = 'block';
+        document.getElementById('btnTextGroup').style.display = 'block';
+
+    } else if (type === 'poster1') {
+        // Poster #1: Title, Link Text, Link
+        document.getElementById('dateGroup').style.display = 'none';
+        document.getElementById('endDateGroup').style.display = 'none';
+        document.getElementById('cityGroup').style.display = 'none';
+        document.getElementById('imageGroup').style.display = 'none';
+        document.getElementById('btnTextGroup').style.display = 'none';
+        document.getElementById('linkTextGroup').style.display = 'block';
+    }
+}
+
+function backToPayment() {
+    document.getElementById('uploadTypeSelection').style.display = 'none';
+    document.getElementById('packageSelection').style.display = 'none';
+    document.getElementById('paymentQRStep').style.display = 'block';
+    document.getElementById('uploadEventForm').style.display = 'none';
+
+    // Save form data before going back
+    saveFormData();
+}
+
+async function submitUpload(event) {
+    event.preventDefault();
+
+    const type = document.getElementById('uploadType').value;
+
+    // Build data object based on type
+    const data = {
+        type: type,
+        package: document.getElementById('uploadPackage').value,
+        price: document.getElementById('uploadPrice').value,
+        currency: 'CNY',
+        title: document.getElementById('uploadTitle').value,
+        subtitle: type === 'managed' ? document.getElementById('uploadSubtitle').value : '',
+        date: type !== 'poster1' ? document.getElementById('uploadDate').value : '',
+        endDate: (type === 'carousel' || type === 'managed') ? document.getElementById('uploadEndDate').value : '',
+        city: type !== 'poster1' ? document.getElementById('uploadCity').value : '',
+        image: type !== 'poster1' ? document.getElementById('uploadImage').value : '',
+        btnText: type === 'managed' ? document.getElementById('uploadBtnText').value : '',
+        linkText: type === 'poster1' ? document.getElementById('uploadLinkText').value : '',
+        link: document.getElementById('uploadLink').value || '',
+        paymentOrderId: document.getElementById('paymentOrderId').value,
+        email: document.getElementById('uploadEmail').value,
+        status: 'pending',
+        submittedAt: new Date().toISOString()
+    };
+
+    try {
+        // Get existing uploads
+        const existing = await getExistingUploads();
+
+        // Submit to jsonbin.io
+        const response = await fetch('https://api.jsonbin.io/v3/b/699aad32ae596e708f3ea2ae', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Master-Key': '$2a$10$ofWRSuJ8qjrj6o34QoWnluloMBnnF56eGV.8NpTqbsM5HWDkl.Fky'
+            },
+            body: JSON.stringify({
+                uploads: [...existing, data]
+            })
+        });
+
+        if (response.ok) {
+            showUploadSuccess();
+            // Clear cache on success
+            formDataCache = {};
+            setTimeout(() => {
+                closeUploadModal();
+                resetUploadForm();
+            }, 2000);
+        } else {
+            showUploadError('Submission failed. Please try again.');
+        }
+    } catch (error) {
+        console.error('Upload error:', error);
+        showUploadError('Network error. Please try again.');
+    }
+}
+
+async function getExistingUploads() {
+    try {
+        const response = await fetch('https://api.jsonbin.io/v3/b/699aad32ae596e708f3ea2ae/latest', {
+            headers: {
+                'X-Master-Key': '$2a$10$ofWRSuJ8qjrj6o34QoWnluloMBnnF56eGV.8NpTqbsM5HWDkl.Fky'
+            }
+        });
+        const result = await response.json();
+        return result.record?.uploads || [];
+    } catch (error) {
+        return [];
+    }
+}
+
+function showUploadError(message) {
+    const errorDiv = document.getElementById('uploadError');
+    errorDiv.querySelector('p').textContent = message;
+    errorDiv.style.display = 'block';
+    document.getElementById('uploadSuccess').style.display = 'none';
+}
+
+function showUploadSuccess() {
+    document.getElementById('uploadError').style.display = 'none';
+    document.getElementById('uploadSuccess').style.display = 'block';
+    document.getElementById('submitUploadBtn').style.display = 'none';
+    document.querySelector('.back-btn').style.display = 'none';
+}
+
+// Close modal on outside click
+document.addEventListener('click', function(event) {
+    const modal = document.getElementById('uploadEventModal');
+    if (event.target === modal) {
+        closeUploadModal();
+    }
+});
+
+// Close modal on Escape key
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeUploadModal();
+    }
+});
+
+</script>
 
     <!-- Share Modal -->
     <div class="share-modal" id="shareModal" onclick="handleShareModalClick(event)">
@@ -3179,5 +3496,450 @@ function handleShareModalClick(e) {
         </div>
     </div>
 
+<!-- UPLOAD EVENT Modal v8.8.1 -->
+<div class="modal-overlay" id="uploadEventModal" style="display: none;">
+    <div class="modal-content upload-modal-content">
+        <span class="modal-close" onclick="closeUploadModal()">&times;</span>
+        <h2>UPLOAD YOUR EVENT</h2>
+        <p style="margin-bottom: 25px;">Select upload type and complete payment</p>
+
+        <!-- Step 1: Select Upload Type -->
+        <div id="uploadTypeSelection">
+            <h3 style="color: #fff; font-size: 14px; margin-bottom: 15px; text-align: center; letter-spacing: 2px;">SELECT TYPE</h3>
+            <div class="upload-type-grid">
+                <button type="button" class="upload-type-btn" data-type="carousel" onclick="selectUploadType('carousel')">
+                    <div class="upload-type-title">CAROUSEL</div>
+                    <div class="upload-type-subtitle">Poster</div>
+                    <div class="upload-type-price">CNY 1/8/10</div>
+                </button>
+                <button type="button" class="upload-type-btn" data-type="managed" onclick="selectUploadType('managed')">
+                    <div class="upload-type-title">MANAGED</div>
+                    <div class="upload-type-subtitle">Event</div>
+                    <div class="upload-type-price">CNY 18</div>
+                </button>
+                <button type="button" class="upload-type-btn" data-type="poster1" onclick="selectUploadType('poster1')">
+                    <div class="upload-type-title">POSTER #1</div>
+                    <div class="upload-type-subtitle">Featured</div>
+                    <div class="upload-type-price">CNY 28</div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 2: Select Package (Only for Carousel) -->
+        <div id="packageSelection" style="display: none;">
+            <h3 style="color: #fff; font-size: 14px; margin-bottom: 15px; text-align: center; letter-spacing: 2px;">SELECT PACKAGE</h3>
+            <div class="package-grid">
+                <div class="package-option" data-package="Single Day" data-price="1" data-cny="1" onclick="selectPackage(this)">
+                    <div class="package-price">CNY 1</div>
+                    <div class="package-name">Single Day</div>
+                </div>
+                <div class="package-option" data-package="15 Days" data-price="8" data-cny="8" onclick="selectPackage(this)">
+                    <div class="package-price">CNY 8</div>
+                    <div class="package-name">15 Days</div>
+                </div>
+                <div class="package-option" data-package="30 Days" data-price="10" data-cny="10" onclick="selectPackage(this)">
+                    <div class="package-price">CNY 10</div>
+                    <div class="package-name">30 Days</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 3: Payment QR Code -->
+        <div id="paymentQRStep" style="display: none;">
+            <h3 style="color: #fff; font-size: 14px; margin-bottom: 15px; text-align: center; letter-spacing: 2px;">SCAN TO PAY</h3>
+            <div class="payment-info">
+                <div class="payment-amount">CNY <span id="qrPaymentAmount">0</span></div>
+                <div class="payment-package" id="qrPackageName">-</div>
+            </div>
+            <div class="qr-container">
+                <img src="./image/Wechat-QR.png" alt="WeChat Pay QR Code" class="qr-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="qr-fallback" style="display: none;">WeChat QR Code</div>
+            </div>
+            <p class="qr-hint">Scan with WeChat app to complete payment</p>
+            <div class="payment-actions">
+                <button type="button" class="neon-btn payment-back-btn" onclick="backToPackage()">BACK</button>
+                <button type="button" class="neon-btn payment-next-btn" onclick="proceedToForm()">I'VE PAID â</button>
+            </div>
+        </div>
+
+        <!-- Step 4: Upload Form -->
+        <form id="uploadEventForm" onsubmit="submitUpload(event)" style="display: none;">
+            <input type="hidden" id="uploadType" name="type" value="">
+            <input type="hidden" id="uploadPackage" name="package" value="">
+            <input type="hidden" id="uploadPrice" name="price" value="">
+
+            <h3 style="color: #fff; font-size: 14px; margin-bottom: 15px; text-align: center; letter-spacing: 2px;">EVENT DETAILS</h3>
+
+            <!-- Two column layout for desktop -->
+            <div class="form-row">
+                <div class="form-group" id="titleGroup">
+                    <label for="uploadTitle">EVENT TITLE *</label>
+                    <input type="text" id="uploadTitle" name="title" required placeholder="Enter event title">
+                </div>
+                <div class="form-group" id="subtitleGroup" style="display: none;">
+                    <label for="uploadSubtitle">SUBTITLE</label>
+                    <input type="text" id="uploadSubtitle" name="subtitle" placeholder="Enter subtitle">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group" id="dateGroup">
+                    <label for="uploadDate">DATE *</label>
+                    <input type="text" id="uploadDate" name="date" required placeholder="2026.12.31" pattern="\d{4}\.\d{2}\.\d{2}">
+                </div>
+                <div class="form-group" id="endDateGroup" style="display: none;">
+                    <label for="uploadEndDate">END DATE (Optional)</label>
+                    <input type="text" id="uploadEndDate" name="endDate" placeholder="2026.12.31" pattern="\d{4}\.\d{2}\.\d{2}">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group" id="cityGroup">
+                    <label for="uploadCity">CITY OR VENUE *</label>
+                    <input type="text" id="uploadCity" name="city" required placeholder="Enter city or venue">
+                </div>
+                <div class="form-group" id="imageGroup">
+                    <label for="uploadImage">POSTER IMAGE URL *</label>
+                    <input type="url" id="uploadImage" name="image" required placeholder="https://example.com/poster.jpg">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group" id="btnTextGroup" style="display: none;">
+                    <label for="uploadBtnText">BUTTON TEXT</label>
+                    <input type="text" id="uploadBtnText" name="btnText" placeholder="View Details">
+                </div>
+                <div class="form-group" id="linkTextGroup" style="display: none;">
+                    <label for="uploadLinkText">LINK TEXT</label>
+                    <input type="text" id="uploadLinkText" name="linkText" placeholder="Click Here">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group" id="linkGroup">
+                    <label for="uploadLink">LINK URL (Optional)</label>
+                    <input type="url" id="uploadLink" name="link" placeholder="https://example.com/event">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group" id="paymentOrderGroup">
+                    <label for="paymentOrderId">WECHAT PAYMENT ORDER ID *</label>
+                    <input type="text" id="paymentOrderId" name="paymentOrderId" required placeholder="Enter transaction ID from WeChat">
+                </div>
+                <div class="form-group" id="emailGroup">
+                    <label for="uploadEmail">EMAIL * (For confirmation)</label>
+                    <input type="email" id="uploadEmail" name="email" required placeholder="your@email.com">
+                </div>
+            </div>
+
+            <div id="uploadError" class="upload-error" style="display: none;">
+                <p>Please fill in all required fields</p>
+            </div>
+
+            <div id="uploadSuccess" class="upload-success" style="display: none;">
+                <p>â Upload submitted successfully! Pending review.</p>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="neon-btn back-btn" onclick="backToPayment()">BACK</button>
+                <button type="submit" class="neon-btn submit-btn" id="submitUploadBtn">SUBMIT UPLOAD</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+/* Upload Modal Styles v8.8.1 */
+.upload-modal-content {
+    max-width: 650px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.upload-type-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.upload-type-btn {
+    padding: 20px 10px;
+    background: rgba(139, 0, 0, 0.2);
+    border: 2px solid #8b0000;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s;
+    color: #fff;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+.upload-type-btn:hover {
+    background: rgba(139, 0, 0, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(139, 0, 0, 0.3);
+}
+
+.upload-type-btn.active {
+    background: #8b0000;
+    border-color: #ff0000;
+    box-shadow: 0 0 20px rgba(139, 0, 0, 0.5);
+}
+
+.upload-type-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    letter-spacing: 1px;
+}
+
+.upload-type-subtitle {
+    font-size: 11px;
+    color: #ccc;
+    margin-bottom: 8px;
+}
+
+.upload-type-price {
+    font-size: 12px;
+    color: #ff6666;
+    font-weight: bold;
+}
+
+.package-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.package-option {
+    padding: 18px 10px;
+    background: rgba(139, 0, 0, 0.15);
+    border: 1px solid #8b0000;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s;
+}
+
+.package-option:hover {
+    background: rgba(139, 0, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+.package-option.active {
+    background: #8b0000;
+    border-color: #ff0000;
+    box-shadow: 0 0 15px rgba(139, 0, 0, 0.4);
+}
+
+.package-price {
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 5px;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+.package-name {
+    font-size: 11px;
+    color: #ccc;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.payment-info {
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(139, 0, 0, 0.1);
+    border-radius: 8px;
+    border: 1px solid #8b0000;
+}
+
+.payment-amount {
+    font-size: 32px;
+    color: #fff;
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+.payment-package {
+    font-size: 12px;
+    color: #ccc;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.qr-container {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.qr-image {
+    max-width: 220px;
+    border-radius: 8px;
+    border: 2px solid #8b0000;
+}
+
+.qr-fallback {
+    width: 220px;
+    height: 220px;
+    background: #333;
+    border: 2px solid #8b0000;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    color: #666;
+    font-size: 14px;
+}
+
+.qr-hint {
+    font-size: 12px;
+    color: #999;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.payment-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.payment-back-btn, .payment-next-btn, .back-btn, .submit-btn {
+    padding: 12px 30px;
+    font-size: 13px;
+}
+
+.payment-next-btn {
+    background: #8b0000;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 0;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #ccc;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px 12px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid #8b0000;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 13px;
+    transition: all 0.3s;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #ff0000;
+    box-shadow: 0 0 10px rgba(139, 0, 0, 0.3);
+}
+
+.form-group input::placeholder {
+    color: #666;
+}
+
+.form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.back-btn {
+    flex: 1;
+    background: transparent;
+}
+
+.submit-btn {
+    flex: 2;
+    background: #8b0000;
+}
+
+.upload-error {
+    text-align: center;
+    padding: 12px;
+    background: rgba(255, 0, 0, 0.15);
+    border: 1px solid #ff0000;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+.upload-error p {
+    color: #ff6666;
+    margin: 0;
+    font-size: 13px;
+}
+
+.upload-success {
+    text-align: center;
+    padding: 15px;
+    background: rgba(0, 255, 0, 0.1);
+    border: 1px solid #00ff00;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+.upload-success p {
+    color: #66ff66;
+    margin: 0;
+    font-size: 14px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .upload-type-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .package-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .payment-actions {
+        flex-direction: column;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .upload-modal-content {
+        max-width: 95vw;
+        padding: 25px 20px;
+    }
+}
+</style>
 </body>
 </html>
