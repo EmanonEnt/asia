@@ -1469,7 +1469,492 @@
         </div>
     </div>
 
-    <script>
+    
+
+    <!-- Share Modal -->
+    <div class="share-modal" id="shareModal" onclick="handleShareModalClick(event)">
+        <div class="share-modal-content">
+            <button class="share-modal-close" onclick="closeShareModal()">&times;</button>
+            <h3 class="share-modal-title">SHARE THIS EVENT</h3>
+            <div class="share-event-info">
+                <img class="share-event-img" id="shareEventImg" src="" alt="">
+                <div class="share-event-details">
+                    <div class="share-event-name" id="shareEventName"></div>
+                    <div class="share-event-meta" id="shareEventMeta"></div>
+                    <div class="share-event-tags" id="shareEventTags"></div>
+                </div>
+            </div>
+            <div class="share-platforms">
+                <button class="share-platform-btn" onclick="shareToPlatform('facebook')">
+                    <svg class="share-platform-icon" viewBox="0 0 24 24" fill="#1877f2">
+                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                    </svg>
+                    <span class="share-platform-name">Facebook</span>
+                </button>
+                <button class="share-platform-btn" onclick="shareToPlatform('instagram')">
+                    <svg class="share-platform-icon" viewBox="0 0 24 24">
+                        <defs>
+                            <linearGradient id="ig-gradient" x1="0%" y1="100%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#feda75"/>
+                                <stop offset="50%" style="stop-color:#d62976"/>
+                                <stop offset="100%" style="stop-color:#4f5bd5"/>
+                            </linearGradient>
+                        </defs>
+                        <path fill="url(#ig-gradient)" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                    <span class="share-platform-name">Instagram</span>
+                </button>
+                <button class="share-platform-btn" onclick="shareToPlatform('whatsapp')">
+                    <svg class="share-platform-icon" viewBox="0 0 24 24" fill="#25d366">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                    </svg>
+                    <span class="share-platform-name">WhatsApp</span>
+                </button>
+                <button class="share-platform-btn" onclick="shareToPlatform('reddit')">
+                    <svg class="share-platform-icon" viewBox="0 0 24 24" fill="#ff4500">
+                        <path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/>
+                    </svg>
+                    <span class="share-platform-name">Reddit</span>
+                </button>
+                <button class="share-platform-btn" onclick="shareToPlatform('telegram')">
+                    <svg class="share-platform-icon" viewBox="0 0 24 24" fill="#0088cc">
+                        <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                    </svg>
+                    <span class="share-platform-name">Telegram</span>
+                </button>
+                <button class="share-platform-btn" onclick="shareToPlatform('line')">
+                    <svg class="share-platform-icon" viewBox="0 0 24 24" fill="#06c755">
+                        <path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.349 0 .63.285.63.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/>
+                    </svg>
+                    <span class="share-platform-name">LINE</span>
+                </button>
+                <button class="share-platform-btn" onclick="shareToPlatform('wechat-friend')">
+                    <svg class="share-platform-icon" viewBox="0 0 24 24" fill="#07c160">
+                        <path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.047c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 0 1-.023-.156.49.49 0 0 1 .201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.837-6.656-6.088V8.89c-.135-.01-.27-.027-.407-.03zm-2.53 3.274c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.97-.982zm4.844 0c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.969-.982z"/>
+                    </svg>
+                    <span class="share-platform-name">WeChat Friend</span>
+                </button>
+                <button class="share-platform-btn" onclick="shareToPlatform('wechat-moments')">
+                    <svg class="share-platform-icon" viewBox="0 0 24 24" fill="#07c160">
+                        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm6.066 9.645l-1.605 7.485c-.121.568-.462.707-.936.44l-2.587-1.913-1.25 1.209c-.138.14-.253.257-.518.257l.185-2.623 4.795-4.374c.208-.186-.045-.29-.324-.104l-5.927 3.76-2.554-.807c-.555-.175-.568-.555.116-.822l9.98-3.871c.463-.175.868.104.745.763z"/>
+                    </svg>
+                    <span class="share-platform-name">WeChat Moments</span>
+                </button>
+            </div>
+            
+            <!-- Download Poster Button -->
+            <button class="download-btn" id="downloadPosterBtn" onclick="downloadPoster()">
+                <svg class="download-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span class="download-btn-text">DOWNLOAD POSTER</span>
+                <span class="download-btn-subtext">Save to Device</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- WeChat QR Modal -->
+    <div class="wechat-qr-modal" id="wechatQRModal" onclick="handleWechatModalClick(event)">
+        <div class="wechat-qr-content">
+            <h3 class="wechat-qr-title">Scan to Share on WeChat</h3>
+            <div class="wechat-qr-code" id="wechatQRCode">
+                <!-- äºç»´ç å°å¨è¿éå¨æçæ -->
+            </div>
+            <p class="wechat-qr-hint">Content copied to clipboard.<br>Open WeChat and paste to share.</p>
+            <button class="wechat-qr-close" onclick="closeWeChatQR()">Got it</button>
+        </div>
+    </div>
+
+    <!-- Upload Event Modal -->
+<div class="modal-overlay" id="uploadEventModal" style="display: none;">
+    <div class="modal-content upload-modal" style="max-width: 600px;">
+        <span class="modal-close" onclick="closeUploadModal()">&times;</span>
+        <h2>UPLOAD EVENT</h2>
+        <p id="uploadStepDesc">Select your event type and package</p>
+
+        <!-- Step 1: Select Type -->
+        <div id="uploadStep1" class="upload-step">
+            <h3 style="color: #fff; font-size: 16px; margin-bottom: 20px; text-align: center; letter-spacing: 2px;">SELECT TYPE</h3>
+            <div class="type-buttons" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 20px 0;">
+                <button class="type-btn" onclick="selectUploadType('carousel')" style="background: rgba(139, 0, 0, 0.2); border: 2px solid #8b0000; border-radius: 8px; padding: 20px 10px; cursor: pointer; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                    <span class="type-name" style="font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 16px; color: #fff; letter-spacing: 1px;">CAROUSEL</span>
+                    <span class="type-price" style="font-size: 14px; color: #c0c0c0;">CNY 1/8/10</span>
+                </button>
+                <button class="type-btn" onclick="selectUploadType('managed')" style="background: rgba(139, 0, 0, 0.2); border: 2px solid #8b0000; border-radius: 8px; padding: 20px 10px; cursor: pointer; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                    <span class="type-name" style="font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 16px; color: #fff; letter-spacing: 1px;">MANAGED</span>
+                    <span class="type-price" style="font-size: 14px; color: #c0c0c0;">CNY 18</span>
+                </button>
+                <button class="type-btn" onclick="selectUploadType('poster1')" style="background: rgba(139, 0, 0, 0.2); border: 2px solid #8b0000; border-radius: 8px; padding: 20px 10px; cursor: pointer; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                    <span class="type-name" style="font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 16px; color: #fff; letter-spacing: 1px;">POSTER #1</span>
+                    <span class="type-price" style="font-size: 14px; color: #c0c0c0;">CNY 28</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 2: Select Package (for carousel only) -->
+        <div id="uploadStep2" class="upload-step" style="display:none;">
+            <h3 style="color: #fff; font-size: 16px; margin-bottom: 20px; text-align: center; letter-spacing: 2px;">SELECT PACKAGE</h3>
+            <div class="package-buttons" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 20px 0;">
+                <button class="package-btn" onclick="selectPackage(1)" style="background: rgba(139, 0, 0, 0.2); border: 2px solid #8b0000; border-radius: 8px; padding: 15px 10px; cursor: pointer; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                    <span class="package-name" style="font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 14px; color: #fff;">Single Day</span>
+                    <span class="package-price" style="font-size: 16px; color: #fff; font-weight: bold;">CNY 1</span>
+                </button>
+                <button class="package-btn" onclick="selectPackage(8)" style="background: rgba(139, 0, 0, 0.2); border: 2px solid #8b0000; border-radius: 8px; padding: 15px 10px; cursor: pointer; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                    <span class="package-name" style="font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 14px; color: #fff;">15 Days</span>
+                    <span class="package-price" style="font-size: 16px; color: #fff; font-weight: bold;">CNY 8</span>
+                </button>
+                <button class="package-btn" onclick="selectPackage(10)" style="background: rgba(139, 0, 0, 0.2); border: 2px solid #8b0000; border-radius: 8px; padding: 15px 10px; cursor: pointer; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                    <span class="package-name" style="font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 14px; color: #fff;">30 Days</span>
+                    <span class="package-price" style="font-size: 16px; color: #fff; font-weight: bold;">CNY 10</span>
+                </button>
+            </div>
+            <button class="back-btn" onclick="goBackToStep1()" style="background: transparent; border: 1px solid #666; color: #666; padding: 10px 30px; cursor: pointer; font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-top: 15px; transition: all 0.3s;">BACK</button>
+        </div>
+
+        <!-- Step 3: Payment QR Code -->
+        <div id="uploadStep3" class="upload-step" style="display:none;">
+            <h3 style="color: #fff; font-size: 16px; margin-bottom: 20px; text-align: center; letter-spacing: 2px;">SCAN TO PAY</h3>
+            <div class="qr-container" style="background: #fff; padding: 20px; border-radius: 8px; margin: 20px auto; max-width: 250px; text-align: center;">
+                <img src="./image/Wechat-QR.png" alt="WeChat Pay" style="width: 100%; max-width: 200px; height: auto;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="qr-placeholder" style="display:none; width: 200px; height: 200px; background: #f0f0f0; align-items: center; justify-content: center; color: #666; font-size: 14px;">
+                    <span>WeChat QR Code</span>
+                </div>
+            </div>
+            <p class="qr-instruction" style="color: #c0c0c0; font-size: 13px; margin: 10px 0; text-align: center;">Scan with WeChat to pay CNY <span id="paymentAmount" style="color: #fff; font-weight: bold;">0</span></p>
+            <p class="qr-instruction" style="color: #c0c0c0; font-size: 13px; margin: 10px 0; text-align: center;">After payment, click NEXT to fill in your details</p>
+            <button class="neon-btn" onclick="goToStep4()" style="background: rgba(139, 0, 0, 0.9); color: #fff; border: 2px solid #8b0000; padding: 12px 30px; font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: all 0.4s; margin-top: 10px;">NEXT</button>
+            <button class="back-btn" onclick="goBackToStep2()" style="background: transparent; border: 1px solid #666; color: #666; padding: 10px 30px; cursor: pointer; font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-top: 15px; transition: all 0.3s;">BACK</button>
+        </div>
+
+        <!-- Step 4: Fill Form -->
+        <div id="uploadStep4" class="upload-step" style="display:none;">
+            <h3 style="color: #fff; font-size: 16px; margin-bottom: 20px; text-align: center; letter-spacing: 2px;">EVENT DETAILS</h3>
+            <form id="uploadForm" onsubmit="submitUpload(event)">
+                <!-- Carousel Fields -->
+                <div id="carouselFields" class="form-fields" style="display:none;">
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">EVENT TITLE *</label>
+                            <input type="text" name="title" placeholder="Enter event title" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">START DATE * (YYYY.MM.DD)</label>
+                            <input type="text" name="startDate" placeholder="2026.12.31" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">END DATE (Optional)</label>
+                            <input type="text" name="endDate" placeholder="Leave empty for single day" style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">CITY OR VENUE *</label>
+                            <input type="text" name="city" placeholder="Enter city" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">POSTER IMAGE URL *</label>
+                            <input type="url" name="image" placeholder="https://example.com/poster.jpg" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">EVENT LINK (Optional)</label>
+                            <input type="url" name="link" placeholder="https://example.com/event" style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Managed Fields -->
+                <div id="managedFields" class="form-fields" style="display:none;">
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">EVENT TITLE *</label>
+                            <input type="text" name="title" placeholder="Enter event title" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">SUBTITLE *</label>
+                            <input type="text" name="subtitle" placeholder="Enter subtitle" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">START DATE * (YYYY.MM.DD)</label>
+                            <input type="text" name="startDate" placeholder="2026.12.31" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">END DATE (Optional)</label>
+                            <input type="text" name="endDate" placeholder="Leave empty for single day" style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">CITY OR VENUE *</label>
+                            <input type="text" name="city" placeholder="Enter city" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">POSTER IMAGE URL *</label>
+                            <input type="url" name="image" placeholder="https://example.com/poster.jpg" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">BUTTON TEXT *</label>
+                            <input type="text" name="btn_text" placeholder="e.g. BUY TICKETS" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">EVENT LINK (Optional)</label>
+                            <input type="url" name="link" placeholder="https://example.com/event" style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Poster1 Fields -->
+                <div id="poster1Fields" class="form-fields" style="display:none;">
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">TITLE *</label>
+                            <input type="text" name="title" placeholder="Enter poster title" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">LINK TEXT *</label>
+                            <input type="text" name="linkText" placeholder="e.g. Learn More" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">LINK URL *</label>
+                            <input type="url" name="link" placeholder="https://example.com" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Common Fields -->
+                <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                    <div class="form-group" style="display: flex; flex-direction: column;">
+                        <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">WECHAT PAYMENT ORDER ID *</label>
+                        <input type="text" name="paymentId" placeholder="Enter payment transaction ID" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                    </div>
+                    <div class="form-group" style="display: flex; flex-direction: column;">
+                        <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">CONTACT EMAIL *</label>
+                        <input type="email" name="email" placeholder="your@email.com" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                    </div>
+                </div>
+
+                <input type="hidden" name="type" id="uploadType">
+                <input type="hidden" name="package" id="uploadPackage">
+
+                <button type="submit" class="neon-btn submit-btn" style="width: 100%; margin-top: 20px; background: rgba(139, 0, 0, 0.9); color: #fff; border: 2px solid #8b0000; padding: 12px 30px; font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: all 0.4s;">SUBMIT FOR REVIEW</button>
+                <button type="button" class="back-btn" onclick="goBackToStep3()" style="background: transparent; border: 1px solid #666; color: #666; padding: 10px 30px; cursor: pointer; font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-top: 15px; transition: all 0.3s;">BACK</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+    <!-- Upload Event Modal -->
+<div class="modal-overlay" id="uploadEventModal" style="display: none;">
+    <div class="modal-content upload-modal" style="max-width: 600px;">
+        <span class="modal-close" onclick="closeUploadModal()">&times;</span>
+        <h2>UPLOAD EVENT</h2>
+        <p id="uploadStepDesc">Select your event type and package</p>
+
+        <!-- Step 1: Select Type -->
+        <div id="uploadStep1" class="upload-step">
+            <h3 style="color: #fff; font-size: 16px; margin-bottom: 20px; text-align: center; letter-spacing: 2px;">SELECT TYPE</h3>
+            <div class="type-buttons" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 20px 0;">
+                <button class="type-btn" onclick="selectUploadType('carousel')" style="background: rgba(139, 0, 0, 0.2); border: 2px solid #8b0000; border-radius: 8px; padding: 20px 10px; cursor: pointer; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                    <span class="type-name" style="font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 16px; color: #fff; letter-spacing: 1px;">CAROUSEL</span>
+                    <span class="type-price" style="font-size: 14px; color: #c0c0c0;">CNY 1/8/10</span>
+                </button>
+                <button class="type-btn" onclick="selectUploadType('managed')" style="background: rgba(139, 0, 0, 0.2); border: 2px solid #8b0000; border-radius: 8px; padding: 20px 10px; cursor: pointer; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                    <span class="type-name" style="font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 16px; color: #fff; letter-spacing: 1px;">MANAGED</span>
+                    <span class="type-price" style="font-size: 14px; color: #c0c0c0;">CNY 18</span>
+                </button>
+                <button class="type-btn" onclick="selectUploadType('poster1')" style="background: rgba(139, 0, 0, 0.2); border: 2px solid #8b0000; border-radius: 8px; padding: 20px 10px; cursor: pointer; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                    <span class="type-name" style="font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 16px; color: #fff; letter-spacing: 1px;">POSTER #1</span>
+                    <span class="type-price" style="font-size: 14px; color: #c0c0c0;">CNY 28</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 2: Select Package (for carousel only) -->
+        <div id="uploadStep2" class="upload-step" style="display:none;">
+            <h3 style="color: #fff; font-size: 16px; margin-bottom: 20px; text-align: center; letter-spacing: 2px;">SELECT PACKAGE</h3>
+            <div class="package-buttons" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 20px 0;">
+                <button class="package-btn" onclick="selectPackage(1)" style="background: rgba(139, 0, 0, 0.2); border: 2px solid #8b0000; border-radius: 8px; padding: 15px 10px; cursor: pointer; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                    <span class="package-name" style="font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 14px; color: #fff;">Single Day</span>
+                    <span class="package-price" style="font-size: 16px; color: #fff; font-weight: bold;">CNY 1</span>
+                </button>
+                <button class="package-btn" onclick="selectPackage(8)" style="background: rgba(139, 0, 0, 0.2); border: 2px solid #8b0000; border-radius: 8px; padding: 15px 10px; cursor: pointer; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                    <span class="package-name" style="font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 14px; color: #fff;">15 Days</span>
+                    <span class="package-price" style="font-size: 16px; color: #fff; font-weight: bold;">CNY 8</span>
+                </button>
+                <button class="package-btn" onclick="selectPackage(10)" style="background: rgba(139, 0, 0, 0.2); border: 2px solid #8b0000; border-radius: 8px; padding: 15px 10px; cursor: pointer; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                    <span class="package-name" style="font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 14px; color: #fff;">30 Days</span>
+                    <span class="package-price" style="font-size: 16px; color: #fff; font-weight: bold;">CNY 10</span>
+                </button>
+            </div>
+            <button class="back-btn" onclick="goBackToStep1()" style="background: transparent; border: 1px solid #666; color: #666; padding: 10px 30px; cursor: pointer; font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-top: 15px; transition: all 0.3s;">BACK</button>
+        </div>
+
+        <!-- Step 3: Payment QR Code -->
+        <div id="uploadStep3" class="upload-step" style="display:none;">
+            <h3 style="color: #fff; font-size: 16px; margin-bottom: 20px; text-align: center; letter-spacing: 2px;">SCAN TO PAY</h3>
+            <div class="qr-container" style="background: #fff; padding: 20px; border-radius: 8px; margin: 20px auto; max-width: 250px; text-align: center;">
+                <img src="./image/Wechat-QR.png" alt="WeChat Pay" style="width: 100%; max-width: 200px; height: auto;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="qr-placeholder" style="display:none; width: 200px; height: 200px; background: #f0f0f0; align-items: center; justify-content: center; color: #666; font-size: 14px;">
+                    <span>WeChat QR Code</span>
+                </div>
+            </div>
+            <p class="qr-instruction" style="color: #c0c0c0; font-size: 13px; margin: 10px 0; text-align: center;">Scan with WeChat to pay CNY <span id="paymentAmount" style="color: #fff; font-weight: bold;">0</span></p>
+            <p class="qr-instruction" style="color: #c0c0c0; font-size: 13px; margin: 10px 0; text-align: center;">After payment, click NEXT to fill in your details</p>
+            <button class="neon-btn" onclick="goToStep4()" style="background: rgba(139, 0, 0, 0.9); color: #fff; border: 2px solid #8b0000; padding: 12px 30px; font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: all 0.4s; margin-top: 10px;">NEXT</button>
+            <button class="back-btn" onclick="goBackToStep2()" style="background: transparent; border: 1px solid #666; color: #666; padding: 10px 30px; cursor: pointer; font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-top: 15px; transition: all 0.3s;">BACK</button>
+        </div>
+
+        <!-- Step 4: Fill Form -->
+        <div id="uploadStep4" class="upload-step" style="display:none;">
+            <h3 style="color: #fff; font-size: 16px; margin-bottom: 20px; text-align: center; letter-spacing: 2px;">EVENT DETAILS</h3>
+            <form id="uploadForm" onsubmit="submitUpload(event)">
+                <!-- Carousel Fields -->
+                <div id="carouselFields" class="form-fields" style="display:none;">
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">EVENT TITLE *</label>
+                            <input type="text" name="title" placeholder="Enter event title" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">START DATE * (YYYY.MM.DD)</label>
+                            <input type="text" name="startDate" placeholder="2026.12.31" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">END DATE (Optional)</label>
+                            <input type="text" name="endDate" placeholder="Leave empty for single day" style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">CITY OR VENUE *</label>
+                            <input type="text" name="city" placeholder="Enter city" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">POSTER IMAGE URL *</label>
+                            <input type="url" name="image" placeholder="https://example.com/poster.jpg" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">EVENT LINK (Optional)</label>
+                            <input type="url" name="link" placeholder="https://example.com/event" style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Managed Fields -->
+                <div id="managedFields" class="form-fields" style="display:none;">
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">EVENT TITLE *</label>
+                            <input type="text" name="title" placeholder="Enter event title" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">SUBTITLE *</label>
+                            <input type="text" name="subtitle" placeholder="Enter subtitle" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">START DATE * (YYYY.MM.DD)</label>
+                            <input type="text" name="startDate" placeholder="2026.12.31" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">END DATE (Optional)</label>
+                            <input type="text" name="endDate" placeholder="Leave empty for single day" style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">CITY OR VENUE *</label>
+                            <input type="text" name="city" placeholder="Enter city" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">POSTER IMAGE URL *</label>
+                            <input type="url" name="image" placeholder="https://example.com/poster.jpg" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">BUTTON TEXT *</label>
+                            <input type="text" name="btn_text" placeholder="e.g. BUY TICKETS" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">EVENT LINK (Optional)</label>
+                            <input type="url" name="link" placeholder="https://example.com/event" style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Poster1 Fields -->
+                <div id="poster1Fields" class="form-fields" style="display:none;">
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">TITLE *</label>
+                            <input type="text" name="title" placeholder="Enter poster title" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">LINK TEXT *</label>
+                            <input type="text" name="linkText" placeholder="e.g. Learn More" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">LINK URL *</label>
+                            <input type="url" name="link" placeholder="https://example.com" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Common Fields -->
+                <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                    <div class="form-group" style="display: flex; flex-direction: column;">
+                        <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">WECHAT PAYMENT ORDER ID *</label>
+                        <input type="text" name="paymentId" placeholder="Enter payment transaction ID" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                    </div>
+                    <div class="form-group" style="display: flex; flex-direction: column;">
+                        <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">CONTACT EMAIL *</label>
+                        <input type="email" name="email" placeholder="your@email.com" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                    </div>
+                </div>
+
+                <input type="hidden" name="type" id="uploadType">
+                <input type="hidden" name="package" id="uploadPackage">
+
+                <button type="submit" class="neon-btn submit-btn" style="width: 100%; margin-top: 20px; background: rgba(139, 0, 0, 0.9); color: #fff; border: 2px solid #8b0000; padding: 12px 30px; font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: all 0.4s;">SUBMIT FOR REVIEW</button>
+                <button type="button" class="back-btn" onclick="goBackToStep3()" style="background: transparent; border: 1px solid #666; color: #666; padding: 10px 30px; cursor: pointer; font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-top: 15px; transition: all 0.3s;">BACK</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
         // æ»æ­æ´»å¨æ°æ® - 18ä¸ªæ´»å¨ï¼4ä¸ªè¿æ + 14ä¸ªå³å°åçï¼
         const carouselData = [
                 { title: 'HAPPY NEW YEAR新年快樂!!!', date: '2026.01.01', city: 'ASIA', image: 'https://img.redocn.com/sheji/20250723/manianxinnianchunjiezhufuyujinsechuangyihaibaosucaibeijing_13616973.jpg', link: '' },
@@ -2901,490 +3386,5 @@ document.addEventListener('click', function(e) {
         closeUploadModal();
     }
 });
-</script>
-
-    <!-- Share Modal -->
-    <div class="share-modal" id="shareModal" onclick="handleShareModalClick(event)">
-        <div class="share-modal-content">
-            <button class="share-modal-close" onclick="closeShareModal()">&times;</button>
-            <h3 class="share-modal-title">SHARE THIS EVENT</h3>
-            <div class="share-event-info">
-                <img class="share-event-img" id="shareEventImg" src="" alt="">
-                <div class="share-event-details">
-                    <div class="share-event-name" id="shareEventName"></div>
-                    <div class="share-event-meta" id="shareEventMeta"></div>
-                    <div class="share-event-tags" id="shareEventTags"></div>
-                </div>
-            </div>
-            <div class="share-platforms">
-                <button class="share-platform-btn" onclick="shareToPlatform('facebook')">
-                    <svg class="share-platform-icon" viewBox="0 0 24 24" fill="#1877f2">
-                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                    </svg>
-                    <span class="share-platform-name">Facebook</span>
-                </button>
-                <button class="share-platform-btn" onclick="shareToPlatform('instagram')">
-                    <svg class="share-platform-icon" viewBox="0 0 24 24">
-                        <defs>
-                            <linearGradient id="ig-gradient" x1="0%" y1="100%" x2="100%" y2="0%">
-                                <stop offset="0%" style="stop-color:#feda75"/>
-                                <stop offset="50%" style="stop-color:#d62976"/>
-                                <stop offset="100%" style="stop-color:#4f5bd5"/>
-                            </linearGradient>
-                        </defs>
-                        <path fill="url(#ig-gradient)" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                    </svg>
-                    <span class="share-platform-name">Instagram</span>
-                </button>
-                <button class="share-platform-btn" onclick="shareToPlatform('whatsapp')">
-                    <svg class="share-platform-icon" viewBox="0 0 24 24" fill="#25d366">
-                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-                    </svg>
-                    <span class="share-platform-name">WhatsApp</span>
-                </button>
-                <button class="share-platform-btn" onclick="shareToPlatform('reddit')">
-                    <svg class="share-platform-icon" viewBox="0 0 24 24" fill="#ff4500">
-                        <path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/>
-                    </svg>
-                    <span class="share-platform-name">Reddit</span>
-                </button>
-                <button class="share-platform-btn" onclick="shareToPlatform('telegram')">
-                    <svg class="share-platform-icon" viewBox="0 0 24 24" fill="#0088cc">
-                        <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
-                    </svg>
-                    <span class="share-platform-name">Telegram</span>
-                </button>
-                <button class="share-platform-btn" onclick="shareToPlatform('line')">
-                    <svg class="share-platform-icon" viewBox="0 0 24 24" fill="#06c755">
-                        <path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.349 0 .63.285.63.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/>
-                    </svg>
-                    <span class="share-platform-name">LINE</span>
-                </button>
-                <button class="share-platform-btn" onclick="shareToPlatform('wechat-friend')">
-                    <svg class="share-platform-icon" viewBox="0 0 24 24" fill="#07c160">
-                        <path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.047c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 0 1-.023-.156.49.49 0 0 1 .201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.837-6.656-6.088V8.89c-.135-.01-.27-.027-.407-.03zm-2.53 3.274c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.97-.982zm4.844 0c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.969-.982z"/>
-                    </svg>
-                    <span class="share-platform-name">WeChat Friend</span>
-                </button>
-                <button class="share-platform-btn" onclick="shareToPlatform('wechat-moments')">
-                    <svg class="share-platform-icon" viewBox="0 0 24 24" fill="#07c160">
-                        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm6.066 9.645l-1.605 7.485c-.121.568-.462.707-.936.44l-2.587-1.913-1.25 1.209c-.138.14-.253.257-.518.257l.185-2.623 4.795-4.374c.208-.186-.045-.29-.324-.104l-5.927 3.76-2.554-.807c-.555-.175-.568-.555.116-.822l9.98-3.871c.463-.175.868.104.745.763z"/>
-                    </svg>
-                    <span class="share-platform-name">WeChat Moments</span>
-                </button>
-            </div>
-            
-            <!-- Download Poster Button -->
-            <button class="download-btn" id="downloadPosterBtn" onclick="downloadPoster()">
-                <svg class="download-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                    <polyline points="7 10 12 15 17 10"></polyline>
-                    <line x1="12" y1="15" x2="12" y2="3"></line>
-                </svg>
-                <span class="download-btn-text">DOWNLOAD POSTER</span>
-                <span class="download-btn-subtext">Save to Device</span>
-            </button>
-        </div>
-    </div>
-
-    <!-- WeChat QR Modal -->
-    <div class="wechat-qr-modal" id="wechatQRModal" onclick="handleWechatModalClick(event)">
-        <div class="wechat-qr-content">
-            <h3 class="wechat-qr-title">Scan to Share on WeChat</h3>
-            <div class="wechat-qr-code" id="wechatQRCode">
-                <!-- äºç»´ç å°å¨è¿éå¨æçæ -->
-            </div>
-            <p class="wechat-qr-hint">Content copied to clipboard.<br>Open WeChat and paste to share.</p>
-            <button class="wechat-qr-close" onclick="closeWeChatQR()">Got it</button>
-        </div>
-    </div>
-
-    <!-- Upload Event Modal -->
-<div class="modal-overlay" id="uploadEventModal" style="display: none;">
-    <div class="modal-content upload-modal" style="max-width: 600px;">
-        <span class="modal-close" onclick="closeUploadModal()">&times;</span>
-        <h2>UPLOAD EVENT</h2>
-        <p id="uploadStepDesc">Select your event type and package</p>
-
-        <!-- Step 1: Select Type -->
-        <div id="uploadStep1" class="upload-step">
-            <h3 style="color: #fff; font-size: 16px; margin-bottom: 20px; text-align: center; letter-spacing: 2px;">SELECT TYPE</h3>
-            <div class="type-buttons" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 20px 0;">
-                <button class="type-btn" onclick="selectUploadType('carousel')" style="background: rgba(139, 0, 0, 0.2); border: 2px solid #8b0000; border-radius: 8px; padding: 20px 10px; cursor: pointer; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                    <span class="type-name" style="font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 16px; color: #fff; letter-spacing: 1px;">CAROUSEL</span>
-                    <span class="type-price" style="font-size: 14px; color: #c0c0c0;">CNY 1/8/10</span>
-                </button>
-                <button class="type-btn" onclick="selectUploadType('managed')" style="background: rgba(139, 0, 0, 0.2); border: 2px solid #8b0000; border-radius: 8px; padding: 20px 10px; cursor: pointer; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                    <span class="type-name" style="font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 16px; color: #fff; letter-spacing: 1px;">MANAGED</span>
-                    <span class="type-price" style="font-size: 14px; color: #c0c0c0;">CNY 18</span>
-                </button>
-                <button class="type-btn" onclick="selectUploadType('poster1')" style="background: rgba(139, 0, 0, 0.2); border: 2px solid #8b0000; border-radius: 8px; padding: 20px 10px; cursor: pointer; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                    <span class="type-name" style="font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 16px; color: #fff; letter-spacing: 1px;">POSTER #1</span>
-                    <span class="type-price" style="font-size: 14px; color: #c0c0c0;">CNY 28</span>
-                </button>
-            </div>
-        </div>
-
-        <!-- Step 2: Select Package (for carousel only) -->
-        <div id="uploadStep2" class="upload-step" style="display:none;">
-            <h3 style="color: #fff; font-size: 16px; margin-bottom: 20px; text-align: center; letter-spacing: 2px;">SELECT PACKAGE</h3>
-            <div class="package-buttons" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 20px 0;">
-                <button class="package-btn" onclick="selectPackage(1)" style="background: rgba(139, 0, 0, 0.2); border: 2px solid #8b0000; border-radius: 8px; padding: 15px 10px; cursor: pointer; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 5px;">
-                    <span class="package-name" style="font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 14px; color: #fff;">Single Day</span>
-                    <span class="package-price" style="font-size: 16px; color: #fff; font-weight: bold;">CNY 1</span>
-                </button>
-                <button class="package-btn" onclick="selectPackage(8)" style="background: rgba(139, 0, 0, 0.2); border: 2px solid #8b0000; border-radius: 8px; padding: 15px 10px; cursor: pointer; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 5px;">
-                    <span class="package-name" style="font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 14px; color: #fff;">15 Days</span>
-                    <span class="package-price" style="font-size: 16px; color: #fff; font-weight: bold;">CNY 8</span>
-                </button>
-                <button class="package-btn" onclick="selectPackage(10)" style="background: rgba(139, 0, 0, 0.2); border: 2px solid #8b0000; border-radius: 8px; padding: 15px 10px; cursor: pointer; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 5px;">
-                    <span class="package-name" style="font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 14px; color: #fff;">30 Days</span>
-                    <span class="package-price" style="font-size: 16px; color: #fff; font-weight: bold;">CNY 10</span>
-                </button>
-            </div>
-            <button class="back-btn" onclick="goBackToStep1()" style="background: transparent; border: 1px solid #666; color: #666; padding: 10px 30px; cursor: pointer; font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-top: 15px; transition: all 0.3s;">BACK</button>
-        </div>
-
-        <!-- Step 3: Payment QR Code -->
-        <div id="uploadStep3" class="upload-step" style="display:none;">
-            <h3 style="color: #fff; font-size: 16px; margin-bottom: 20px; text-align: center; letter-spacing: 2px;">SCAN TO PAY</h3>
-            <div class="qr-container" style="background: #fff; padding: 20px; border-radius: 8px; margin: 20px auto; max-width: 250px; text-align: center;">
-                <img src="./image/Wechat-QR.png" alt="WeChat Pay" style="width: 100%; max-width: 200px; height: auto;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                <div class="qr-placeholder" style="display:none; width: 200px; height: 200px; background: #f0f0f0; align-items: center; justify-content: center; color: #666; font-size: 14px;">
-                    <span>WeChat QR Code</span>
-                </div>
-            </div>
-            <p class="qr-instruction" style="color: #c0c0c0; font-size: 13px; margin: 10px 0; text-align: center;">Scan with WeChat to pay CNY <span id="paymentAmount" style="color: #fff; font-weight: bold;">0</span></p>
-            <p class="qr-instruction" style="color: #c0c0c0; font-size: 13px; margin: 10px 0; text-align: center;">After payment, click NEXT to fill in your details</p>
-            <button class="neon-btn" onclick="goToStep4()" style="background: rgba(139, 0, 0, 0.9); color: #fff; border: 2px solid #8b0000; padding: 12px 30px; font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: all 0.4s; margin-top: 10px;">NEXT</button>
-            <button class="back-btn" onclick="goBackToStep2()" style="background: transparent; border: 1px solid #666; color: #666; padding: 10px 30px; cursor: pointer; font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-top: 15px; transition: all 0.3s;">BACK</button>
-        </div>
-
-        <!-- Step 4: Fill Form -->
-        <div id="uploadStep4" class="upload-step" style="display:none;">
-            <h3 style="color: #fff; font-size: 16px; margin-bottom: 20px; text-align: center; letter-spacing: 2px;">EVENT DETAILS</h3>
-            <form id="uploadForm" onsubmit="submitUpload(event)">
-                <!-- Carousel Fields -->
-                <div id="carouselFields" class="form-fields" style="display:none;">
-                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
-                        <div class="form-group" style="display: flex; flex-direction: column;">
-                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">EVENT TITLE *</label>
-                            <input type="text" name="title" placeholder="Enter event title" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
-                        </div>
-                    </div>
-                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-                        <div class="form-group" style="display: flex; flex-direction: column;">
-                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">START DATE * (YYYY.MM.DD)</label>
-                            <input type="text" name="startDate" placeholder="2026.12.31" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
-                        </div>
-                        <div class="form-group" style="display: flex; flex-direction: column;">
-                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">END DATE (Optional)</label>
-                            <input type="text" name="endDate" placeholder="Leave empty for single day" style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
-                        </div>
-                    </div>
-                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
-                        <div class="form-group" style="display: flex; flex-direction: column;">
-                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">CITY OR VENUE *</label>
-                            <input type="text" name="city" placeholder="Enter city" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
-                        </div>
-                    </div>
-                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
-                        <div class="form-group" style="display: flex; flex-direction: column;">
-                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">POSTER IMAGE URL *</label>
-                            <input type="url" name="image" placeholder="https://example.com/poster.jpg" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
-                        </div>
-                    </div>
-                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
-                        <div class="form-group" style="display: flex; flex-direction: column;">
-                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">EVENT LINK (Optional)</label>
-                            <input type="url" name="link" placeholder="https://example.com/event" style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Managed Fields -->
-                <div id="managedFields" class="form-fields" style="display:none;">
-                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
-                        <div class="form-group" style="display: flex; flex-direction: column;">
-                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">EVENT TITLE *</label>
-                            <input type="text" name="title" placeholder="Enter event title" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
-                        </div>
-                    </div>
-                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
-                        <div class="form-group" style="display: flex; flex-direction: column;">
-                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">SUBTITLE *</label>
-                            <input type="text" name="subtitle" placeholder="Enter subtitle" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
-                        </div>
-                    </div>
-                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-                        <div class="form-group" style="display: flex; flex-direction: column;">
-                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">START DATE * (YYYY.MM.DD)</label>
-                            <input type="text" name="startDate" placeholder="2026.12.31" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
-                        </div>
-                        <div class="form-group" style="display: flex; flex-direction: column;">
-                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">END DATE (Optional)</label>
-                            <input type="text" name="endDate" placeholder="Leave empty for single day" style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
-                        </div>
-                    </div>
-                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
-                        <div class="form-group" style="display: flex; flex-direction: column;">
-                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">CITY OR VENUE *</label>
-                            <input type="text" name="city" placeholder="Enter city" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
-                        </div>
-                    </div>
-                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
-                        <div class="form-group" style="display: flex; flex-direction: column;">
-                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">POSTER IMAGE URL *</label>
-                            <input type="url" name="image" placeholder="https://example.com/poster.jpg" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
-                        </div>
-                    </div>
-                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-                        <div class="form-group" style="display: flex; flex-direction: column;">
-                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">BUTTON TEXT *</label>
-                            <input type="text" name="btn_text" placeholder="e.g. BUY TICKETS" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
-                        </div>
-                        <div class="form-group" style="display: flex; flex-direction: column;">
-                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">EVENT LINK (Optional)</label>
-                            <input type="url" name="link" placeholder="https://example.com/event" style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Poster1 Fields -->
-                <div id="poster1Fields" class="form-fields" style="display:none;">
-                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
-                        <div class="form-group" style="display: flex; flex-direction: column;">
-                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">TITLE *</label>
-                            <input type="text" name="title" placeholder="Enter poster title" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
-                        </div>
-                    </div>
-                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-                        <div class="form-group" style="display: flex; flex-direction: column;">
-                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">LINK TEXT *</label>
-                            <input type="text" name="linkText" placeholder="e.g. Learn More" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
-                        </div>
-                        <div class="form-group" style="display: flex; flex-direction: column;">
-                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">LINK URL *</label>
-                            <input type="url" name="link" placeholder="https://example.com" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Common Fields -->
-                <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-                    <div class="form-group" style="display: flex; flex-direction: column;">
-                        <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">WECHAT PAYMENT ORDER ID *</label>
-                        <input type="text" name="paymentId" placeholder="Enter payment transaction ID" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
-                    </div>
-                    <div class="form-group" style="display: flex; flex-direction: column;">
-                        <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">CONTACT EMAIL *</label>
-                        <input type="email" name="email" placeholder="your@email.com" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
-                    </div>
-                </div>
-
-                <input type="hidden" name="type" id="uploadType">
-                <input type="hidden" name="package" id="uploadPackage">
-
-                <button type="submit" class="neon-btn submit-btn" style="width: 100%; margin-top: 20px; background: rgba(139, 0, 0, 0.9); color: #fff; border: 2px solid #8b0000; padding: 12px 30px; font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: all 0.4s;">SUBMIT FOR REVIEW</button>
-                <button type="button" class="back-btn" onclick="goBackToStep3()" style="background: transparent; border: 1px solid #666; color: #666; padding: 10px 30px; cursor: pointer; font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-top: 15px; transition: all 0.3s;">BACK</button>
-            </form>
-        </div>
-    </div>
-</div>
-
-
-    <!-- Upload Event Modal -->
-<div class="modal-overlay" id="uploadEventModal" style="display: none;">
-    <div class="modal-content upload-modal" style="max-width: 600px;">
-        <span class="modal-close" onclick="closeUploadModal()">&times;</span>
-        <h2>UPLOAD EVENT</h2>
-        <p id="uploadStepDesc">Select your event type and package</p>
-
-        <!-- Step 1: Select Type -->
-        <div id="uploadStep1" class="upload-step">
-            <h3 style="color: #fff; font-size: 16px; margin-bottom: 20px; text-align: center; letter-spacing: 2px;">SELECT TYPE</h3>
-            <div class="type-buttons" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 20px 0;">
-                <button class="type-btn" onclick="selectUploadType('carousel')" style="background: rgba(139, 0, 0, 0.2); border: 2px solid #8b0000; border-radius: 8px; padding: 20px 10px; cursor: pointer; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                    <span class="type-name" style="font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 16px; color: #fff; letter-spacing: 1px;">CAROUSEL</span>
-                    <span class="type-price" style="font-size: 14px; color: #c0c0c0;">CNY 1/8/10</span>
-                </button>
-                <button class="type-btn" onclick="selectUploadType('managed')" style="background: rgba(139, 0, 0, 0.2); border: 2px solid #8b0000; border-radius: 8px; padding: 20px 10px; cursor: pointer; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                    <span class="type-name" style="font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 16px; color: #fff; letter-spacing: 1px;">MANAGED</span>
-                    <span class="type-price" style="font-size: 14px; color: #c0c0c0;">CNY 18</span>
-                </button>
-                <button class="type-btn" onclick="selectUploadType('poster1')" style="background: rgba(139, 0, 0, 0.2); border: 2px solid #8b0000; border-radius: 8px; padding: 20px 10px; cursor: pointer; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                    <span class="type-name" style="font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 16px; color: #fff; letter-spacing: 1px;">POSTER #1</span>
-                    <span class="type-price" style="font-size: 14px; color: #c0c0c0;">CNY 28</span>
-                </button>
-            </div>
-        </div>
-
-        <!-- Step 2: Select Package (for carousel only) -->
-        <div id="uploadStep2" class="upload-step" style="display:none;">
-            <h3 style="color: #fff; font-size: 16px; margin-bottom: 20px; text-align: center; letter-spacing: 2px;">SELECT PACKAGE</h3>
-            <div class="package-buttons" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 20px 0;">
-                <button class="package-btn" onclick="selectPackage(1)" style="background: rgba(139, 0, 0, 0.2); border: 2px solid #8b0000; border-radius: 8px; padding: 15px 10px; cursor: pointer; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 5px;">
-                    <span class="package-name" style="font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 14px; color: #fff;">Single Day</span>
-                    <span class="package-price" style="font-size: 16px; color: #fff; font-weight: bold;">CNY 1</span>
-                </button>
-                <button class="package-btn" onclick="selectPackage(8)" style="background: rgba(139, 0, 0, 0.2); border: 2px solid #8b0000; border-radius: 8px; padding: 15px 10px; cursor: pointer; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 5px;">
-                    <span class="package-name" style="font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 14px; color: #fff;">15 Days</span>
-                    <span class="package-price" style="font-size: 16px; color: #fff; font-weight: bold;">CNY 8</span>
-                </button>
-                <button class="package-btn" onclick="selectPackage(10)" style="background: rgba(139, 0, 0, 0.2); border: 2px solid #8b0000; border-radius: 8px; padding: 15px 10px; cursor: pointer; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 5px;">
-                    <span class="package-name" style="font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 14px; color: #fff;">30 Days</span>
-                    <span class="package-price" style="font-size: 16px; color: #fff; font-weight: bold;">CNY 10</span>
-                </button>
-            </div>
-            <button class="back-btn" onclick="goBackToStep1()" style="background: transparent; border: 1px solid #666; color: #666; padding: 10px 30px; cursor: pointer; font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-top: 15px; transition: all 0.3s;">BACK</button>
-        </div>
-
-        <!-- Step 3: Payment QR Code -->
-        <div id="uploadStep3" class="upload-step" style="display:none;">
-            <h3 style="color: #fff; font-size: 16px; margin-bottom: 20px; text-align: center; letter-spacing: 2px;">SCAN TO PAY</h3>
-            <div class="qr-container" style="background: #fff; padding: 20px; border-radius: 8px; margin: 20px auto; max-width: 250px; text-align: center;">
-                <img src="./image/Wechat-QR.png" alt="WeChat Pay" style="width: 100%; max-width: 200px; height: auto;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                <div class="qr-placeholder" style="display:none; width: 200px; height: 200px; background: #f0f0f0; align-items: center; justify-content: center; color: #666; font-size: 14px;">
-                    <span>WeChat QR Code</span>
-                </div>
-            </div>
-            <p class="qr-instruction" style="color: #c0c0c0; font-size: 13px; margin: 10px 0; text-align: center;">Scan with WeChat to pay CNY <span id="paymentAmount" style="color: #fff; font-weight: bold;">0</span></p>
-            <p class="qr-instruction" style="color: #c0c0c0; font-size: 13px; margin: 10px 0; text-align: center;">After payment, click NEXT to fill in your details</p>
-            <button class="neon-btn" onclick="goToStep4()" style="background: rgba(139, 0, 0, 0.9); color: #fff; border: 2px solid #8b0000; padding: 12px 30px; font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: all 0.4s; margin-top: 10px;">NEXT</button>
-            <button class="back-btn" onclick="goBackToStep2()" style="background: transparent; border: 1px solid #666; color: #666; padding: 10px 30px; cursor: pointer; font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-top: 15px; transition: all 0.3s;">BACK</button>
-        </div>
-
-        <!-- Step 4: Fill Form -->
-        <div id="uploadStep4" class="upload-step" style="display:none;">
-            <h3 style="color: #fff; font-size: 16px; margin-bottom: 20px; text-align: center; letter-spacing: 2px;">EVENT DETAILS</h3>
-            <form id="uploadForm" onsubmit="submitUpload(event)">
-                <!-- Carousel Fields -->
-                <div id="carouselFields" class="form-fields" style="display:none;">
-                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
-                        <div class="form-group" style="display: flex; flex-direction: column;">
-                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">EVENT TITLE *</label>
-                            <input type="text" name="title" placeholder="Enter event title" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
-                        </div>
-                    </div>
-                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-                        <div class="form-group" style="display: flex; flex-direction: column;">
-                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">START DATE * (YYYY.MM.DD)</label>
-                            <input type="text" name="startDate" placeholder="2026.12.31" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
-                        </div>
-                        <div class="form-group" style="display: flex; flex-direction: column;">
-                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">END DATE (Optional)</label>
-                            <input type="text" name="endDate" placeholder="Leave empty for single day" style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
-                        </div>
-                    </div>
-                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
-                        <div class="form-group" style="display: flex; flex-direction: column;">
-                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">CITY OR VENUE *</label>
-                            <input type="text" name="city" placeholder="Enter city" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
-                        </div>
-                    </div>
-                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
-                        <div class="form-group" style="display: flex; flex-direction: column;">
-                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">POSTER IMAGE URL *</label>
-                            <input type="url" name="image" placeholder="https://example.com/poster.jpg" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
-                        </div>
-                    </div>
-                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
-                        <div class="form-group" style="display: flex; flex-direction: column;">
-                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">EVENT LINK (Optional)</label>
-                            <input type="url" name="link" placeholder="https://example.com/event" style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Managed Fields -->
-                <div id="managedFields" class="form-fields" style="display:none;">
-                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
-                        <div class="form-group" style="display: flex; flex-direction: column;">
-                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">EVENT TITLE *</label>
-                            <input type="text" name="title" placeholder="Enter event title" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
-                        </div>
-                    </div>
-                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
-                        <div class="form-group" style="display: flex; flex-direction: column;">
-                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">SUBTITLE *</label>
-                            <input type="text" name="subtitle" placeholder="Enter subtitle" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
-                        </div>
-                    </div>
-                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-                        <div class="form-group" style="display: flex; flex-direction: column;">
-                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">START DATE * (YYYY.MM.DD)</label>
-                            <input type="text" name="startDate" placeholder="2026.12.31" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
-                        </div>
-                        <div class="form-group" style="display: flex; flex-direction: column;">
-                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">END DATE (Optional)</label>
-                            <input type="text" name="endDate" placeholder="Leave empty for single day" style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
-                        </div>
-                    </div>
-                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
-                        <div class="form-group" style="display: flex; flex-direction: column;">
-                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">CITY OR VENUE *</label>
-                            <input type="text" name="city" placeholder="Enter city" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
-                        </div>
-                    </div>
-                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
-                        <div class="form-group" style="display: flex; flex-direction: column;">
-                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">POSTER IMAGE URL *</label>
-                            <input type="url" name="image" placeholder="https://example.com/poster.jpg" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
-                        </div>
-                    </div>
-                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-                        <div class="form-group" style="display: flex; flex-direction: column;">
-                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">BUTTON TEXT *</label>
-                            <input type="text" name="btn_text" placeholder="e.g. BUY TICKETS" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
-                        </div>
-                        <div class="form-group" style="display: flex; flex-direction: column;">
-                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">EVENT LINK (Optional)</label>
-                            <input type="url" name="link" placeholder="https://example.com/event" style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Poster1 Fields -->
-                <div id="poster1Fields" class="form-fields" style="display:none;">
-                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
-                        <div class="form-group" style="display: flex; flex-direction: column;">
-                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">TITLE *</label>
-                            <input type="text" name="title" placeholder="Enter poster title" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
-                        </div>
-                    </div>
-                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-                        <div class="form-group" style="display: flex; flex-direction: column;">
-                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">LINK TEXT *</label>
-                            <input type="text" name="linkText" placeholder="e.g. Learn More" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
-                        </div>
-                        <div class="form-group" style="display: flex; flex-direction: column;">
-                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">LINK URL *</label>
-                            <input type="url" name="link" placeholder="https://example.com" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Common Fields -->
-                <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-                    <div class="form-group" style="display: flex; flex-direction: column;">
-                        <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">WECHAT PAYMENT ORDER ID *</label>
-                        <input type="text" name="paymentId" placeholder="Enter payment transaction ID" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
-                    </div>
-                    <div class="form-group" style="display: flex; flex-direction: column;">
-                        <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">CONTACT EMAIL *</label>
-                        <input type="email" name="email" placeholder="your@email.com" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
-                    </div>
-                </div>
-
-                <input type="hidden" name="type" id="uploadType">
-                <input type="hidden" name="package" id="uploadPackage">
-
-                <button type="submit" class="neon-btn submit-btn" style="width: 100%; margin-top: 20px; background: rgba(139, 0, 0, 0.9); color: #fff; border: 2px solid #8b0000; padding: 12px 30px; font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: all 0.4s;">SUBMIT FOR REVIEW</button>
-                <button type="button" class="back-btn" onclick="goBackToStep3()" style="background: transparent; border: 1px solid #666; color: #666; padding: 10px 30px; cursor: pointer; font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-top: 15px; transition: all 0.3s;">BACK</button>
-            </form>
-        </div>
-    </div>
-</div>
-
-</body>
+</script></body>
 </html>
