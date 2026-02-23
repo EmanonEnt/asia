@@ -1360,14 +1360,14 @@
         </section>
 
         <!-- UPLOAD EVENT Button -->
-        <div class="load-more-container visible" id="uploadEventContainer" style="background: var(--black);">
+        <div class="load-more-container visible" id="uploadEventContainer" style="background: var(--black); padding-bottom: 60px;">
             <button class="load-more-btn" id="uploadEventBtn" onclick="openUploadModal()">
                 UPLOAD EVENT
             </button>
         </div>
 
 
-        <section class="posters-showcase">
+        <section class="posters-showcase" style="margin-top: 40px;">
             <div class="posters-container">
                 <div class="poster-item" data-poster-id="1" data-link="https://wxaurl.cn/HMcAK6R7fou">
                     <img src="./image/livegigscn1.png" alt="LiveGigs WeChat" onerror="this.src='./image/asia-asiaad.jpg'">
@@ -1568,7 +1568,7 @@
     </div>
 
     <!-- Upload Event Modal -->
-<div class="modal-overlay" id="uploadEventModal" style="display: none;">
+<div class="modal-overlay" id="uploadEventModal" style="display: none;" onclick="if(event.target === this) closeUploadModal()">
     <div class="modal-content upload-modal" style="max-width: 600px;">
         <span class="modal-close" onclick="closeUploadModal()">&times;</span>
         <h2>UPLOAD EVENT</h2>
@@ -3223,6 +3223,16 @@ function closeUploadModal() {
     document.body.style.overflow = '';
     saveFormData();
 }
+
+// ESC key to close modal
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        const modal = document.getElementById('uploadEventModal');
+        if (modal && modal.style.display === 'flex') {
+            closeUploadModal();
+        }
+    }
+});
 
 function saveFormData() {
     const form = document.getElementById('uploadForm');
