@@ -45,7 +45,7 @@
             width: 90%;
             max-width: 600px;
             max-height: 90vh;
-            overflow: hidden;
+            overflow-y: auto;
             position: relative;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
         }
@@ -278,15 +278,15 @@
 
         .qr-container {
             background: #fff;
-            padding: 15px;
+            padding: 20px;
             border-radius: 8px;
             display: inline-block;
             margin-bottom: 15px;
         }
 
         .qr-code {
-            width: 180px;
-            height: 180px;
+            width: 280px;
+            height: 280px;
             object-fit: contain;
         }
 
@@ -632,8 +632,8 @@
             }
 
             .qr-code {
-                width: 150px;
-                height: 150px;
+                width: 220px;
+                height: 220px;
             }
         }
 
@@ -659,6 +659,11 @@
             .modal-content {
                 padding: 12px 15px 15px;
             }
+
+            .qr-code {
+                width: 200px;
+                height: 200px;
+            }
         }
     </style>
     <!-- EmailJS SDK -->
@@ -672,15 +677,10 @@
 </head>
 <body>
 
-<!-- 触发按钮（演示用） - 匹配 LiveGigsAsia 风格 -->
-<button onclick="openModal()" style="padding: 15px 40px; background: rgba(139, 0, 0, 0.3); color: white; border: 2px solid #8b0000; border-radius: 4px; cursor: pointer; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 3px; transition: all 0.4s ease; font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; position: relative; overflow: hidden;" onmouseover="this.style.background='#8b0000';this.style.boxShadow='0 0 30px rgba(139, 0, 0, 0.8), 0 0 60px rgba(139, 0, 0, 0.4)';this.style.transform='scale(1.05)';this.style.letterSpacing='4px';" onmouseout="this.style.background='rgba(139, 0, 0, 0.3)';this.style.boxShadow='none';this.style.transform='scale(1)';this.style.letterSpacing='3px'">
-    Upload Event
-</button>
-
-<!-- 弹窗 -->
-<div id="uploadModal" class="modal-overlay" style="display: none;">
+<!-- 弹窗 - 直接显示，不需要触发按钮 -->
+<div id="uploadModal" class="modal-overlay" style="display: flex;">
     <div class="upload-modal">
-        <!-- Close button removed - handled by parent page -->
+        <button class="close-btn" onclick="closeModal()">&times;</button>
 
         <div class="modal-header">
             <h1>UPLOAD EVENT</h1>
@@ -697,7 +697,7 @@
 
             <!-- 恢复提示 -->
             <div id="restoreNotice" class="restore-notice">
-                ✓ Restored previous data
+                &#10003; Restored previous data
             </div>
 
             <!-- 步骤1: 选择类型 -->
@@ -733,7 +733,7 @@
                             <div class="price-tag">CNY 1</div>
                         </div>
                         <div class="package-btn" onclick="selectPackage('tour15', 8, this)" data-package="tour15">
-                            <h4>On Tour (≤15 Days)</h4>
+                            <h4>On Tour (&le;15 Days)</h4>
                             <div class="price-tag">CNY 8</div>
                         </div>
                         <div class="package-btn" onclick="selectPackage('tour30', 10, this)" data-package="tour30">
@@ -756,7 +756,7 @@
                 <div class="payment-section">
                     <div class="payment-title">WeChat QR Code</div>
                     <div class="qr-container">
-                        <img src="./image/Wechat-QR.png" alt="WeChat Pay QR Code" class="qr-code" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22180%22 height=%22180%22%3E%3Crect width=%22180%22 height=%22180%22 fill=%22%23f0f0f0%22/%3E%3Ctext x=%2290%22 y=%2290%22 font-family=%22Arial%22 font-size=%2214%22 fill=%22%23666%22 text-anchor=%22middle%22 dy=%22.3em%22%3EWeChat QR Code%3C/text%3E%3C/svg%3E'">
+                        <img src="./image/Wechat-QR.png" alt="WeChat Pay QR Code" class="qr-code" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22280%22 height=%22280%22%3E%3Crect width=%22280%22 height=%22280%22 fill=%22%23f0f0f0%22/%3E%3Ctext x=%22140%22 y=%22140%22 font-family=%22Arial%22 font-size=%2214%22 fill=%22%23666%22 text-anchor=%22middle%22 dy=%22.3em%22%3EWeChat QR Code%3C/text%3E%3C/svg%3E'">
                     </div>
                     <div class="payment-note">Scan with WeChat to pay CNY <span id="displayPrice">1</span></div>
 
@@ -1247,7 +1247,7 @@
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
         if (diffDays > 15) {
-            showMessage('❌ On Tour (≤15 Days) package: Date range cannot exceed 15 days. Please select Single Event for longer dates.', 'error');
+            showMessage('&#10008; On Tour (&le;15 Days) package: Date range cannot exceed 15 days. Please select Single Event for longer dates.', 'error');
             endDateInput.value = ''; // 清空结束日期
             endDateInput.focus();
             return false;
@@ -1405,7 +1405,7 @@
     // 显示消息
     function showMessage(text, type) {
         const msgBox = document.getElementById('messageBox');
-        msgBox.textContent = text;
+        msgBox.innerHTML = text;
         msgBox.className = 'message ' + type;
         msgBox.style.display = 'block';
 
@@ -1442,7 +1442,7 @@
 
             let packageName = eventData.package || 'Standard';
             if (packageName === 'single') packageName = 'Single Event';
-            else if (packageName === 'tour15') packageName = 'On Tour (≤15 Days)';
+            else if (packageName === 'tour15') packageName = 'On Tour (&le;15 Days)';
             else if (packageName === 'tour30') packageName = 'On Tour (>15 Days)';
 
             const templateParams = {
@@ -1577,8 +1577,8 @@
 
             // 成功 - 清除保存的数据
             clearSavedData();
-            showMessage('✅ Submitted successfully! Your event is under review.', 'success');
-            submitBtn.innerHTML = '✓ Submitted';
+            showMessage('&#10004; Submitted successfully! Your event is under review.', 'success');
+            submitBtn.innerHTML = '&#10004; Submitted';
 
             setTimeout(() => {
                 closeModal();
@@ -1588,7 +1588,7 @@
 
         } catch (error) {
             console.error('Submit error:', error);
-            showMessage('❌ Submit failed: ' + error.message, 'error');
+            showMessage('&#10008; Submit failed: ' + error.message, 'error');
             submitBtn.disabled = false;
             submitBtn.innerHTML = originalText;
         }
@@ -1640,5 +1640,31 @@
     });
 </script>
 
+<script>
+        // Check if we're in an iframe
+        const isInIframe = window.self !== window.top;
+
+        // If standalone mode, show close button
+        if (!isInIframe) {
+            document.querySelector('.close-btn').style.display = 'flex';
+        } else {
+            // In iframe, hide close button (parent has its own)
+            document.querySelector('.close-btn').style.display = 'none';
+        }
+
+        function closeModal() {
+            if (isInIframe) {
+                // Notify parent to close
+                window.parent.postMessage('closeUploadModal', '*');
+            } else {
+                // Standalone mode - just close the window or redirect
+                window.close();
+                // Fallback: redirect to events page
+                setTimeout(() => {
+                    window.location.href = 'events.html';
+                }, 100);
+            }
+        }
+    </script>
 </body>
 </html>
