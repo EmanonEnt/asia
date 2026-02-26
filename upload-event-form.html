@@ -1,0 +1,1643 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LiveGigs Asia - Upload Event</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* 弹窗遮罩 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        /* 主容器 */
+        .upload-modal {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+        }
+
+        /* 关闭按钮 */
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #666;
+            font-size: 28px;
+            cursor: pointer;
+            z-index: 10;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover {
+            color: #fff;
+        }
+
+        /* 头部 */
+        .modal-header {
+            text-align: center;
+            padding: 30px 20px 20px;
+            border-bottom: 1px solid #333;
+        }
+
+        .modal-header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+
+        .modal-header p {
+            color: #888;
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+
+        /* 步骤指示器 - 动态显示 */
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+            padding: 0 20px;
+        }
+
+        .step-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #333;
+            transition: all 0.3s;
+        }
+
+        .step-dot.active {
+            background: #8b0000;
+            box-shadow: 0 0 10px rgba(139, 0, 0, 0.5);
+        }
+
+        .step-dot.completed {
+            background: #4a0000;
+        }
+
+        /* 内容区域 */
+        .modal-content {
+            padding: 20px 30px 30px;
+        }
+
+        .step-content {
+            display: none;
+        }
+
+        .step-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .step-title {
+            text-align: center;
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 25px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* 类型选择按钮 - 匹配 LiveGigsAsia 主按钮风格 */
+        .type-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .type-btn {
+            background: #8b0000;
+            border: 2px solid #8b0000;
+            border-radius: 4px;
+            padding: 20px 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .type-btn:hover {
+            background: transparent;
+            border-color: #8b0000;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 0, 0, 0.3);
+        }
+
+        .type-btn.selected {
+            background: transparent;
+            border-color: #8b0000;
+            box-shadow: 0 0 20px rgba(139, 0, 0, 0.4), inset 0 0 20px rgba(139, 0, 0, 0.1);
+        }
+
+        .type-btn h3 {
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: #fff;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+
+        .type-btn:hover h3,
+        .type-btn.selected h3 {
+            color: #ff4444;
+        }
+
+        .type-btn .price {
+            font-size: 12px;
+            color: rgba(255,255,255,0.8);
+            transition: color 0.3s;
+        }
+
+        .type-btn:hover .price,
+        .type-btn.selected .price {
+            color: #ff6666;
+        }
+
+        /* 套餐选择（Carousel专用）- 同样风格 */
+        .package-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .package-btn {
+            background: #8b0000;
+            border: 2px solid #8b0000;
+            border-radius: 4px;
+            padding: 18px 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .package-btn:hover {
+            background: transparent;
+            border-color: #8b0000;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 0, 0, 0.3);
+        }
+
+        .package-btn.selected {
+            background: transparent;
+            border-color: #8b0000;
+            box-shadow: 0 0 20px rgba(139, 0, 0, 0.4), inset 0 0 20px rgba(139, 0, 0, 0.1);
+        }
+
+        .package-btn h4 {
+            font-size: 12px;
+            margin-bottom: 6px;
+            color: #fff;
+            letter-spacing: 1px;
+            font-weight: 600;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+
+        .package-btn:hover h4,
+        .package-btn.selected h4 {
+            color: #ff4444;
+        }
+
+        .package-btn .price-tag {
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            transition: color 0.3s;
+        }
+
+        .package-btn:hover .price-tag,
+        .package-btn.selected .price-tag {
+            color: #ff4444;
+        }
+
+        /* 微信支付区域 */
+        .payment-section {
+            background: #222;
+            border-radius: 8px;
+            padding: 25px;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .payment-title {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .qr-container {
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .qr-code {
+            width: 180px;
+            height: 180px;
+            object-fit: contain;
+        }
+
+        .payment-note {
+            font-size: 12px;
+            color: #666;
+            margin-top: 10px;
+        }
+
+        .payment-id-input {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        /* 表单样式 - Managed 紧凑布局 */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        /* Managed 专用紧凑布局 */
+        .managed-form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .managed-form-grid .form-group {
+            margin-bottom: 0;
+        }
+
+        .managed-form-grid .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .managed-form-grid input {
+            padding: 10px;
+            font-size: 13px;
+        }
+
+        .managed-form-grid label {
+            font-size: 10px;
+            margin-bottom: 4px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 12px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-size: 11px;
+            color: #888;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            background: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 4px;
+            padding: 12px;
+            color: #fff;
+            font-size: 14px;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #8b0000;
+            background: #333;
+        }
+
+        .form-group input::placeholder {
+            color: #666;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        /* ============================================
+           UPLOAD EVENT 按钮样式 - 与v8.8.2v1一致
+           ============================================ */
+
+        /* 按钮组容器 */
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        /* 基础按钮样式 - 匹配UPLOAD EVENT效果 */
+        .btn {
+            padding: 15px 40px;
+            border: 2px solid #8b0000;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            background: rgba(139, 0, 0, 0.3);
+            color: #fff;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 按钮光泽效果 */
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        /* 悬停效果 - 红色背景+发光 */
+        .btn:hover {
+            background: #8b0000;
+            border-color: #8b0000;
+            box-shadow: 0 0 30px rgba(139, 0, 0, 0.8), 0 0 60px rgba(139, 0, 0, 0.4);
+            transform: scale(1.05);
+            letter-spacing: 4px;
+        }
+
+        /* 主要按钮（Next/Submit） */
+        .btn-primary {
+            background: rgba(139, 0, 0, 0.3);
+            border-color: #8b0000;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #8b0000;
+            border-color: #8b0000;
+            box-shadow: 0 0 30px rgba(139, 0, 0, 0.8), 0 0 60px rgba(139, 0, 0, 0.4);
+            transform: scale(1.05);
+            letter-spacing: 4px;
+        }
+
+        .btn-primary:disabled {
+            background: #333;
+            border-color: #444;
+            color: #666;
+            cursor: not-allowed;
+            opacity: 0.6;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-primary:disabled::before {
+            display: none;
+        }
+
+        /* Back按钮 - 次要样式 */
+        .btn-secondary {
+            background: transparent;
+            border-color: #444;
+            color: #888;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(139, 0, 0, 0.3);
+            border-color: #8b0000;
+            color: #fff;
+            box-shadow: 0 0 20px rgba(139, 0, 0, 0.5);
+            transform: scale(1.05);
+        }
+
+        /* 成功/错误消息 */
+        .message {
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            display: none;
+            font-size: 13px;
+            border: 1px solid;
+        }
+
+        .message.success {
+            background: rgba(0, 255, 0, 0.05);
+            border-color: #0f0;
+            color: #0f0;
+            display: block;
+        }
+
+        .message.error {
+            background: rgba(255, 0, 0, 0.05);
+            border-color: #f00;
+            color: #f00;
+            display: block;
+        }
+
+        /* 恢复提示 */
+        .restore-notice {
+            background: rgba(139, 0, 0, 0.1);
+            border: 1px solid #8b0000;
+            color: #ff6666;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 12px;
+            text-align: center;
+            display: none;
+        }
+
+        .restore-notice.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 滚动条样式 */
+        .upload-modal::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .upload-modal::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+
+        .upload-modal::-webkit-scrollbar-thumb {
+            background: #444;
+            border-radius: 3px;
+        }
+
+        .upload-modal::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        /* 加载动画 */
+        .spinner {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid #fff;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* 价格显示 */
+        .price-display {
+            text-align: center;
+            font-size: 32px;
+            font-weight: bold;
+            color: #8b0000;
+            margin: 20px 0;
+        }
+
+        .price-display span {
+            font-size: 16px;
+            color: #888;
+            font-weight: normal;
+        }
+
+        /* ============================================
+           移动端响应式优化
+           ============================================ */
+        @media (max-width: 768px) {
+            .upload-modal {
+                width: 95%;
+                max-height: 95vh;
+            }
+
+            .modal-content {
+                padding: 15px 20px 20px;
+            }
+
+            /* 移动端按钮样式 */
+            .btn {
+                padding: 12px 30px;
+                font-size: 12px;
+                letter-spacing: 2px;
+            }
+
+            .btn:hover {
+                letter-spacing: 3px;
+                transform: scale(1.03);
+            }
+
+            .btn-group {
+                gap: 10px;
+                flex-direction: column;
+            }
+
+            .btn-group .btn {
+                width: 100%;
+            }
+
+            .type-grid,
+            .package-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid,
+            .managed-form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-header h1 {
+                font-size: 20px;
+            }
+
+            .step-title {
+                font-size: 12px;
+            }
+
+            .qr-code {
+                width: 150px;
+                height: 150px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .btn {
+                padding: 10px 25px;
+                font-size: 11px;
+                letter-spacing: 1.5px;
+            }
+
+            .btn:hover {
+                letter-spacing: 2.5px;
+            }
+
+            .modal-header {
+                padding: 20px 15px 15px;
+            }
+
+            .modal-header h1 {
+                font-size: 18px;
+            }
+
+            .modal-content {
+                padding: 12px 15px 15px;
+            }
+        }
+    </style>
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function() {
+            emailjs.init("i3WhTJDm88GTw6Bu3");
+        })();
+    </script>
+</head>
+<body>
+
+<!-- 触发按钮（演示用） - 匹配 LiveGigsAsia 风格 -->
+<button onclick="openModal()" style="padding: 15px 40px; background: rgba(139, 0, 0, 0.3); color: white; border: 2px solid #8b0000; border-radius: 4px; cursor: pointer; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 3px; transition: all 0.4s ease; font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; position: relative; overflow: hidden;" onmouseover="this.style.background='#8b0000';this.style.boxShadow='0 0 30px rgba(139, 0, 0, 0.8), 0 0 60px rgba(139, 0, 0, 0.4)';this.style.transform='scale(1.05)';this.style.letterSpacing='4px';" onmouseout="this.style.background='rgba(139, 0, 0, 0.3)';this.style.boxShadow='none';this.style.transform='scale(1)';this.style.letterSpacing='3px'">
+    Upload Event
+</button>
+
+<!-- 弹窗 -->
+<div id="uploadModal" class="modal-overlay" style="display: none;">
+    <div class="upload-modal">
+        <button class="close-btn" onclick="closeModal()">&times;</button>
+
+        <div class="modal-header">
+            <h1>UPLOAD EVENT</h1>
+            <p>Select your event type and package</p>
+        </div>
+
+        <div class="step-indicator" id="stepIndicator">
+            <div class="step-dot active"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+        </div>
+
+        <div class="modal-content">
+
+            <!-- 恢复提示 -->
+            <div id="restoreNotice" class="restore-notice">
+                ✓ Restored previous data
+            </div>
+
+            <!-- 步骤1: 选择类型 -->
+            <div id="step1" class="step-content active">
+                <div class="step-title">Select Type</div>
+                <div class="type-grid">
+                    <div class="type-btn selected" onclick="selectType('carousel', this)" data-type="carousel">
+                        <h3>CAROUSEL</h3>
+                        <div class="price">CNY 1/8/10</div>
+                    </div>
+                    <div class="type-btn" onclick="selectType('managed', this)" data-type="managed">
+                        <h3>MANAGED</h3>
+                        <div class="price">CNY 18</div>
+                    </div>
+                    <div class="type-btn" onclick="selectType('poster', this)" data-type="poster">
+                        <h3>POSTER #1</h3>
+                        <div class="price">CNY 28</div>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="nextStep()">Next</button>
+                </div>
+            </div>
+
+            <!-- 步骤2: 选择套餐 (仅Carousel显示) -->
+            <div id="step2" class="step-content">
+                <div id="packageSelection">
+                    <div class="step-title">Select Package</div>
+                    <div class="package-grid">
+                        <div class="package-btn selected" onclick="selectPackage('single', 1, this)" data-package="single">
+                            <h4>Single Event</h4>
+                            <div class="price-tag">CNY 1</div>
+                        </div>
+                        <div class="package-btn" onclick="selectPackage('tour15', 8, this)" data-package="tour15">
+                            <h4>On Tour (≤15 Days)</h4>
+                            <div class="price-tag">CNY 8</div>
+                        </div>
+                        <div class="package-btn" onclick="selectPackage('tour30', 10, this)" data-package="tour30">
+                            <h4>On Tour (>15 Days)</h4>
+                            <div class="price-tag">CNY 10</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="prevStep()">Back</button>
+                    <button class="btn btn-primary" onclick="nextStep()">Next</button>
+                </div>
+            </div>
+
+            <!-- 步骤3: 支付 -->
+            <div id="step3" class="step-content">
+                <div class="step-title">Scan to Pay</div>
+
+                <div class="payment-section">
+                    <div class="payment-title">WeChat QR Code</div>
+                    <div class="qr-container">
+                        <img src="./image/Wechat-QR.png" alt="WeChat Pay QR Code" class="qr-code" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22180%22 height=%22180%22%3E%3Crect width=%22180%22 height=%22180%22 fill=%22%23f0f0f0%22/%3E%3Ctext x=%2290%22 y=%2290%22 font-family=%22Arial%22 font-size=%2214%22 fill=%22%23666%22 text-anchor=%22middle%22 dy=%22.3em%22%3EWeChat QR Code%3C/text%3E%3C/svg%3E'">
+                    </div>
+                    <div class="payment-note">Scan with WeChat to pay CNY <span id="displayPrice">1</span></div>
+
+                    <div class="payment-id-input">
+                        <div class="form-group">
+                            <label>Payment ID / Transaction Number *</label>
+                            <input type="text" id="paymentId" placeholder="Enter payment transaction ID" onchange="saveFormData()">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="prevStep()">Back</button>
+                    <button class="btn btn-primary" onclick="nextStep()">Next</button>
+                </div>
+            </div>
+
+            <!-- 步骤4: 表单填写 -->
+            <div id="step4" class="step-content">
+                <div class="step-title">Event Details</div>
+
+                <div id="messageBox" class="message"></div>
+
+                <!-- Carousel 表单 -->
+                <form id="carouselForm" class="event-form" style="display: none;">
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label>Event Title *</label>
+                            <input type="text" name="eventTitle" placeholder="Event Title" required onchange="saveFormData()">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Start Date *</label>
+                            <input type="text" name="startDate" placeholder="YYYY.MM.DD" required onchange="saveFormData()">
+                        </div>
+
+                        <div class="form-group" id="carouselEndDateGroup">
+                            <label>End Date</label>
+                            <input type="text" name="endDate" id="carouselEndDate" placeholder="YYYY.MM.DD (Optional)" onchange="saveFormData()">
+                        </div>
+
+                        <div class="form-group">
+                            <label>City *</label>
+                            <input type="text" name="city" placeholder="e.g. Beijing, Shanghai" required onchange="saveFormData()">
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label>Poster URL *</label>
+                            <input type="url" name="posterUrl" placeholder="https://example.com/image.jpg" required onchange="saveFormData()">
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label>Event Link</label>
+                            <input type="url" name="eventLink" placeholder="https://example.com/event (Optional)" onchange="saveFormData()">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Payment ID *</label>
+                            <input type="text" name="paymentId" id="carouselPaymentId" readonly required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Contact Email *</label>
+                            <input type="email" name="contactEmail" placeholder="your@email.com" required onchange="saveFormData()">
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Managed 表单 - 紧凑布局，无滚动条 -->
+                <form id="managedForm" class="event-form" style="display: none;">
+                    <div class="managed-form-grid">
+                        <div class="form-group full-width">
+                            <label>Event Title *</label>
+                            <input type="text" name="eventTitle" placeholder="Event Title" required onchange="saveFormData()">
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label>Subtitle</label>
+                            <input type="text" name="subtitle" placeholder="e.g. Warm-Up Party" onchange="saveFormData()">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Start Date *</label>
+                            <input type="text" name="startDate" placeholder="YYYY.MM.DD" required onchange="saveFormData()">
+                        </div>
+
+                        <div class="form-group">
+                            <label>End Date</label>
+                            <input type="text" name="endDate" placeholder="YYYY.MM.DD (Optional)" onchange="saveFormData()">
+                        </div>
+
+                        <div class="form-group">
+                            <label>City *</label>
+                            <input type="text" name="city" placeholder="e.g. Beijing, Shanghai" required onchange="saveFormData()">
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label>Poster URL *</label>
+                            <input type="url" name="posterUrl" placeholder="https://example.com/image.jpg" required onchange="saveFormData()">
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label>Event Link</label>
+                            <input type="url" name="eventLink" placeholder="https://example.com/event (Optional)" onchange="saveFormData()">
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label>Button Text *</label>
+                            <input type="text" name="buttonText" placeholder="e.g. Buy Tickets, View Details" required onchange="saveFormData()">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Payment ID *</label>
+                            <input type="text" name="paymentId" id="managedPaymentId" readonly required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Contact Email *</label>
+                            <input type="email" name="contactEmail" placeholder="your@email.com" required onchange="saveFormData()">
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Poster #1 表单 -->
+                <form id="posterForm" class="event-form" style="display: none;">
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label>Title *</label>
+                            <input type="text" name="title" placeholder="Event Title" required onchange="saveFormData()">
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label>Poster URL *</label>
+                            <input type="url" name="posterUrl" placeholder="https://example.com/image.jpg" required onchange="saveFormData()">
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label>Link Text *</label>
+                            <input type="text" name="linkText" placeholder="e.g. View Details" required onchange="saveFormData()">
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label>Link URL *</label>
+                            <input type="url" name="linkUrl" placeholder="https://example.com" required onchange="saveFormData()">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Payment ID *</label>
+                            <input type="text" name="paymentId" id="posterPaymentId" readonly required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Contact Email *</label>
+                            <input type="email" name="contactEmail" placeholder="your@email.com" required onchange="saveFormData()">
+                        </div>
+                    </div>
+                </form>
+
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="prevStep()">Back</button>
+                    <button class="btn btn-primary" id="submitBtn" onclick="submitForm()">Submit for Review</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    // 配置
+    const CONFIG = {
+        JSONBIN_API_KEY: '$2a$10$ofWRSuJ8qjrj6o34QoWnluloMBnnF56eGV.8NpTqbsM5HWDkl.Fky',
+        JSONBIN_BIN_ID: '699aad32ae596e708f3ea2ae',
+        ADMIN_EMAIL: 'xrebooking@hotmail.com',
+        EMAILJS_SERVICE_ID: 'xrebooking',
+        EMAILJS_TEMPLATE_ID: 'template_livegigsasia',
+        EMAILJS_PUBLIC_KEY: 'i3WhTJDm88GTw6Bu3'
+    };
+
+    // 本地存储键名
+    const STORAGE_KEY = 'livegigs_upload_form_data';
+    const STORAGE_STEP_KEY = 'livegigs_upload_current_step';
+    const STORAGE_TYPE_KEY = 'livegigs_upload_selected_type';
+    const STORAGE_PACKAGE_KEY = 'livegigs_upload_selected_package';
+    const STORAGE_PRICE_KEY = 'livegigs_upload_selected_price';
+
+    // 状态管理
+    let currentStep = 1;
+    let selectedType = 'carousel';
+    let selectedPackage = 'single';
+    let selectedPrice = 1;
+    let totalSteps = 4;
+    let hasRestoredData = false;
+
+    // 打开弹窗
+    function openModal() {
+        document.getElementById('uploadModal').style.display = 'flex';
+
+        // 检查是否有保存的数据
+        const savedData = localStorage.getItem(STORAGE_KEY);
+        if (savedData && !hasRestoredData) {
+            restoreFormData();
+        } else {
+            resetForm();
+        }
+    }
+
+    // 关闭弹窗
+    function closeModal() {
+        document.getElementById('uploadModal').style.display = 'none';
+        // 保存当前状态
+        saveCurrentState();
+    }
+
+    // 保存当前状态（步骤、类型等）
+    function saveCurrentState() {
+        localStorage.setItem(STORAGE_STEP_KEY, currentStep);
+        localStorage.setItem(STORAGE_TYPE_KEY, selectedType);
+        localStorage.setItem(STORAGE_PACKAGE_KEY, selectedPackage);
+        localStorage.setItem(STORAGE_PRICE_KEY, selectedPrice);
+        saveFormData();
+    }
+
+    // 保存表单数据到 localStorage
+    function saveFormData() {
+        const formData = {
+            paymentId: document.getElementById('paymentId').value,
+            carousel: {},
+            managed: {},
+            poster: {}
+        };
+
+        // 保存 Carousel 表单
+        const carouselForm = document.getElementById('carouselForm');
+        if (carouselForm) {
+            const inputs = carouselForm.querySelectorAll('input:not([readonly])');
+            inputs.forEach(input => {
+                formData.carousel[input.name] = input.value;
+            });
+        }
+
+        // 保存 Managed 表单
+        const managedForm = document.getElementById('managedForm');
+        if (managedForm) {
+            const inputs = managedForm.querySelectorAll('input:not([readonly])');
+            inputs.forEach(input => {
+                formData.managed[input.name] = input.value;
+            });
+        }
+
+        // 保存 Poster 表单
+        const posterForm = document.getElementById('posterForm');
+        if (posterForm) {
+            const inputs = posterForm.querySelectorAll('input:not([readonly])');
+            inputs.forEach(input => {
+                formData.poster[input.name] = input.value;
+            });
+        }
+
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
+    }
+
+    // 恢复表单数据
+    function restoreFormData() {
+        try {
+            // 恢复状态
+            const savedStep = localStorage.getItem(STORAGE_STEP_KEY);
+            const savedType = localStorage.getItem(STORAGE_TYPE_KEY);
+            const savedPackage = localStorage.getItem(STORAGE_PACKAGE_KEY);
+            const savedPrice = localStorage.getItem(STORAGE_PRICE_KEY);
+            const savedData = localStorage.getItem(STORAGE_KEY);
+
+            if (savedStep && savedType && savedData) {
+                currentStep = parseInt(savedStep);
+                selectedType = savedType;
+                selectedPackage = savedPackage || 'single';
+                selectedPrice = parseInt(savedPrice) || 1;
+
+                // 恢复类型选择 UI
+                document.querySelectorAll('.type-btn').forEach(btn => {
+                    btn.classList.remove('selected');
+                    if (btn.dataset.type === selectedType) {
+                        btn.classList.add('selected');
+                    }
+                });
+
+                // 恢复套餐选择 UI（仅 Carousel）
+                if (selectedType === 'carousel') {
+                    document.querySelectorAll('.package-btn').forEach(btn => {
+                        btn.classList.remove('selected');
+                        if (btn.dataset.package === selectedPackage) {
+                            btn.classList.add('selected');
+                        }
+                    });
+                }
+
+                // 恢复表单数据
+                const formData = JSON.parse(savedData);
+
+                // 恢复 Payment ID
+                if (formData.paymentId) {
+                    document.getElementById('paymentId').value = formData.paymentId;
+                }
+
+                // 恢复 Carousel 表单
+                if (formData.carousel) {
+                    Object.keys(formData.carousel).forEach(key => {
+                        const input = document.querySelector(`#carouselForm input[name="${key}"]`);
+                        if (input) input.value = formData.carousel[key];
+                    });
+                }
+
+                // 恢复 Managed 表单
+                if (formData.managed) {
+                    Object.keys(formData.managed).forEach(key => {
+                        const input = document.querySelector(`#managedForm input[name="${key}"]`);
+                        if (input) input.value = formData.managed[key];
+                    });
+                }
+
+                // 恢复 Poster 表单
+                if (formData.poster) {
+                    Object.keys(formData.poster).forEach(key => {
+                        const input = document.querySelector(`#posterForm input[name="${key}"]`);
+                        if (input) input.value = formData.poster[key];
+                    });
+                }
+
+                // 设置正确的步骤数
+                if (selectedType === 'carousel') {
+                    totalSteps = 4;
+                } else {
+                    totalSteps = 3;
+                }
+
+                // 显示恢复提示
+                document.getElementById('restoreNotice').classList.add('show');
+                setTimeout(() => {
+                    document.getElementById('restoreNotice').classList.remove('show');
+                }, 3000);
+
+                hasRestoredData = true;
+
+                // 更新 UI
+                updatePriceDisplay();
+                updateStepIndicatorVisibility();
+                updateStepIndicator();
+                showStep(currentStep);
+
+                return;
+            }
+        } catch (e) {
+            console.error('Restore failed:', e);
+        }
+
+        // 如果没有保存的数据，重置表单
+        resetForm();
+    }
+
+    // 清除保存的数据
+    function clearSavedData() {
+        localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem(STORAGE_STEP_KEY);
+        localStorage.removeItem(STORAGE_TYPE_KEY);
+        localStorage.removeItem(STORAGE_PACKAGE_KEY);
+        localStorage.removeItem(STORAGE_PRICE_KEY);
+        hasRestoredData = false;
+    }
+
+    // 重置表单
+    function resetForm() {
+        currentStep = 1;
+        selectedType = 'carousel';
+        selectedPackage = 'single';
+        selectedPrice = 1;
+        totalSteps = 4;
+        hasRestoredData = false;
+
+        // 清除保存的数据
+        clearSavedData();
+
+        // 重置步骤显示
+        updateStepIndicator();
+        showStep(1);
+
+        // 重置选择状态
+        document.querySelectorAll('.type-btn').forEach(btn => btn.classList.remove('selected'));
+        document.querySelector('.type-btn').classList.add('selected');
+
+        document.querySelectorAll('.package-btn').forEach(btn => btn.classList.remove('selected'));
+        document.querySelector('.package-btn').classList.add('selected');
+
+        // 清空表单
+        document.querySelectorAll('form').forEach(form => form.reset());
+        document.getElementById('paymentId').value = '';
+        document.getElementById('messageBox').className = 'message';
+        document.getElementById('messageBox').style.display = 'none';
+        document.getElementById('restoreNotice').classList.remove('show');
+
+        // 显示所有步骤点
+        document.querySelectorAll('.step-dot').forEach(dot => dot.style.display = 'block');
+    }
+
+    // 选择类型
+    function selectType(type, element) {
+        selectedType = type;
+
+        document.querySelectorAll('.type-btn').forEach(btn => btn.classList.remove('selected'));
+        element.classList.add('selected');
+
+        if (type === 'carousel') {
+            selectedPrice = 1;
+            totalSteps = 4;
+        } else if (type === 'managed') {
+            selectedPrice = 18;
+            totalSteps = 3;
+        } else if (type === 'poster') {
+            selectedPrice = 28;
+            totalSteps = 3;
+        }
+
+        updatePriceDisplay();
+        updateStepIndicatorVisibility();
+        toggleCarouselEndDate();
+        saveCurrentState();
+    }
+
+    // 选择套餐（仅Carousel）
+    function selectPackage(pkg, price, element) {
+        selectedPackage = pkg;
+        selectedPrice = price;
+
+        document.querySelectorAll('.package-btn').forEach(btn => btn.classList.remove('selected'));
+        element.classList.add('selected');
+
+        updatePriceDisplay();
+        toggleCarouselEndDate();
+        saveCurrentState();
+    }
+
+    // 控制Carousel结束日期字段显示/隐藏（仅Single Event隐藏）
+    function toggleCarouselEndDate() {
+        const endDateGroup = document.getElementById('carouselEndDateGroup');
+        const endDateInput = document.getElementById('carouselEndDate');
+
+        if (selectedType === 'carousel' && selectedPackage === 'single') {
+            // Single Event (1元) 隐藏结束日期
+            if (endDateGroup) {
+                endDateGroup.style.display = 'none';
+                if (endDateInput) endDateInput.value = '';
+            }
+        } else {
+            // 其他套餐显示结束日期
+            if (endDateGroup) endDateGroup.style.display = 'flex';
+        }
+    }
+
+    // 验证8元套餐的日期范围（不能超过15天）
+    function validateTour15Dates() {
+        if (selectedType !== 'carousel' || selectedPackage !== 'tour15') {
+            return true; // 不是8元套餐，跳过验证
+        }
+
+        const startDateInput = document.querySelector('#carouselForm input[name="startDate"]');
+        const endDateInput = document.querySelector('#carouselForm input[name="endDate"]');
+
+        if (!startDateInput || !endDateInput) return true;
+
+        const startDateStr = startDateInput.value.trim();
+        const endDateStr = endDateInput.value.trim();
+
+        if (!startDateStr || !endDateStr) return true; // 如果日期为空，让必填验证处理
+
+        // 解析日期 (YYYY.MM.DD 格式)
+        const parseDate = (dateStr) => {
+            const parts = dateStr.replace(/-/g, '.').split('.');
+            if (parts.length !== 3) return null;
+            return new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+        };
+
+        const startDate = parseDate(startDateStr);
+        const endDate = parseDate(endDateStr);
+
+        if (!startDate || !endDate) return true; // 格式不正确，让其他验证处理
+
+        // 计算天数差
+        const diffTime = endDate - startDate;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        if (diffDays > 15) {
+            showMessage('❌ On Tour (≤15 Days) package: Date range cannot exceed 15 days. Please select Single Event for longer dates.', 'error');
+            endDateInput.value = ''; // 清空结束日期
+            endDateInput.focus();
+            return false;
+        }
+
+        return true;
+    }
+
+    // 为结束日期添加验证事件
+    function setupDateValidation() {
+        const carouselEndDate = document.getElementById('carouselEndDate');
+        if (carouselEndDate) {
+            carouselEndDate.addEventListener('change', function() {
+                if (selectedPackage === 'tour15') {
+                    validateTour15Dates();
+                }
+            });
+        }
+
+        const carouselStartDate = document.querySelector('#carouselForm input[name="startDate"]');
+        if (carouselStartDate) {
+            carouselStartDate.addEventListener('change', function() {
+                if (selectedPackage === 'tour15' && document.getElementById('carouselEndDate').value) {
+                    validateTour15Dates();
+                }
+            });
+        }
+    }
+
+    // 页面加载完成后设置日期验证
+    document.addEventListener('DOMContentLoaded', setupDateValidation);
+
+    // 更新价格显示
+    function updatePriceDisplay() {
+        document.getElementById('displayPrice').textContent = selectedPrice;
+    }
+
+    // 更新步骤指示器可见性
+    function updateStepIndicatorVisibility() {
+        const dots = document.querySelectorAll('.step-dot');
+        if (selectedType === 'carousel') {
+            dots.forEach(dot => dot.style.display = 'block');
+        } else {
+            dots[0].style.display = 'block';
+            dots[1].style.display = 'none';
+            dots[2].style.display = 'block';
+            dots[3].style.display = 'block';
+        }
+    }
+
+    // 更新步骤指示器状态
+    function updateStepIndicator() {
+        const dots = document.querySelectorAll('.step-dot');
+        let activeDotIndex = currentStep - 1;
+
+        if (selectedType !== 'carousel' && currentStep >= 2) {
+            activeDotIndex = currentStep;
+        }
+
+        dots.forEach((dot, index) => {
+            dot.classList.remove('active', 'completed');
+            if (index < activeDotIndex) {
+                dot.classList.add('completed');
+            } else if (index === activeDotIndex) {
+                dot.classList.add('active');
+            }
+        });
+    }
+
+    // 显示指定步骤
+    function showStep(step) {
+        document.querySelectorAll('.step-content').forEach(content => {
+            content.classList.remove('active');
+        });
+
+        let elementId;
+        if (selectedType === 'carousel') {
+            elementId = 'step' + step;
+        } else {
+            if (step === 1) elementId = 'step1';
+            else if (step === 2) elementId = 'step3';
+            else if (step === 3) elementId = 'step4';
+        }
+
+        document.getElementById(elementId).classList.add('active');
+
+        if ((selectedType === 'carousel' && step === 4) ||
+            (selectedType !== 'carousel' && step === 3)) {
+            showEventForm();
+        }
+    }
+
+    // 显示对应的事件表单
+    function showEventForm() {
+        document.querySelectorAll('.event-form').forEach(form => {
+            form.style.display = 'none';
+        });
+
+        const paymentId = document.getElementById('paymentId').value;
+
+        if (selectedType === 'carousel') {
+            document.getElementById('carouselForm').style.display = 'block';
+            document.getElementById('carouselPaymentId').value = paymentId;
+        } else if (selectedType === 'managed') {
+            document.getElementById('managedForm').style.display = 'block';
+            document.getElementById('managedPaymentId').value = paymentId;
+        } else if (selectedType === 'poster') {
+            document.getElementById('posterForm').style.display = 'block';
+            document.getElementById('posterPaymentId').value = paymentId;
+        }
+
+        // 控制Carousel结束日期显示/隐藏
+        toggleCarouselEndDate();
+    }
+
+    // 下一步
+    function nextStep() {
+        if (!validateStep(currentStep)) {
+            return;
+        }
+
+        if (currentStep < totalSteps) {
+            currentStep++;
+            updateStepIndicator();
+            showStep(currentStep);
+            saveCurrentState();
+        }
+    }
+
+    // 上一步
+    function prevStep() {
+        if (currentStep > 1) {
+            currentStep--;
+            updateStepIndicator();
+            showStep(currentStep);
+            saveCurrentState();
+        }
+    }
+
+    // 验证步骤
+    function validateStep(step) {
+        const isPaymentStep = (selectedType === 'carousel' && step === 3) ||
+                              (selectedType !== 'carousel' && step === 2);
+
+        if (isPaymentStep) {
+            const paymentId = document.getElementById('paymentId').value.trim();
+            if (!paymentId) {
+                showMessage('Please enter Payment ID', 'error');
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // 显示消息
+    function showMessage(text, type) {
+        const msgBox = document.getElementById('messageBox');
+        msgBox.textContent = text;
+        msgBox.className = 'message ' + type;
+        msgBox.style.display = 'block';
+
+        setTimeout(() => {
+            msgBox.style.display = 'none';
+        }, 5000);
+    }
+
+
+    // 发送邮件通知给管理员
+    async function sendAdminEmail(eventData) {
+        try {
+            let eventName, city, eventDate, imageUrl, contactEmail;
+
+            if (eventData.type === 'carousel') {
+                eventName = eventData.formData.eventTitle || 'N/A';
+                city = eventData.formData.city || 'N/A';
+                eventDate = eventData.formData.startDate || 'N/A';
+                imageUrl = eventData.formData.posterUrl || '';
+                contactEmail = eventData.formData.contactEmail || '';
+            } else if (eventData.type === 'managed') {
+                eventName = eventData.formData.eventTitle || 'N/A';
+                city = eventData.formData.city || 'N/A';
+                eventDate = eventData.formData.startDate || 'N/A';
+                imageUrl = eventData.formData.posterUrl || '';
+                contactEmail = eventData.formData.contactEmail || '';
+            } else if (eventData.type === 'poster') {
+                eventName = eventData.formData.title || 'N/A';
+                city = 'N/A';
+                eventDate = 'N/A';
+                imageUrl = eventData.formData.posterUrl || '';
+                contactEmail = eventData.formData.contactEmail || '';
+            }
+
+            let packageName = eventData.package || 'Standard';
+            if (packageName === 'single') packageName = 'Single Event';
+            else if (packageName === 'tour15') packageName = 'On Tour (≤15 Days)';
+            else if (packageName === 'tour30') packageName = 'On Tour (>15 Days)';
+
+            const templateParams = {
+                event_name: eventName,
+                city: city,
+                event_date: eventDate,
+                package: packageName,
+                amount: eventData.price,
+                order_id: eventData.formData.paymentId || 'N/A',
+                submit_time: new Date(eventData.submittedAt).toLocaleString('zh-CN'),
+                contact_wechat: contactEmail,
+                image_url: imageUrl,
+                email: contactEmail
+            };
+
+            console.log('Sending email with params:', templateParams);
+
+            const response = await emailjs.send(
+                CONFIG.EMAILJS_SERVICE_ID,
+                CONFIG.EMAILJS_TEMPLATE_ID,
+                templateParams
+            );
+
+            console.log('Admin email sent successfully:', response);
+            return true;
+        } catch (error) {
+            console.error('Failed to send admin email:', error);
+            return false;
+        }
+    }
+
+    // 提交表单
+    async function submitForm() {
+        const submitBtn = document.getElementById('submitBtn');
+        const originalText = submitBtn.innerHTML;
+
+        let formId;
+        if (selectedType === 'carousel') formId = 'carouselForm';
+        else if (selectedType === 'managed') formId = 'managedForm';
+        else if (selectedType === 'poster') formId = 'posterForm';
+
+        const form = document.getElementById(formId);
+        const formData = new FormData(form);
+
+        // 验证必填字段
+        const requiredFields = form.querySelectorAll('[required]');
+        for (let field of requiredFields) {
+            if (!field.value.trim()) {
+                showMessage('Please fill in all required fields', 'error');
+                field.focus();
+                return;
+            }
+        }
+
+        // 8元套餐日期范围验证
+        if (selectedType === 'carousel' && selectedPackage === 'tour15') {
+            if (!validateTour15Dates()) {
+                return; // 验证失败，停止提交
+            }
+        }
+
+        // 构建数据对象
+        const data = {
+            id: Date.now().toString(36) + Math.random().toString(36).substr(2, 9),
+            type: selectedType,
+            package: selectedType === 'carousel' ? selectedPackage : 'standard',
+            price: selectedPrice,
+            status: 'pending',
+            submittedAt: new Date().toISOString(),
+            adminEmail: CONFIG.ADMIN_EMAIL,
+            formData: {}
+        };
+
+        formData.forEach((value, key) => {
+            data.formData[key] = value;
+        });
+
+        if (selectedType === 'carousel') {
+            data.targetArea = 'carousel';
+        } else if (selectedType === 'managed') {
+            data.targetArea = 'managed';
+        } else if (selectedType === 'poster') {
+            data.targetArea = 'self';
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="spinner"></span>Submitting...';
+
+        try {
+            // 获取现有数据
+            const getResponse = await fetch(`https://api.jsonbin.io/v3/b/${CONFIG.JSONBIN_BIN_ID}/latest`, {
+                method: 'GET',
+                headers: {
+                    'X-Access-Key': CONFIG.JSONBIN_API_KEY
+                }
+            });
+
+            let existingData = { uploads: [] };
+            if (getResponse.ok) {
+                const result = await getResponse.json();
+                if (result.record && result.record.uploads) {
+                    existingData = result.record;
+                }
+            } else if (getResponse.status !== 404) {
+                throw new Error(`Failed to fetch data: ${getResponse.status}`);
+            }
+
+            // 添加新数据
+            existingData.uploads.push(data);
+
+            // 更新到jsonbin.io
+            const putResponse = await fetch(`https://api.jsonbin.io/v3/b/${CONFIG.JSONBIN_BIN_ID}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Access-Key': CONFIG.JSONBIN_API_KEY
+                },
+                body: JSON.stringify(existingData)
+            });
+
+            if (!putResponse.ok) {
+                const errorText = await putResponse.text();
+                throw new Error(`HTTP ${putResponse.status}: ${errorText}`);
+            }
+
+            // 发送邮件通知给管理员（不阻塞主流程）
+            sendAdminEmail(data).then(() => {
+                console.log('Email notification sent to admin');
+            }).catch(err => {
+                console.error('Email notification failed:', err);
+            });
+
+            // 成功 - 清除保存的数据
+            clearSavedData();
+            showMessage('✅ Submitted successfully! Your event is under review.', 'success');
+            submitBtn.innerHTML = '✓ Submitted';
+
+            setTimeout(() => {
+                closeModal();
+                // 完全重置
+                resetForm();
+            }, 3000);
+
+        } catch (error) {
+            console.error('Submit error:', error);
+            showMessage('❌ Submit failed: ' + error.message, 'error');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalText;
+        }
+    }
+
+    // 点击遮罩关闭
+    document.getElementById('uploadModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeModal();
+        }
+    });
+
+    // ESC键关闭
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeModal();
+        }
+    });
+
+
+    // 自动补全URL前缀
+    function autoCompleteUrl(input) {
+        let value = input.value.trim();
+        if (value && !value.match(/^https?:\/\//i)) {
+            input.value = 'http://' + value;
+            saveFormData();
+        }
+    }
+
+    // 为所有URL输入字段添加自动补全
+    function setupUrlAutoComplete() {
+        const urlInputs = document.querySelectorAll('input[type="url"]');
+        urlInputs.forEach(input => {
+            input.addEventListener('blur', function() {
+                autoCompleteUrl(this);
+            });
+        });
+    }
+
+    // 页面加载完成后初始化
+    document.addEventListener('DOMContentLoaded', setupUrlAutoComplete);
+
+    // 页面加载时检查是否有保存的数据
+    window.addEventListener('load', function() {
+        const savedData = localStorage.getItem(STORAGE_KEY);
+        if (savedData) {
+            console.log('Found saved form data');
+        }
+    });
+</script>
+
+</body>
+</html>
