@@ -1114,6 +1114,32 @@
             }
         }
 
+        /* Upload Modal Styles */
+        .upload-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); z-index: 10000; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(5px); }
+        .upload-modal.active { display: flex; }
+        .upload-modal-content { background: linear-gradient(135deg, #1a1a2e 0%, #0d0d1a 100%); border: 2px solid var(--dark-red); border-radius: 16px; padding: 30px; max-width: 800px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; box-shadow: 0 0 60px rgba(139, 0, 0, 0.5); }
+        .upload-modal-close { position: absolute; top: 15px; right: 20px; background: none; border: none; color: #fff; font-size: 28px; cursor: pointer; transition: all 0.3s; }
+        .upload-modal-close:hover { color: var(--dark-red); transform: scale(1.1); }
+        .upload-modal-title { color: var(--dark-red); text-align: center; margin-bottom: 20px; font-size: 24px; text-transform: uppercase; letter-spacing: 3px; }
+        .package-selection { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 25px; }
+        @media (max-width: 600px) { .package-selection { grid-template-columns: 1fr; } }
+        .package-card { background: rgba(0, 0, 0, 0.3); border: 2px solid rgba(139, 0, 0, 0.3); border-radius: 12px; padding: 20px; text-align: center; cursor: pointer; transition: all 0.3s; }
+        .package-card:hover { border-color: var(--dark-red); transform: translateY(-3px); }
+        .package-card.selected { border-color: var(--dark-red); background: rgba(139, 0, 0, 0.2); box-shadow: 0 0 20px rgba(139, 0, 0, 0.3); }
+        .package-card h4 { color: var(--dark-red); margin: 0 0 10px 0; }
+        .package-card .price { font-size: 28px; font-weight: bold; color: #fff; }
+        .package-card .duration { font-size: 12px; color: #888; }
+        .upload-form-group { margin-bottom: 15px; }
+        .upload-form-group label { display: block; margin-bottom: 5px; color: #ccc; font-size: 13px; }
+        .upload-form-group input, .upload-form-group select, .upload-form-group textarea { width: 100%; padding: 10px; border: 1px solid rgba(139, 0, 0, 0.3); border-radius: 6px; background: rgba(0, 0, 0, 0.3); color: #fff; font-size: 13px; }
+        .upload-form-group input:focus, .upload-form-group select:focus, .upload-form-group textarea:focus { outline: none; border-color: var(--dark-red); }
+        .upload-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        @media (max-width: 600px) { .upload-form-row { grid-template-columns: 1fr; } }
+        .upload-btn-submit { width: 100%; padding: 15px; background: linear-gradient(135deg, var(--dark-red) 0%, #6b0000 100%); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; transition: all 0.3s; margin-top: 15px; }
+        .upload-btn-submit:hover { background: linear-gradient(135deg, #a00000 0%, var(--dark-red) 100%); transform: translateY(-2px); box-shadow: 0 5px 20px rgba(139, 0, 0, 0.5); }
+        .upload-success { background: rgba(40, 167, 69, 0.2); border: 1px solid #28a745; color: #28a745; padding: 15px; border-radius: 8px; text-align: center; display: none; margin-top: 15px; }
+        .upload-error { background: rgba(220, 53, 69, 0.2); border: 1px solid #dc3545; color: #dc3545; padding: 15px; border-radius: 8px; text-align: center; display: none; margin-top: 15px; }
+
         .load-more-container { text-align: center !important; width: 100%; }
 
         .event-btn.disabled { pointer-events: auto; cursor: default; }
@@ -1125,7 +1151,14 @@
         .event-card.expired:hover .event-name,
         .event-card.expired:hover .event-details,
         .event-card.expired:hover .event-venue { opacity: 1; visibility: visible; }
-</style>
+
+        /* Upload Event iframe Modal Styles */
+        #uploadModal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10000; justify-content: center; align-items: center; }
+        #uploadModal > div { position: relative; width: 90%; height: 90%; max-width: 800px; background: #1a1a1a; border: 2px solid #8b0000; border-radius: 8px; overflow: hidden; }
+        #uploadModal .close-btn { position: absolute; top: 10px; right: 15px; background: none; border: none; color: #fff; font-size: 24px; cursor: pointer; z-index: 10; }
+        #uploadModal iframe { width: 100%; height: 100%; border: none; }
+        @media (max-width: 768px) { #uploadModal > div { width: 100%; height: 100%; max-width: none; border-radius: 0; } }
+        </style>
 </head>
 <body>
     <nav>
@@ -1133,6 +1166,7 @@
         <div class="nav-links">
             <a href="#" class="active">Events</a>
             <a href="partners.html">Partners</a>
+            
             <button class="neon-btn" onclick="openModal()">Membership</button>
         </div>
     </nav>
@@ -1361,7 +1395,7 @@
 
         <!-- UPLOAD EVENT Button -->
         <div class="load-more-container visible" id="uploadEventContainer" style="background: var(--black); padding-bottom: 60px;">
-            <button class="load-more-btn" id="uploadEventBtn" onclick="openUploadModal()">
+            <button onclick="openUploadModal()" style="padding: 15px 40px; background: rgba(139, 0, 0, 0.3); color: white; border: 2px solid #8b0000; border-radius: 4px; cursor: pointer; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 3px; transition: all 0.4s ease; font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; position: relative; overflow: hidden;" onmouseover="this.style.background='#8b0000';this.style.boxShadow='0 0 30px rgba(139, 0, 0, 0.8), 0 0 60px rgba(139, 0, 0, 0.4)';this.style.transform='scale(1.05)';this.style.letterSpacing='4px';" onmouseout="this.style.background='rgba(139, 0, 0, 0.3)';this.style.boxShadow='none';this.style.transform='scale(1)';this.style.letterSpacing='3px';">
                 UPLOAD EVENT
             </button>
         </div>
@@ -1370,7 +1404,7 @@
         <section class="posters-showcase" style="margin-top: 40px;">
             <div class="posters-container">
                 <div class="poster-item" data-poster-id="1" data-link="https://wxaurl.cn/HMcAK6R7fou">
-                    <img src="./image/livegigscn1.png" alt="LiveGigs WeChat" onerror="this.src='./image/asia-asiaad.jpg'">
+                    <img src="./image/1-a.jpg" alt="LiveGigs WeChat" onerror="this.src='./image/asia-asiaad.jpg'">
                     <div class="poster-overlay">
                         <div class="poster-title">LiveGigs CN</div>
                         <a href="https://wxaurl.cn/HMcAK6R7fou" target="_blank" class="poster-link" onclick="event.stopPropagation();">Get on WeChat →</a>
@@ -1402,11 +1436,11 @@
                     <div class="mobile-poster2-text"><h3>Legendary Live Events</h3></div>
                 </div>
 
-                <div class="poster-item-alt" data-poster-id="3" data-link="partners.html">
-                    <img src="./image/xrebookingad.jpg" alt="XRE Booking" onerror="this.src='./image/asia-asiaad.jpg'">
+                <div class="poster-item-alt" data-poster-id="3" data-link="./partners.html">
+                    <img src="./image/3-a.jpg" alt="XRE Booking" onerror="this.src='./image/asia-asiaad.jpg'">
                     <div class="poster-overlay">
                         <div class="poster-title">XRE Booking</div>
-                        <a href="partners.html" class="poster-link" onclick="event.stopPropagation();">Check Out More Partners →</a>
+                        <a href="./partners.html" class="poster-link" onclick="event.stopPropagation();">Check Out More Partners →</a>
                     </div>
                 </div>
             </div>
@@ -1964,10 +1998,9 @@
                 { title: 'Arch Enemy announce 2026 China Tour', date: '2026.03.27~04.10', city: 'CHINA', image: 'https://i.redd.it/uzm4o4z64okg1.png', link: '' },
                 { title: 'MONO Oath Latin America Tour 2026', date: '2026.04.15~22', city: 'LATIN AMERICA', image: 'https://img1.wsimg.com/isteam/ip/d3b0a7bc-ae98-44b3-90fd-0429527897cf/Mono%20SA%202026.jpg', link: 'https://www.monoofjapan.com/' },
                 { title: 'WOA Official Warm-Up Party', date: '2026.04.18', city: 'HONGKONG', image: 'https://scontent-lga3-3.xx.fbcdn.net/v/t51.82787-15/629284670_18562967968011594_7262077853890485035_n.webp?stp=dst-jpg_tt6&_nc_cat=106&ccb=1-7&_nc_sid=13d280&_nc_ohc=c-MQ31Z1XGcQ7kNvwEbUDtj&_nc_oc=Adlz-bZVBOVBJNL5oTvVgmXTncvADOMTARnSZ7fNedHiGtJH2rr1Vkk6UzKjLnES7O0&_nc_zt=23&_nc_ht=scontent-lga3-3.xx&_nc_gid=63t9UGiwDHcTX-Eq7Dvj9Q&oh=00_Afu4Jtwn6m63nrcFXEJZs61bH3yJ_MtKfR3dtgVvR_Q60Q&oe=69A06DEE', link: '' },
-                { title: 'The Restarts South East Asia Tour', date: '2026.04.28~05.04', city: 'S.E ASIA', image: 'https://scontent-det1-1.xx.fbcdn.net/v/t39.30808-6/640583688_1598167112099886_6493301480573499316_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=7b2446&_nc_ohc=3f_OL6Aa2esQ7kNvwGn1ye4&_nc_oc=Adna4mKKeurNZzg82YI2tYgVpzOpVHoEo-L5b4zNTVXw9Z6KBeMTmOw493cs6A01JWA&_nc_zt=23&_nc_ht=scontent-det1-1.xx&_nc_gid=u5GOk8-WFSmE6EP7bsCw6g&oh=00_Afu2KrrPtLDKvkPnosavd984AMl1JuIPsMJP-s8VsWOBHg&oe=69A4CE05', link: '' },
                 { title: 'ROCK HARD FEST', date: '2026.05.22', city: 'Amphitheater', image: 'https://en.concerts-metal.com/images/flyers/202512/1765361746--Rock-Hard-Festival-2026.jpg', link: '' },
                 { title: 'BLACK FLAG – LIVE IN HK', date: '2026.05.24', city: 'HONGKONG', image: 'https://new.brg-radio.com/wp-content/uploads/2026/02/Black-Flag-web.jpg.jpeg', link: '' },
-                { title: 'THE GANG CALLED SPEED ASIA TOUR 2026', date: '2026.05.26~06.14', city: 'ASIA', image: 'https://scontent-det1-1.xx.fbcdn.net/v/t51.82787-15/630108268_18115687375717644_827559256698160007_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=13d280&_nc_ohc=q8c7qYS3hXUQ7kNvwEBJ159&_nc_oc=AdnLfmEcp8535RpKol1ewW9vfPWNHNSvxOeV6ZvWW5NX6-frCJxKMMX15-t_7rCgtkk&_nc_zt=23&_nc_ht=scontent-det1-1.xx&_nc_gid=j8JSFJ15X0tXCbUTlax4dA&oh=00_AfsMWGv4KswcjTdIfU2hj2n0gQU3R4TftyyXvbfTT_Iijg&oe=69A4BE47', link: 'www.gangcalledspeed.com' },
+                { title: 'THE GANG CALLED SPEED ASIA TOUR 2026', date: '2026.05.26~06.14', city: 'ASIA', image: 'https://scontent-lax7-1.xx.fbcdn.net/v/t51.82787-15/630108268_18115687375717644_827559256698160007_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=13d280&_nc_ohc=OXmghnJzBX8Q7kNvwF2AWFD&_nc_oc=AdlR5-3Vajc5AarBl8p9JDHGNCfjNc6fY_n_DQz-0btlCYxDyK8HWLqauEY6fN3ReKE&_nc_zt=23&_nc_ht=scontent-lax7-1.xx&_nc_gid=U9HSYh-MyNHl41rjLLWAJw&oh=00_AfvfDGUul1-sswQ09DfDUNGvsx534_CBzdrGKJE55CmY6w&oe=699DB647', link: 'www.gangcalledspeed.com' },
                 { title: '*s EVENT s*', date: '2026.07.07', city: 'SHANGHAI', image: './image/asia-asiaad.jpg', link: '' },
                 { title: 'FUJI ROCK FESTIVAL\'26', date: '2026.07.24~26', city: 'Niigata,Japan', image: 'https://i.redd.it/cxtc01zmgkkg1.png', link: 'https://fujirockfestival.com/' },
                 { title: 'PUNK REVIVAL', date: '2026.08.18', city: 'MANILA', image: 'https://images.unsplash.com/photo-1501612780327-45045538702b?w=600&h=800&fit=crop', link: '' },
@@ -3420,6 +3453,222 @@ document.addEventListener('click', function(e) {
     if (modal && modal.style.display === 'flex' && e.target === modal) {
         closeUploadModal();
     }
+});
+
+        // Upload Modal Functions
+        function openUploadModal() {
+            document.getElementById('uploadModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeUploadModal() {
+            document.getElementById('uploadModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function selectUploadPackage(element) {
+            document.querySelectorAll('.package-card').forEach(card => card.classList.remove('selected'));
+            element.classList.add('selected');
+            document.getElementById('uploadPackageType').value = element.dataset.package;
+        }
+
+        // Submit Event Upload to jsonbin.io
+        async function submitEventUpload() {
+            const CONFIG = {
+                JSONBIN_API_KEY: '$2a$10$ofWRSuJ8qjrj6o34QoWnluloMBnnF56eGV.8NpTqbsM5HWDkl.Fky',
+                JSONBIN_BIN_ID: '699aad32ae596e708f3ea2ae'
+            };
+
+            const data = {
+                id: Date.now().toString(36) + Math.random().toString(36).substr(2, 9),
+                eventType: 'managed',
+                packageType: document.getElementById('uploadPackageType').value,
+                title: document.getElementById('uploadTitle').value,
+                subtitle: document.getElementById('uploadSubtitle').value,
+                startDate: document.getElementById('uploadStartDate').value,
+                endDate: document.getElementById('uploadEndDate').value,
+                city: document.getElementById('uploadCity').value,
+                image: document.getElementById('uploadImage').value,
+                link: document.getElementById('uploadLink').value,
+                btn_text: document.getElementById('uploadBtnText').value || 'View Details',
+                paymentId: document.getElementById('uploadPaymentId').value,
+                notes: document.getElementById('uploadNotes').value,
+                submittedAt: new Date().toISOString(),
+                status: 'pending'
+            };
+
+            if (!data.title || !data.startDate || !data.city || !data.image) {
+                document.getElementById('uploadError').textContent = 'â Please fill in all required fields (*)';
+                document.getElementById('uploadError').style.display = 'block';
+                return;
+            }
+
+            const submitBtn = document.querySelector('.upload-btn-submit');
+            submitBtn.innerHTML = 'Submitting...';
+            submitBtn.disabled = true;
+
+            try {
+                const getResponse = await fetch(`https://api.jsonbin.io/v3/b/${CONFIG.JSONBIN_BIN_ID}/latest`, {
+                    headers: { 'X-Access-Key': CONFIG.JSONBIN_API_KEY }
+                });
+
+                let existingData = { uploads: [] };
+                if (getResponse.ok) {
+                    const result = await getResponse.json();
+                    existingData = result.record || { uploads: [] };
+                }
+
+                if (!existingData.uploads) existingData.uploads = [];
+                existingData.uploads.push(data);
+
+                const response = await fetch(`https://api.jsonbin.io/v3/b/${CONFIG.JSONBIN_BIN_ID}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Access-Key': CONFIG.JSONBIN_API_KEY
+                    },
+                    body: JSON.stringify(existingData)
+                });
+
+                if (!response.ok) throw new Error('Upload failed');
+
+                document.getElementById('uploadSuccess').style.display = 'block';
+                document.getElementById('uploadError').style.display = 'none';
+
+                setTimeout(() => {
+                    document.getElementById('eventUploadForm').reset();
+                    closeUploadModal();
+                    document.getElementById('uploadSuccess').style.display = 'none';
+                    submitBtn.innerHTML = 'SUBMIT FOR REVIEW';
+                    submitBtn.disabled = false;
+                }, 2000);
+
+            } catch (error) {
+                document.getElementById('uploadError').textContent = 'â ' + error.message;
+                document.getElementById('uploadError').style.display = 'block';
+                submitBtn.innerHTML = 'SUBMIT FOR REVIEW';
+                submitBtn.disabled = false;
+            }
+        }
+
+        // Close modal on outside click
+        document.getElementById('uploadModal').addEventListener('click', function(e) {
+            if (e.target === this) closeUploadModal();
+        });
+
+</script>
+    <!-- Upload Event Modal -->
+    <div class="upload-modal" id="uploadModal">
+        <div class="upload-modal-content">
+            <button class="upload-modal-close" onclick="closeUploadModal()">&times;</button>
+            <h2 class="upload-modal-title">ð¸ UPLOAD EVENT</h2>
+
+            <div class="package-selection">
+                <div class="package-card selected" data-package="single" onclick="selectUploadPackage(this)">
+                    <h4>Single Day</h4>
+                    <div class="price">CNY 1</div>
+                    <div class="duration">1 day display</div>
+                </div>
+                <div class="package-card" data-package="15days" onclick="selectUploadPackage(this)">
+                    <h4>15 Days</h4>
+                    <div class="price">CNY 8</div>
+                    <div class="duration">15 days display</div>
+                </div>
+                <div class="package-card" data-package="30days" onclick="selectUploadPackage(this)">
+                    <h4>30 Days</h4>
+                    <div class="price">CNY 10</div>
+                    <div class="duration">30 days display</div>
+                </div>
+            </div>
+
+            <form id="eventUploadForm">
+                <input type="hidden" id="uploadPackageType" value="single">
+
+                <div class="upload-form-row">
+                    <div class="upload-form-group">
+                        <label>Event Title *</label>
+                        <input type="text" id="uploadTitle" placeholder="e.g., PUNK HEART FESTIVAL 2026" required>
+                    </div>
+                    <div class="upload-form-group">
+                        <label>Subtitle</label>
+                        <input type="text" id="uploadSubtitle" placeholder="e.g., Warm-Up Party">
+                    </div>
+                </div>
+
+                <div class="upload-form-row">
+                    <div class="upload-form-group">
+                        <label>Start Date *</label>
+                        <input type="text" id="uploadStartDate" placeholder="YYYY.MM.DD" required>
+                    </div>
+                    <div class="upload-form-group">
+                        <label>End Date (Optional)</label>
+                        <input type="text" id="uploadEndDate" placeholder="YYYY.MM.DD">
+                    </div>
+                </div>
+
+                <div class="upload-form-row">
+                    <div class="upload-form-group">
+                        <label>City / Venue *</label>
+                        <input type="text" id="uploadCity" placeholder="e.g., HONG KONG" required>
+                    </div>
+                    <div class="upload-form-group">
+                        <label>Poster Image URL *</label>
+                        <input type="url" id="uploadImage" placeholder="https://example.com/poster.jpg" required>
+                    </div>
+                </div>
+
+                <div class="upload-form-row">
+                    <div class="upload-form-group">
+                        <label>Event Link</label>
+                        <input type="url" id="uploadLink" placeholder="https://example.com/event">
+                    </div>
+                    <div class="upload-form-group">
+                        <label>Button Text</label>
+                        <input type="text" id="uploadBtnText" placeholder="e.g., Buy Tickets">
+                    </div>
+                </div>
+
+                <div class="upload-form-group">
+                    <label>Payment Reference</label>
+                    <input type="text" id="uploadPaymentId" placeholder="Enter payment transaction ID">
+                </div>
+
+                <div class="upload-form-group">
+                    <label>Additional Notes</label>
+                    <textarea id="uploadNotes" rows="3" placeholder="Any additional information..."></textarea>
+                </div>
+
+                <button type="button" class="upload-btn-submit" onclick="submitEventUpload()">SUBMIT FOR REVIEW</button>
+            </form>
+
+            <div class="upload-success" id="uploadSuccess">
+                â Submission successful! Your event has been submitted for review.
+            </div>
+            <div class="upload-error" id="uploadError">
+                â Submission failed. Please try again.
+            </div>
+        </div>
+    </div>
+
+
+<!-- Upload Event Modal -->
+<div id="uploadModal">
+    <div>
+        <button class="close-btn" onclick="closeUploadModal()">&times;</button>
+        <iframe src="./upload-event-form.html"></iframe>
+    </div>
+</div>
+<script>
+function openUploadModal() { document.getElementById('uploadModal').style.display = 'flex'; }
+function closeUploadModal() { document.getElementById('uploadModal').style.display = 'none'; }
+// 点击遮罩关闭
+document.addEventListener('click', function(e) { 
+    const modal = document.getElementById('uploadModal'); 
+    if (e.target === modal) closeUploadModal(); 
+});
+// ESC键关闭
+document.addEventListener('keydown', function(e) { 
+    if (e.key === 'Escape') closeUploadModal(); 
 });
 </script></body>
 </html>
