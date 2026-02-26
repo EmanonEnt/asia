@@ -45,7 +45,7 @@
             width: 90%;
             max-width: 600px;
             max-height: 90vh;
-            overflow: hidden;
+            overflow-y: auto;
             position: relative;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
         }
@@ -680,7 +680,7 @@
 <!-- 弹窗 - 直接显示，不需要触发按钮 -->
 <div id="uploadModal" class="modal-overlay" style="display: flex;">
     <div class="upload-modal">
-        <button class="close-btn" onclick="closeModal()" id="closeBtn">&times;</button>
+        <button class="close-btn" onclick="closeModal()">&times;</button>
 
         <div class="modal-header">
             <h1>UPLOAD EVENT</h1>
@@ -1639,36 +1639,6 @@
         }
     });
 </script>
-
-
-    <script>
-        // Check if we're in an iframe
-        const isInIframe = window.self !== window.top;
-
-        // If in iframe, hide close button (parent has its own)
-        if (isInIframe) {
-            const closeBtn = document.getElementById('closeBtn');
-            if (closeBtn) closeBtn.style.display = 'none';
-        }
-
-        // Update closeModal function to handle both modes
-        function closeModal() {
-            if (isInIframe) {
-                // Notify parent to close
-                window.parent.postMessage('closeUploadModal', '*');
-            } else {
-                // Standalone mode - redirect to events page
-                window.location.href = 'events.html';
-            }
-        }
-
-        // Listen for messages from parent
-        window.addEventListener('message', function(event) {
-            if (event.data === 'closeUploadModal') {
-                closeModal();
-            }
-        });
-    </script>
 
 </body>
 </html>
