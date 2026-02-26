@@ -44,8 +44,8 @@
             border-radius: 8px;
             width: 90%;
             max-width: 600px;
-            max-height: 85vh;
-            overflow-y: hidden;
+            max-height: 90vh;
+            overflow: hidden;
             position: relative;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
         }
@@ -584,64 +584,10 @@
            ============================================ */
         @media (max-width: 768px) {
             .upload-modal {
-                width: 100%;
-                max-width: 100%;
-                max-height: 100vh;
-                height: 100vh;
-                border-radius: 0;
-                border: none;
+                width: 95%;
+                max-height: 90vh;
+                border-radius: 8px;
             }
-
-            .modal-content {
-                padding: 15px 20px 20px;
-                max-height: calc(100vh - 120px);
-                overflow-y: auto;
-            }
-
-            /* 移动端按钮样式 */
-            .btn {
-                padding: 12px 30px;
-                font-size: 12px;
-                letter-spacing: 2px;
-            }
-
-            .btn:hover {
-                letter-spacing: 3px;
-                transform: scale(1.03);
-            }
-
-            .btn-group {
-                gap: 10px;
-                flex-direction: column;
-            }
-
-            .btn-group .btn {
-                width: 100%;
-            }
-
-            .type-grid,
-            .package-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .form-grid,
-            .managed-form-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .modal-header h1 {
-                font-size: 20px;
-            }
-
-            .step-title {
-                font-size: 12px;
-            }
-
-            .qr-code {
-                width: 200px;
-                height: 200px;
-            }
-        }
 
             .modal-content {
                 padding: 15px 20px 20px;
@@ -1650,7 +1596,11 @@
     }
 
     // 点击遮罩关闭
-    // Click overlay to close - DISABLED to prevent accidental closing
+    document.getElementById('uploadModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeModal();
+        }
+    });
 
     // ESC键关闭
     document.addEventListener('keydown', function(e) {
