@@ -1152,10 +1152,6 @@
         .event-card.expired:hover .event-details,
         .event-card.expired:hover .event-venue { opacity: 1; visibility: visible; }
 
-        /* iframe Upload Modal Styles */
-        #uploadModal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10000; justify-content: center; align-items: center; }
-        #uploadModal > div { position: relative; width: 90%; height: 90%; max-width: 800px; background: #1a1a1a; border: 2px solid #8b0000; border-radius: 8px; overflow: hidden; }
-        #uploadModal iframe { width: 100%; height: 100%; border: none; }
         @media (max-width: 768px) { 
             #uploadModal > div { width: 100% !important; height: 100% !important; max-width: none !important; border-radius: 0 !important; } 
         }
@@ -1168,6 +1164,234 @@
             <a href="#" class="active">Events</a>
             <a href="partners.html">Partners</a>
             
+            <button class="neon-btn" onclick="openModal()">Membership</button>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="smoke-container">
+            <div class="smoke"></div>
+            <div class="smoke"></div>
+            <div class="smoke"></div>
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title"><span class="gray">LIVEGIGS</span><span class="red">ASIA</span></h1>
+            <p class="hero-subtitle"><span class="line1">Concerts, Festivals, Tickets, Tour Dates</span><span class="line2">- Live Gigs</span></p>
+        </div>
+    </section>
+
+    <div class="content-wrapper">
+        <section class="managed-events">
+            <div class="section-header">
+                <h2 class="section-title">THE EVENTS WE'VE MANAGED</h2>
+                <p class="section-subtitle">WE ALSO WELCOME COLLABORATION ON MORE GREAT EVENTS, AND MORE EXCITING EVENTS ARE ON THE WAY.</p>
+            </div>
+
+            <div class="events-grid" id="eventsGrid">
+                <div class="event-card " data-event-id="5" data-title="***AAA***" data-city="THAILAND" data-date="2026.07.18~30" data-image="https://www.shutterstock.com/image-vector/punk-rock-show-gig-poster-600nw-2456710009.jpg" data-link="">
+                    <button class="event-share-btn" onclick="event.stopPropagation(); openShareModal('***AAA***', 'THAILAND', '2026.07.18~30', 'https://www.shutterstock.com/image-vector/punk-rock-show-gig-poster-600nw-2456710009.jpg', '')" title="Share">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="18" cy="5" r="3"></circle>
+                            <circle cx="6" cy="12" r="3"></circle>
+                            <circle cx="18" cy="19" r="3"></circle>
+                            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                        </svg>
+                    </button>
+                    <img src="https://www.shutterstock.com/image-vector/punk-rock-show-gig-poster-600nw-2456710009.jpg" alt="***AAA***" class="event-poster" onerror="this.src='./image/asia-asiaad.jpg'">
+                    <div class="event-status ontour">ON TOUR</div>
+                    <div class="event-content">
+                        <h3 class="event-name">***AAA***<br>MINI TOUR</h3>
+                        <div class="event-details">2026.07.18~30 | THAILAND</div>
+                        <div class="event-venue"></div>
+                        <span class="event-btn disabled">查看详情</span>
+                    </div>
+                </div>
+
+                <div class="event-card " data-event-id="1" data-title="PUNK HEART FESTIVAL 2026" data-city="待定" data-date="2026.09.25" data-image="./image/1-b-2.png" data-link="http://punkheartfest.com">
+                    <button class="event-share-btn" onclick="event.stopPropagation(); openShareModal('PUNK HEART FESTIVAL 2026', '待定', '2026.09.25', './image/1-b-2.png', 'http://punkheartfest.com')" title="Share">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="18" cy="5" r="3"></circle>
+                            <circle cx="6" cy="12" r="3"></circle>
+                            <circle cx="18" cy="19" r="3"></circle>
+                            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                        </svg>
+                    </button>
+                    <img src="./image/1-b-2.png" alt="PUNK HEART FESTIVAL 2026" class="event-poster" onerror="this.src='./image/asia-asiaad.jpg'">
+                    <div class="event-status countdown" data-countdown-date="2026.09.25" id="status-1">CALCULATING...</div>
+                    <div class="event-content">
+                        <h3 class="event-name">PUNK HEART FESTIVAL 2026<br>TBA</h3>
+                        <div class="event-details">2026.09.25 | 待定</div>
+                        <div class="event-venue"></div>
+                        <a href="http://punkheartfest.com" class="event-btn" target="_blank">朋克心2026</a>
+                    </div>
+                </div>
+
+                <div class="event-card " data-event-id="2" data-title="PUNK HEART FESTIVAL 2026" data-city="WUHAN" data-date="2026.09.27" data-image="./image/1-b-2.png" data-link="http://punkheartfest.com">
+                    <button class="event-share-btn" onclick="event.stopPropagation(); openShareModal('PUNK HEART FESTIVAL 2026', 'WUHAN', '2026.09.27', './image/1-b-2.png', 'http://punkheartfest.com')" title="Share">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="18" cy="5" r="3"></circle>
+                            <circle cx="6" cy="12" r="3"></circle>
+                            <circle cx="18" cy="19" r="3"></circle>
+                            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                        </svg>
+                    </button>
+                    <img src="./image/1-b-2.png" alt="PUNK HEART FESTIVAL 2026" class="event-poster" onerror="this.src='./image/asia-asiaad.jpg'">
+                    <div class="event-status countdown" data-countdown-date="2026.09.27" id="status-2">CALCULATING...</div>
+                    <div class="event-content">
+                        <h3 class="event-name">PUNK HEART FESTIVAL 2026<br>WUHAN</h3>
+                        <div class="event-details">2026.09.27 | WUHAN</div>
+                        <div class="event-venue"></div>
+                        <a href="http://punkheartfest.com" class="event-btn" target="_blank">朋克心2026</a>
+                    </div>
+                </div>
+
+                <div class="event-card " data-event-id="5" data-title="NONAMEFEST 2026" data-city="TBA" data-date="2026.10.01" data-image="./image/1-b-3.jpg" data-link="http://nonamepunks.com">
+                    <button class="event-share-btn" onclick="event.stopPropagation(); openShareModal('NONAMEFEST 2026', 'TBA', '2026.10.01', './image/1-b-3.jpg', 'http://nonamepunks.com')" title="Share">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="18" cy="5" r="3"></circle>
+                            <circle cx="6" cy="12" r="3"></circle>
+                            <circle cx="18" cy="19" r="3"></circle>
+                            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                        </svg>
+                    </button>
+                    <img src="./image/1-b-3.jpg" alt="NONAMEFEST 2026" class="event-poster" onerror="this.src='./image/asia-asiaad.jpg'">
+                    <div class="event-status countdown" data-countdown-date="2026.10.01" id="status-5">CALCULATING...</div>
+                    <div class="event-content">
+                        <h3 class="event-name">NONAMEFEST 2026<br>RIOT CITY</h3>
+                        <div class="event-details">2026.10.01 | TBA</div>
+                        <div class="event-venue"></div>
+                        <a href="http://nonamepunks.com" class="event-btn" target="_blank">無名盛宴2026</a>
+                    </div>
+                </div>
+
+                <div class="event-card " data-event-id="5" data-title="Special PUNK Event" data-city="HONG KONG" data-date="2026.10.18~28" data-image="https://ih1.redbubble.net/image.2331556488.4898/flat,750x,075,f-pad,750x1000,f8f8f8.webp" data-link="http://punknews.com">
+                    <button class="event-share-btn" onclick="event.stopPropagation(); openShareModal('Special PUNK Event', 'HONG KONG', '2026.10.18~28', 'https://ih1.redbubble.net/image.2331556488.4898/flat,750x,075,f-pad,750x1000,f8f8f8.webp', 'http://punknews.com')" title="Share">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="18" cy="5" r="3"></circle>
+                            <circle cx="6" cy="12" r="3"></circle>
+                            <circle cx="18" cy="19" r="3"></circle>
+                            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                        </svg>
+                    </button>
+                    <img src="https://ih1.redbubble.net/image.2331556488.4898/flat,750x,075,f-pad,750x1000,f8f8f8.webp" alt="Special PUNK Event" class="event-poster" onerror="this.src='./image/asia-asiaad.jpg'">
+                    <div class="event-status ontour">ON TOUR</div>
+                    <div class="event-content">
+                        <h3 class="event-name">Special PUNK Event<br>睿派藝族</h3>
+                        <div class="event-details">2026.10.18~28 | HONG KONG</div>
+                        <div class="event-venue"></div>
+                        <a href="http://punknews.com" class="event-btn" target="_blank">競猜抽獎</a>
+                    </div>
+                </div>
+
+                <div class="event-card " data-event-id="8" data-title="*VIP PARTY*" data-city="XI&#039;AN" data-date="2026.12.31" data-image="https://img.redocn.com/sheji/20250723/manianxinnianchunjiezhufuyujinsechuangyihaibaosucaibeijing_13616973.jpg" data-link="">
+                    <button class="event-share-btn" onclick="event.stopPropagation(); openShareModal('*VIP PARTY*', 'XI\'AN', '2026.12.31', 'https://img.redocn.com/sheji/20250723/manianxinnianchunjiezhufuyujinsechuangyihaibaosucaibeijing_13616973.jpg', '')" title="Share">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="18" cy="5" r="3"></circle>
+                            <circle cx="6" cy="12" r="3"></circle>
+                            <circle cx="18" cy="19" r="3"></circle>
+                            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                        </svg>
+                    </button>
+                    <img src="https://img.redocn.com/sheji/20250723/manianxinnianchunjiezhufuyujinsechuangyihaibaosucaibeijing_13616973.jpg" alt="*VIP PARTY*" class="event-poster" onerror="this.src='./image/asia-asiaad.jpg'">
+                    <div class="event-status soldout">SOLD OUT</div>
+                    <div class="event-content">
+                        <h3 class="event-name">*VIP PARTY*<br>VIP ONLY</h3>
+                        <div class="event-details">2026.12.31 | XI&#039;AN</div>
+                        <div class="event-venue"></div>
+                        <span class="event-btn disabled">查看详情</span>
+                    </div>
+                </div>
+
+                <div class="event-card " data-event-id="7" data-title="xxTBAxx" data-city="BEIJING" data-date="2027.02.11" data-image="https://img.freepik.com/premium-vector/hand-drawn-goat-zodiac-sign-chinese-horoscope-symbol-new-year-2027-eastern-banner_595023-498.jpg" data-link="">
+                    <button class="event-share-btn" onclick="event.stopPropagation(); openShareModal('xxTBAxx', 'BEIJING', '2027.02.11', 'https://img.freepik.com/premium-vector/hand-drawn-goat-zodiac-sign-chinese-horoscope-symbol-new-year-2027-eastern-banner_595023-498.jpg', '')" title="Share">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="18" cy="5" r="3"></circle>
+                            <circle cx="6" cy="12" r="3"></circle>
+                            <circle cx="18" cy="19" r="3"></circle>
+                            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                        </svg>
+                    </button>
+                    <img src="https://img.freepik.com/premium-vector/hand-drawn-goat-zodiac-sign-chinese-horoscope-symbol-new-year-2027-eastern-banner_595023-498.jpg" alt="xxTBAxx" class="event-poster" onerror="this.src='./image/asia-asiaad.jpg'">
+                    <div class="event-status ontour">ON TOUR</div>
+                    <div class="event-content">
+                        <h3 class="event-name">xxTBAxx<br>即將公佈</h3>
+                        <div class="event-details">2027.02.11 | BEIJING</div>
+                        <div class="event-venue"></div>
+                        <span class="event-btn disabled">查看详情</span>
+                    </div>
+                </div>
+
+                <div class="event-card expired" data-event-id="4" data-title="PUNK HEART FESTIVAL 2026" data-city="未來俱樂部" data-date="2026.01.17" data-image="https://en.concerts-metal.com/images/flyers/202601/1768047587--PUNKHEART-_2026-WARM-UP.webp" data-link="">
+                    <button class="event-share-btn" onclick="event.stopPropagation(); openShareModal('PUNK HEART FESTIVAL 2026', '未來俱樂部', '2026.01.17', 'https://en.concerts-metal.com/images/flyers/202601/1768047587--PUNKHEART-_2026-WARM-UP.webp', '')" title="Share">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="18" cy="5" r="3"></circle>
+                            <circle cx="6" cy="12" r="3"></circle>
+                            <circle cx="18" cy="19" r="3"></circle>
+                            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                        </svg>
+                    </button>
+                    <img src="https://en.concerts-metal.com/images/flyers/202601/1768047587--PUNKHEART-_2026-WARM-UP.webp" alt="PUNK HEART FESTIVAL 2026" class="event-poster" onerror="this.src='./image/asia-asiaad.jpg'">
+                    <div class="event-status soldout">SOLD OUT</div>
+                    <div class="event-content">
+                        <h3 class="event-name">PUNK HEART FESTIVAL 2026<br>Warm-Up Party</h3>
+                        <div class="event-details">2026.01.17 | 未來俱樂部</div>
+                        <div class="event-venue"></div>
+                        <span class="event-btn disabled">朋克心2026預熱派對</span>
+                    </div>
+                </div>
+
+                <div class="event-card expired" data-event-id="9" data-title="HAPPY NEW YEAR！" data-city="CHINA" data-date="2026.01.01" data-image="https://img.redocn.com/sheji/20250723/manianxinnianchunjiezhufuyujinsechuangyihaibaosucaibeijing_13616973.jpg" data-link="">
+                    <button class="event-share-btn" onclick="event.stopPropagation(); openShareModal('HAPPY NEW YEAR！', 'CHINA', '2026.01.01', 'https://img.redocn.com/sheji/20250723/manianxinnianchunjiezhufuyujinsechuangyihaibaosucaibeijing_13616973.jpg', '')" title="Share">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="18" cy="5" r="3"></circle>
+                            <circle cx="6" cy="12" r="3"></circle>
+                            <circle cx="18" cy="19" r="3"></circle>
+                            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                        </svg>
+                    </button>
+                    <img src="https://img.redocn.com/sheji/20250723/manianxinnianchunjiezhufuyujinsechuangyihaibaosucaibeijing_13616973.jpg" alt="HAPPY NEW YEAR！" class="event-poster" onerror="this.src='./image/asia-asiaad.jpg'">
+                    <div class="event-status soldout">SOLD OUT</div>
+                    <div class="event-content">
+                        <h3 class="event-name">HAPPY NEW YEAR！<br>新年快樂</h3>
+                        <div class="event-details">2026.01.01 | CHINA</div>
+                        <div class="event-venue"></div>
+                        <span class="event-btn disabled">恭喜發財</span>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="load-more-container visible" id="loadMoreContainer">
+                <button class="load-more-btn" id="loadMoreBtn" onclick="loadMoreEvents()">LOAD MORE</button>
+            </div></section>
+
+        <!-- æ»æ­æµ·æ¥åºå -->
+        <section class="auto-scroll-section">
+            <div class="auto-scroll-wrapper">
+                <button class="scroll-arrow left" onclick="accelerateScroll('left')">←</button>
+                <button class="scroll-arrow right" onclick="accelerateScroll('right')">→</button>
+                <div class="auto-scroll-container" id="autoScrollContainer">
+                    <div class="auto-scroll-track" id="autoScrollTrack">
+                        <!-- æ»æ­é¡¹ç®å°éè¿JSå æçæ -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- UPLOAD EVENT Button -->
+        <div class="load-more-container visible" id="uploadEventContainer" style="background: var(--black); padding-bottom: 60px;">
             <button class="load-more-btn" onclick="openUploadModal()">UPLOAD EVENT</button>
         </div>
 
@@ -1268,23 +1492,2001 @@
                 <div class="form-group"><label for="memberPhone">Phone (Optional)</label><input type="tel" id="memberPhone" name="phone" placeholder="Enter your phone number"></div>
                 <div class="form-group"><label for="memberMessage">Message</label><textarea id="memberMessage" name="message" placeholder="Tell us what you are interested in..."></textarea></div>
                 <div id="formSuccess" style="display: none; text-align: center; padding: 15px; background: rgba(139, 0, 0, 0.2); border: 1px solid var(--dark-red); margin-bottom: 20px;"><p style="color: #fff; margin: 0; font-size: 14px;">â Application sent successfully! We will contact you soon.</p></div>
-                <button class="load-more-btn" onclick="openUploadModal()">UPLOAD EVENT</button>
+                <button type="submit" class="neon-btn">SUBMIT APPLICATION</button>
+                <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+            </form>
+        </div>
+    </div>
+
+    
+
+    <!-- Share Modal -->
+    <div class="share-modal" id="shareModal" onclick="handleShareModalClick(event)">
+        <div class="share-modal-content">
+            <button class="share-modal-close" onclick="closeShareModal()">&times;</button>
+            <h3 class="share-modal-title">SHARE THIS EVENT</h3>
+            <div class="share-event-info">
+                <img class="share-event-img" id="shareEventImg" src="" alt="">
+                <div class="share-event-details">
+                    <div class="share-event-name" id="shareEventName"></div>
+                    <div class="share-event-meta" id="shareEventMeta"></div>
+                    <div class="share-event-tags" id="shareEventTags"></div>
+                </div>
+            </div>
+            <div class="share-platforms">
+                <button class="share-platform-btn" onclick="shareToPlatform('facebook')">
+                    <svg class="share-platform-icon" viewBox="0 0 24 24" fill="#1877f2">
+                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                    </svg>
+                    <span class="share-platform-name">Facebook</span>
+                </button>
+                <button class="share-platform-btn" onclick="shareToPlatform('instagram')">
+                    <svg class="share-platform-icon" viewBox="0 0 24 24">
+                        <defs>
+                            <linearGradient id="ig-gradient" x1="0%" y1="100%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#feda75"/>
+                                <stop offset="50%" style="stop-color:#d62976"/>
+                                <stop offset="100%" style="stop-color:#4f5bd5"/>
+                            </linearGradient>
+                        </defs>
+                        <path fill="url(#ig-gradient)" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                    <span class="share-platform-name">Instagram</span>
+                </button>
+                <button class="share-platform-btn" onclick="shareToPlatform('whatsapp')">
+                    <svg class="share-platform-icon" viewBox="0 0 24 24" fill="#25d366">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                    </svg>
+                    <span class="share-platform-name">WhatsApp</span>
+                </button>
+                <button class="share-platform-btn" onclick="shareToPlatform('reddit')">
+                    <svg class="share-platform-icon" viewBox="0 0 24 24" fill="#ff4500">
+                        <path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/>
+                    </svg>
+                    <span class="share-platform-name">Reddit</span>
+                </button>
+                <button class="share-platform-btn" onclick="shareToPlatform('telegram')">
+                    <svg class="share-platform-icon" viewBox="0 0 24 24" fill="#0088cc">
+                        <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                    </svg>
+                    <span class="share-platform-name">Telegram</span>
+                </button>
+                <button class="share-platform-btn" onclick="shareToPlatform('line')">
+                    <svg class="share-platform-icon" viewBox="0 0 24 24" fill="#06c755">
+                        <path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.349 0 .63.285.63.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/>
+                    </svg>
+                    <span class="share-platform-name">LINE</span>
+                </button>
+                <button class="share-platform-btn" onclick="shareToPlatform('wechat-friend')">
+                    <svg class="share-platform-icon" viewBox="0 0 24 24" fill="#07c160">
+                        <path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.047c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 0 1-.023-.156.49.49 0 0 1 .201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.837-6.656-6.088V8.89c-.135-.01-.27-.027-.407-.03zm-2.53 3.274c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.97-.982zm4.844 0c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.969-.982z"/>
+                    </svg>
+                    <span class="share-platform-name">WeChat Friend</span>
+                </button>
+                <button class="share-platform-btn" onclick="shareToPlatform('wechat-moments')">
+                    <svg class="share-platform-icon" viewBox="0 0 24 24" fill="#07c160">
+                        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm6.066 9.645l-1.605 7.485c-.121.568-.462.707-.936.44l-2.587-1.913-1.25 1.209c-.138.14-.253.257-.518.257l.185-2.623 4.795-4.374c.208-.186-.045-.29-.324-.104l-5.927 3.76-2.554-.807c-.555-.175-.568-.555.116-.822l9.98-3.871c.463-.175.868.104.745.763z"/>
+                    </svg>
+                    <span class="share-platform-name">WeChat Moments</span>
+                </button>
+            </div>
+            
+            <!-- Download Poster Button -->
+            <button class="download-btn" id="downloadPosterBtn" onclick="downloadPoster()">
+                <svg class="download-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span class="download-btn-text">DOWNLOAD POSTER</span>
+                <span class="download-btn-subtext">Save to Device</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- WeChat QR Modal -->
+    <div class="wechat-qr-modal" id="wechatQRModal" onclick="handleWechatModalClick(event)">
+        <div class="wechat-qr-content">
+            <h3 class="wechat-qr-title">Scan to Share on WeChat</h3>
+            <div class="wechat-qr-code" id="wechatQRCode">
+                <!-- äºç»´ç å°å¨è¿éå¨æçæ -->
+            </div>
+            <p class="wechat-qr-hint">Content copied to clipboard.<br>Open WeChat and paste to share.</p>
+            <button class="wechat-qr-close" onclick="closeWeChatQR()">Got it</button>
+        </div>
+    </div>
+
+    <!-- Upload Event Modal -->
+
+        </div>
+
+        <!-- Step 2: Select Package (for carousel only) -->
+        <div id="uploadStep2" class="upload-step" style="display:none;">
+            <h3 style="color: #fff; font-size: 16px; margin-bottom: 20px; text-align: center; letter-spacing: 2px;">SELECT PACKAGE</h3>
+            <div class="package-buttons" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 20px 0;">
+                <button class="package-btn" onclick="selectPackage(1)" style="background: rgba(139, 0, 0, 0.2); border: 2px solid #8b0000; border-radius: 8px; padding: 15px 10px; cursor: pointer; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                    <span class="package-name" style="font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 14px; color: #fff;">Single Event</span>
+                    <span class="package-price" style="font-size: 16px; color: #fff; font-weight: bold;">CNY 1</span>
+                </button>
+                <button class="package-btn" onclick="selectPackage(8)" style="background: rgba(139, 0, 0, 0.2); border: 2px solid #8b0000; border-radius: 8px; padding: 15px 10px; cursor: pointer; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                    <span class="package-name" style="font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 14px; color: #fff;">On Tour (&le;15 Days)</span>
+                    <span class="package-price" style="font-size: 16px; color: #fff; font-weight: bold;">CNY 8</span>
+                </button>
+                <button class="package-btn" onclick="selectPackage(10)" style="background: rgba(139, 0, 0, 0.2); border: 2px solid #8b0000; border-radius: 8px; padding: 15px 10px; cursor: pointer; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                    <span class="package-name" style="font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 14px; color: #fff;">On Tour (&gt;15 Days)</span>
+                    <span class="package-price" style="font-size: 16px; color: #fff; font-weight: bold;">CNY 10</span>
+                </button>
+            </div>
+            <button class="back-btn" onclick="goBackToStep1()" style="background: transparent; border: 1px solid #666; color: #666; padding: 10px 30px; cursor: pointer; font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-top: 15px; transition: all 0.3s;">BACK</button>
         </div>
 
         <!-- Step 3: Payment QR Code -->
-        
+        <div id="uploadStep3" class="upload-step" style="display:none;">
+            <h3 style="color: #fff; font-size: 16px; margin-bottom: 20px; text-align: center; letter-spacing: 2px;">SCAN TO PAY</h3>
+            <div class="qr-container" style="background: #fff; padding: 20px; border-radius: 8px; margin: 20px auto; max-width: 250px; text-align: center;">
+                <img src="./image/Wechat-QR.png" alt="WeChat Pay" style="width: 100%; max-width: 200px; height: auto;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="qr-placeholder" style="display:none; width: 200px; height: 200px; background: #f0f0f0; align-items: center; justify-content: center; color: #666; font-size: 14px;">
+                    <span>WeChat QR Code</span>
+                </div>
             </div>
             <p class="qr-instruction" style="color: #c0c0c0; font-size: 13px; margin: 10px 0; text-align: center;">Scan with WeChat to pay CNY <span id="paymentAmount" style="color: #fff; font-weight: bold;">0</span></p>
             <p class="qr-instruction" style="color: #c0c0c0; font-size: 13px; margin: 10px 0; text-align: center;">After payment, click NEXT to fill in your details</p>
-            <button class="load-more-btn" onclick="openUploadModal()">UPLOAD EVENT</button>
+            <button class="neon-btn" onclick="goToStep4()" style="background: rgba(139, 0, 0, 0.9); color: #fff; border: 2px solid #8b0000; padding: 12px 30px; font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: all 0.4s; margin-top: 10px;">NEXT</button>
+            <button class="back-btn" onclick="goBackToStep2()" style="background: transparent; border: 1px solid #666; color: #666; padding: 10px 30px; cursor: pointer; font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-top: 15px; transition: all 0.3s;">BACK</button>
+        </div>
+
+        <!-- Step 4: Fill Form -->
+        <div id="uploadStep4" class="upload-step" style="display:none;">
+            <h3 style="color: #fff; font-size: 16px; margin-bottom: 20px; text-align: center; letter-spacing: 2px;">EVENT DETAILS</h3>
+            <form id="uploadForm" onsubmit="submitUpload(event)">
+                <!-- Carousel Fields -->
+                <div id="carouselFields" class="form-fields" style="display:none;">
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">EVENT TITLE *</label>
+                            <input type="text" name="title" placeholder="Enter event title" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">START DATE * (YYYY.MM.DD)</label>
+                            <input type="text" name="startDate" placeholder="2026.12.31" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">END DATE (Optional)</label>
+                            <input type="text" name="endDate" placeholder="Leave empty for single day" style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">CITY OR VENUE *</label>
+                            <input type="text" name="city" placeholder="Enter city" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">POSTER IMAGE URL *</label>
+                            <input type="url" name="image" placeholder="https://example.com/poster.jpg" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">EVENT LINK (Optional)</label>
+                            <input type="url" name="link" placeholder="https://example.com/event" style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Managed Fields -->
+                <div id="managedFields" class="form-fields" style="display:none;">
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">EVENT TITLE *</label>
+                            <input type="text" name="title" placeholder="Enter event title" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">SUBTITLE *</label>
+                            <input type="text" name="subtitle" placeholder="Enter subtitle" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">START DATE * (YYYY.MM.DD)</label>
+                            <input type="text" name="startDate" placeholder="2026.12.31" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">END DATE (Optional)</label>
+                            <input type="text" name="endDate" placeholder="Leave empty for single day" style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">CITY OR VENUE *</label>
+                            <input type="text" name="city" placeholder="Enter city" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">POSTER IMAGE URL *</label>
+                            <input type="url" name="image" placeholder="https://example.com/poster.jpg" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">BUTTON TEXT *</label>
+                            <input type="text" name="btn_text" placeholder="e.g. BUY TICKETS" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">EVENT LINK (Optional)</label>
+                            <input type="url" name="link" placeholder="https://example.com/event" style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Poster1 Fields -->
+                <div id="poster1Fields" class="form-fields" style="display:none;">
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">TITLE *</label>
+                            <input type="text" name="title" placeholder="Enter poster title" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">LINK TEXT *</label>
+                            <input type="text" name="linkText" placeholder="e.g. Learn More" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">LINK URL *</label>
+                            <input type="url" name="link" placeholder="https://example.com" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Common Fields -->
+                <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                    <div class="form-group" style="display: flex; flex-direction: column;">
+                        <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">WECHAT PAYMENT ORDER ID *</label>
+                        <input type="text" name="paymentId" placeholder="Enter payment transaction ID" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                    </div>
+                    <div class="form-group" style="display: flex; flex-direction: column;">
+                        <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">CONTACT EMAIL *</label>
+                        <input type="email" name="email" placeholder="your@email.com" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                    </div>
+                </div>
+
+                <input type="hidden" name="type" id="uploadType">
+                <input type="hidden" name="package" id="uploadPackage">
+
+                <button type="submit" class="neon-btn submit-btn" style="width: 100%; margin-top: 20px; background: rgba(139, 0, 0, 0.9); color: #fff; border: 2px solid #8b0000; padding: 12px 30px; font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: all 0.4s;">SUBMIT FOR REVIEW</button>
+                <button type="button" class="back-btn" onclick="goBackToStep3()" style="background: transparent; border: 1px solid #666; color: #666; padding: 10px 30px; cursor: pointer; font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-top: 15px; transition: all 0.3s;">BACK</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+    <!-- Upload Event Modal -->
+
+        </div>
+
+        <!-- Step 2: Select Package (for carousel only) -->
+        <div id="uploadStep2" class="upload-step" style="display:none;">
+            <h3 style="color: #fff; font-size: 16px; margin-bottom: 20px; text-align: center; letter-spacing: 2px;">SELECT PACKAGE</h3>
+            <div class="package-buttons" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 20px 0;">
+                <button class="package-btn" onclick="selectPackage(1)" style="background: rgba(139, 0, 0, 0.2); border: 2px solid #8b0000; border-radius: 8px; padding: 15px 10px; cursor: pointer; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                    <span class="package-name" style="font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 14px; color: #fff;">Single Event</span>
+                    <span class="package-price" style="font-size: 16px; color: #fff; font-weight: bold;">CNY 1</span>
+                </button>
+                <button class="package-btn" onclick="selectPackage(8)" style="background: rgba(139, 0, 0, 0.2); border: 2px solid #8b0000; border-radius: 8px; padding: 15px 10px; cursor: pointer; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                    <span class="package-name" style="font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 14px; color: #fff;">On Tour (&le;15 Days)</span>
+                    <span class="package-price" style="font-size: 16px; color: #fff; font-weight: bold;">CNY 8</span>
+                </button>
+                <button class="package-btn" onclick="selectPackage(10)" style="background: rgba(139, 0, 0, 0.2); border: 2px solid #8b0000; border-radius: 8px; padding: 15px 10px; cursor: pointer; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                    <span class="package-name" style="font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 14px; color: #fff;">On Tour (&gt;15 Days)</span>
+                    <span class="package-price" style="font-size: 16px; color: #fff; font-weight: bold;">CNY 10</span>
+                </button>
+            </div>
+            <button class="back-btn" onclick="goBackToStep1()" style="background: transparent; border: 1px solid #666; color: #666; padding: 10px 30px; cursor: pointer; font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-top: 15px; transition: all 0.3s;">BACK</button>
         </div>
 
         <!-- Step 3: Payment QR Code -->
-        
+        <div id="uploadStep3" class="upload-step" style="display:none;">
+            <h3 style="color: #fff; font-size: 16px; margin-bottom: 20px; text-align: center; letter-spacing: 2px;">SCAN TO PAY</h3>
+            <div class="qr-container" style="background: #fff; padding: 20px; border-radius: 8px; margin: 20px auto; max-width: 250px; text-align: center;">
+                <img src="./image/Wechat-QR.png" alt="WeChat Pay" style="width: 100%; max-width: 200px; height: auto;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="qr-placeholder" style="display:none; width: 200px; height: 200px; background: #f0f0f0; align-items: center; justify-content: center; color: #666; font-size: 14px;">
+                    <span>WeChat QR Code</span>
+                </div>
             </div>
             <p class="qr-instruction" style="color: #c0c0c0; font-size: 13px; margin: 10px 0; text-align: center;">Scan with WeChat to pay CNY <span id="paymentAmount" style="color: #fff; font-weight: bold;">0</span></p>
             <p class="qr-instruction" style="color: #c0c0c0; font-size: 13px; margin: 10px 0; text-align: center;">After payment, click NEXT to fill in your details</p>
-            <button class="load-more-btn" onclick="openUploadModal()">UPLOAD EVENT</button>
+            <button class="neon-btn" onclick="goToStep4()" style="background: rgba(139, 0, 0, 0.9); color: #fff; border: 2px solid #8b0000; padding: 12px 30px; font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: all 0.4s; margin-top: 10px;">NEXT</button>
+            <button class="back-btn" onclick="goBackToStep2()" style="background: transparent; border: 1px solid #666; color: #666; padding: 10px 30px; cursor: pointer; font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-top: 15px; transition: all 0.3s;">BACK</button>
+        </div>
+
+        <!-- Step 4: Fill Form -->
+        <div id="uploadStep4" class="upload-step" style="display:none;">
+            <h3 style="color: #fff; font-size: 16px; margin-bottom: 20px; text-align: center; letter-spacing: 2px;">EVENT DETAILS</h3>
+            <form id="uploadForm" onsubmit="submitUpload(event)">
+                <!-- Carousel Fields -->
+                <div id="carouselFields" class="form-fields" style="display:none;">
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">EVENT TITLE *</label>
+                            <input type="text" name="title" placeholder="Enter event title" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">START DATE * (YYYY.MM.DD)</label>
+                            <input type="text" name="startDate" placeholder="2026.12.31" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">END DATE (Optional)</label>
+                            <input type="text" name="endDate" placeholder="Leave empty for single day" style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">CITY OR VENUE *</label>
+                            <input type="text" name="city" placeholder="Enter city" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">POSTER IMAGE URL *</label>
+                            <input type="url" name="image" placeholder="https://example.com/poster.jpg" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">EVENT LINK (Optional)</label>
+                            <input type="url" name="link" placeholder="https://example.com/event" style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Managed Fields -->
+                <div id="managedFields" class="form-fields" style="display:none;">
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">EVENT TITLE *</label>
+                            <input type="text" name="title" placeholder="Enter event title" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">SUBTITLE *</label>
+                            <input type="text" name="subtitle" placeholder="Enter subtitle" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">START DATE * (YYYY.MM.DD)</label>
+                            <input type="text" name="startDate" placeholder="2026.12.31" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">END DATE (Optional)</label>
+                            <input type="text" name="endDate" placeholder="Leave empty for single day" style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">CITY OR VENUE *</label>
+                            <input type="text" name="city" placeholder="Enter city" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">POSTER IMAGE URL *</label>
+                            <input type="url" name="image" placeholder="https://example.com/poster.jpg" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">BUTTON TEXT *</label>
+                            <input type="text" name="btn_text" placeholder="e.g. BUY TICKETS" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">EVENT LINK (Optional)</label>
+                            <input type="url" name="link" placeholder="https://example.com/event" style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Poster1 Fields -->
+                <div id="poster1Fields" class="form-fields" style="display:none;">
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">TITLE *</label>
+                            <input type="text" name="title" placeholder="Enter poster title" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">LINK TEXT *</label>
+                            <input type="text" name="linkText" placeholder="e.g. Learn More" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">LINK URL *</label>
+                            <input type="url" name="link" placeholder="https://example.com" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Common Fields -->
+                <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                    <div class="form-group" style="display: flex; flex-direction: column;">
+                        <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">WECHAT PAYMENT ORDER ID *</label>
+                        <input type="text" name="paymentId" placeholder="Enter payment transaction ID" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                    </div>
+                    <div class="form-group" style="display: flex; flex-direction: column;">
+                        <label style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #c0c0c0; margin-bottom: 6px;">CONTACT EMAIL *</label>
+                        <input type="email" name="email" placeholder="your@email.com" required style="padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid #4a0000; color: #fff; font-size: 13px; border-radius: 4px;">
+                    </div>
+                </div>
+
+                <input type="hidden" name="type" id="uploadType">
+                <input type="hidden" name="package" id="uploadPackage">
+
+                <button type="submit" class="neon-btn submit-btn" style="width: 100%; margin-top: 20px; background: rgba(139, 0, 0, 0.9); color: #fff; border: 2px solid #8b0000; padding: 12px 30px; font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: all 0.4s;">SUBMIT FOR REVIEW</button>
+                <button type="button" class="back-btn" onclick="goBackToStep3()" style="background: transparent; border: 1px solid #666; color: #666; padding: 10px 30px; cursor: pointer; font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-top: 15px; transition: all 0.3s;">BACK</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+        // æ»æ­æ´»å¨æ°æ® - 18ä¸ªæ´»å¨ï¼4ä¸ªè¿æ + 14ä¸ªå³å°åçï¼
+        const carouselData = [
+                { title: 'HAPPY NEW YEAR新年快樂!!!', date: '2026.01.01', city: 'ASIA', image: 'https://img.redocn.com/sheji/20250723/manianxinnianchunjiezhufuyujinsechuangyihaibaosucaibeijing_13616973.jpg', link: '' },
+                { title: 'PUNK HEART WARM-UP PARTY', date: '2026.01.17', city: 'XI\'AN', image: 'https://en.concerts-metal.com/images/flyers/202601/1768047587--PUNKHEART-_2026-WARM-UP.webp', link: '' },
+                { title: 'BABYMETAL WORLD TOUR AUSTRALIA 2026', date: '2026.03.12~22', city: 'AUSTRALIA', image: 'https://babymetal.com/contents/1/TO/babymetal_insta45_OSN%20(2).jpg', link: 'https://babymetal.com' },
+                { title: 'Kraanium Asia Slam Tour 2026', date: '2026.03.20~30', city: 'ASIA', image: 'https://en.concerts-metal.com/images/flyers/202510/1759884648--Kraanium---Asia-Slam-Tour-2026.webp', link: '' },
+                { title: 'Arch Enemy announce 2026 China Tour', date: '2026.03.27~04.10', city: 'CHINA', image: 'https://i.redd.it/uzm4o4z64okg1.png', link: '' },
+                { title: 'MONO Oath Latin America Tour 2026', date: '2026.04.15~22', city: 'LATIN AMERICA', image: 'https://img1.wsimg.com/isteam/ip/d3b0a7bc-ae98-44b3-90fd-0429527897cf/Mono%20SA%202026.jpg', link: 'https://www.monoofjapan.com/' },
+                { title: 'WOA Official Warm-Up Party', date: '2026.04.18', city: 'HONGKONG', image: 'https://scontent-lga3-3.xx.fbcdn.net/v/t51.82787-15/629284670_18562967968011594_7262077853890485035_n.webp?stp=dst-jpg_tt6&_nc_cat=106&ccb=1-7&_nc_sid=13d280&_nc_ohc=c-MQ31Z1XGcQ7kNvwEbUDtj&_nc_oc=Adlz-bZVBOVBJNL5oTvVgmXTncvADOMTARnSZ7fNedHiGtJH2rr1Vkk6UzKjLnES7O0&_nc_zt=23&_nc_ht=scontent-lga3-3.xx&_nc_gid=63t9UGiwDHcTX-Eq7Dvj9Q&oh=00_Afu4Jtwn6m63nrcFXEJZs61bH3yJ_MtKfR3dtgVvR_Q60Q&oe=69A06DEE', link: '' },
+                { title: 'ROCK HARD FEST', date: '2026.05.22', city: 'Amphitheater', image: 'https://en.concerts-metal.com/images/flyers/202512/1765361746--Rock-Hard-Festival-2026.jpg', link: '' },
+                { title: 'BLACK FLAG – LIVE IN HK', date: '2026.05.24', city: 'HONGKONG', image: 'https://new.brg-radio.com/wp-content/uploads/2026/02/Black-Flag-web.jpg.jpeg', link: '' },
+                { title: 'THE GANG CALLED SPEED ASIA TOUR 2026', date: '2026.05.26~06.14', city: 'ASIA', image: 'https://scontent-lax7-1.xx.fbcdn.net/v/t51.82787-15/630108268_18115687375717644_827559256698160007_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=13d280&_nc_ohc=OXmghnJzBX8Q7kNvwF2AWFD&_nc_oc=AdlR5-3Vajc5AarBl8p9JDHGNCfjNc6fY_n_DQz-0btlCYxDyK8HWLqauEY6fN3ReKE&_nc_zt=23&_nc_ht=scontent-lax7-1.xx&_nc_gid=U9HSYh-MyNHl41rjLLWAJw&oh=00_AfvfDGUul1-sswQ09DfDUNGvsx534_CBzdrGKJE55CmY6w&oe=699DB647', link: 'www.gangcalledspeed.com' },
+                { title: '*s EVENT s*', date: '2026.07.07', city: 'SHANGHAI', image: './image/asia-asiaad.jpg', link: '' },
+                { title: 'FUJI ROCK FESTIVAL\'26', date: '2026.07.24~26', city: 'Niigata,Japan', image: 'https://i.redd.it/cxtc01zmgkkg1.png', link: 'https://fujirockfestival.com/' },
+                { title: 'PUNK REVIVAL', date: '2026.08.18', city: 'MANILA', image: 'https://images.unsplash.com/photo-1501612780327-45045538702b?w=600&h=800&fit=crop', link: '' },
+                { title: 'PUNK HEART FESTIVAL 2026', date: '2026.09.25', city: 'TBA', image: './image/1-b-2.png', link: 'http://punkheartfest.com' },
+                { title: 'PUNK HEART FESTIVAL 2026', date: '2026.09.27', city: 'WUHAN', image: './image/1-b-2.png', link: 'http://punkheartfest.com' },
+                { title: 'NONAMEFEST 2026', date: '2026.10.01', city: 'RIOT CITY', image: './image/1-b-3.jpg', link: 'http://nonamepunks.com' },
+                { title: 'XXX CHINA TOUR', date: '2026.11.05~20', city: 'CHINA', image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop', link: '' },
+                { title: 'NEW SHOW A', date: '2026.11.11', city: 'TBA', image: './image/asia-asiaad.jpg', link: '' },
+                { title: 'NEW SHOW B', date: '2026.11.12', city: 'TBA', image: './image/asia-asiaad.jpg', link: 'http://chineserocks.net' },
+                { title: '????????? S.E.A TOUR 2026', date: '2026.11.20~12.05', city: 'THAILAND', image: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&h=800&fit=crop', link: '' },
+                { title: 'Clockenflap 2026', date: '2026.12.19~20', city: 'HONG KONG', image: 'https://totalticketing-ets-ttlcom-prod-singapore-web-files.s3.amazonaws.com/media/uploads/images/056a1c096df6d1bd.jpeg', link: '' },
+                { title: 'NEW YEAR PARTY', date: '2027.01.01', city: 'XI\'AN', image: 'https://img.freepik.com/premium-vector/hand-drawn-goat-zodiac-sign-chinese-horoscope-symbol-new-year-2027-eastern-banner_595023-498.jpg', link: '' },
+                { title: 'XXXXXX ASIA TOUR', date: '2027.05.15~30', city: 'JAPAN', image: './image/asia-asiaad.jpg', link: '' }
+            ];
+
+        let isPaused = false;
+        let countdownInterval;
+        let scrollPosition = 0;
+        let animationId = null;
+        let accelerateInterval = null;
+
+        // è§¦æ¸æ»å¨ç¸å³åé
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let isDragging = false;
+        let dragStartX = 0;
+        let dragStartScroll = 0;
+
+        // è§£ææ¥æ
+        function parseDate(dateStr) {
+            const parts = dateStr.split('.');
+            if (parts.length >= 3) {
+                return new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+            }
+            return new Date();
+        }
+
+        // ææ¥ææåºï¼è¿å°è¿ï¼
+        function sortByDate(data) {
+            return [...data].sort((a, b) => parseDate(a.date) - parseDate(b.date));
+        }
+
+        // å¾®ä¿¡æµè§å¨æ¯æ
+        function initWechatSupport() {
+            if (!/MicroMessenger/i.test(navigator.userAgent)) return;
+            document.body.classList.add('wechat');
+
+            document.querySelectorAll('.auto-scroll-item').forEach(item => {
+                item.addEventListener('touchstart', function() {
+                    this.classList.add('touching');
+                }, {passive: true});
+
+                item.addEventListener('touchend', function() {
+                    setTimeout(() => this.classList.remove('touching'), 200);
+                });
+
+                item.addEventListener('touchcancel', function() {
+                    this.classList.remove('touching');
+                });
+            });
+        }
+
+        // åå§åè§¦æ¸æ»å¨æ¯æ
+        function initTouchSwipe() {
+            const container = document.getElementById('autoScrollContainer');
+            const track = document.getElementById('autoScrollTrack');
+            if (!container || !track) return;
+
+            // é²æ­¢ææ¬éæ©ï¼ä¿®å¤éªå¨é®é¢ï¼
+            container.style.userSelect = 'none';
+            container.style.webkitUserSelect = 'none';
+            track.style.userSelect = 'none';
+            track.style.webkitUserSelect = 'none';
+
+            // åå§åï¼ä¸ºææauto-scroll-itemæ·»å äºä»¶ï¼åªæ§è¡ä¸æ¬¡ï¼
+            function initItemTouchEffects() {
+                document.querySelectorAll('.auto-scroll-item').forEach(item => {
+                    // é¿åéå¤æ·»å 
+                    if (item.dataset.touchInitialized) return;
+                    item.dataset.touchInitialized = 'true';
+
+                    const isExpired = item.classList.contains('expired');
+                    let touchTimer = null;
+                    let itemTouchStartX = 0;
+                    let itemTouchStartY = 0;
+                    let isItemTouchMoved = false;
+                    const TOUCH_MOVE_THRESHOLD = 10;
+
+                    // è§¦æ¸å¼å§
+                    item.addEventListener('touchstart', function(e) {
+                        itemTouchStartX = e.touches[0].clientX;
+                        itemTouchStartY = e.touches[0].clientY;
+                        isItemTouchMoved = false;
+
+                        // éè¿ææµ·æ¥ï¼æ·»å touchedç±»ï¼ç¹äº®ï¼
+                        if (!isExpired) {
+                            this.classList.add('touched');
+                        }
+                        isPaused = true;
+
+                        // åæ¶åå§åcontainerçæ»å¨åé
+                        touchStartX = itemTouchStartX;
+                        touchStartY = itemTouchStartY;
+                        isDragging = true;
+                        dragStartX = touchStartX;
+                        dragStartScroll = scrollPosition;
+                        track.style.cursor = 'grabbing';
+                    }, {passive: true});
+
+                    // è§¦æ¸ç§»å¨
+                    item.addEventListener('touchmove', function(e) {
+                        if (!isDragging) return;
+
+                        const touchX = e.touches[0].clientX;
+                        const touchY = e.touches[0].clientY;
+                        const diffX = itemTouchStartX - touchX;
+                        const diffY = itemTouchStartY - touchY;
+                        const absDiffX = Math.abs(diffX);
+                        const absDiffY = Math.abs(diffY);
+
+                        // æ£æµæ¯å¦ç§»å¨è¶è¿éå¼
+                        if (!isItemTouchMoved && (absDiffX > TOUCH_MOVE_THRESHOLD || absDiffY > TOUCH_MOVE_THRESHOLD)) {
+                            isItemTouchMoved = true;
+                        }
+
+                        // æ°´å¹³æ»å¨æ¶æ§è¡æ»å¨ï¼æææµ·æ¥é½å¯ä»¥ï¼
+                        if (absDiffX > absDiffY) {
+                            // éè¿ææµ·æ¥ï¼åæ¶touchedç¶æ
+                            if (!isExpired) {
+                                this.classList.remove('touched');
+                            }
+
+                            const itemWidth = track.children[0]?.offsetWidth || 300;
+                            const totalWidth = itemWidth * (track.children.length / 2);
+
+                            scrollPosition = dragStartScroll + diffX;
+
+                            if (scrollPosition >= totalWidth) {
+                                scrollPosition = 0;
+                                dragStartScroll = -diffX;
+                            } else if (scrollPosition < 0) {
+                                scrollPosition = totalWidth - 1;
+                                dragStartScroll = totalWidth - 1 + diffX;
+                            }
+
+                            track.style.transform = `translateX(-${scrollPosition}px)`;
+                        }
+                    }, {passive: true});
+
+                    // è§¦æ¸ç»æ
+                    item.addEventListener('touchend', function(e) {
+                        isDragging = false;
+                        track.style.cursor = 'grab';
+
+                        // éè¿ææµ·æ¥ï¼å¤çtouchedç¶æ
+                        if (!isExpired) {
+                            const self = this;
+
+                            // å¦ææ¯ç¹å»ï¼æ²¡æç§»å¨ï¼ï¼ä¿ætouchedç¶æ3ç§
+                            if (!isItemTouchMoved) {
+                                if (touchTimer) clearTimeout(touchTimer);
+                                touchTimer = setTimeout(() => {
+                                    self.classList.remove('touched');
+                                    isPaused = false;
+                                }, 3000);
+                            } else {
+                                // å¦ææ¯æ»å¨ï¼ç«å³æ¢å¤
+                                this.classList.remove('touched');
+                                setTimeout(() => {
+                                    isPaused = false;
+                                }, 500);
+                            }
+                        } else {
+                            // è¿ææµ·æ¥ï¼ç«å³æ¢å¤æ»å¨
+                            setTimeout(() => {
+                                isPaused = false;
+                            }, 100);
+                        }
+                    }, {passive: true});
+
+                    // è§¦æ¸åæ¶
+                    item.addEventListener('touchcancel', function(e) {
+                        isDragging = false;
+                        track.style.cursor = 'grab';
+
+                        if (!isExpired) {
+                            if (touchTimer) clearTimeout(touchTimer);
+                            this.classList.remove('touched');
+                        }
+                        setTimeout(() => {
+                            isPaused = false;
+                        }, 100);
+                    }, {passive: true});
+                });
+            }
+
+            // ç«å³åå§å
+            initItemTouchEffects();
+
+            // å½carouselæ°æ®æ´æ°æ¶éæ°åå§å
+            const observer = new MutationObserver(function(mutations) {
+                initItemTouchEffects();
+            });
+            observer.observe(track, { childList: true });
+
+            // è§¦æ¸å¼å§ï¼ç¨äºç©ºç½åºåæ»å¨ï¼
+            container.addEventListener('touchstart', function(e) {
+                // å¦æç¹å»çæ¯itemåé¨ï¼ä¸å¤çï¼ç±itemèªå·±çäºä»¶å¤çï¼
+                if (e.target.closest('.auto-scroll-item')) return;
+
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+                isDragging = true;
+                dragStartX = touchStartX;
+                dragStartScroll = scrollPosition;
+                isPaused = true;
+                track.style.cursor = 'grabbing';
+            }, {passive: true});
+
+            // è§¦æ¸ç§»å¨ï¼ç©ºç½åºåï¼
+            container.addEventListener('touchmove', function(e) {
+                if (!isDragging) return;
+
+                const touchX = e.touches[0].clientX;
+                const touchY = e.touches[0].clientY;
+                const diffX = touchStartX - touchX;
+                const diffY = touchStartY - touchY;
+
+                // æ°´å¹³æ»å¨æ¶é»æ­¢é»è®¤è¡ä¸º
+                if (Math.abs(diffX) > Math.abs(diffY)) {
+                    e.preventDefault();
+                }
+
+                const itemWidth = track.children[0]?.offsetWidth || 300;
+                const totalWidth = itemWidth * (track.children.length / 2);
+
+                scrollPosition = dragStartScroll + diffX;
+
+                if (scrollPosition >= totalWidth) {
+                    scrollPosition = 0;
+                    dragStartScroll = -diffX;
+                } else if (scrollPosition < 0) {
+                    scrollPosition = totalWidth - 1;
+                    dragStartScroll = totalWidth - 1 + diffX;
+                }
+
+                track.style.transform = `translateX(-${scrollPosition}px)`;
+            }, {passive: false});
+
+            // è§¦æ¸ç»æï¼ç©ºç½åºåï¼
+            container.addEventListener('touchend', function(e) {
+                if (!isDragging) return;
+                isDragging = false;
+                track.style.cursor = 'grab';
+
+                setTimeout(() => {
+                    if (!document.querySelector('.auto-scroll-item.touched')) {
+                        isPaused = false;
+                    }
+                }, 1000);
+            }, {passive: true});
+
+            // ==================== é¼ æ ææ½æ¯æï¼æ¡é¢ç«¯ï¼- ä¿®å¤éªå¨é®é¢ ====================
+            let hasDragged = false; // æ è®°æ¯å¦çæ­£ææ½è¿
+            const DRAG_THRESHOLD = 5; // ææ½éå¼ï¼åç´ ï¼
+
+            container.addEventListener('mousedown', function(e) {
+                // åªååºå·¦é®ï¼ä¸ä¸æ¯ç¹å»æé®
+                if (e.button !== 0) return;
+                if (e.target.closest('.share-btn') || e.target.closest('.carousel-actions') || e.target.closest('.scroll-arrow')) return;
+
+                isDragging = true;
+                hasDragged = false;
+                dragStartX = e.clientX;
+                dragStartScroll = scrollPosition;
+                isPaused = true;
+
+                // æ·»å ææ½ç¶æç±»ï¼ç¨äºCSSæ§å¶hoverææ
+                track.classList.add('dragging');
+                container.classList.add('dragging');
+
+                track.style.cursor = 'grabbing';
+                e.preventDefault();
+
+                // æåèªå¨æ»å¨å¨ç»
+                track.style.animationPlayState = 'paused';
+            });
+
+            document.addEventListener('mousemove', function(e) {
+                if (!isDragging) return;
+
+                const diffX = dragStartX - e.clientX;
+
+                // æ£æ¥æ¯å¦è¶è¿éå¼
+                if (Math.abs(diffX) > DRAG_THRESHOLD) {
+                    hasDragged = true;
+                }
+
+                // åªæå¨çæ­£ææ½åææ´æ°ä½ç½®
+                if (hasDragged) {
+                    const itemWidth = track.children[0]?.offsetWidth || 300;
+                    const totalWidth = itemWidth * (track.children.length / 2);
+
+                    scrollPosition = dragStartScroll + diffX;
+
+                    if (scrollPosition >= totalWidth) {
+                        scrollPosition = 0;
+                    } else if (scrollPosition < 0) {
+                        scrollPosition = totalWidth - 1;
+                    }
+
+                    track.style.transform = `translateX(-${scrollPosition}px)`;
+                    track.style.transition = 'none'; // ææ½æ¶ç¦ç¨è¿æ¸¡å¨ç»
+                }
+            });
+
+            document.addEventListener('mouseup', function() {
+                if (isDragging) {
+                    isDragging = false;
+                    hasDragged = false;
+
+                    // ç§»é¤ææ½ç¶æç±»
+                    track.classList.remove('dragging');
+                    container.classList.remove('dragging');
+
+                    track.style.cursor = 'grab';
+                    track.style.transition = ''; // æ¢å¤è¿æ¸¡å¨ç»
+                    track.style.animationPlayState = 'running';
+
+                    setTimeout(() => {
+                        if (!track.classList.contains('dragging')) {
+                            isPaused = false;
+                        }
+                    }, 1000);
+                }
+            });
+
+            // é¼ æ ç¦»å¼çªå£æ¶ç»æææ½
+            document.addEventListener('mouseleave', function() {
+                if (isDragging) {
+                    isDragging = false;
+                    hasDragged = false;
+                    track.classList.remove('dragging');
+                    container.classList.remove('dragging');
+                    track.style.cursor = 'grab';
+                    track.style.transition = '';
+                    track.style.animationPlayState = 'running';
+                    setTimeout(() => {
+                        isPaused = false;
+                    }, 1000);
+                }
+            });
+        }function initCarousel() {
+            const track = document.getElementById('autoScrollTrack');
+            if (!track) return;
+
+            const sortedData = sortByDate(carouselData);
+            const now = new Date();
+            now.setHours(0, 0, 0, 0);
+
+            const upcoming = [];
+            const passed = [];
+
+            sortedData.forEach(item => {
+                const itemDate = parseDate(item.date);
+                if (itemDate >= now) {
+                    upcoming.push(item);
+                } else {
+                    passed.push(item);
+                }
+            });
+
+            passed.sort((a, b) => parseDate(b.date) - parseDate(a.date));
+            const orderedData = [...upcoming, ...passed];
+
+            let html = '';
+            let displayData = [...orderedData];
+            while (displayData.length < 3) {
+                displayData = [...displayData, ...orderedData];
+            }
+            // æ¯çæ´»ä¸­æä¸æ¾å°ä¸ä¸ªæ°åé¡µé¢ï¼å¦ææ»ä¸ªä¾å¯¼å»çå¹¶é¡µé¢ç¨åºè¿ä¹
+            displayData = displayData; // å é¤æ°ééå¶, æ¯è½è®©æææ´»å¨é¿åæ¯çæ´»ä¸­çå¹¶é¡µé¢é¡µ
+            const loopData = [...displayData, ...displayData];
+
+            loopData.forEach((item, index) => {
+                const itemDate = parseDate(item.date);
+                const isExpired = itemDate < now;
+                const hasLink = item.link && item.link.trim() !== '';
+
+                let itemClass = '';
+                if (isExpired) {
+                    itemClass = 'expired';
+                } else if (!hasLink) {
+                    itemClass = 'no-link';
+                }
+
+                let metaText = '';
+                if (item.date && item.city) {
+                    metaText = `${item.date} / ${item.city}`;
+                } else if (item.date) {
+                    metaText = item.date;
+                } else if (item.city) {
+                    metaText = item.city;
+                }
+
+                html += `
+                    <div class="auto-scroll-item ${itemClass}" data-date="${item.date}" data-index="${index % displayData.length}" data-title="${item.title}" data-city="${item.city}" data-link="${item.link || ''}">
+                        <div class="auto-scroll-overlay"></div>
+                        <img src="${item.image}" alt="${item.title}" onerror="this.src='./image/asia-asiaad.jpg'">
+                        <div class="auto-scroll-info">
+                            <h4 class="auto-scroll-title">${item.title}</h4>
+                            <div class="auto-scroll-meta">${metaText}</div>
+                        </div>
+                        <div class="auto-scroll-countdown">
+                            <div class="countdown-text" data-countdown-date="${item.date}">CALCULATING...</div>
+                        </div>
+                        ${!isExpired ? `
+                        <div class="carousel-actions">
+                            <button class="info-btn ${hasLink ? 'has-link' : 'no-link'}" ${hasLink ? `onclick="window.open('${item.link}', '_blank')"` : ''} title="${hasLink ? 'View Event Details' : 'Info'}">
+                                <span class="info-btn-text">INFO</span>
+                                <span class="info-btn-shine"></span>
+                            </button>
+                            <button class="share-btn" onclick="openShareModal('${item.title}', '${item.city}', '${item.date}', '${item.image}', '${item.link || ''}')" title="Share">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="18" cy="5" r="3"></circle>
+                                    <circle cx="6" cy="12" r="3"></circle>
+                                    <circle cx="18" cy="19" r="3"></circle>
+                                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                                </svg>
+                            </button>
+                        </div>
+                        ` : ''}
+                    </div>
+                `;
+            });
+
+            track.innerHTML = html;
+            track.style.cursor = 'grab';
+            updateCarouselCountdowns();
+            countdownInterval = setInterval(updateCarouselCountdowns, 60000);
+            startAutoScroll();
+            initTouchSwipe();
+
+            container = document.getElementById('autoScrollContainer');
+            container.addEventListener('mouseenter', () => { if (!isDragging) isPaused = true; });
+            container.addEventListener('mouseleave', () => { if (!isDragging) isPaused = false; });
+        }
+
+        // èªå¨æ»å¨
+        function startAutoScroll() {
+            const track = document.getElementById('autoScrollTrack');
+            if (!track) return;
+
+            const itemWidth = track.children[0]?.offsetWidth || 300;
+            const totalWidth = itemWidth * (track.children.length / 2);
+            let speed = 0.5;
+
+            function animate() {
+                if (!isPaused && !accelerateInterval && !isDragging) {
+                    scrollPosition += speed;
+                    if (scrollPosition >= totalWidth) {
+                        scrollPosition = 0;
+                    }
+                    track.style.transform = `translateX(-${scrollPosition}px)`;
+                }
+                animationId = requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        // æ´æ°åè®¡æ¶
+        function updateCarouselCountdowns() {
+            const now = new Date();
+            now.setHours(0, 0, 0, 0);
+
+            document.querySelectorAll('.auto-scroll-countdown .countdown-text').forEach(el => {
+                const dateStr = el.getAttribute('data-countdown-date');
+                if (!dateStr) return;
+
+                const targetDate = parseDate(dateStr);
+                const diff = targetDate - now;
+
+                if (diff === 0) {
+                    el.textContent = 'TODAY';
+                    el.className = 'countdown-text today';
+                } else if (diff < 0) {
+                    el.textContent = 'COMPLETED';
+                    el.className = 'countdown-text completed';
+                } else {
+                    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                    el.textContent = days + ' DAYS';
+                    el.className = 'countdown-text';
+                }
+            });
+        }
+
+        // å éæ»å¨
+        function accelerateScroll(direction) {
+            const track = document.getElementById('autoScrollTrack');
+            if (!track) return;
+
+            if (accelerateInterval) {
+                clearInterval(accelerateInterval);
+            }
+
+            const itemWidth = track.children[0]?.offsetWidth || 300;
+            const totalWidth = itemWidth * (track.children.length / 2);
+            const accelerateSpeed = direction === 'left' ? -15 : 15;
+
+            let duration = 3000;
+            let startTime = Date.now();
+
+            accelerateInterval = setInterval(() => {
+                const elapsed = Date.now() - startTime;
+
+                if (elapsed >= duration) {
+                    clearInterval(accelerateInterval);
+                    accelerateInterval = null;
+                    return;
+                }
+
+                scrollPosition += accelerateSpeed;
+
+                if (scrollPosition >= totalWidth) {
+                    scrollPosition = 0;
+                } else if (scrollPosition < 0) {
+                    scrollPosition = totalWidth - 1;
+                }
+
+                track.style.transform = `translateX(-${scrollPosition}px)`;
+            }, 16);
+        }
+
+        // æµ·æ¥2è½®æ­
+        const poster2Data = [
+            { title: 'Epic Past Gigs', linkText: 'View Gallery ', img: 'asia-asiaad.jpg', link: '' },
+            { title: 'Non Servium China Tour', linkText: 'w/The Noname', img: './image/2-old1.jpg', link: '' },
+            { title: 'Skarface China Tour', linkText: 'w/The Noname', img: './image/2-old2.jpg', link: '' },
+            { title: 'Acidez S.E Asia Tour', linkText: 'w/The Noname', img: './image/2-old3.jpg', link: '' },
+            { title: 'The Greed China Tour', linkText: 'Mini Tour', img: 'https://scontent-lax3-2.xx.fbcdn.net/v/t51.82787-15/539650831_18398090296138672_2437187567972799587_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=13d280&_nc_ohc=-PGQ3sXwN2IQ7kNvwFJxfC_&_nc_oc=AdkTTJ19_thiuIGl5dlj8OgdzqVU5en-kbmrgnqD7OKPoYS94GqjREAgQS0Y6C93a-A&_nc_zt=23&_nc_ht=scontent-lax3-2.xx&_nc_gid=FjEeQiPT_B-OVs6-4jXELw&oh=00_Afv8jBLH1LHDJ-Lr97XmVi43BYQxSQtt5DSMxXM5YlwuTQ&oe=699D09F8', link: '' }
+        ];
+
+        let currentSlide = 0;
+        let carouselSlideInterval;
+
+        function initPoster2Carousel() {
+            const slides = document.querySelectorAll('.poster-carousel-slide');
+            const dots = document.querySelectorAll('.carousel-dot');
+            if (slides.length === 0) return;
+
+            carouselSlideInterval = setInterval(() => { goToSlide(currentSlide + 1); }, 5000);
+
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    clearInterval(carouselSlideInterval);
+                    goToSlide(index);
+                    carouselSlideInterval = setInterval(() => { goToSlide(currentSlide + 1); }, 5000);
+                });
+            });
+
+            const carousel = document.getElementById('posterCarousel');
+            if (carousel) {
+                carousel.addEventListener('mouseenter', () => { clearInterval(carouselSlideInterval); });
+                carousel.addEventListener('mouseleave', () => { carouselSlideInterval = setInterval(() => { goToSlide(currentSlide + 1); }, 5000); });
+            }
+        }
+
+        function goToSlide(n) {
+            const slides = document.querySelectorAll('.poster-carousel-slide');
+            const dots = document.querySelectorAll('.carousel-dot');
+            const titleEl = document.getElementById('poster2Title');
+            const linkEl = document.getElementById('poster2Link');
+            if (slides.length === 0) return;
+
+            slides[currentSlide].classList.remove('active');
+            dots[currentSlide].classList.remove('active');
+            currentSlide = (n + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+
+            if (titleEl && linkEl && poster2Data[currentSlide]) {
+                titleEl.textContent = poster2Data[currentSlide].title;
+                linkEl.textContent = poster2Data[currentSlide].linkText;
+                // æ´æ°é¾æ¥å°å
+                if (poster2Data[currentSlide].link && poster2Data[currentSlide].link.trim() !== '') {
+                    linkEl.href = poster2Data[currentSlide].link;
+                    linkEl.style.pointerEvents = 'auto';
+                } else {
+                    linkEl.href = '#';
+                    linkEl.style.pointerEvents = 'none';
+                }
+            }
+        }
+
+        function openModal() { 
+            document.getElementById('membershipModal').classList.add('active'); 
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        function closeModal() { 
+            document.getElementById('membershipModal').classList.remove('active'); 
+            document.body.style.overflow = 'auto'; 
+        }
+
+        document.getElementById('membershipModal').addEventListener('click', function(e) { 
+            if (e.target === this) closeModal(); 
+        });
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const form = document.getElementById('membershipForm');
+            const formData = new FormData(form);
+            const successDiv = document.getElementById('formSuccess');
+            formData.append('timestamp', new Date().toISOString());
+            fetch(form.action, { method: 'POST', body: formData }).then(response => response.json()).then(data => {
+                if (data.success) {
+                    successDiv.style.display = 'block';
+                    const submissionData = { name: document.getElementById('memberName').value, email: document.getElementById('memberEmail').value, phone: document.getElementById('memberPhone').value, message: document.getElementById('memberMessage').value, timestamp: new Date().toISOString(), source: 'LiveGigs Asia' };
+                    let submissions = JSON.parse(localStorage.getItem('membershipSubmissions') || '[]');
+                    submissions.push(submissionData);
+                    localStorage.setItem('membershipSubmissions', JSON.stringify(submissions));
+                    setTimeout(() => { closeModal(); form.reset(); successDiv.style.display = 'none'; }, 3000);
+                } else { alert('There was an error submitting your application. Please try again.'); }
+            }).catch(error => { console.error('Error:', error); alert('There was an error submitting your application. Please try again.'); });
+        }
+
+        function updateCountdowns() {
+            const countdownElements = document.querySelectorAll('.event-status.countdown');
+            const now = new Date();
+            countdownElements.forEach(el => {
+                const targetDate = el.getAttribute('data-countdown-date');
+                if (!targetDate) return;
+                const target = new Date(targetDate);
+                const diff = target - now;
+                if (diff > 0) {
+                    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                    if (days > 0) {
+                        el.textContent = days + 'D ' + hours + 'H ' + minutes + 'M';
+                    } else if (hours > 0) {
+                        el.textContent = hours + 'H ' + minutes + 'M';
+                    } else {
+                        el.textContent = minutes + 'M';
+                    }
+                } else if (diff <= 0 && diff > -86400000) {
+                    el.textContent = 'TODAY';
+                } else {
+                    el.textContent = 'COMPLETED';
+                }
+            });
+        }
+
+        setInterval(updateCountdowns, 1000);
+        updateCountdowns();
+
+        // ================== åå§åè¯åDOMï¼éè¦å¯ä»¥å¼ºå¶å±æ§ï¼ ================
+        // å é¤åé¦æ°æ®ï¼èªå¨èªå¨å è½½åæ°æ®
+        let loadedCount =  3 ;
+        const totalCards = document.querySelectorAll('.event-card').length;
+
+        function getColumnsPerRow() {
+            const width = window.innerWidth;
+            if (width >= 1025) return 3;
+            if (width >= 768) return 2;
+            return 1;
+        }
+
+        function updateDisplay() {
+            const cards = document.querySelectorAll('.event-card');
+            const columns = getColumnsPerRow();
+            // è®¾ç½®loadedCountä»¥åå°±åºåºå­å¥
+            if (loadedCount < columns) loadedCount = columns;
+            cards.forEach((card, index) => {
+                if (index < loadedCount) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            // æ¯å¦è¦æ¾ç¤ºé¡ºåºå²å±
+            const container = document.getElementById('loadMoreContainer');
+            if (loadedCount < totalCards) {
+                container.classList.add('visible');
+                container.style.display = 'block';
+            } else {
+                container.classList.remove('visible');
+                container.style.display = 'none';
+            }
+        }
+
+        function loadMoreEvents() {
+                        loadedCount += 3;
+                        if (loadedCount > totalCards) loadedCount = totalCards;
+                        updateDisplay();
+                    }
+
+        // åå§åï¼å¯éè¿åå§åæ°æ®
+        document.addEventListener('DOMContentLoaded', function() {
+            loadedCount = 3;
+            updateDisplay();
+            window.addEventListener('resize', function() {
+                const newColumns = getColumnsPerRow();
+                if (loadedCount < newColumns) loadedCount = newColumns;
+                updateDisplay();
+            });
+            // å¯ä»¥åå¤çåå§åéè¦ä¿æå
+            initCarousel();
+            initPoster2Carousel();
+            initWechatSupport();
+        });
+    
+
+        // ================== åäº«åè½ ==================
+        const LIVEGIGS_URL = 'https://livegigsasia.com';
+
+        function generateTags(title, city, date, link, subtitle) {
+            const tags = [];
+            const fullText = (title + ' ' + (subtitle || '') + ' ' + city + ' ' + (date || '') + ' ' + (link || '')).toLowerCase();
+
+            // ä»æ é¢åå¯æ é¢æåå³é®è¯ä½ä¸ºTAG
+            const allText = title + ' ' + (subtitle || '');
+            const titleWords = allText.toLowerCase().split(/[\s\-'"]+/).filter(w => w.length >= 3);
+            const commonWords = new Set(['the', 'and', 'for', 'with', 'live', 'show', 'gig', 'band', 'new', 'year', 'party']);
+
+            titleWords.forEach(word => {
+                // è¿æ»¤æåªåå«ç¹æ®å­ç¬¦ææ°å­çè¯
+                const cleanWord = word.replace(/[^a-z0-9]/g, '');
+                if (cleanWord.length < 2) return;
+                if (commonWords.has(cleanWord)) return;
+
+                const capitalized = cleanWord.charAt(0).toUpperCase() + cleanWord.slice(1);
+                if (!tags.includes(capitalized)) {
+                    tags.push(capitalized);
+                }
+            });
+
+            // é³ä¹é£æ ¼æ ç­¾
+            const genreKeywords = {
+                'punk': 'Punk', 'metal': 'Metal', 'rock': 'Rock', 'hardcore': 'Hardcore',
+                'slam': 'SlamMetal', 'death': 'DeathMetal', 'black': 'BlackMetal',
+                'thrash': 'ThrashMetal', 'grind': 'Grindcore', 'crust': 'Crust',
+                'emo': 'Emo', 'indie': 'Indie', 'alternative': 'AltRock',
+                'post': 'PostRock', 'progressive': 'ProgRock', 'psychedelic': 'Psychedelic',
+                'stoner': 'Stoner', 'doom': 'DoomMetal', 'gothic': 'Gothic',
+                'industrial': 'Industrial', 'electronic': 'Electronic', 'synth': 'Synth',
+                'noise': 'Noise', 'experimental': 'Experimental', 'ambient': 'Ambient',
+                'jazz': 'Jazz', 'blues': 'Blues', 'folk': 'Folk', 'country': 'Country',
+                'reggae': 'Reggae', 'ska': 'Ska', 'funk': 'Funk', 'soul': 'Soul',
+                'hiphop': 'HipHop', 'rap': 'Rap', 'trap': 'Trap',
+                'edm': 'EDM', 'techno': 'Techno', 'house': 'House', 'trance': 'Trance',
+                'dubstep': 'Dubstep', 'drumnbass': 'DnB', 'garage': 'Garage', 'grime': 'Grime',
+                'grindcore': 'Grindcore', 'deathcore': 'Deathcore', 'metalcore': 'Metalcore',
+                'skatepunk': 'SkatePunk', 'streetpunk': 'StreetPunk', 'oipunk': 'Oi',
+                'anarchopunk': 'AnarchoPunk', 'crustpunk': 'CrustPunk',
+                'poppunk': 'PopPunk', 'melodichardcore': 'MelodicHardcore',
+                'folkmetal': 'FolkMetal', 'viking': 'VikingMetal', 'pagan': 'PaganMetal',
+                'powermetal': 'PowerMetal', 'speedmetal': 'SpeedMetal', 'glam': 'GlamMetal',
+                'nwobhm': 'NWOBHM', 'heavymetal': 'HeavyMetal', 'numetal': 'NuMetal',
+                'rapmetal': 'RapMetal', 'funkmetal': 'FunkMetal', 'altmetal': 'AltMetal',
+                'industrialmetal': 'IndustrialMetal', 'gothicmetal': 'GothicMetal',
+                'doommetal': 'DoomMetal', 'stonermetal': 'StonerMetal', 'sludge': 'Sludge',
+                'postmetal': 'PostMetal', 'avantgarde': 'AvantGarde', 'mathrock': 'MathRock',
+                'midwestemo': 'MidwestEmo', 'screamo': 'Screamo', 'skramz': 'Skramz',
+                'easycore': 'Easycore', 'positive': 'PositiveHardcore',
+                'youthcrew': 'YouthCrew', 'straightedge': 'StraightEdge',
+                'garagepunk': 'GaragePunk', 'psychobilly': 'Psychobilly', 'horrorpunk': 'HorrorPunk',
+                'deathrock': 'Deathrock', 'goth': 'Goth', 'darkwave': 'Darkwave',
+                'coldwave': 'Coldwave', 'minimal': 'Minimal', 'synthpunk': 'SynthPunk',
+                'electropunk': 'ElectroPunk', 'digital': 'DigitalHardcore', 'breakcore': 'Breakcore',
+                'jungle': 'Jungle', 'hardstyle': 'Hardstyle', 'hardcoretechno': 'HardcoreTechno',
+                'gabber': 'Gabber', 'speedcore': 'Speedcore', 'extratone': 'Extratone',
+                'industrialtechno': 'IndustrialTechno', 'ebm': 'EBM', 'darktechno': 'DarkTechno',
+                'acid': 'Acid', 'detroit': 'DetroitTechno', 'berlin': 'BerlinTechno',
+                'deep': 'DeepHouse', 'progressivehouse': 'ProgHouse', 'techhouse': 'TechHouse',
+                'ukgarage': 'UKGarage', 'bassline': 'Bassline', 'dub': 'Dub',
+                'reggaeton': 'Reggaeton', 'dancehall': 'Dancehall', 'soca': 'Soca',
+                'calypso': 'Calypso', 'zouk': 'Zouk', 'compas': 'Compas',
+                'afrobeat': 'Afrobeat', 'highlife': 'Highlife', 'juju': 'Juju',
+                'world': 'WorldMusic', 'ethnic': 'Ethnic', 'traditional': 'Traditional',
+                'celtic': 'Celtic', 'balkan': 'Balkan', 'klezmer': 'Klezmer',
+                'gypsy': 'GypsyPunk', 'flamenco': 'Flamenco', 'fado': 'Fado',
+                'tango': 'Tango', 'samba': 'Samba', 'bossanova': 'BossaNova',
+                'mpb': 'MPB', 'cumbia': 'Cumbia', 'salsa': 'Salsa', 'merengue': 'Merengue',
+                'bachata': 'Bachata', 'dembow': 'Dembow', 'moombahton': 'Moombahton',
+                'tribal': 'Tribal', 'guaracha': 'Guaracha', 'riddim': 'Riddim'
+            };
+
+            // æ´»å¨ç±»åæ ç­¾
+            const eventKeywords = {
+                'fest': 'Festival', 'festival': 'Festival', 'tour': 'Tour', 'show': 'LiveShow',
+                'gig': 'Gig', 'concert': 'Concert', 'party': 'Party', 'warmup': 'WarmUp',
+                'revival': 'Revival', 'reunion': 'Reunion', 'anniversary': 'Anniversary',
+                'benefit': 'Benefit', 'charity': 'Charity', 'release': 'ReleaseParty',
+                'album': 'AlbumRelease', 'ep': 'EPRelease', 'single': 'SingleRelease',
+                'premiere': 'Premiere', 'screening': 'Screening', 'exhibition': 'Exhibition',
+                'market': 'Market', 'fair': 'Fair', 'convention': 'Convention',
+                'conference': 'Conference', 'seminar': 'Seminar', 'workshop': 'Workshop',
+                'masterclass': 'Masterclass', 'competition': 'Competition', 'contest': 'Contest',
+                'battle': 'Battle', 'jam': 'JamSession', 'openmic': 'OpenMic',
+                'audition': 'Audition', 'casting': 'Casting', 'meetup': 'Meetup',
+                'gathering': 'Gathering', 'rally': 'Rally', 'protest': 'Protest',
+                'march': 'March', 'demonstration': 'Demonstration', 'fundraiser': 'Fundraiser',
+                'auction': 'Auction', 'sale': 'Sale', 'popup': 'PopUp', 'launch': 'Launch',
+                'opening': 'Opening', 'closing': 'Closing', 'finale': 'GrandFinale',
+                'ceremony': 'Ceremony', 'awards': 'Awards', 'nomination': 'Nomination',
+                'voting': 'Voting', 'election': 'Election', 'rave': 'Rave',
+                'warehouse': 'WarehouseParty', 'underground': 'Underground',
+                'secret': 'SecretParty', 'private': 'PrivateEvent', 'vip': 'VIP',
+                'exclusive': 'Exclusive', 'limited': 'Limited', 'special': 'SpecialEvent',
+                'annual': 'Annual', 'monthly': 'Monthly', 'weekly': 'Weekly', 'daily': 'Daily',
+                'seasonal': 'Seasonal', 'holiday': 'Holiday', 'christmas': 'Christmas',
+                'newyear': 'NewYear', 'halloween': 'Halloween', 'summer': 'Summer',
+                'winter': 'Winter', 'spring': 'Spring', 'fall': 'Fall', 'autumn': 'Autumn'
+            };
+
+            // å°åºæ ç­¾
+            const regionKeywords = {
+                'asia': 'Asia', 'china': 'China', 'hongkong': 'HongKong', 'hong kong': 'HongKong', 'taiwan': 'Taiwan',
+                'macau': 'Macau', 'japan': 'Japan', 'tokyo': 'Tokyo', 'osaka': 'Osaka', 'korea': 'Korea', 'seoul': 'Seoul',
+                'thailand': 'Thailand', 'bangkok': 'Bangkok', 'singapore': 'Singapore',
+                'malaysia': 'Malaysia', 'indonesia': 'Indonesia', 'philippines': 'Philippines',
+                'vietnam': 'Vietnam', 'cambodia': 'Cambodia', 'myanmar': 'Myanmar', 'laos': 'Laos',
+                'brunei': 'Brunei', 'india': 'India', 'nepal': 'Nepal', 'bangladesh': 'Bangladesh',
+                'srilanka': 'SriLanka', 'pakistan': 'Pakistan', 'australia': 'Australia',
+                'newzealand': 'NewZealand', 'usa': 'USA', 'uk': 'UK', 'europe': 'Europe',
+                'germany': 'Germany', 'france': 'France', 'italy': 'Italy', 'spain': 'Spain',
+                'netherlands': 'Netherlands', 'belgium': 'Belgium', 'switzerland': 'Switzerland',
+                'austria': 'Austria', 'sweden': 'Sweden', 'norway': 'Norway', 'denmark': 'Denmark',
+                'finland': 'Finland', 'poland': 'Poland', 'czech': 'Czech', 'hungary': 'Hungary',
+                'romania': 'Romania', 'bulgaria': 'Bulgaria', 'greece': 'Greece', 'turkey': 'Turkey',
+                'russia': 'Russia', 'ukraine': 'Ukraine', 'canada': 'Canada', 'mexico': 'Mexico',
+                'brazil': 'Brazil', 'argentina': 'Argentina', 'chile': 'Chile', 'peru': 'Peru',
+                'colombia': 'Colombia', 'venezuela': 'Venezuela', 'ecuador': 'Ecuador',
+                'bolivia': 'Bolivia', 'paraguay': 'Paraguay', 'uruguay': 'Uruguay',
+                'latin': 'LatinAmerica', 'southamerica': 'SouthAmerica', 'northamerica': 'NorthAmerica',
+                'centralamerica': 'CentralAmerica', 'caribbean': 'Caribbean', 'africa': 'Africa',
+                'middleeast': 'MiddleEast', 'dubai': 'Dubai', 'uae': 'UAE', 'qatar': 'Qatar',
+                'saudi': 'SaudiArabia', 'israel': 'Israel', 'iran': 'Iran', 'egypt': 'Egypt',
+                'morocco': 'Morocco', 'southafrica': 'SouthAfrica', 'nigeria': 'Nigeria', 'kenya': 'Kenya'
+            };
+
+            // æåæ ç­¾
+            Object.entries(genreKeywords).forEach(([keyword, tag]) => {
+                if (fullText.includes(keyword) && !tags.includes(tag)) {
+                    tags.push(tag);
+                }
+            });
+
+            Object.entries(eventKeywords).forEach(([keyword, tag]) => {
+                if (fullText.includes(keyword) && !tags.includes(tag)) {
+                    tags.push(tag);
+                }
+            });
+
+            Object.entries(regionKeywords).forEach(([keyword, tag]) => {
+                if (fullText.includes(keyword) && !tags.includes(tag)) {
+                    tags.push(tag);
+                }
+            });
+
+            // ç¡®ä¿æè¶³å¤æ°éçTAGï¼è³å°3ä¸ªï¼
+            if (tags.length === 0) tags.push('LiveMusic');
+            if (tags.length < 2) tags.push('LiveEvent');
+            if (tags.length < 3) tags.push('Concert');
+
+            // å§ç»æ·»å åçTAG
+            tags.push('LiveGigsAsia');
+
+            // éå¶æå¤æ¾ç¤º6ä¸ªTAG
+            return tags.slice(0, 6);
+        }
+
+        function openShareModal(title, city, date, image, link, subtitle) {
+            const modal = document.getElementById('shareModal');
+            const eventImg = document.getElementById('shareEventImg');
+            const eventName = document.getElementById('shareEventName');
+            const eventMeta = document.getElementById('shareEventMeta');
+            const eventTags = document.getElementById('shareEventTags');
+
+            eventImg.src = image;
+            eventImg.onerror = function() { this.src = './image/asia-asiaad.jpg'; };
+            eventName.textContent = title;
+            eventMeta.textContent = date + (city ? ' | ' + city : '');
+
+            const tags = generateTags(title, city, date, link);
+            eventTags.innerHTML = tags.map(tag => '<span class="share-tag">' + tag + '</span>').join('');
+
+            modal.dataset.title = title;
+            modal.dataset.city = city;
+            modal.dataset.date = date;
+            modal.dataset.image = image;
+            modal.dataset.link = link;
+
+            modal.classList.add('active');
+
+            // æ·»å ESCé®çå¬
+            document.addEventListener('keydown', handleShareModalKeydown);
+        }
+
+        
+
+        // ä¸è½½æµ·æ¥å°æ¬å°
+        async function downloadPoster() {
+            const modal = document.getElementById('shareModal');
+            const imageUrl = modal.dataset.image;
+            const title = modal.dataset.title || 'poster';
+
+            if (!imageUrl) {
+                alert('No poster image available');
+                return;
+            }
+
+            try {
+                // æ¾ç¤ºä¸è½½ä¸­æç¤º
+                const btn = document.getElementById('downloadPosterBtn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<span class="download-btn-text">DOWNLOADING...</span>';
+                btn.disabled = true;
+
+                // è·åå¾çblob
+                const response = await fetch(imageUrl, { mode: 'cors' });
+                if (!response.ok) throw new Error('Network response was not ok');
+
+                const blob = await response.blob();
+                const blobUrl = window.URL.createObjectURL(blob);
+
+                // åå»ºä¸è½½é¾æ¥
+                const link = document.createElement('a');
+                link.href = blobUrl;
+                link.download = title.replace(/[^a-z0-9]/gi, '_').toLowerCase() + '_poster.jpg';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                // æ¸ç
+                window.URL.revokeObjectURL(blobUrl);
+
+                // æ¢å¤æé®
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+
+                // æ¾ç¤ºæåæç¤º
+                showToast('Poster downloaded successfully!');
+            } catch (error) {
+                console.error('Download failed:', error);
+                // å¦æfetchå¤±è´¥ï¼å¯è½æ¯è·¨åé®é¢ï¼ï¼å°è¯ä½¿ç¨canvasæ¹æ³
+                tryCanvasDownload(imageUrl, title);
+            }
+        }
+
+        // ä½¿ç¨Canvasä½ä¸ºå¤éä¸è½½æ¹æ³
+        function tryCanvasDownload(imageUrl, title) {
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
+            img.onload = function() {
+                const canvas = document.createElement('canvas');
+                canvas.width = img.naturalWidth;
+                canvas.height = img.naturalHeight;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0);
+
+                try {
+                    canvas.toBlob(function(blob) {
+                        const blobUrl = window.URL.createObjectURL(blob);
+                        const link = document.createElement('a');
+                        link.href = blobUrl;
+                        link.download = title.replace(/[^a-z0-9]/gi, '_').toLowerCase() + '_poster.jpg';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        window.URL.revokeObjectURL(blobUrl);
+                        showToast('Poster downloaded successfully!');
+                    }, 'image/jpeg', 0.9);
+                } catch (e) {
+                    alert('Download failed. Please try right-clicking the image to save it manually.');
+                }
+
+                // æ¢å¤æé®
+                const btn = document.getElementById('downloadPosterBtn');
+                btn.innerHTML = '<svg class="download-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg><span class="download-btn-text">DOWNLOAD POSTER</span><span class="download-btn-subtext">Save to Device</span>';
+                btn.disabled = false;
+            };
+            img.onerror = function() {
+                alert('Cannot download this image due to cross-origin restrictions. Please try right-clicking the image to save it manually.');
+                const btn = document.getElementById('downloadPosterBtn');
+                btn.innerHTML = '<svg class="download-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg><span class="download-btn-text">DOWNLOAD POSTER</span><span class="download-btn-subtext">Save to Device</span>';
+                btn.disabled = false;
+            };
+            img.src = imageUrl;
+        }
+
+        // æ¾ç¤ºæç¤ºæ¶æ¯
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.style.cssText = 'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(139,0,0,0.9);color:#fff;padding:12px 24px;border-radius:4px;font-family:Impact,Haettenschweiler,Arial Narrow Bold,sans-serif;letter-spacing:1px;z-index:100002;animation:fadeInUp 0.3s ease;';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.animation = 'fadeOut 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // æ·»å å¨ç»æ ·å¼
+        const toastStyle = document.createElement('style');
+        toastStyle.textContent = '@keyframes fadeInUp { from { opacity:0; transform:translateX(-50%) translateY(20px); } to { opacity:1; transform:translateX(-50%) translateY(0); } } @keyframes fadeOut { from { opacity:1; } to { opacity:0; } }';
+        document.head.appendChild(toastStyle);
+    
+
+        function closeShareModal() {
+            document.getElementById('shareModal').classList.remove('active');
+            // ç§»é¤ESCé®çå¬
+            document.removeEventListener('keydown', handleShareModalKeydown);
+        }
+        // å¤çåäº«å¼¹çªé®çäºä»¶ï¼ESCå³é­ï¼
+        function handleShareModalKeydown(e) {
+            if (e.key === 'Escape' || e.keyCode === 27) {
+                closeShareModal();
+            }
+        }
+
+        // å¤çåäº«å¼¹çªç¹å»äºä»¶ï¼ç¹å»ç©ºç½åºåå³é­ï¼
+        
+        // å¤çå¾®ä¿¡å¼¹çªé®çäºä»¶ï¼ESCå³é­ï¼
+        function handleWechatModalKeydown(e) {
+            if (e.key === 'Escape' || e.keyCode === 27) {
+                closeWeChatQR();
+            }
+        }
+        // å¤çå¾®ä¿¡å¼¹çªç¹å»äºä»¶ï¼ç¹å»ç©ºç½åºåå³é­ï¼
+        function handleWechatModalClick(e) {
+            if (e.target === e.currentTarget) {
+                closeWeChatQR();
+            }
+        }
+
+function handleShareModalClick(e) {
+            // å¦æç¹å»çæ¯å¼¹çªèæ¯ï¼ä¸æ¯åå®¹åºåï¼ï¼åå³é­
+            if (e.target === e.currentTarget) {
+                closeShareModal();
+            }
+        }
+
+
+        function closeWeChatQR() {
+            document.getElementById('wechatQRModal').classList.remove('active');
+            // ç§»é¤ESCé®çå¬
+            document.removeEventListener('keydown', handleWechatModalKeydown);
+        }
+
+        function shareToPlatform(platform) {
+            const modal = document.getElementById('shareModal');
+            const title = modal.dataset.title || '';
+            const city = modal.dataset.city || '';
+            const date = modal.dataset.date || '';
+            const image = modal.dataset.image || '';
+            const link = modal.dataset.link || '';
+
+            const tags = generateTags(title, city, date, link);
+            const tagsStr = tags.map(function(t) { return '#' + t; }).join(' ');
+
+            // æå»ºåäº«ææ¬ï¼åå«ææä¿¡æ¯
+            let shareText = title;
+            if (city) shareText += ' - ' + city;
+            if (date) shareText += ' (' + date + ')';
+            shareText += '\n\n' + tagsStr;
+            if (image) shareText += '\n\nPoster: ' + image;
+            shareText += '\n\nCheck out more events at ' + LIVEGIGS_URL;
+            if (link) shareText += '\nEvent link: ' + link;
+
+            const shareUrl = encodeURIComponent(LIVEGIGS_URL);
+            const encodedText = encodeURIComponent(shareText);
+            const encodedTitle = encodeURIComponent(title);
+            const encodedTags = encodeURIComponent(tagsStr);
+
+            let url = '';
+
+            switch(platform) {
+                case 'facebook':
+                    // Facebookåäº« - åªåäº«tagsï¼æ æå­æè¿°
+                    url = 'https://www.facebook.com/sharer/sharer.php?u=' + shareUrl + '&quote=' + encodedTags;
+                    window.open(url, '_blank', 'width=600,height=400');
+                    break;
+
+                case 'instagram':
+                    // Instagramæ²¡æç´æ¥åäº«URLï¼å¤å¶åå®¹å°åªè´´æ¿
+                    copyToClipboard(shareText);
+                    alert('Content copied to clipboard!\n\nPlease open Instagram app and paste to share.\n\nContent includes:\n- Event title, city, date\n- Tags\n- Poster image URL\n- LiveGigs link');
+                    break;
+
+                case 'whatsapp':
+                    // æ£æµç§»å¨è®¾å¤å¹¶ä½¿ç¨éå½çåäº«æ¹å¼
+                    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+                    if (isMobile) {
+                        // ç§»å¨ç«¯ä½¿ç¨whatsapp://åè®®
+                        url = 'whatsapp://send?text=' + encodedText;
+                        window.location.href = url;
+                        // å¦æåè®®æ æ³æå¼ï¼3ç§åå°è¯webçæ¬
+                        setTimeout(function() {
+                            window.open('https://wa.me/?text=' + encodedText, '_blank');
+                        }, 3000);
+                    } else {
+                        // æ¡é¢ç«¯ä½¿ç¨webçæ¬
+                        url = 'https://wa.me/?text=' + encodedText;
+                        window.open(url, '_blank');
+                    }
+                    break;
+
+                case 'reddit':
+                    url = 'https://reddit.com/submit?url=' + shareUrl + '&title=' + encodedTitle;
+                    window.open(url, '_blank', 'width=600,height=400');
+                    break;
+
+                case 'telegram':
+                    url = 'https://t.me/share/url?url=' + shareUrl + '&text=' + encodedText;
+                    window.open(url, '_blank');
+                    break;
+
+                case 'line':
+                    url = 'https://social-plugins.line.me/lineit/share?url=' + shareUrl;
+                    window.open(url, '_blank');
+                    break;
+
+                case 'wechat-friend':
+                case 'wechat-moments':
+                    handleWeChatShare(shareText, image);
+                    break;
+            }
+
+            closeShareModal();
+        }
+
+        function handleWeChatShare(text, image) {
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            const isWeChat = /MicroMessenger/i.test(navigator.userAgent);
+
+            // åå¤åäº«åå®¹
+            let shareContent = text;
+            if (image && !text.includes(image)) {
+                shareContent += '\n\nPoster: ' + image;
+            }
+
+            if (isWeChat) {
+                // å·²ç»å¨å¾®ä¿¡åï¼æç¤ºç¨æ·ä½¿ç¨å¾®ä¿¡åçåäº«
+                copyToClipboard(shareContent);
+                alert('You are in WeChat!\n\nContent copied to clipboard.\nPlease use WeChat\'s native share button (top right menu) to share this event.\n\nContent includes event details and poster image URL.');
+            } else if (isMobile) {
+                // ç§»å¨ç«¯ä½ä¸å¨å¾®ä¿¡å
+                copyToClipboard(shareContent);
+
+                // å°è¯æå¼å¾®ä¿¡
+                const wechatUrl = 'weixin://';
+                window.location.href = wechatUrl;
+
+                setTimeout(function() {
+                    alert('Content copied to clipboard!\n\nIf WeChat didn\'t open automatically, please:\n1. Open WeChat app manually\n2. Paste the copied content to share\n\nContent includes event details and poster image URL.');
+                }, 1000);
+            } else {
+                // æ¡é¢ç«¯ - ä½¿ç¨Google Chart APIçæçæ­£çäºç»´ç 
+                copyToClipboard(shareContent);
+
+                // æ´æ°æç¤ºææ¬
+                const qrModal = document.getElementById('wechatQRModal');
+                const qrHint = qrModal.querySelector('.wechat-qr-hint');
+                if (qrHint) {
+                    qrHint.innerHTML = 'Content copied to clipboard!<br>Open WeChat on your phone and paste to share.<br><br>Content includes: Event details, tags, and poster image URL.';
+                }
+
+                // çæäºç»´ç 
+                generateWeChatQR(shareContent);
+
+                qrModal.classList.add('active');
+            }
+        }
+
+        // çæå¾®ä¿¡åäº«äºç»´ç 
+        function generateWeChatQR(content) {
+            const qrContainer = document.getElementById('wechatQRCode');
+            if (!qrContainer) return;
+
+            // æ¸ç©ºå®¹å¨
+            qrContainer.innerHTML = '';
+
+            // ä½¿ç¨Google Chart APIçæäºç»´ç 
+            const qrUrl = 'https://chart.googleapis.com/chart?cht=qr&chs=200x200&chld=M|0&chl=' + encodeURIComponent(content);
+
+            // åå»ºäºç»´ç å¾ç
+            const qrImg = document.createElement('img');
+            qrImg.src = qrUrl;
+            qrImg.alt = 'WeChat Share QR Code';
+            qrImg.style.width = '150px';
+            qrImg.style.height = '150px';
+            qrImg.style.display = 'block';
+            qrImg.style.margin = '0 auto';
+
+            qrContainer.appendChild(qrImg);
+        }
+
+        function copyToClipboard(text) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).catch(function() {
+                    fallbackCopy(text);
+                });
+            } else {
+                fallbackCopy(text);
+            }
+        }
+
+        function fallbackCopy(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+        }
+
+        // ç¹å»å¼¹çªå¤é¨å³é­
+        document.getElementById('shareModal').addEventListener('click', function(e) {
+            if (e.target === this) closeShareModal();
+        });
+
+        document.getElementById('wechatQRModal').addEventListener('click', function(e) {
+            if (e.target === this) closeWeChatQR();
+        });
+
+
+        // ==================== UPLOAD EVENT FUNCTIONALITY v8.8.1 ====================
+        const UPLOAD_CONFIG = {
+            JSONBIN_API_KEY: '$2a$10$ofWRSuJ8qjrj6o34QoWnluloMBnnF56eGV.8NpTqbsM5HWDkl.Fky',
+            JSONBIN_BIN_ID: '699aad32ae596e708f3ea2ae'
+        };
+
+        
+
+        
+// Upload Event Functions v8.8.1
+let currentUploadType = '';
+let currentPackage = 0;
+let formDataCache = {};
+
+
+
+
+
+// ç§»å¨ç«¯è¾å¥ä¼å - è¾å¥æ¶æ¾å¤§ï¼å¤±ç¦æ¶æ¢å¤
+function setupMobileInputOptimization() {
+    const modal = document.getElementById('uploadEventModal');
+    const inputs = modal.querySelectorAll('input, textarea');
+
+    inputs.forEach(input => {
+        input.addEventListener('focus', function() {
+            if (window.innerWidth <= 768) {
+                modal.classList.add('input-focused');
+            }
+        });
+
+        input.addEventListener('blur', function() {
+            if (window.innerWidth <= 768) {
+                setTimeout(() => {
+                    modal.classList.remove('input-focused');
+                }, 300);
+            }
+        });
+    });
+}
+
+document.addEventListener('DOMContentLoaded', setupMobileInputOptimization);
+
+// ESC key to close modal
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        const modal = document.getElementById('uploadEventModal');
+        if (modal && modal.style.display === 'flex') {
+            closeUploadModal();
+        }
+    }
+});
+
+function saveFormData() {
+    const form = document.getElementById('uploadForm');
+    if (form) {
+        const inputs = form.querySelectorAll('input');
+        inputs.forEach(input => {
+            if (input.name) {
+                formDataCache[input.name] = input.value;
+            }
+        });
+    }
+}
+
+function restoreFormData() {
+    const form = document.getElementById('uploadForm');
+    if (form) {
+        const inputs = form.querySelectorAll('input');
+        inputs.forEach(input => {
+            if (input.name && formDataCache[input.name]) {
+                input.value = formDataCache[input.name];
+            }
+        });
+    }
+}
+
+ else {
+        currentPackage = type === 'managed' ? 18 : 28;
+        document.getElementById('uploadPackage').value = currentPackage;
+        document.getElementById('paymentAmount').textContent = currentPackage;
+        document.getElementById('uploadStep1').style.display = 'none';
+        document.getElementById('uploadStep3').style.display = 'block';
+        showFields(type);
+    }
+}
+
+function selectPackage(price) {
+    currentPackage = price;
+    document.getElementById('uploadPackage').value = price;
+    document.getElementById('paymentAmount').textContent = price;
+    document.getElementById('uploadStep2').style.display = 'none';
+    document.getElementById('uploadStep3').style.display = 'block';
+    showFields('carousel');
+}
+
+function showFields(type) {
+    document.getElementById('carouselFields').style.display = 'none';
+    document.getElementById('managedFields').style.display = 'none';
+    document.getElementById('poster1Fields').style.display = 'none';
+
+    if (type === 'carousel') {
+        document.getElementById('carouselFields').style.display = 'block';
+    } else if (type === 'managed') {
+        document.getElementById('managedFields').style.display = 'block';
+    } else if (type === 'poster1') {
+        document.getElementById('poster1Fields').style.display = 'block';
+    }
+}
+
+function goBackToStep1() {
+    document.getElementById('uploadStep2').style.display = 'none';
+    document.getElementById('uploadStep1').style.display = 'block';
+}
+
+function goBackToStep2() {
+    document.getElementById('uploadStep3').style.display = 'none';
+    if (currentUploadType === 'carousel') {
+        document.getElementById('uploadStep2').style.display = 'block';
+    } else {
+        document.getElementById('uploadStep1').style.display = 'block';
+    }
+}
+
+function goBackToStep3() {
+    document.getElementById('uploadStep4').style.display = 'none';
+    document.getElementById('uploadStep3').style.display = 'block';
+}
+
+function goToStep4() {
+    document.getElementById('uploadStep3').style.display = 'none';
+    document.getElementById('uploadStep4').style.display = 'block';
+}
+
+async function submitUpload(e) {
+    e.preventDefault();
+
+    const form = e.target;
+    const formData = new FormData(form);
+    const data = {};
+    formData.forEach((value, key) => {
+        data[key] = value;
+    });
+
+    data.timestamp = new Date().toISOString();
+    data.status = 'pending';
+    data.id = 'upload_' + Date.now();
+
+    try {
+        const response = await fetch('https://api.jsonbin.io/v3/b/699aad32ae596e708f3ea2ae', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Master-Key': '$2a$10$ofWRSuJ8qjrj6o34QoWnluloMBnnF56eGV.8NpTqbsM5HWDkl.Fky'
+            },
+            body: JSON.stringify({
+                uploads: [...(await getExistingUploads()), data]
+            })
+        });
+
+        if (response.ok) {
+            alert('Upload submitted successfully! We will review your event soon.');
+            closeUploadModal();
+            form.reset();
+            formDataCache = {};
+            document.getElementById('uploadStep4').style.display = 'none';
+            document.getElementById('uploadStep1').style.display = 'block';
+        } else {
+            throw new Error('Failed to submit');
+        }
+    } catch (error) {
+        console.error('Upload error:', error);
+        alert('Submission failed. Please try again or contact support.');
+    }
+}
+
+async function getExistingUploads() {
+    try {
+        const response = await fetch('https://api.jsonbin.io/v3/b/699aad32ae596e708f3ea2ae/latest', {
+            headers: {
+                'X-Master-Key': '$2a$10$ofWRSuJ8qjrj6o34QoWnluloMBnnF56eGV.8NpTqbsM5HWDkl.Fky'
+            }
+        });
+        if (response.ok) {
+            const result = await response.json();
+            return result.record.uploads || [];
+        }
+    } catch (e) {
+        console.error('Error fetching uploads:', e);
+    }
+    return [];
+}
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        const modal = document.getElementById('uploadEventModal');
+        if (modal && modal.style.display === 'flex') {
+            closeUploadModal();
+        }
+    }
+});
+
+document.addEventListener('click', function(e) {
+    const modal = document.getElementById('uploadEventModal');
+    if (modal && modal.style.display === 'flex' && e.target === modal) {
+        closeUploadModal();
+    }
+});
+
+        // Upload Modal Functions
+        
+
+        
+
+        
+
+        // Submit Event Upload to jsonbin.io
+        async function submitEventUpload() {
+            const CONFIG = {
+                JSONBIN_API_KEY: '$2a$10$ofWRSuJ8qjrj6o34QoWnluloMBnnF56eGV.8NpTqbsM5HWDkl.Fky',
+                JSONBIN_BIN_ID: '699aad32ae596e708f3ea2ae'
+            };
+
+            const data = {
+                id: Date.now().toString(36) + Math.random().toString(36).substr(2, 9),
+                eventType: 'managed',
+                packageType: document.getElementById('uploadPackageType').value,
+                title: document.getElementById('uploadTitle').value,
+                subtitle: document.getElementById('uploadSubtitle').value,
+                startDate: document.getElementById('uploadStartDate').value,
+                endDate: document.getElementById('uploadEndDate').value,
+                city: document.getElementById('uploadCity').value,
+                image: document.getElementById('uploadImage').value,
+                link: document.getElementById('uploadLink').value,
+                btn_text: document.getElementById('uploadBtnText').value || 'View Details',
+                paymentId: document.getElementById('uploadPaymentId').value,
+                notes: document.getElementById('uploadNotes').value,
+                submittedAt: new Date().toISOString(),
+                status: 'pending'
+            };
+
+            if (!data.title || !data.startDate || !data.city || !data.image) {
+                document.getElementById('uploadError').textContent = 'â Please fill in all required fields (*)';
+                document.getElementById('uploadError').style.display = 'block';
+                return;
+            }
+
+            const submitBtn = document.querySelector('.upload-btn-submit');
+            submitBtn.innerHTML = 'Submitting...';
+            submitBtn.disabled = true;
+
+            try {
+                const getResponse = await fetch(`https://api.jsonbin.io/v3/b/${CONFIG.JSONBIN_BIN_ID}/latest`, {
+                    headers: { 'X-Access-Key': CONFIG.JSONBIN_API_KEY }
+                });
+
+                let existingData = { uploads: [] };
+                if (getResponse.ok) {
+                    const result = await getResponse.json();
+                    existingData = result.record || { uploads: [] };
+                }
+
+                if (!existingData.uploads) existingData.uploads = [];
+                existingData.uploads.push(data);
+
+                const response = await fetch(`https://api.jsonbin.io/v3/b/${CONFIG.JSONBIN_BIN_ID}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Access-Key': CONFIG.JSONBIN_API_KEY
+                    },
+                    body: JSON.stringify(existingData)
+                });
+
+                if (!response.ok) throw new Error('Upload failed');
+
+                document.getElementById('uploadSuccess').style.display = 'block';
+                document.getElementById('uploadError').style.display = 'none';
+
+                setTimeout(() => {
+                    document.getElementById('eventUploadForm').reset();
+                    closeUploadModal();
+                    document.getElementById('uploadSuccess').style.display = 'none';
+                    submitBtn.innerHTML = 'SUBMIT FOR REVIEW';
+                    submitBtn.disabled = false;
+                }, 2000);
+
+            } catch (error) {
+                document.getElementById('uploadError').textContent = 'â ' + error.message;
+                document.getElementById('uploadError').style.display = 'block';
+                submitBtn.innerHTML = 'SUBMIT FOR REVIEW';
+                submitBtn.disabled = false;
+            }
+        }
+
+        // Close modal on outside click
+        document.getElementById('uploadModal').addEventListener('click', function(e) {
+            if (e.target === this) closeUploadModal();
+        });
+
+</script>
+    <!-- Upload Event Modal -->
+    <div class="upload-modal" id="uploadModal">
+        <div class="upload-modal-content">
+            <button class="upload-modal-close" onclick="closeUploadModal()">&times;</button>
             <h2 class="upload-modal-title">ð¸ UPLOAD EVENT</h2>
 
             <div class="package-selection">
@@ -1362,7 +3564,7 @@
                     <textarea id="uploadNotes" rows="3" placeholder="Any additional information..."></textarea>
                 </div>
 
-                <button class="load-more-btn" onclick="openUploadModal()">UPLOAD EVENT</button>
+                <button type="button" class="upload-btn-submit" onclick="submitEventUpload()">SUBMIT FOR REVIEW</button>
             </form>
 
             <div class="upload-success" id="uploadSuccess">
@@ -1375,24 +3577,20 @@
     </div>
 
 
-<!-- Upload Event Modal (iframe方案) -->
-<div id="uploadModal" onclick="if(event.target === this) closeUploadModal()">
-    <div>
-        <button onclick="closeUploadModal()" style="position:absolute; top:10px; right:15px; background:none; border:none; color:#fff; font-size:24px; cursor:pointer; z-index:10;">&times;</button>
-        <iframe src="./upload-event-form.html"></iframe>
-    </div>
+<!-- Upload Event Modal -->
+<div id="uploadModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:10000; justify-content:center; align-items:center;">
+  <div style="position:relative; width:90%; height:90%; max-width:800px; background:#1a1a1a; border:2px solid #8b0000; border-radius:8px; overflow:hidden;">
+    <button onclick="closeUploadModal()" style="position:absolute; top:10px; right:15px; background:none; border:none; color:#fff; font-size:24px; cursor:pointer; z-index:10;">&times;</button>
+    <iframe src="./upload-event-form.html" style="width:100%; height:100%; border:none;"></iframe>
+  </div>
 </div>
 <script>
-// Upload Event Modal Functions (iframe方案)
-function openUploadModal() { 
-    var modal = document.getElementById('uploadModal'); 
-    if(modal) modal.style.display = 'flex'; 
-}
-function closeUploadModal() { 
-    var modal = document.getElementById('uploadModal'); 
-    if(modal) modal.style.display = 'none'; 
-}
-// ESC键关闭
+function openUploadModal() { document.getElementById('uploadModal').style.display = 'flex'; }
+function closeUploadModal() { document.getElementById('uploadModal').style.display = 'none'; }
+document.addEventListener('click', function(e) { 
+    const modal = document.getElementById('uploadModal'); 
+    if (e.target === modal) closeUploadModal(); 
+});
 document.addEventListener('keydown', function(e) { 
     if (e.key === 'Escape') closeUploadModal(); 
 });
