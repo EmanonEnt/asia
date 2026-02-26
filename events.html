@@ -2548,12 +2548,14 @@
         }
 
         function openModal() { 
-            document.getElementById('membershipModal').classList.add('active'); 
+            var modal = document.getElementById('membershipModal');
+            if (modal) modal.classList.add('active');.classList.add('active'); 
             document.body.style.overflow = 'hidden'; 
         }
 
         function closeModal() { 
-            document.getElementById('membershipModal').classList.remove('active'); 
+            var modal = document.getElementById('membershipModal');
+            if (modal) modal.classList.remove('active');.classList.remove('active'); 
             document.body.style.overflow = 'auto'; 
         }
 
@@ -2645,10 +2647,10 @@
         }
 
         function loadMoreEvents() {
-                        loadedCount += 3;
-                        if (loadedCount > totalCards) loadedCount = totalCards;
-                        updateDisplay();
-                    }
+            loadedCount += 3;
+            if (loadedCount > totalCards) loadedCount = totalCards;
+            updateDisplay();
+        }
 
         // åå§åï¼å¯éè¿åå§åæ°æ®
         document.addEventListener('DOMContentLoaded', function() {
@@ -3516,12 +3518,18 @@ document.addEventListener('keydown', function(e) {
     <button onclick="closeUploadModal()" style="position:absolute; top:10px; right:15px; background:none; border:none; color:#fff; font-size:24px; cursor:pointer; z-index:10;">&times;</button>
     <iframe src="./upload-event-form.html" style="width:100%; height:100%; border:none;"></iframe>
   </div>
-</div>
-<script>
-function openUploadModal() { document.getElementById('uploadModal').style.display = 'flex'; }
-function closeUploadModal() { document.getElementById('uploadModal').style.display = 'none'; }
+</div><script>
+function openUploadModal() { 
+    var modal = document.getElementById('uploadModal'); 
+    if (modal) modal.style.display = 'flex'; 
+    else alert('Upload form not found. Please check if upload-event-form.html exists.');
+}
+function closeUploadModal() { 
+    var modal = document.getElementById('uploadModal'); 
+    if (modal) modal.style.display = 'none'; 
+}
 document.addEventListener('click', function(e) { 
-    const modal = document.getElementById('uploadModal'); 
+    var modal = document.getElementById('uploadModal'); 
     if (e.target === modal) closeUploadModal(); 
 });
 document.addEventListener('keydown', function(e) { 
