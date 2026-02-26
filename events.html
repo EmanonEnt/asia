@@ -639,7 +639,6 @@
             opacity: 1 !important;
         }
 
-    
         /* æ»æ­æµ·æ¥åºå - æ°æ ·å¼ */
         .carousel-actions {
             position: absolute;
@@ -978,7 +977,6 @@
             }
         }
 
-
         /* ä¸è½½æé®æ ·å¼ */
         .download-btn {
             display: flex;
@@ -1095,7 +1093,6 @@
             z-index: 1000 !important;
         }
 
-
         /* ç§»å¨ç«¯ UPLOAD EVENT å LOAD MORE æé®æ ·å¼ç»ä¸ */
         @media (max-width: 768px) {
             .upload-event-btn,
@@ -1115,7 +1112,7 @@
         }
 
         /* Upload Modal Styles */
-        
+        .upload-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); z-index: 10000; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(5px); }
         .upload-modal.active { display: flex; }
         .upload-modal-content { background: linear-gradient(135deg, #1a1a2e 0%, #0d0d1a 100%); border: 2px solid var(--dark-red); border-radius: 16px; padding: 30px; max-width: 800px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; box-shadow: 0 0 60px rgba(139, 0, 0, 0.5); }
         .upload-modal-close { position: absolute; top: 15px; right: 20px; background: none; border: none; color: #fff; font-size: 28px; cursor: pointer; transition: all 0.3s; }
@@ -1370,7 +1367,6 @@
                     </div>
                 </div>
 
-
             </div>
 
             <div class="load-more-container visible" id="loadMoreContainer">
@@ -1394,7 +1390,6 @@
         <div class="load-more-container visible" id="uploadEventContainer" style="background: var(--black); padding-bottom: 60px;">
             <button class="load-more-btn" onclick="openUploadModal()">UPLOAD EVENT</button>
         </div>
-
 
         <section class="posters-showcase" style="margin-top: 40px;">
             <div class="posters-container">
@@ -1498,8 +1493,6 @@
         </div>
     </div>
 
-    
-
     <!-- Share Modal -->
     <div class="share-modal" id="shareModal" onclick="handleShareModalClick(event)">
         <div class="share-modal-content">
@@ -1595,10 +1588,6 @@
             <button class="wechat-qr-close" onclick="closeWeChatQR()">Got it</button>
         </div>
     </div>
-
-    <!-- Upload Event Modal -->
-
-        </div>
 
         <!-- Step 2: Select Package (for carousel only) -->
         <div id="uploadStep2" class="upload-step" style="display:none;">
@@ -1766,11 +1755,6 @@
         </div>
     </div>
 </div>
-
-
-    <!-- Upload Event Modal -->
-
-        </div>
 
         <!-- Step 2: Select Package (for carousel only) -->
         <div id="uploadStep2" class="upload-step" style="display:none;">
@@ -2548,14 +2532,12 @@
         }
 
         function openModal() { 
-            var modal = document.getElementById('membershipModal');
-            if (modal) modal.classList.add('active');.classList.add('active'); 
+            document.getElementById('membershipModal').classList.add('active'); 
             document.body.style.overflow = 'hidden'; 
         }
 
         function closeModal() { 
-            var modal = document.getElementById('membershipModal');
-            if (modal) modal.classList.remove('active');.classList.remove('active'); 
+            document.getElementById('membershipModal').classList.remove('active'); 
             document.body.style.overflow = 'auto'; 
         }
 
@@ -2647,10 +2629,10 @@
         }
 
         function loadMoreEvents() {
-            loadedCount += 3;
-            if (loadedCount > totalCards) loadedCount = totalCards;
-            updateDisplay();
-        }
+                        loadedCount += 3;
+                        if (loadedCount > totalCards) loadedCount = totalCards;
+                        updateDisplay();
+                    }
 
         // åå§åï¼å¯éè¿åå§åæ°æ®
         document.addEventListener('DOMContentLoaded', function() {
@@ -2666,7 +2648,6 @@
             initPoster2Carousel();
             initWechatSupport();
         });
-    
 
         // ================== åäº«åè½ ==================
         const LIVEGIGS_URL = 'https://livegigsasia.com';
@@ -2855,8 +2836,6 @@
             document.addEventListener('keydown', handleShareModalKeydown);
         }
 
-        
-
         // ä¸è½½æµ·æ¥å°æ¬å°
         async function downloadPoster() {
             const modal = document.getElementById('shareModal');
@@ -2963,7 +2942,6 @@
         const toastStyle = document.createElement('style');
         toastStyle.textContent = '@keyframes fadeInUp { from { opacity:0; transform:translateX(-50%) translateY(20px); } to { opacity:1; transform:translateX(-50%) translateY(0); } } @keyframes fadeOut { from { opacity:1; } to { opacity:0; } }';
         document.head.appendChild(toastStyle);
-    
 
         function closeShareModal() {
             document.getElementById('shareModal').classList.remove('active');
@@ -2998,7 +2976,6 @@ function handleShareModalClick(e) {
                 closeShareModal();
             }
         }
-
 
         function closeWeChatQR() {
             document.getElementById('wechatQRModal').classList.remove('active');
@@ -3184,24 +3161,18 @@ function handleShareModalClick(e) {
             if (e.target === this) closeWeChatQR();
         });
 
-
         // ==================== UPLOAD EVENT FUNCTIONALITY v8.8.1 ====================
         const UPLOAD_CONFIG = {
             JSONBIN_API_KEY: '$2a$10$ofWRSuJ8qjrj6o34QoWnluloMBnnF56eGV.8NpTqbsM5HWDkl.Fky',
             JSONBIN_BIN_ID: '699aad32ae596e708f3ea2ae'
         };
 
-        
+        let selectedUploadPackage = null;
 
-        
 // Upload Event Functions v8.8.1
 let currentUploadType = '';
 let currentPackage = 0;
 let formDataCache = {};
-
-
-
-
 
 // ç§»å¨ç«¯è¾å¥ä¼å - è¾å¥æ¶æ¾å¤§ï¼å¤±ç¦æ¶æ¢å¤
 function setupMobileInputOptimization() {
@@ -3261,7 +3232,14 @@ function restoreFormData() {
     }
 }
 
- else {
+function selectUploadType(type) {
+    currentUploadType = type;
+    document.getElementById('uploadType').value = type;
+
+    if (type === 'carousel') {
+        document.getElementById('uploadStep1').style.display = 'none';
+        document.getElementById('uploadStep2').style.display = 'block';
+    } else {
         currentPackage = type === 'managed' ? 18 : 28;
         document.getElementById('uploadPackage').value = currentPackage;
         document.getElementById('paymentAmount').textContent = currentPackage;
@@ -3394,11 +3372,12 @@ document.addEventListener('click', function(e) {
 });
 
         // Upload Modal Functions
-        
 
-        
-
-        
+        function selectUploadPackage(element) {
+            document.querySelectorAll('.package-card').forEach(card => card.classList.remove('selected'));
+            element.classList.add('selected');
+            document.getElementById('uploadPackageType').value = element.dataset.package;
+        }
 
         // Submit Event Upload to jsonbin.io
         async function submitEventUpload() {
@@ -3485,51 +3464,20 @@ document.addEventListener('click', function(e) {
         });
 
 </script>
-    <!-- Upload Event Modal -->
-<!-- iframe Upload Event Modal -->
-<div id="uploadEventIframeModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10000; justify-content: center; align-items: center;">
-    <div style="position: relative; width: 90%; max-width: 850px; height: 90vh; background: #1a1a1a; border: 2px solid #8b0000; border-radius: 8px; overflow: hidden;">
-        <button onclick="closeUploadEventIframe()" style="position: absolute; top: 10px; right: 15px; background: none; border: none; color: #fff; font-size: 28px; cursor: pointer; z-index: 10001;">&times;</button>
-        <iframe id="uploadEventIframe" src="" style="width: 100%; height: 100%; border: none;"></iframe>
-    </div>
-</div>
-<script>
-function openUploadEventIframe() {
-    document.getElementById('uploadEventIframe').src = './upload-event-form.html';
-    document.getElementById('uploadEventIframeModal').style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-}
-function closeUploadEventIframe() {
-    document.getElementById('uploadEventIframeModal').style.display = 'none';
-    document.getElementById('uploadEventIframe').src = '';
-    document.body.style.overflow = 'auto';
-}
-document.getElementById('uploadEventIframeModal').addEventListener('click', function(e) {
-    if (e.target === this) closeUploadEventIframe();
-});
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') closeUploadEventIframe();
-});
-</script>
-
+    
+    
 <!-- Upload Event Modal -->
 <div id="uploadModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:10000; justify-content:center; align-items:center;">
   <div style="position:relative; width:90%; height:90%; max-width:800px; background:#1a1a1a; border:2px solid #8b0000; border-radius:8px; overflow:hidden;">
     <button onclick="closeUploadModal()" style="position:absolute; top:10px; right:15px; background:none; border:none; color:#fff; font-size:24px; cursor:pointer; z-index:10;">&times;</button>
     <iframe src="./upload-event-form.html" style="width:100%; height:100%; border:none;"></iframe>
   </div>
-</div><script>
-function openUploadModal() { 
-    var modal = document.getElementById('uploadModal'); 
-    if (modal) modal.style.display = 'flex'; 
-    else alert('Upload form not found. Please check if upload-event-form.html exists.');
-}
-function closeUploadModal() { 
-    var modal = document.getElementById('uploadModal'); 
-    if (modal) modal.style.display = 'none'; 
-}
+</div>
+<script>
+function openUploadModal() { document.getElementById('uploadModal').style.display = 'flex'; }
+function closeUploadModal() { document.getElementById('uploadModal').style.display = 'none'; }
 document.addEventListener('click', function(e) { 
-    var modal = document.getElementById('uploadModal'); 
+    const modal = document.getElementById('uploadModal'); 
     if (e.target === modal) closeUploadModal(); 
 });
 document.addEventListener('keydown', function(e) { 
