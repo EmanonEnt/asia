@@ -1395,9 +1395,7 @@
 
         <!-- UPLOAD EVENT Button -->
         <div class="load-more-container visible" id="uploadEventContainer" style="background: var(--black); padding-bottom: 60px;">
-            <button onclick="openUploadModal()" style="padding: 15px 40px; background: rgba(139, 0, 0, 0.3); color: white; border: 2px solid #8b0000; border-radius: 4px; cursor: pointer; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 3px; transition: all 0.4s ease; font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; position: relative; overflow: hidden;" onmouseover="this.style.background='#8b0000';this.style.boxShadow='0 0 30px rgba(139, 0, 0, 0.8), 0 0 60px rgba(139, 0, 0, 0.4)';this.style.transform='scale(1.05)';this.style.letterSpacing='4px';" onmouseout="this.style.background='rgba(139, 0, 0, 0.3)';this.style.boxShadow='none';this.style.transform='scale(1)';this.style.letterSpacing='3px';">
-                UPLOAD EVENT
-            </button>
+            <button onclick="openUploadModal()">UPLOAD EVENT</button>
         </div>
 
 
@@ -1601,31 +1599,7 @@
         </div>
     </div>
 
-    <!-- Upload Event Modal -->
-<div class="modal-overlay" id="uploadEventModal" style="display: none;" onclick="if(event.target === this) closeUploadModal()">
-    <div class="modal-content upload-modal" style="max-width: 600px;">
-        <span class="modal-close" onclick="closeUploadModal()">&times;</span>
-        <h2>UPLOAD EVENT</h2>
-        <p id="uploadStepDesc">Select your event type and package</p>
-
-        <!-- Step 1: Select Type -->
-        <div id="uploadStep1" class="upload-step">
-            <h3 style="color: #fff; font-size: 16px; margin-bottom: 20px; text-align: center; letter-spacing: 2px;">SELECT TYPE</h3>
-            <div class="type-buttons" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 20px 0;">
-                <button class="type-btn" onclick="selectUploadType('carousel')" style="background: rgba(139, 0, 0, 0.2); border: 2px solid #8b0000; border-radius: 8px; padding: 20px 10px; cursor: pointer; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                    <span class="type-name" style="font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 16px; color: #fff; letter-spacing: 1px;">CAROUSEL</span>
-                    <span class="type-price" style="font-size: 14px; color: #c0c0c0;">CNY 1/8/10</span>
-                </button>
-                <button class="type-btn" onclick="selectUploadType('managed')" style="background: rgba(139, 0, 0, 0.2); border: 2px solid #8b0000; border-radius: 8px; padding: 20px 10px; cursor: pointer; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                    <span class="type-name" style="font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 16px; color: #fff; letter-spacing: 1px;">MANAGED</span>
-                    <span class="type-price" style="font-size: 14px; color: #c0c0c0;">CNY 18</span>
-                </button>
-                <button class="type-btn" onclick="selectUploadType('poster1')" style="background: rgba(139, 0, 0, 0.2); border: 2px solid #8b0000; border-radius: 8px; padding: 20px 10px; cursor: pointer; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                    <span class="type-name" style="font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 16px; color: #fff; letter-spacing: 1px;">POSTER #1</span>
-                    <span class="type-price" style="font-size: 14px; color: #c0c0c0;">CNY 28</span>
-                </button>
-            </div>
-        </div>
+    
 
         <!-- Step 2: Select Package (for carousel only) -->
         <div id="uploadStep2" class="upload-step" style="display:none;">
@@ -1795,31 +1769,7 @@
 </div>
 
 
-    <!-- Upload Event Modal -->
-<div class="modal-overlay" id="uploadEventModal" style="display: none;">
-    <div class="modal-content upload-modal" style="max-width: 600px;">
-        <span class="modal-close" onclick="closeUploadModal()">&times;</span>
-        <h2>UPLOAD EVENT</h2>
-        <p id="uploadStepDesc">Select your event type and package</p>
-
-        <!-- Step 1: Select Type -->
-        <div id="uploadStep1" class="upload-step">
-            <h3 style="color: #fff; font-size: 16px; margin-bottom: 20px; text-align: center; letter-spacing: 2px;">SELECT TYPE</h3>
-            <div class="type-buttons" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 20px 0;">
-                <button class="type-btn" onclick="selectUploadType('carousel')" style="background: rgba(139, 0, 0, 0.2); border: 2px solid #8b0000; border-radius: 8px; padding: 20px 10px; cursor: pointer; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                    <span class="type-name" style="font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 16px; color: #fff; letter-spacing: 1px;">CAROUSEL</span>
-                    <span class="type-price" style="font-size: 14px; color: #c0c0c0;">CNY 1/8/10</span>
-                </button>
-                <button class="type-btn" onclick="selectUploadType('managed')" style="background: rgba(139, 0, 0, 0.2); border: 2px solid #8b0000; border-radius: 8px; padding: 20px 10px; cursor: pointer; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                    <span class="type-name" style="font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 16px; color: #fff; letter-spacing: 1px;">MANAGED</span>
-                    <span class="type-price" style="font-size: 14px; color: #c0c0c0;">CNY 18</span>
-                </button>
-                <button class="type-btn" onclick="selectUploadType('poster1')" style="background: rgba(139, 0, 0, 0.2); border: 2px solid #8b0000; border-radius: 8px; padding: 20px 10px; cursor: pointer; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                    <span class="type-name" style="font-family: Impact, Haettenschweiler, Arial Narrow Bold, sans-serif; font-size: 16px; color: #fff; letter-spacing: 1px;">POSTER #1</span>
-                    <span class="type-price" style="font-size: 14px; color: #c0c0c0;">CNY 28</span>
-                </button>
-            </div>
-        </div>
+    
 
         <!-- Step 2: Select Package (for carousel only) -->
         <div id="uploadStep2" class="upload-step" style="display:none;">
@@ -3246,317 +3196,7 @@ let currentUploadType = '';
 let currentPackage = 0;
 let formDataCache = {};
 
-function openUploadModal() {
-    document.getElementById('uploadEventModal').style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-    restoreFormData();
-}
 
-function closeUploadModal() {
-    document.getElementById('uploadEventModal').style.display = 'none';
-    document.body.style.overflow = '';
-    saveFormData();
-}
-
-// ç§»å¨ç«¯è¾å¥ä¼å - è¾å¥æ¶æ¾å¤§ï¼å¤±ç¦æ¶æ¢å¤
-function setupMobileInputOptimization() {
-    const modal = document.getElementById('uploadEventModal');
-    const inputs = modal.querySelectorAll('input, textarea');
-
-    inputs.forEach(input => {
-        input.addEventListener('focus', function() {
-            if (window.innerWidth <= 768) {
-                modal.classList.add('input-focused');
-            }
-        });
-
-        input.addEventListener('blur', function() {
-            if (window.innerWidth <= 768) {
-                setTimeout(() => {
-                    modal.classList.remove('input-focused');
-                }, 300);
-            }
-        });
-    });
-}
-
-document.addEventListener('DOMContentLoaded', setupMobileInputOptimization);
-
-// ESC key to close modal
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-        const modal = document.getElementById('uploadEventModal');
-        if (modal && modal.style.display === 'flex') {
-            closeUploadModal();
-        }
-    }
-});
-
-function saveFormData() {
-    const form = document.getElementById('uploadForm');
-    if (form) {
-        const inputs = form.querySelectorAll('input');
-        inputs.forEach(input => {
-            if (input.name) {
-                formDataCache[input.name] = input.value;
-            }
-        });
-    }
-}
-
-function restoreFormData() {
-    const form = document.getElementById('uploadForm');
-    if (form) {
-        const inputs = form.querySelectorAll('input');
-        inputs.forEach(input => {
-            if (input.name && formDataCache[input.name]) {
-                input.value = formDataCache[input.name];
-            }
-        });
-    }
-}
-
-function selectUploadType(type) {
-    currentUploadType = type;
-    document.getElementById('uploadType').value = type;
-
-    if (type === 'carousel') {
-        document.getElementById('uploadStep1').style.display = 'none';
-        document.getElementById('uploadStep2').style.display = 'block';
-    } else {
-        currentPackage = type === 'managed' ? 18 : 28;
-        document.getElementById('uploadPackage').value = currentPackage;
-        document.getElementById('paymentAmount').textContent = currentPackage;
-        document.getElementById('uploadStep1').style.display = 'none';
-        document.getElementById('uploadStep3').style.display = 'block';
-        showFields(type);
-    }
-}
-
-function selectPackage(price) {
-    currentPackage = price;
-    document.getElementById('uploadPackage').value = price;
-    document.getElementById('paymentAmount').textContent = price;
-    document.getElementById('uploadStep2').style.display = 'none';
-    document.getElementById('uploadStep3').style.display = 'block';
-    showFields('carousel');
-}
-
-function showFields(type) {
-    document.getElementById('carouselFields').style.display = 'none';
-    document.getElementById('managedFields').style.display = 'none';
-    document.getElementById('poster1Fields').style.display = 'none';
-
-    if (type === 'carousel') {
-        document.getElementById('carouselFields').style.display = 'block';
-    } else if (type === 'managed') {
-        document.getElementById('managedFields').style.display = 'block';
-    } else if (type === 'poster1') {
-        document.getElementById('poster1Fields').style.display = 'block';
-    }
-}
-
-function goBackToStep1() {
-    document.getElementById('uploadStep2').style.display = 'none';
-    document.getElementById('uploadStep1').style.display = 'block';
-}
-
-function goBackToStep2() {
-    document.getElementById('uploadStep3').style.display = 'none';
-    if (currentUploadType === 'carousel') {
-        document.getElementById('uploadStep2').style.display = 'block';
-    } else {
-        document.getElementById('uploadStep1').style.display = 'block';
-    }
-}
-
-function goBackToStep3() {
-    document.getElementById('uploadStep4').style.display = 'none';
-    document.getElementById('uploadStep3').style.display = 'block';
-}
-
-function goToStep4() {
-    document.getElementById('uploadStep3').style.display = 'none';
-    document.getElementById('uploadStep4').style.display = 'block';
-}
-
-async function submitUpload(e) {
-    e.preventDefault();
-
-    const form = e.target;
-    const formData = new FormData(form);
-    const data = {};
-    formData.forEach((value, key) => {
-        data[key] = value;
-    });
-
-    data.timestamp = new Date().toISOString();
-    data.status = 'pending';
-    data.id = 'upload_' + Date.now();
-
-    try {
-        const response = await fetch('https://api.jsonbin.io/v3/b/699aad32ae596e708f3ea2ae', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Master-Key': '$2a$10$ofWRSuJ8qjrj6o34QoWnluloMBnnF56eGV.8NpTqbsM5HWDkl.Fky'
-            },
-            body: JSON.stringify({
-                uploads: [...(await getExistingUploads()), data]
-            })
-        });
-
-        if (response.ok) {
-            alert('Upload submitted successfully! We will review your event soon.');
-            closeUploadModal();
-            form.reset();
-            formDataCache = {};
-            document.getElementById('uploadStep4').style.display = 'none';
-            document.getElementById('uploadStep1').style.display = 'block';
-        } else {
-            throw new Error('Failed to submit');
-        }
-    } catch (error) {
-        console.error('Upload error:', error);
-        alert('Submission failed. Please try again or contact support.');
-    }
-}
-
-async function getExistingUploads() {
-    try {
-        const response = await fetch('https://api.jsonbin.io/v3/b/699aad32ae596e708f3ea2ae/latest', {
-            headers: {
-                'X-Master-Key': '$2a$10$ofWRSuJ8qjrj6o34QoWnluloMBnnF56eGV.8NpTqbsM5HWDkl.Fky'
-            }
-        });
-        if (response.ok) {
-            const result = await response.json();
-            return result.record.uploads || [];
-        }
-    } catch (e) {
-        console.error('Error fetching uploads:', e);
-    }
-    return [];
-}
-
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-        const modal = document.getElementById('uploadEventModal');
-        if (modal && modal.style.display === 'flex') {
-            closeUploadModal();
-        }
-    }
-});
-
-document.addEventListener('click', function(e) {
-    const modal = document.getElementById('uploadEventModal');
-    if (modal && modal.style.display === 'flex' && e.target === modal) {
-        closeUploadModal();
-    }
-});
-
-        // Upload Modal Functions
-        function openUploadModal() {
-            document.getElementById('uploadModal').classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeUploadModal() {
-            document.getElementById('uploadModal').classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-
-        function selectUploadPackage(element) {
-            document.querySelectorAll('.package-card').forEach(card => card.classList.remove('selected'));
-            element.classList.add('selected');
-            document.getElementById('uploadPackageType').value = element.dataset.package;
-        }
-
-        // Submit Event Upload to jsonbin.io
-        async function submitEventUpload() {
-            const CONFIG = {
-                JSONBIN_API_KEY: '$2a$10$ofWRSuJ8qjrj6o34QoWnluloMBnnF56eGV.8NpTqbsM5HWDkl.Fky',
-                JSONBIN_BIN_ID: '699aad32ae596e708f3ea2ae'
-            };
-
-            const data = {
-                id: Date.now().toString(36) + Math.random().toString(36).substr(2, 9),
-                eventType: 'managed',
-                packageType: document.getElementById('uploadPackageType').value,
-                title: document.getElementById('uploadTitle').value,
-                subtitle: document.getElementById('uploadSubtitle').value,
-                startDate: document.getElementById('uploadStartDate').value,
-                endDate: document.getElementById('uploadEndDate').value,
-                city: document.getElementById('uploadCity').value,
-                image: document.getElementById('uploadImage').value,
-                link: document.getElementById('uploadLink').value,
-                btn_text: document.getElementById('uploadBtnText').value || 'View Details',
-                paymentId: document.getElementById('uploadPaymentId').value,
-                notes: document.getElementById('uploadNotes').value,
-                submittedAt: new Date().toISOString(),
-                status: 'pending'
-            };
-
-            if (!data.title || !data.startDate || !data.city || !data.image) {
-                document.getElementById('uploadError').textContent = 'â Please fill in all required fields (*)';
-                document.getElementById('uploadError').style.display = 'block';
-                return;
-            }
-
-            const submitBtn = document.querySelector('.upload-btn-submit');
-            submitBtn.innerHTML = 'Submitting...';
-            submitBtn.disabled = true;
-
-            try {
-                const getResponse = await fetch(`https://api.jsonbin.io/v3/b/${CONFIG.JSONBIN_BIN_ID}/latest`, {
-                    headers: { 'X-Access-Key': CONFIG.JSONBIN_API_KEY }
-                });
-
-                let existingData = { uploads: [] };
-                if (getResponse.ok) {
-                    const result = await getResponse.json();
-                    existingData = result.record || { uploads: [] };
-                }
-
-                if (!existingData.uploads) existingData.uploads = [];
-                existingData.uploads.push(data);
-
-                const response = await fetch(`https://api.jsonbin.io/v3/b/${CONFIG.JSONBIN_BIN_ID}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Access-Key': CONFIG.JSONBIN_API_KEY
-                    },
-                    body: JSON.stringify(existingData)
-                });
-
-                if (!response.ok) throw new Error('Upload failed');
-
-                document.getElementById('uploadSuccess').style.display = 'block';
-                document.getElementById('uploadError').style.display = 'none';
-
-                setTimeout(() => {
-                    document.getElementById('eventUploadForm').reset();
-                    closeUploadModal();
-                    document.getElementById('uploadSuccess').style.display = 'none';
-                    submitBtn.innerHTML = 'SUBMIT FOR REVIEW';
-                    submitBtn.disabled = false;
-                }, 2000);
-
-            } catch (error) {
-                document.getElementById('uploadError').textContent = 'â ' + error.message;
-                document.getElementById('uploadError').style.display = 'block';
-                submitBtn.innerHTML = 'SUBMIT FOR REVIEW';
-                submitBtn.disabled = false;
-            }
-        }
-
-        // Close modal on outside click
-        document.getElementById('uploadModal').addEventListener('click', function(e) {
-            if (e.target === this) closeUploadModal();
-        });
-
-</script>
     <!-- Upload Event Modal -->
     <div class="upload-modal" id="uploadModal">
         <div class="upload-modal-content">
@@ -3661,12 +3301,10 @@ document.addEventListener('click', function(e) {
 <script>
 function openUploadModal() { document.getElementById('uploadModal').style.display = 'flex'; }
 function closeUploadModal() { document.getElementById('uploadModal').style.display = 'none'; }
-// 点击遮罩关闭
 document.addEventListener('click', function(e) { 
     const modal = document.getElementById('uploadModal'); 
     if (e.target === modal) closeUploadModal(); 
 });
-// ESC键关闭
 document.addEventListener('keydown', function(e) { 
     if (e.key === 'Escape') closeUploadModal(); 
 });
