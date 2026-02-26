@@ -968,6 +968,10 @@
         document.getElementById('uploadModal').style.display = 'none';
         // 保存当前状态
         saveCurrentState();
+        // 通知父窗口关闭iframe弹窗
+        if (window.parent && window.parent !== window) {
+            window.parent.closeUploadModal();
+        }
     }
 
     // 保存当前状态（步骤、类型等）
@@ -1603,6 +1607,13 @@
     // ESC键关闭
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
+            closeModal();
+        }
+    });
+
+    // 监听来自父窗口的消息（用于父窗口控制关闭）
+    window.addEventListener('message', function(e) {
+        if (e.data === 'closeModal') {
             closeModal();
         }
     });
