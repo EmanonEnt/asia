@@ -1149,9 +1149,23 @@
         .event-card.expired:hover .event-details,
         .event-card.expired:hover .event-venue { opacity: 1; visibility: visible; }
 
+        /* 强制3列布局 - 最高优先级 */
+        #uploadModal .type-grid, #uploadModal .package-grid { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 15px !important; }
+        #uploadModal .type-grid > *, #uploadModal .package-grid > * { min-width: 0 !important; flex: none !important; }
+        @media (max-width: 768px) { #uploadModal .type-grid, #uploadModal .package-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 10px !important; } }
+        
         #uploadModal > div { border: none !important; box-shadow: 0 0 40px rgba(0,0,0,0.9) !important; }
+        /* 强制按钮3列布局 */
+        #uploadModal .type-grid, #uploadModal .package-grid { 
+            display: grid !important; 
+            grid-template-columns: repeat(3, 1fr) !important!important; 
+            gap: 15px !important; 
+        }
         @media (max-width: 768px) { 
             #uploadModal > div { width: 100% !important; height: 100% !important; max-width: none !important; border-radius: 0 !important; border: none !important; } 
+            #uploadModal .type-grid, #uploadModal .package-grid { 
+                grid-template-columns: repeat(3, 1fr) !important!important; 
+            }
         }
         </style>
 </head>
@@ -3471,12 +3485,58 @@ document.addEventListener('click', function(e) {
 <!-- Upload Event Modal -->
 <div id="uploadModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:10000; justify-content:center; align-items:center;">
   <div style="position:relative; width:90%; height:90%; max-width:800px; background:#1a1a1a; border:2px solid #8b0000; border-radius:8px; overflow:hidden;">
-    <button onclick="closeUploadModal()" style="position:absolute; top:10px; right:15px; background:none; border:none; color:#fff; font-size:24px; cursor:pointer; z-index:10;">&times;</button>
+    
+    <style>
+            .upload-modal-close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: none;
+        border: none;
+        color: #fff;
+        font-size: 28px;
+        cursor: pointer;
+        z-index: 100;
+        padding: 5px 10px;
+        line-height: 1;
+        transition: all 0.3s ease;
+      }
+      .upload-modal-close:hover {
+        color: #ff0000 !important;
+        text-shadow: 0 0 10px rgba(255, 0, 0, 0.8), 0 0 20px rgba(255, 0, 0, 0.5), 0 0 30px rgba(255, 0, 0, 0.3);
+        animation: redFlash 0.5s ease-in-out infinite alternate;
+      }
+      @keyframes redFlash {
+        from { text-shadow: 0 0 10px rgba(255, 0, 0, 0.8), 0 0 20px rgba(255, 0, 0, 0.5); }
+        to { text-shadow: 0 0 15px rgba(255, 0, 0, 1), 0 0 30px rgba(255, 0, 0, 0.8), 0 0 45px rgba(255, 0, 0, 0.5); }
+      }
+    
+    /* 隐藏内部关闭按钮 */
+    .close-btn, .modal-close, .upload-close-internal {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+</style>
+    <button class="upload-modal-close" onclick="closeUploadModal()" style="position:absolute; top:10px; right:10px; background:none; border:none; color:#fff; font-size:28px; cursor:pointer; z-index:100; padding:5px 10px; line-height:1;">&times;</button>
+
     <iframe src="./upload-form-embedded.html" style="width:100%; height:100%; border:none;"></iframe>
   </div>
 </div>
 <script>
-function openUploadModal() { document.getElementById('uploadModal').style.display = 'flex'; }
+function openUploadModal() { 
+    document.getElementById('uploadModal').style.display = 'flex'; 
+    // 强制注入3列布局CSS到iframe
+    setTimeout(function() {
+        const iframe = document.querySelector('#uploadModal iframe');
+        if (iframe && iframe.contentDocument) {
+            const style = document.createElement('style');
+            style.textContent = '.type-grid, .package-grid { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 15px !important; } .type-grid > *, .package-grid > * { min-width: 0 !important; }';
+            iframe.contentDocument.head.appendChild(style);
+        }
+    }, 100);
+}
 function closeUploadModal() { document.getElementById('uploadModal').style.display = 'none'; }
 document.addEventListener('click', function(e) { 
     const modal = document.getElementById('uploadModal'); 

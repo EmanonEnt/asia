@@ -79,6 +79,8 @@
             user-select: none;
             -webkit-user-select: none;
             -webkit-tap-highlight-color: transparent;
+        
+            display: none !important;
         }
 
         .close-btn:hover {
@@ -627,12 +629,12 @@
 
             /* 修改点: 海报区域平板两列布局 */
             .type-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(3, 1fr);
                 gap: 12px;
             }
 
             .package-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(3, 1fr);
                 gap: 10px;
             }
 
@@ -864,7 +866,12 @@
         /* ============================================
            响应式CSS - 小屏手机 (≤480px)
            ============================================ */
-        @media (max-width: 480px) {
+       
+            .footer-copyright {
+                font-size: 11px;
+                padding: 15px;
+            }
+         @media (max-width: 480px) {
             .modal-header {
                 padding: 45px 12px 12px;
             }
@@ -930,366 +937,11 @@
             }
         }
 
-        /* ============================================
-           底部版权文字 - 手机字号适配
-           ============================================ */
-        .footer-copyright {
-            text-align: center;
-            padding: 20px;
-            color: #666;
-            font-size: 12px;
-        }
-
-        @media (max-width: 767px) {
-            .footer-copyright {
-                /* 修改点: 底部版权文字手机字号适配 */
-                font-size: 11px;
-                padding: 15px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .footer-copyright {
-                font-size: 10px;
-                padding: 12px;
-            }
-        }
-
         /* 隐藏外层X符号 - 修改点4: 确保没有外部X符号 */
         .external-close-btn {
             display: none !important;
-        }
 
-        /* 防止iOS橡皮筋效果 */
-        .modal-overlay {
-            -webkit-overflow-scrolling: touch;
-        }
-    
-        /* ============================================
-           【修改点4】响应式CSS - 平板 (768px - 1024px)
-           ============================================ */
-        @media (min-width: 768px) and (max-width: 1024px) {
-            .upload-modal {
-                width: 85%;
-                max-width: 700px;
-                max-height: 90vh;
-            }
-
-            .modal-content {
-                padding: 20px 25px 25px;
-            }
-
-            .type-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 12px;
-            }
-
-            .package-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
-            }
-
-            .form-grid,
-            .managed-form-grid {
-                gap: 10px;
-            }
-
-            .btn {
-                padding: 14px 35px;
-                font-size: 13px;
-                letter-spacing: 2.5px;
-            }
-
-            .modal-header h1 {
-                font-size: 22px;
-            }
-
-            .step-title {
-                font-size: 13px;
-            }
-
-            .qr-code {
-                width: 200px;
-                height: 200px;
-            }
-
-            .payment-section {
-                padding: 20px;
-            }
-        }
-
-        /* ============================================
-           【修改点5】响应式CSS - 手机 (≤767px)
-           ============================================ */
-        @media (max-width: 767px) {
-            body {
-                padding: 0;
-            }
-
-            .upload-modal {
-                width: 100%;
-                max-width: 100%;
-                height: 100vh;
-                max-height: 100vh;
-                border-radius: 0;
-                border: none;
-            }
-
-            .modal-overlay {
-                padding: 0;
-                align-items: flex-start;
-            }
-
-            .modal-content {
-                padding: 15px 20px 30px;
-            }
-
-            .modal-header {
-                padding: 50px 15px 15px;
-            }
-
-            .modal-header h1 {
-                font-size: 20px;
-                letter-spacing: 1px;
-            }
-
-            .modal-header p {
-                font-size: 12px;
-            }
-
-            .type-grid {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 6px;
-            }
-
-            .type-btn {
-                padding: 18px 15px;
-                min-height: 44px;
-            }
-
-            .type-btn h3 {
-                font-size: 13px;
-            }
-
-            .type-btn .price {
-                font-size: 11px;
-            }
-
-            .package-grid {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 6px;
-            }
-
-            .package-btn {
-                padding: 16px 12px;
-                min-height: 44px;
-            }
-
-            .package-btn h4 {
-                font-size: 11px;
-            }
-
-            .package-btn .price-tag {
-                font-size: 16px;
-            }
-
-            .form-grid,
-            .managed-form-grid {
-                grid-template-columns: 1fr;
-                gap: 8px;
-            }
-
-            .form-group {
-                margin-bottom: 10px;
-            }
-
-            .form-group input,
-            .form-group select,
-            .form-group textarea {
-                padding: 14px 12px;
-                font-size: 16px;
-                min-height: 48px;
-            }
-
-            .form-group label {
-                font-size: 11px;
-                margin-bottom: 5px;
-            }
-
-            .btn {
-                padding: 16px 25px;
-                font-size: 13px;
-                letter-spacing: 2px;
-                min-height: 48px;
-                width: 100%;
-            }
-
-            .btn:hover {
-                letter-spacing: 2.5px;
-                transform: scale(1.02);
-            }
-
-            .btn-group {
-                gap: 10px;
-                flex-direction: column;
-                margin-top: 25px;
-            }
-
-            .step-title {
-                font-size: 12px;
-                margin-bottom: 20px;
-            }
-
-            .step-indicator {
-                margin: 15px 0;
-                gap: 8px;
-            }
-
-            .step-dot {
-                width: 6px;
-                height: 6px;
-            }
-
-            .payment-section {
-                padding: 20px 15px;
-                margin-bottom: 20px;
-            }
-
-            .payment-title {
-                font-size: 12px;
-            }
-
-            .qr-container {
-                padding: 12px;
-            }
-
-            .qr-code {
-                width: 200px;
-                height: 200px;
-            }
-
-            .payment-note {
-                font-size: 11px;
-            }
-
-            .message {
-                font-size: 12px;
-                padding: 10px;
-            }
-
-            .restore-notice {
-                font-size: 11px;
-                padding: 8px;
-            }
-
-            .price-display {
-                font-size: 24px;
-                margin: 15px 0;
-            }
-
-            .close-btn {
-                top: 10px;
-                right: 10px;
-                font-size: 24px;
-                width: 48px;
-                height: 48px;
-            }
-        }
-
-        /* ============================================
-           【修改点6】响应式CSS - 小屏手机 (≤480px)
-           ============================================ */
-        @media (max-width: 480px) {
-            .modal-header {
-                padding: 45px 12px 12px;
-            }
-
-            .modal-header h1 {
-                font-size: 18px;
-            }
-
-            .modal-header p {
-                font-size: 11px;
-            }
-
-            .modal-content {
-                padding: 12px 15px 25px;
-            }
-
-            .btn {
-                padding: 14px 20px;
-                font-size: 12px;
-                letter-spacing: 1.5px;
-                min-height: 46px;
-            }
-
-            .type-btn {
-                padding: 16px 12px;
-            }
-
-            .type-btn h3 {
-                font-size: 12px;
-            }
-
-            .package-btn {
-                padding: 14px 10px;
-            }
-
-            .package-btn h4 {
-                font-size: 10px;
-            }
-
-            .package-btn .price-tag {
-                font-size: 14px;
-            }
-
-            .form-group input,
-            .form-group select,
-            .form-group textarea {
-                padding: 12px 10px;
-                font-size: 15px;
-                min-height: 46px;
-            }
-
-            .qr-code {
-                width: 140px;
-                height: 140px;
-            }
-
-            .payment-section {
-                padding: 15px 12px;
-            }
-
-            .step-title {
-                font-size: 11px;
-            }
-        }
-
-        /* ============================================
-           【修改点7】底部版权文字 - 手机字号适配
-           ============================================ */
-        .footer-copyright {
-            text-align: center;
-            padding: 20px;
-            color: #666;
-            font-size: 12px;
-        }
-
-        @media (max-width: 767px) {
-            .footer-copyright {
-                font-size: 11px;
-                padding: 15px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .footer-copyright {
-                font-size: 10px;
-                padding: 12px;
-            }
-        }
-
-        /* 【修改点8】隐藏外层X符号 - 确保没有外部X符号 */
+/* 【修改点8】隐藏外层X符号 - 确保没有外部X符号 */
         .external-close-btn {
             display: none !important;
         }
@@ -1446,7 +1098,7 @@
                         </div>
 
                         <div class="form-group full-width">
-                            <label>Poster URL *</label>
+                            <label>Poster URL (2067×2916, ratio 2:3, upload icon) *</label>
                             <input type="url" name="posterUrl" placeholder="https://example.com/image.jpg" required onchange="saveFormData()">
                         </div>
 
@@ -1496,7 +1148,7 @@
                         </div>
 
                         <div class="form-group full-width">
-                            <label>Poster URL *</label>
+                            <label>Poster URL (2067×2916, ratio 2:3, upload icon) *</label>
                             <input type="url" name="posterUrl" placeholder="https://example.com/image.jpg" required onchange="saveFormData()">
                         </div>
 
@@ -1531,7 +1183,7 @@
                         </div>
 
                         <div class="form-group full-width">
-                            <label>Poster URL *</label>
+                            <label>Poster URL (2067×2916, ratio 2:3, upload icon) *</label>
                             <input type="url" name="posterUrl" placeholder="https://example.com/image.jpg" required onchange="saveFormData()">
                         </div>
 
