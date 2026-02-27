@@ -50,7 +50,9 @@
             border-radius: 8px;
             width: 90%;
             max-width: 600px;
-            max-height: 95vh;
+            /* 修改点: 限制最大高度为视口高度的85% */
+            max-height: 85vh;
+            /* 修改点: 内部滚动而非外部 */
             overflow-y: auto;
             overflow-x: hidden;
             position: relative;
@@ -62,44 +64,41 @@
            ============================================ */
         .close-btn {
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 15px;
+            right: 20px;
             background: none;
             border: none;
             color: #666;
             font-size: 28px;
             cursor: pointer;
-            z-index: 100;
-            transition: all 0.3s ease;
+            z-index: 10;
+            transition: color 0.3s;
+            /* 修改点: 增大点击区域 */
             width: 44px;
             height: 44px;
             display: flex;
             align-items: center;
             justify-content: center;
+            /* 修改点: 防止文本选择 */
             user-select: none;
             -webkit-user-select: none;
+            /* 修改点: 防止触摸高亮 */
             -webkit-tap-highlight-color: transparent;
         }
 
         .close-btn:hover {
-            color: #ff0000;
-            text-shadow: 0 0 10px rgba(255, 0, 0, 0.8), 0 0 20px rgba(255, 0, 0, 0.5), 0 0 30px rgba(255, 0, 0, 0.3);
-            animation: redFlash 0.5s ease-in-out infinite alternate;
+            color: #fff;
         }
 
-        @keyframes redFlash {
-            from { text-shadow: 0 0 10px rgba(255, 0, 0, 0.8), 0 0 20px rgba(255, 0, 0, 0.5); }
-            to { text-shadow: 0 0 15px rgba(255, 0, 0, 1), 0 0 30px rgba(255, 0, 0, 0.8), 0 0 45px rgba(255, 0, 0, 0.5); }
-        }
-
+        /* 修改点: 移动端优化点击 */
         .close-btn:active {
-            color: #ff0000;
+            color: #8b0000;
         }
 
         /* 头部 */
         .modal-header {
             text-align: center;
-            padding: 45px 20px 15px;
+            padding: 30px 20px 20px;
             border-bottom: 1px solid #333;
         }
 
@@ -121,8 +120,8 @@
         .step-indicator {
             display: flex;
             justify-content: center;
-            gap: 8px;
-            margin: 12px 0;
+            gap: 10px;
+            margin: 20px 0;
             padding: 0 20px;
         }
 
@@ -145,7 +144,7 @@
 
         /* 内容区域 */
         .modal-content {
-            padding: 15px 25px 20px;
+            padding: 20px 30px 30px;
         }
 
         .step-content {
@@ -164,9 +163,9 @@
 
         .step-title {
             text-align: center;
-            font-size: 13px;
+            font-size: 14px;
             color: #888;
-            margin-bottom: 15px;
+            margin-bottom: 25px;
             letter-spacing: 2px;
             text-transform: uppercase;
         }
@@ -175,20 +174,21 @@
         .type-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-bottom: 15px;
+            gap: 15px;
+            margin-bottom: 20px;
         }
 
         .type-btn {
             background: #8b0000;
             border: 2px solid #8b0000;
             border-radius: 4px;
-            padding: 15px 10px;
+            padding: 20px 15px;
             cursor: pointer;
             transition: all 0.3s ease;
             text-align: center;
             position: relative;
             overflow: hidden;
+            /* 修改点: 移动端优化点击区域 */
             min-height: 44px;
         }
 
@@ -235,18 +235,19 @@
         .package-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-bottom: 15px;
+            gap: 12px;
+            margin-bottom: 25px;
         }
 
         .package-btn {
             background: #8b0000;
             border: 2px solid #8b0000;
             border-radius: 4px;
-            padding: 14px 10px;
+            padding: 18px 12px;
             cursor: pointer;
             transition: all 0.3s ease;
             text-align: center;
+            /* 修改点: 移动端优化点击区域 */
             min-height: 44px;
         }
 
@@ -294,9 +295,9 @@
         .payment-section {
             background: #222;
             border-radius: 8px;
-            padding: 15px;
+            padding: 25px;
             text-align: center;
-            margin-bottom: 15px;
+            margin-bottom: 25px;
         }
 
         .payment-title {
@@ -308,15 +309,15 @@
 
         .qr-container {
             background: #fff;
-            padding: 12px;
+            padding: 15px;
             border-radius: 8px;
             display: inline-block;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
 
         .qr-code {
-            width: 240px;
-            height: 240px;
+            width: 180px;
+            height: 180px;
             object-fit: contain;
         }
 
@@ -335,15 +336,15 @@
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-bottom: 10px;
+            gap: 12px;
+            margin-bottom: 15px;
         }
 
         .managed-form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-bottom: 10px;
+            gap: 10px;
+            margin-bottom: 15px;
         }
 
         .managed-form-grid .form-group {
@@ -367,7 +368,7 @@
         .form-group {
             display: flex;
             flex-direction: column;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
         }
 
         .form-group.full-width {
@@ -417,8 +418,8 @@
         /* 按钮组容器 */
         .btn-group {
             display: flex;
-            gap: 10px;
-            margin-top: 12px;
+            gap: 12px;
+            margin-top: 20px;
             justify-content: center;
         }
 
@@ -659,8 +660,8 @@
 
             /* QR码适配 */
             .qr-code {
-                width: 220px;
-                height: 220px;
+                width: 200px;
+                height: 200px;
             }
 
             .payment-section {
@@ -679,17 +680,19 @@
 
             /* 修改点: 弹窗容器宽度适配设备 */
             .upload-modal {
-                width: 95%;
-                max-width: 95%;
-                height: auto;
-                max-height: 95vh;
-                border-radius: 8px;
-                border: 1px solid #333;
+                width: 100%;
+                max-width: 100%;
+                /* 修改点: 移动端全屏显示 */
+                height: 100vh;
+                max-height: 100vh;
+                border-radius: 0;
+                border: none;
             }
 
+            /* 修改点: 遮罩层全屏 */
             .modal-overlay {
-                padding: 10px;
-                align-items: center;
+                padding: 0;
+                align-items: flex-start;
             }
 
             .modal-content {
@@ -711,41 +714,41 @@
 
             /* 修改点: 海报区域手机单列布局 */
             .type-grid {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 6px;
+                grid-template-columns: 1fr;
+                gap: 10px;
             }
 
             .type-btn {
-                padding: 10px 6px;
+                padding: 18px 15px;
+                /* 修改点: 移动端点击区域 ≥44px */
                 min-height: 44px;
             }
 
             .type-btn h3 {
-                font-size: 10px;
-                letter-spacing: 0.5px;
+                font-size: 13px;
             }
 
             .type-btn .price {
-                font-size: 9px;
+                font-size: 11px;
             }
 
             .package-grid {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 6px;
+                grid-template-columns: 1fr;
+                gap: 10px;
             }
 
             .package-btn {
-                padding: 10px 6px;
+                padding: 16px 12px;
+                /* 修改点: 移动端点击区域 ≥44px */
                 min-height: 44px;
             }
 
             .package-btn h4 {
-                font-size: 9px;
-                letter-spacing: 0.5px;
+                font-size: 11px;
             }
 
             .package-btn .price-tag {
-                font-size: 12px;
+                font-size: 16px;
             }
 
             /* 修改点: 表单单列布局 */
@@ -825,8 +828,8 @@
             }
 
             .qr-code {
-                width: 200px;
-                height: 200px;
+                width: 160px;
+                height: 160px;
             }
 
             .payment-note {
@@ -917,8 +920,8 @@
             }
 
             .qr-code {
-                width: 180px;
-                height: 180px;
+                width: 140px;
+                height: 140px;
             }
 
             .payment-section {
@@ -964,341 +967,7 @@
         .modal-overlay {
             -webkit-overflow-scrolling: touch;
         }
-    
-        /* ============================================
-           【修改点4】响应式CSS - 平板 (768px - 1024px)
-           ============================================ */
-        @media (min-width: 768px) and (max-width: 1024px) {
-            .upload-modal {
-                width: 85%;
-                max-width: 700px;
-                max-height: 90vh;
-            }
-
-            .modal-content {
-                padding: 20px 25px 25px;
-            }
-
-            .type-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 12px;
-            }
-
-            .package-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
-            }
-
-            .form-grid,
-            .managed-form-grid {
-                gap: 10px;
-            }
-
-            .btn {
-                padding: 14px 35px;
-                font-size: 13px;
-                letter-spacing: 2.5px;
-            }
-
-            .modal-header h1 {
-                font-size: 22px;
-            }
-
-            .step-title {
-                font-size: 13px;
-            }
-
-            .qr-code {
-                width: 200px;
-                height: 200px;
-            }
-
-            .payment-section {
-                padding: 20px;
-            }
-        }
-
-        /* ============================================
-           【修改点5】响应式CSS - 手机 (≤767px)
-           ============================================ */
-        @media (max-width: 767px) {
-            body {
-                padding: 0;
-            }
-
-            .upload-modal {
-                width: 100%;
-                max-width: 100%;
-                height: 100vh;
-                max-height: 100vh;
-                border-radius: 0;
-                border: none;
-            }
-
-            .modal-overlay {
-                padding: 0;
-                align-items: flex-start;
-            }
-
-            .modal-content {
-                padding: 15px 20px 30px;
-            }
-
-            .modal-header {
-                padding: 50px 15px 15px;
-            }
-
-            .modal-header h1 {
-                font-size: 20px;
-                letter-spacing: 1px;
-            }
-
-            .modal-header p {
-                font-size: 12px;
-            }
-
-            .type-grid {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 6px;
-            }
-
-            .type-btn {
-                padding: 18px 15px;
-                min-height: 44px;
-            }
-
-            .type-btn h3 {
-                font-size: 13px;
-            }
-
-            .type-btn .price {
-                font-size: 11px;
-            }
-
-            .package-grid {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 6px;
-            }
-
-            .package-btn {
-                padding: 16px 12px;
-                min-height: 44px;
-            }
-
-            .package-btn h4 {
-                font-size: 11px;
-            }
-
-            .package-btn .price-tag {
-                font-size: 16px;
-            }
-
-            .form-grid,
-            .managed-form-grid {
-                grid-template-columns: 1fr;
-                gap: 8px;
-            }
-
-            .form-group {
-                margin-bottom: 10px;
-            }
-
-            .form-group input,
-            .form-group select,
-            .form-group textarea {
-                padding: 14px 12px;
-                font-size: 16px;
-                min-height: 48px;
-            }
-
-            .form-group label {
-                font-size: 11px;
-                margin-bottom: 5px;
-            }
-
-            .btn {
-                padding: 16px 25px;
-                font-size: 13px;
-                letter-spacing: 2px;
-                min-height: 48px;
-                width: 100%;
-            }
-
-            .btn:hover {
-                letter-spacing: 2.5px;
-                transform: scale(1.02);
-            }
-
-            .btn-group {
-                gap: 10px;
-                flex-direction: column;
-                margin-top: 25px;
-            }
-
-            .step-title {
-                font-size: 12px;
-                margin-bottom: 20px;
-            }
-
-            .step-indicator {
-                margin: 15px 0;
-                gap: 8px;
-            }
-
-            .step-dot {
-                width: 6px;
-                height: 6px;
-            }
-
-            .payment-section {
-                padding: 20px 15px;
-                margin-bottom: 20px;
-            }
-
-            .payment-title {
-                font-size: 12px;
-            }
-
-            .qr-container {
-                padding: 12px;
-            }
-
-            .qr-code {
-                width: 200px;
-                height: 200px;
-            }
-
-            .payment-note {
-                font-size: 11px;
-            }
-
-            .message {
-                font-size: 12px;
-                padding: 10px;
-            }
-
-            .restore-notice {
-                font-size: 11px;
-                padding: 8px;
-            }
-
-            .price-display {
-                font-size: 24px;
-                margin: 15px 0;
-            }
-
-            .close-btn {
-                top: 10px;
-                right: 10px;
-                font-size: 24px;
-                width: 48px;
-                height: 48px;
-            }
-        }
-
-        /* ============================================
-           【修改点6】响应式CSS - 小屏手机 (≤480px)
-           ============================================ */
-        @media (max-width: 480px) {
-            .modal-header {
-                padding: 45px 12px 12px;
-            }
-
-            .modal-header h1 {
-                font-size: 18px;
-            }
-
-            .modal-header p {
-                font-size: 11px;
-            }
-
-            .modal-content {
-                padding: 12px 15px 25px;
-            }
-
-            .btn {
-                padding: 14px 20px;
-                font-size: 12px;
-                letter-spacing: 1.5px;
-                min-height: 46px;
-            }
-
-            .type-btn {
-                padding: 16px 12px;
-            }
-
-            .type-btn h3 {
-                font-size: 12px;
-            }
-
-            .package-btn {
-                padding: 14px 10px;
-            }
-
-            .package-btn h4 {
-                font-size: 10px;
-            }
-
-            .package-btn .price-tag {
-                font-size: 14px;
-            }
-
-            .form-group input,
-            .form-group select,
-            .form-group textarea {
-                padding: 12px 10px;
-                font-size: 15px;
-                min-height: 46px;
-            }
-
-            .qr-code {
-                width: 140px;
-                height: 140px;
-            }
-
-            .payment-section {
-                padding: 15px 12px;
-            }
-
-            .step-title {
-                font-size: 11px;
-            }
-        }
-
-        /* ============================================
-           【修改点7】底部版权文字 - 手机字号适配
-           ============================================ */
-        .footer-copyright {
-            text-align: center;
-            padding: 20px;
-            color: #666;
-            font-size: 12px;
-        }
-
-        @media (max-width: 767px) {
-            .footer-copyright {
-                font-size: 11px;
-                padding: 15px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .footer-copyright {
-                font-size: 10px;
-                padding: 12px;
-            }
-        }
-
-        /* 【修改点8】隐藏外层X符号 - 确保没有外部X符号 */
-        .external-close-btn {
-            display: none !important;
-        }
-
-        /* 防止iOS橡皮筋效果 */
-        .modal-overlay {
-            -webkit-overflow-scrolling: touch;
-        }
-</style>
+    </style>
     <!-- EmailJS SDK -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script type="text/javascript">
@@ -1321,7 +990,6 @@
 <div id="uploadModal" class="modal-overlay" style="display: none;">
     <div class="upload-modal">
         <!-- 修改点: 仅保留内部关闭按钮，删除外层冗余X符号 -->
-                <!-- 【修改点】仅保留内部关闭按钮，删除外层冗余X符号 -->
         <button class="close-btn" onclick="closeModal(event)" aria-label="Close">&times;</button>
 
         <div class="modal-header">
@@ -1592,7 +1260,7 @@
     let selectedPrice = 1;
     let totalSteps = 4;
     let hasRestoredData = false;
-    // 【修改点】保存原始body overflow状态
+    // 修改点: 保存原始body overflow状态
     let originalBodyOverflow = '';
 
     // ============================================
@@ -1606,12 +1274,7 @@
         originalBodyOverflow = document.body.style.overflow;
         document.body.style.overflow = 'hidden';
         
-        // 【修改点】添加body固定样式，防止页面滚动
-        document.body.style.position = 'fixed';
-        document.body.style.width = '100%';
-        document.body.style.height = '100%';
-
-        // 【修改点】添加modal-open类用于CSS控制
+        // 修改点: 添加modal-open类用于CSS控制
         document.body.classList.add('modal-open');
 
         // 检查是否有保存的数据
@@ -1627,34 +1290,24 @@
     // 关闭弹窗 - 修改点7: 阻止事件冒泡，恢复页面滚动
     // ============================================
     function closeModal(event) {
-        // 【修改点】阻止事件冒泡，防止触发其他点击事件
+        // 修改点: 阻止事件冒泡，防止触发其他点击事件
         if (event) {
             event.preventDefault();
             event.stopPropagation();
-            event.stopImmediatePropagation();
         }
-
+        
         const modal = document.getElementById('uploadModal');
         modal.style.display = 'none';
-
-        // 【修改点】恢复body滚动和样式
+        
+        // 修改点: 恢复body滚动
         document.body.style.overflow = originalBodyOverflow;
-        document.body.style.position = '';
-        document.body.style.width = '';
-        document.body.style.height = '';
         document.body.classList.remove('modal-open');
-
+        
         // 保存当前状态
         saveCurrentState();
-
-        // 【修改点】通知父窗口弹窗已关闭（用于iframe通信）
-        if (window.parent !== window) {
-            window.parent.postMessage({ type: 'modalClosed' }, '*');
-        }
-
-        return false;
     }
 
+    // 保存当前状态
     function saveCurrentState() {
         localStorage.setItem(STORAGE_STEP_KEY, currentStep);
         localStorage.setItem(STORAGE_TYPE_KEY, selectedType);
