@@ -1150,35 +1150,8 @@
         .event-card.expired:hover .event-venue { opacity: 1; visibility: visible; }
 
         #uploadModal > div { border: none !important; box-shadow: 0 0 40px rgba(0,0,0,0.9) !important; }
-        /* 所有屏幕尺寸下package-grid保持3列一排 */
-        .package-selection {
-            display: grid !important;
-            grid-template-columns: repeat(3, 1fr) !important;
-            gap: 15px !important;
-        }
-        .package-card {
-            width: 100% !important;
-            min-width: 0 !important;
-        }
         @media (max-width: 768px) { 
             #uploadModal > div { width: 100% !important; height: 100% !important; max-width: none !important; border-radius: 0 !important; border: none !important; } 
-            /* 移动端通过点击遮罩关闭 */
-            #uploadModal { 
-                cursor: pointer; 
-            }
-            #uploadModal iframe { 
-                cursor: default; 
-            }
-            /* 移动端保持3列但缩小间距 */
-            .package-selection {
-                gap: 8px !important;
-            }
-            .package-card h4 {
-                font-size: 12px !important;
-            }
-            .package-card .price {
-                font-size: 18px !important;
-            }
         }
         </style>
 </head>
@@ -3496,10 +3469,10 @@ document.addEventListener('click', function(e) {
     
     
 <!-- Upload Event Modal -->
-<div id="uploadModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:10000; justify-content:center; align-items:center; padding:20px; box-sizing:border-box;">
-  <div style="position:relative; width:100%; max-width:800px; height:90%; background:#1a1a1a; border:2px solid #8b0000; border-radius:12px; overflow:hidden; display:flex; flex-direction:column;">
-    <!-- 使用iframe嵌入表单，关闭按钮在iframe外部 -->
-    <iframe id="uploadFormFrame" src="./upload-form-embedded.html" style="width:100%; height:100%; border:none; flex:1;"></iframe>
+<div id="uploadModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:10000; justify-content:center; align-items:center;">
+  <div style="position:relative; width:90%; height:90%; max-width:800px; background:#1a1a1a; border:2px solid #8b0000; border-radius:8px; overflow:hidden;">
+    <button onclick="closeUploadModal()" style="position:absolute; top:10px; right:15px; background:none; border:none; color:#fff; font-size:24px; cursor:pointer; z-index:10;">&times;</button>
+    <iframe src="./upload-form-embedded.html" style="width:100%; height:100%; border:none;"></iframe>
   </div>
 </div>
 <script>

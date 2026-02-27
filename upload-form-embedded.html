@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LiveGigs Asia - Upload Event</title>
     <style>
         * {
@@ -22,9 +22,7 @@
             padding: 20px;
         }
 
-        /* ============================================
-           弹窗遮罩
-           ============================================ */
+        /* 弹窗遮罩 */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -37,13 +35,9 @@
             align-items: center;
             z-index: 1000;
             backdrop-filter: blur(5px);
-            overflow: hidden;
-            -webkit-overflow-scrolling: touch;
         }
 
-        /* ============================================
-           主容器
-           ============================================ */
+        /* 主容器 */
         .upload-modal {
             background: #1a1a1a;
             border: 1px solid #333;
@@ -52,15 +46,41 @@
             max-width: 600px;
             max-height: 95vh;
             overflow-y: auto;
-            overflow-x: hidden;
             position: relative;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
         }
 
-        /* ============================================
-           关闭按钮 - 面板内右上角
-           ============================================ */
-        to { text-shadow: 0 0 15px rgba(255, 0, 0, 1), 0 0 30px rgba(255, 0, 0, 0.8), 0 0 45px rgba(255, 0, 0, 0.5); }
+        /* 关闭按钮 - 移至弹窗外部 */
+        .close-btn {
+            position: absolute;
+            top: -50px;
+            right: 0;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 28px;
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.3s ease;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .close-btn:hover {
+            color: #ff0000;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.8), 0 0 20px rgba(255, 0, 0, 0.5), 0 0 30px rgba(255, 0, 0, 0.3);
+            animation: redFlash 0.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes redFlash {
+            from { text-shadow: 0 0 10px rgba(255, 0, 0, 0.8), 0 0 20px rgba(255, 0, 0, 0.5); }
+            to { text-shadow: 0 0 15px rgba(255, 0, 0, 1), 0 0 30px rgba(255, 0, 0, 0.8), 0 0 45px rgba(255, 0, 0, 0.5); }
         }
 
         /* 头部 */
@@ -84,7 +104,7 @@
             letter-spacing: 1px;
         }
 
-        /* 步骤指示器 */
+        /* 步骤指示器 - 动态显示 */
         .step-indicator {
             display: flex;
             justify-content: center;
@@ -138,7 +158,7 @@
             text-transform: uppercase;
         }
 
-        /* 类型选择按钮 - 3列一排 */
+        /* 类型选择按钮 - 匹配 LiveGigsAsia 主按钮风格 */
         .type-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -156,7 +176,6 @@
             text-align: center;
             position: relative;
             overflow: hidden;
-            min-height: 44px;
         }
 
         .type-btn:hover {
@@ -198,7 +217,7 @@
             color: #ff6666;
         }
 
-        /* 套餐选择 - 3列一排 */
+        /* 套餐选择（Carousel专用）- 同样风格 */
         .package-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -214,7 +233,6 @@
             cursor: pointer;
             transition: all 0.3s ease;
             text-align: center;
-            min-height: 44px;
         }
 
         .package-btn:hover {
@@ -282,8 +300,8 @@
         }
 
         .qr-code {
-            width: 240px;
-            height: 240px;
+            width: 320px;
+            height: 320px;
             object-fit: contain;
         }
 
@@ -298,7 +316,7 @@
             text-align: left;
         }
 
-        /* 表单样式 */
+        /* 表单样式 - Managed 紧凑布局 */
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -306,6 +324,7 @@
             margin-bottom: 10px;
         }
 
+        /* Managed 专用紧凑布局 */
         .managed-form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -360,7 +379,6 @@
             font-size: 14px;
             transition: all 0.3s;
             font-family: inherit;
-            min-height: 44px;
         }
 
         .form-group input:focus,
@@ -380,6 +398,10 @@
             min-height: 60px;
         }
 
+        /* ============================================
+           UPLOAD EVENT 按钮样式 - 与v8.8.2v1一致
+           ============================================ */
+
         /* 按钮组容器 */
         .btn-group {
             display: flex;
@@ -388,7 +410,7 @@
             justify-content: center;
         }
 
-        /* 基础按钮样式 */
+        /* 基础按钮样式 - 匹配UPLOAD EVENT效果 */
         .btn {
             padding: 15px 40px;
             border: 2px solid #8b0000;
@@ -404,8 +426,6 @@
             font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
             position: relative;
             overflow: hidden;
-            min-height: 44px;
-            -webkit-tap-highlight-color: transparent;
         }
 
         /* 按钮光泽效果 */
@@ -424,7 +444,7 @@
             left: 100%;
         }
 
-        /* 悬停效果 */
+        /* 悬停效果 - 红色背景+发光 */
         .btn:hover {
             background: #8b0000;
             border-color: #8b0000;
@@ -433,7 +453,7 @@
             letter-spacing: 4px;
         }
 
-        /* 主要按钮 */
+        /* 主要按钮（Next/Submit） */
         .btn-primary {
             background: rgba(139, 0, 0, 0.3);
             border-color: #8b0000;
@@ -462,7 +482,7 @@
             display: none;
         }
 
-        /* Back按钮 */
+        /* Back按钮 - 次要样式 */
         .btn-secondary {
             background: transparent;
             border-color: #444;
@@ -575,13 +595,100 @@
         }
 
         /* ============================================
-           响应式CSS - 平板 (768px - 1024px)
+           移动端响应式优化
+           ============================================ */
+        @media (max-width: 768px) {
+            .upload-modal {
+                width: 95%;
+                max-height: 95vh;
+            }
+
+            .modal-content {
+                padding: 15px 20px 20px;
+            }
+
+            /* 移动端按钮样式 */
+            .btn {
+                padding: 12px 30px;
+                font-size: 12px;
+                letter-spacing: 2px;
+            }
+
+            .btn:hover {
+                letter-spacing: 3px;
+                transform: scale(1.03);
+            }
+
+            .btn-group {
+                gap: 10px;
+                flex-direction: column;
+            }
+
+            .btn-group .btn {
+                width: 100%;
+            }
+
+            .type-grid,
+            .package-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid,
+            .managed-form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-header h1 {
+                font-size: 20px;
+            }
+
+            .step-title {
+                font-size: 12px;
+            }
+
+            .qr-code {
+                width: 240px;
+                height: 240px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .btn {
+                padding: 10px 25px;
+                font-size: 11px;
+                letter-spacing: 1.5px;
+            }
+
+            .btn:hover {
+                letter-spacing: 2.5px;
+            }
+
+            .modal-header {
+                padding: 20px 15px 15px;
+            }
+
+            .modal-header h1 {
+                font-size: 18px;
+            }
+
+            .modal-content {
+                padding: 12px 15px 15px;
+            }
+
+            .qr-code {
+                width: 260px;
+                height: 260px;
+            }
+        }
+    
+        /* ============================================
+           【修改点】响应式CSS - 平板 (768px - 1024px)
            ============================================ */
         @media (min-width: 768px) and (max-width: 1024px) {
             .upload-modal {
                 width: 85%;
                 max-width: 700px;
-                max-height: 90vh;
+                max-height: 85vh;
             }
 
             .modal-content {
@@ -589,12 +696,12 @@
             }
 
             .type-grid {
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns: repeat(2, 1fr);
                 gap: 12px;
             }
 
             .package-grid {
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns: repeat(2, 1fr);
                 gap: 10px;
             }
 
@@ -618,8 +725,8 @@
             }
 
             .qr-code {
-                width: 220px;
-                height: 220px;
+                width: 260px;
+                height: 260px;
             }
 
             .payment-section {
@@ -628,16 +735,11 @@
         }
 
         /* ============================================
-           响应式CSS - 手机 (<=767px)
+           【修改点】响应式CSS - 手机 (≤767px)
            ============================================ */
         @media (max-width: 767px) {
-            /* 移动端隐藏内部关闭按钮 */
             body {
                 padding: 0;
-            }
-
-            .modal-header {
-                padding: 20px 15px 15px;
             }
 
             .upload-modal {
@@ -659,7 +761,7 @@
             }
 
             .modal-header {
-                padding: 20px 15px 15px;
+                padding: 50px 15px 15px;
             }
 
             .modal-header h1 {
@@ -802,14 +904,22 @@
                 font-size: 24px;
                 margin: 15px 0;
             }
+
+            .close-btn {
+                top: 10px;
+                right: 10px;
+                font-size: 24px;
+                width: 48px;
+                height: 48px;
+            }
         }
 
         /* ============================================
-           响应式CSS - 小屏手机 (<=480px)
+           【修改点】响应式CSS - 小屏手机 (≤480px)
            ============================================ */
         @media (max-width: 480px) {
             .modal-header {
-                padding: 20px 12px 12px;
+                padding: 45px 12px 12px;
             }
 
             .modal-header h1 {
@@ -873,32 +983,16 @@
             }
         }
 
-        /* ============================================
-           底部版权文字 - 手机字号适配
-           ============================================ */
-        .footer-copyright {
-            text-align: center;
-            padding: 20px;
-            color: #666;
-            font-size: 12px;
+        /* 【修改点】隐藏外层X符号 */
+        .external-close-btn {
+            display: none !important;
         }
 
-        @media (max-width: 767px) {
-            .footer-copyright {
-                font-size: 11px;
-                padding: 15px;
-            }
+        /* 防止iOS橡皮筋效果 */
+        .modal-overlay {
+            -webkit-overflow-scrolling: touch;
         }
-
-        @media (max-width: 480px) {
-            .footer-copyright {
-                font-size: 10px;
-                padding: 12px;
-            }
-        }
-
-        /* 隐藏外层X符号 */
-        </style>
+</style>
     <!-- EmailJS SDK -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script type="text/javascript">
@@ -906,13 +1000,15 @@
             emailjs.init("i3WhTJDm88GTw6Bu3");
         })();
     </script>
-    <base target="_blank">
+<base target="_blank">
 </head>
 <body>
 
 <!-- 弹窗 - 直接显示，不需要触发按钮 -->
 <div id="uploadModal" class="modal-overlay" style="display: flex;">
     <div class="upload-modal">
+        <button class="close-btn" onclick="return closeModal(event);" aria-label="Close">&times;</button>
+
         <div class="modal-header">
             <h1>UPLOAD EVENT</h1>
             <p>Select your event type and package</p>
@@ -928,7 +1024,7 @@
 
             <!-- 恢复提示 -->
             <div id="restoreNotice" class="restore-notice">
-                ✓ Restored previous data
+                &#10003; Restored previous data
             </div>
 
             <!-- 步骤1: 选择类型 -->
@@ -964,7 +1060,7 @@
                             <div class="price-tag">CNY 1</div>
                         </div>
                         <div class="package-btn" onclick="selectPackage('tour15', 8, this)" data-package="tour15">
-                            <h4>On Tour (≤15 Days)</h4>
+                            <h4>On Tour (&le;15 Days)</h4>
                             <div class="price-tag">CNY 8</div>
                         </div>
                         <div class="package-btn" onclick="selectPackage('tour30', 10, this)" data-package="tour30">
@@ -987,7 +1083,7 @@
                 <div class="payment-section">
                     <div class="payment-title">WeChat QR Code</div>
                     <div class="qr-container">
-                        <img src="./image/Wechat-QR.png" alt="WeChat Pay QR Code" class="qr-code" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22180%22 height=%22180%22%3E%3Crect width=%22180%22 height=%22180%22 fill=%22%23f0f0f0%22/%3E%3Ctext x=%2290%22 y=%2290%22 font-family=%22Arial%22 font-size=%2214%22 fill=%22%23666%22 text-anchor=%22middle%22 dy=%22.3em%22%3EWeChat QR Code%3C/text%3E%3C/svg%3E'">
+                        <img src="./image/Wechat-QR.png" alt="WeChat Pay QR Code" class="qr-code" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22280%22 height=%22280%22%3E%3Crect width=%22280%22 height=%22280%22 fill=%22%23f0f0f0%22/%3E%3Ctext x=%22140%22 y=%22140%22 font-family=%22Arial%22 font-size=%2214%22 fill=%22%23666%22 text-anchor=%22middle%22 dy=%22.3em%22%3EWeChat QR Code%3C/text%3E%3C/svg%3E'">
                     </div>
                     <div class="payment-note">Scan with WeChat to pay CNY <span id="displayPrice">1</span></div>
 
@@ -1035,7 +1131,7 @@
                         </div>
 
                         <div class="form-group full-width">
-                            <label>Poster URL * <small style="color:#666;font-size:10px;">(2067×2916, ratio 2:3, upload icon)</small></label>
+                            <label>Poster URL *</label>
                             <input type="url" name="posterUrl" placeholder="https://example.com/image.jpg" required onchange="saveFormData()">
                         </div>
 
@@ -1056,7 +1152,7 @@
                     </div>
                 </form>
 
-                <!-- Managed 表单 -->
+                <!-- Managed 表单 - 紧凑布局，无滚动条 -->
                 <form id="managedForm" class="event-form" style="display: none;">
                     <div class="managed-form-grid">
                         <div class="form-group full-width">
@@ -1085,7 +1181,7 @@
                         </div>
 
                         <div class="form-group full-width">
-                            <label>Poster URL * <small style="color:#666;font-size:10px;">(2067×2916, ratio 2:3, upload icon)</small></label>
+                            <label>Poster URL *</label>
                             <input type="url" name="posterUrl" placeholder="https://example.com/image.jpg" required onchange="saveFormData()">
                         </div>
 
@@ -1120,7 +1216,7 @@
                         </div>
 
                         <div class="form-group full-width">
-                            <label>Poster URL * <small style="color:#666;font-size:10px;">(2067×2916, ratio 2:3, upload icon)</small></label>
+                            <label>Poster URL *</label>
                             <input type="url" name="posterUrl" placeholder="https://example.com/image.jpg" required onchange="saveFormData()">
                         </div>
 
@@ -1181,20 +1277,29 @@
     let selectedPrice = 1;
     let totalSteps = 4;
     let hasRestoredData = false;
+    // 【修改点】保存原始body overflow状态
     let originalBodyOverflow = '';
 
-    // 打开弹窗
+    // ============================================
+    // 【修改点】打开弹窗 - 保存并禁用页面滚动
+    // ============================================
     function openModal() {
         const modal = document.getElementById('uploadModal');
         modal.style.display = 'flex';
 
+        // 【修改点】保存并禁用body滚动
         originalBodyOverflow = document.body.style.overflow;
         document.body.style.overflow = 'hidden';
+
+        // 【修改点】添加body固定样式，防止页面滚动
         document.body.style.position = 'fixed';
         document.body.style.width = '100%';
         document.body.style.height = '100%';
+
+        // 【修改点】添加modal-open类用于CSS控制
         document.body.classList.add('modal-open');
 
+        // 检查是否有保存的数据
         const savedData = localStorage.getItem(STORAGE_KEY);
         if (savedData && !hasRestoredData) {
             restoreFormData();
@@ -1203,8 +1308,11 @@
         }
     }
 
-    // 关闭弹窗
+    // ============================================
+    // 【修改点】关闭弹窗 - 阻止事件冒泡，恢复页面滚动
+    // ============================================
     function closeModal(event) {
+        // 【修改点】阻止事件冒泡，防止触发其他点击事件
         if (event) {
             event.preventDefault();
             event.stopPropagation();
@@ -1214,14 +1322,17 @@
         const modal = document.getElementById('uploadModal');
         modal.style.display = 'none';
 
+        // 【修改点】恢复body滚动和样式
         document.body.style.overflow = originalBodyOverflow;
         document.body.style.position = '';
         document.body.style.width = '';
         document.body.style.height = '';
         document.body.classList.remove('modal-open');
 
+        // 保存当前状态
         saveCurrentState();
 
+        // 【修改点】通知父窗口弹窗已关闭（用于iframe通信）
         if (window.parent !== window) {
             window.parent.postMessage({ type: 'modalClosed' }, '*');
         }
@@ -1229,6 +1340,7 @@
         return false;
     }
 
+    // 保存当前状态（步骤、类型等）
     function saveCurrentState() {
         localStorage.setItem(STORAGE_STEP_KEY, currentStep);
         localStorage.setItem(STORAGE_TYPE_KEY, selectedType);
@@ -1237,6 +1349,7 @@
         saveFormData();
     }
 
+    // 保存表单数据到 localStorage
     function saveFormData() {
         const formData = {
             paymentId: document.getElementById('paymentId').value,
@@ -1245,6 +1358,7 @@
             poster: {}
         };
 
+        // 保存 Carousel 表单
         const carouselForm = document.getElementById('carouselForm');
         if (carouselForm) {
             const inputs = carouselForm.querySelectorAll('input:not([readonly])');
@@ -1253,6 +1367,7 @@
             });
         }
 
+        // 保存 Managed 表单
         const managedForm = document.getElementById('managedForm');
         if (managedForm) {
             const inputs = managedForm.querySelectorAll('input:not([readonly])');
@@ -1261,6 +1376,7 @@
             });
         }
 
+        // 保存 Poster 表单
         const posterForm = document.getElementById('posterForm');
         if (posterForm) {
             const inputs = posterForm.querySelectorAll('input:not([readonly])');
@@ -1272,8 +1388,10 @@
         localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
     }
 
+    // 恢复表单数据
     function restoreFormData() {
         try {
+            // 恢复状态
             const savedStep = localStorage.getItem(STORAGE_STEP_KEY);
             const savedType = localStorage.getItem(STORAGE_TYPE_KEY);
             const savedPackage = localStorage.getItem(STORAGE_PACKAGE_KEY);
@@ -1286,6 +1404,7 @@
                 selectedPackage = savedPackage || 'single';
                 selectedPrice = parseInt(savedPrice) || 1;
 
+                // 恢复类型选择 UI
                 document.querySelectorAll('.type-btn').forEach(btn => {
                     btn.classList.remove('selected');
                     if (btn.dataset.type === selectedType) {
@@ -1293,6 +1412,7 @@
                     }
                 });
 
+                // 恢复套餐选择 UI（仅 Carousel）
                 if (selectedType === 'carousel') {
                     document.querySelectorAll('.package-btn').forEach(btn => {
                         btn.classList.remove('selected');
@@ -1302,12 +1422,15 @@
                     });
                 }
 
+                // 恢复表单数据
                 const formData = JSON.parse(savedData);
 
+                // 恢复 Payment ID
                 if (formData.paymentId) {
                     document.getElementById('paymentId').value = formData.paymentId;
                 }
 
+                // 恢复 Carousel 表单
                 if (formData.carousel) {
                     Object.keys(formData.carousel).forEach(key => {
                         const input = document.querySelector(`#carouselForm input[name="${key}"]`);
@@ -1315,6 +1438,7 @@
                     });
                 }
 
+                // 恢复 Managed 表单
                 if (formData.managed) {
                     Object.keys(formData.managed).forEach(key => {
                         const input = document.querySelector(`#managedForm input[name="${key}"]`);
@@ -1322,6 +1446,7 @@
                     });
                 }
 
+                // 恢复 Poster 表单
                 if (formData.poster) {
                     Object.keys(formData.poster).forEach(key => {
                         const input = document.querySelector(`#posterForm input[name="${key}"]`);
@@ -1329,12 +1454,14 @@
                     });
                 }
 
+                // 设置正确的步骤数
                 if (selectedType === 'carousel') {
                     totalSteps = 4;
                 } else {
                     totalSteps = 3;
                 }
 
+                // 显示恢复提示
                 document.getElementById('restoreNotice').classList.add('show');
                 setTimeout(() => {
                     document.getElementById('restoreNotice').classList.remove('show');
@@ -1342,6 +1469,7 @@
 
                 hasRestoredData = true;
 
+                // 更新 UI
                 updatePriceDisplay();
                 updateStepIndicatorVisibility();
                 updateStepIndicator();
@@ -1353,9 +1481,11 @@
             console.error('Restore failed:', e);
         }
 
+        // 如果没有保存的数据，重置表单
         resetForm();
     }
 
+    // 清除保存的数据
     function clearSavedData() {
         localStorage.removeItem(STORAGE_KEY);
         localStorage.removeItem(STORAGE_STEP_KEY);
@@ -1365,6 +1495,7 @@
         hasRestoredData = false;
     }
 
+    // 重置表单
     function resetForm() {
         currentStep = 1;
         selectedType = 'carousel';
@@ -1373,26 +1504,32 @@
         totalSteps = 4;
         hasRestoredData = false;
 
+        // 清除保存的数据
         clearSavedData();
 
+        // 重置步骤显示
         updateStepIndicator();
         showStep(1);
 
+        // 重置选择状态
         document.querySelectorAll('.type-btn').forEach(btn => btn.classList.remove('selected'));
         document.querySelector('.type-btn').classList.add('selected');
 
         document.querySelectorAll('.package-btn').forEach(btn => btn.classList.remove('selected'));
         document.querySelector('.package-btn').classList.add('selected');
 
+        // 清空表单
         document.querySelectorAll('form').forEach(form => form.reset());
         document.getElementById('paymentId').value = '';
         document.getElementById('messageBox').className = 'message';
         document.getElementById('messageBox').style.display = 'none';
         document.getElementById('restoreNotice').classList.remove('show');
 
+        // 显示所有步骤点
         document.querySelectorAll('.step-dot').forEach(dot => dot.style.display = 'block');
     }
 
+    // 选择类型
     function selectType(type, element) {
         selectedType = type;
 
@@ -1416,6 +1553,7 @@
         saveCurrentState();
     }
 
+    // 选择套餐（仅Carousel）
     function selectPackage(pkg, price, element) {
         selectedPackage = pkg;
         selectedPrice = price;
@@ -1428,23 +1566,27 @@
         saveCurrentState();
     }
 
+    // 控制Carousel结束日期字段显示/隐藏（仅Single Event隐藏）
     function toggleCarouselEndDate() {
         const endDateGroup = document.getElementById('carouselEndDateGroup');
         const endDateInput = document.getElementById('carouselEndDate');
 
         if (selectedType === 'carousel' && selectedPackage === 'single') {
+            // Single Event (1元) 隐藏结束日期
             if (endDateGroup) {
                 endDateGroup.style.display = 'none';
                 if (endDateInput) endDateInput.value = '';
             }
         } else {
+            // 其他套餐显示结束日期
             if (endDateGroup) endDateGroup.style.display = 'flex';
         }
     }
 
+    // 验证8元套餐的日期范围（不能超过15天）
     function validateTour15Dates() {
         if (selectedType !== 'carousel' || selectedPackage !== 'tour15') {
-            return true;
+            return true; // 不是8元套餐，跳过验证
         }
 
         const startDateInput = document.querySelector('#carouselForm input[name="startDate"]');
@@ -1455,8 +1597,9 @@
         const startDateStr = startDateInput.value.trim();
         const endDateStr = endDateInput.value.trim();
 
-        if (!startDateStr || !endDateStr) return true;
+        if (!startDateStr || !endDateStr) return true; // 如果日期为空，让必填验证处理
 
+        // 解析日期 (YYYY.MM.DD 格式)
         const parseDate = (dateStr) => {
             const parts = dateStr.replace(/-/g, '.').split('.');
             if (parts.length !== 3) return null;
@@ -1466,14 +1609,15 @@
         const startDate = parseDate(startDateStr);
         const endDate = parseDate(endDateStr);
 
-        if (!startDate || !endDate) return true;
+        if (!startDate || !endDate) return true; // 格式不正确，让其他验证处理
 
+        // 计算天数差
         const diffTime = endDate - startDate;
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
         if (diffDays > 15) {
-            showMessage('❌ On Tour (≤15 Days) package: Date range cannot exceed 15 days. Please select Single Event for longer dates.', 'error');
-            endDateInput.value = '';
+            showMessage('&#10008; On Tour (&le;15 Days) package: Date range cannot exceed 15 days. Please select Single Event for longer dates.', 'error');
+            endDateInput.value = ''; // 清空结束日期
             endDateInput.focus();
             return false;
         }
@@ -1481,6 +1625,7 @@
         return true;
     }
 
+    // 为结束日期添加验证事件
     function setupDateValidation() {
         const carouselEndDate = document.getElementById('carouselEndDate');
         if (carouselEndDate) {
@@ -1501,12 +1646,15 @@
         }
     }
 
+    // 页面加载完成后设置日期验证
     document.addEventListener('DOMContentLoaded', setupDateValidation);
 
+    // 更新价格显示
     function updatePriceDisplay() {
         document.getElementById('displayPrice').textContent = selectedPrice;
     }
 
+    // 更新步骤指示器可见性
     function updateStepIndicatorVisibility() {
         const dots = document.querySelectorAll('.step-dot');
         if (selectedType === 'carousel') {
@@ -1515,9 +1663,11 @@
             dots[0].style.display = 'block';
             dots[1].style.display = 'none';
             dots[2].style.display = 'block';
+            dots[3].style.display = 'block';
         }
     }
 
+    // 更新步骤指示器状态
     function updateStepIndicator() {
         const dots = document.querySelectorAll('.step-dot');
         let activeDotIndex = currentStep - 1;
@@ -1536,6 +1686,7 @@
         });
     }
 
+    // 显示指定步骤
     function showStep(step) {
         document.querySelectorAll('.step-content').forEach(content => {
             content.classList.remove('active');
@@ -1558,6 +1709,7 @@
         }
     }
 
+    // 显示对应的事件表单
     function showEventForm() {
         document.querySelectorAll('.event-form').forEach(form => {
             form.style.display = 'none';
@@ -1576,9 +1728,11 @@
             document.getElementById('posterPaymentId').value = paymentId;
         }
 
+        // 控制Carousel结束日期显示/隐藏
         toggleCarouselEndDate();
     }
 
+    // 下一步
     function nextStep() {
         if (!validateStep(currentStep)) {
             return;
@@ -1592,6 +1746,7 @@
         }
     }
 
+    // 上一步
     function prevStep() {
         if (currentStep > 1) {
             currentStep--;
@@ -1601,6 +1756,7 @@
         }
     }
 
+    // 验证步骤
     function validateStep(step) {
         const isPaymentStep = (selectedType === 'carousel' && step === 3) ||
                               (selectedType !== 'carousel' && step === 2);
@@ -1615,9 +1771,10 @@
         return true;
     }
 
+    // 显示消息
     function showMessage(text, type) {
         const msgBox = document.getElementById('messageBox');
-        msgBox.textContent = text;
+        msgBox.innerHTML = text;
         msgBox.className = 'message ' + type;
         msgBox.style.display = 'block';
 
@@ -1626,6 +1783,8 @@
         }, 5000);
     }
 
+
+    // 发送邮件通知给管理员
     async function sendAdminEmail(eventData) {
         try {
             let eventName, city, eventDate, imageUrl, contactEmail;
@@ -1652,7 +1811,7 @@
 
             let packageName = eventData.package || 'Standard';
             if (packageName === 'single') packageName = 'Single Event';
-            else if (packageName === 'tour15') packageName = 'On Tour (≤15 Days)';
+            else if (packageName === 'tour15') packageName = 'On Tour (&le;15 Days)';
             else if (packageName === 'tour30') packageName = 'On Tour (>15 Days)';
 
             const templateParams = {
@@ -1684,6 +1843,7 @@
         }
     }
 
+    // 提交表单
     async function submitForm() {
         const submitBtn = document.getElementById('submitBtn');
         const originalText = submitBtn.innerHTML;
@@ -1696,6 +1856,7 @@
         const form = document.getElementById(formId);
         const formData = new FormData(form);
 
+        // 验证必填字段
         const requiredFields = form.querySelectorAll('[required]');
         for (let field of requiredFields) {
             if (!field.value.trim()) {
@@ -1705,12 +1866,14 @@
             }
         }
 
+        // 8元套餐日期范围验证
         if (selectedType === 'carousel' && selectedPackage === 'tour15') {
             if (!validateTour15Dates()) {
-                return;
+                return; // 验证失败，停止提交
             }
         }
 
+        // 构建数据对象
         const data = {
             id: Date.now().toString(36) + Math.random().toString(36).substr(2, 9),
             type: selectedType,
@@ -1738,6 +1901,7 @@
         submitBtn.innerHTML = '<span class="spinner"></span>Submitting...';
 
         try {
+            // 获取现有数据
             const getResponse = await fetch(`https://api.jsonbin.io/v3/b/${CONFIG.JSONBIN_BIN_ID}/latest`, {
                 method: 'GET',
                 headers: {
@@ -1755,8 +1919,10 @@
                 throw new Error(`Failed to fetch data: ${getResponse.status}`);
             }
 
+            // 添加新数据
             existingData.uploads.push(data);
 
+            // 更新到jsonbin.io
             const putResponse = await fetch(`https://api.jsonbin.io/v3/b/${CONFIG.JSONBIN_BIN_ID}`, {
                 method: 'PUT',
                 headers: {
@@ -1771,35 +1937,40 @@
                 throw new Error(`HTTP ${putResponse.status}: ${errorText}`);
             }
 
+            // 发送邮件通知给管理员（不阻塞主流程）
             sendAdminEmail(data).then(() => {
                 console.log('Email notification sent to admin');
             }).catch(err => {
                 console.error('Email notification failed:', err);
             });
 
+            // 成功 - 清除保存的数据
             clearSavedData();
-            showMessage('✅ Submitted successfully! Your event is under review.', 'success');
-            submitBtn.innerHTML = '✓ Submitted';
+            showMessage('&#10004; Submitted successfully! Your event is under review.', 'success');
+            submitBtn.innerHTML = '&#10004; Submitted';
 
             setTimeout(() => {
                 closeModal();
+                // 完全重置
                 resetForm();
             }, 3000);
 
         } catch (error) {
             console.error('Submit error:', error);
-            showMessage('❌ Submit failed: ' + error.message, 'error');
+            showMessage('&#10008; Submit failed: ' + error.message, 'error');
             submitBtn.disabled = false;
             submitBtn.innerHTML = originalText;
         }
     }
 
+    // 【修改点】点击遮罩关闭 - 统一关闭逻辑
     document.getElementById('uploadModal').addEventListener('click', function(e) {
         if (e.target === this) {
             closeModal(e);
         }
     });
 
+    // 【修改点】ESC键关闭 - 统一关闭逻辑
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             const modal = document.getElementById('uploadModal');
@@ -1809,6 +1980,8 @@
         }
     });
 
+
+    // 自动补全URL前缀
     function autoCompleteUrl(input) {
         let value = input.value.trim();
         if (value && !value.match(/^https?:\/\//i)) {
@@ -1817,6 +1990,7 @@
         }
     }
 
+    // 为所有URL输入字段添加自动补全
     function setupUrlAutoComplete() {
         const urlInputs = document.querySelectorAll('input[type="url"]');
         urlInputs.forEach(input => {
@@ -1826,8 +2000,10 @@
         });
     }
 
+    // 页面加载完成后初始化
     document.addEventListener('DOMContentLoaded', setupUrlAutoComplete);
 
+    // 页面加载时检查是否有保存的数据
     window.addEventListener('load', function() {
         const savedData = localStorage.getItem(STORAGE_KEY);
         if (savedData) {
