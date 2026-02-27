@@ -3222,6 +3222,7 @@ let formDataCache = {};
 // ç§»å¨ç«¯è¾å¥ä¼å - è¾å¥æ¶æ¾å¤§ï¼å¤±ç¦æ¶æ¢å¤
 function setupMobileInputOptimization() {
     const modal = document.getElementById('uploadEventModal');
+    if (!modal) return; // Guard: modal not found
     const inputs = modal.querySelectorAll('input, textarea');
 
     inputs.forEach(input => {
@@ -3247,7 +3248,7 @@ document.addEventListener('DOMContentLoaded', setupMobileInputOptimization);
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         const modal = document.getElementById('uploadEventModal');
-        if (modal && modal.style.display === 'flex') {
+        if (modal && modal.style.display === 'flex' && typeof closeUploadModal === 'function') {
             closeUploadModal();
         }
     }
@@ -3403,7 +3404,7 @@ async function getExistingUploads() {
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         const modal = document.getElementById('uploadEventModal');
-        if (modal && modal.style.display === 'flex') {
+        if (modal && modal.style.display === 'flex' && typeof closeUploadModal === 'function') {
             closeUploadModal();
         }
     }
