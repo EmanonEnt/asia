@@ -60,40 +60,7 @@
         /* ============================================
            关闭按钮 - 面板内右上角
            ============================================ */
-        .close-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
-            color: #666;
-            font-size: 28px;
-            cursor: pointer;
-            z-index: 100;
-            transition: all 0.3s ease;
-            width: 44px;
-            height: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            user-select: none;
-            -webkit-user-select: none;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .close-btn:hover {
-            color: #ff0000;
-            text-shadow: 0 0 10px rgba(255, 0, 0, 0.8), 0 0 20px rgba(255, 0, 0, 0.5), 0 0 30px rgba(255, 0, 0, 0.3);
-            animation: redFlash 0.5s ease-in-out infinite alternate;
-        }
-
-        @keyframes redFlash {
-            from { text-shadow: 0 0 10px rgba(255, 0, 0, 0.8), 0 0 20px rgba(255, 0, 0, 0.5); }
-            to { text-shadow: 0 0 15px rgba(255, 0, 0, 1), 0 0 30px rgba(255, 0, 0, 0.8), 0 0 45px rgba(255, 0, 0, 0.5); }
-        }
-
-        .close-btn:active {
-            color: #ff0000;
+        to { text-shadow: 0 0 15px rgba(255, 0, 0, 1), 0 0 30px rgba(255, 0, 0, 0.8), 0 0 45px rgba(255, 0, 0, 0.5); }
         }
 
         /* 头部 */
@@ -627,7 +594,7 @@
             }
 
             .package-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(3, 1fr);
                 gap: 10px;
             }
 
@@ -665,10 +632,6 @@
            ============================================ */
         @media (max-width: 767px) {
             /* 移动端隐藏内部关闭按钮 */
-            .close-btn {
-                display: none !important;
-            }
-
             body {
                 padding: 0;
             }
@@ -935,10 +898,7 @@
         }
 
         /* 隐藏外层X符号 */
-        .external-close-btn {
-            display: none !important;
-        }
-    </style>
+        </style>
     <!-- EmailJS SDK -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script type="text/javascript">
@@ -958,9 +918,6 @@
 <!-- 弹窗HTML结构 -->
 <div id="uploadModal" class="modal-overlay" style="display: none;">
     <div class="upload-modal">
-        <!-- 关闭按钮 - 面板内右上角 -->
-        <button class="close-btn" onclick="return closeModal(event)" aria-label="Close">&times;</button>
-
         <div class="modal-header">
             <h1>UPLOAD EVENT</h1>
             <p>Select your event type and package</p>
