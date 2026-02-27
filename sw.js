@@ -1,5 +1,5 @@
-const CACHE_NAME = 'livegigs-v1';
-const EXTERNAL_IMAGE_CACHE = 'external-images';
+const CACHE_NAME = 'livegigs-v2';  // 增加版本号强制更新
+const EXTERNAL_IMAGE_CACHE = 'external-images-v2';  // 增加版本号
 
 const CACHE_LIMITS = {
     [EXTERNAL_IMAGE_CACHE]: {
@@ -24,10 +24,11 @@ self.addEventListener('install', event => {
 self.addEventListener('activate', event => {
     event.waitUntil(
         Promise.all([
+            // 删除所有旧缓存
             caches.keys().then(cacheNames => {
                 return Promise.all(
                     cacheNames
-                        .filter(name => !name.startsWith('livegigs-'))
+                        .filter(name => name !== CACHE_NAME && name !== EXTERNAL_IMAGE_CACHE)
                         .map(name => caches.delete(name))
                 );
             }),
@@ -40,7 +41,7 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
     const { request } = event;
 
-    // Skip non-GET requests - cache API only supports GET
+    // 关键修复：跳过所有非 GET 请求
     if (request.method !== 'GET') {
         return;
     }
@@ -50,7 +51,6 @@ self.addEventListener('fetch', event => {
             caches.open(EXTERNAL_IMAGE_CACHE).then(cache => {
                 return cache.match(request).then(response => {
                     if (response) {
-                        // Check if cache is expired
                         const dateHeader = response.headers.get('date');
                         if (dateHeader) {
                             const age = Date.now() - new Date(dateHeader).getTime();
