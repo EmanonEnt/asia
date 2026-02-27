@@ -1932,6 +1932,7 @@
                 { title: 'BABYMETAL WORLD TOUR AUSTRALIA 2026', date: '2026.03.12~22', city: 'AUSTRALIA', image: 'https://babymetal.com/contents/1/TO/babymetal_insta45_OSN%20(2).jpg', link: 'https://babymetal.com' },
                 { title: 'Kraanium Asia Slam Tour 2026', date: '2026.03.20~30', city: 'ASIA', image: 'https://en.concerts-metal.com/images/flyers/202510/1759884648--Kraanium---Asia-Slam-Tour-2026.webp', link: '' },
                 { title: 'Arch Enemy announce 2026 China Tour', date: '2026.03.27~04.10', city: 'CHINA', image: 'https://i.redd.it/uzm4o4z64okg1.png', link: '' },
+                { title: 'CQ PUNK FEST 2026', date: '2026.03.27~28', city: 'ChongQing', image: 'https://scontent-lax3-2.xx.fbcdn.net/v/t39.30808-6/637144922_1448885460581970_2764879371704233551_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=13d280&_nc_ohc=xQx7B0UkXEsQ7kNvwHrLfXq&_nc_oc=AdlPV2O1IzkZADb-FufdZnoURQ8tB58ACxr6fVJVuJ0jnS4OSdOmtFY_JHs1RzSb_rg&_nc_zt=23&_nc_ht=scontent-lax3-2.xx&_nc_gid=lPazgNeUpTYVQBUuPhzIPA&oh=00_AftsM_slRWpTqXf451iewHrXV7eJAf7O-8GJySaIqX7cOA&oe=69A705C6', link: '' },
                 { title: 'MONO Oath Latin America Tour 2026', date: '2026.04.15~22', city: 'LATIN AMERICA', image: 'https://img1.wsimg.com/isteam/ip/d3b0a7bc-ae98-44b3-90fd-0429527897cf/Mono%20SA%202026.jpg', link: 'https://www.monoofjapan.com/' },
                 { title: 'WOA Official Warm-Up Party', date: '2026.04.18', city: 'HONGKONG', image: 'https://scontent-lga3-3.xx.fbcdn.net/v/t51.82787-15/629284670_18562967968011594_7262077853890485035_n.webp?stp=dst-jpg_tt6&_nc_cat=106&ccb=1-7&_nc_sid=13d280&_nc_ohc=c-MQ31Z1XGcQ7kNvwEbUDtj&_nc_oc=Adlz-bZVBOVBJNL5oTvVgmXTncvADOMTARnSZ7fNedHiGtJH2rr1Vkk6UzKjLnES7O0&_nc_zt=23&_nc_ht=scontent-lga3-3.xx&_nc_gid=63t9UGiwDHcTX-Eq7Dvj9Q&oh=00_Afu4Jtwn6m63nrcFXEJZs61bH3yJ_MtKfR3dtgVvR_Q60Q&oe=69A06DEE', link: '' },
                 { title: 'ROCK HARD FEST', date: '2026.05.22', city: 'Amphitheater', image: 'https://en.concerts-metal.com/images/flyers/202512/1765361746--Rock-Hard-Festival-2026.jpg', link: '' },
@@ -3470,7 +3471,14 @@ document.addEventListener('click', function(e) {
 <!-- Upload Event Modal -->
 <div id="uploadModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:10000; justify-content:center; align-items:center;">
   <div style="position:relative; width:90%; height:90%; max-width:800px; background:#1a1a1a; border:2px solid #8b0000; border-radius:8px; overflow:hidden;">
-    <button onclick="closeUploadModal()" style="position:absolute; top:10px; right:15px; background:none; border:none; color:#fff; font-size:24px; cursor:pointer; z-index:10;">&times;</button>
+    <button onclick="closeUploadModal()" 
+            style="position:absolute; top:-40px; right:0; background:none; border:none; color:#666; font-size:28px; cursor:pointer; z-index:10; width:44px; height:44px; display:flex; align-items:center; justify-content:center; transition:all 0.3s ease;"
+            onmouseover="this.style.color='#ff0000'; this.style.textShadow='0 0 10px rgba(255,0,0,0.8), 0 0 20px rgba(255,0,0,0.5), 0 0 30px rgba(255,0,0,0.3)';"
+            onmouseout="this.style.color='#666'; this.style.textShadow='none';"
+            onmouseenter="this.style.animation='redFlashX 0.5s ease-in-out infinite alternate';"
+            onmouseleave="this.style.animation='none';"
+    >&times;</button>
+    <style>@keyframes redFlashX { from { text-shadow: 0 0 10px rgba(255,0,0,0.8), 0 0 20px rgba(255,0,0,0.5); } to { text-shadow: 0 0 15px rgba(255,0,0,1), 0 0 30px rgba(255,0,0,0.8), 0 0 45px rgba(255,0,0,0.5); } }</style>
     <iframe src="./upload-form-embedded.html" style="width:100%; height:100%; border:none;"></iframe>
   </div>
 </div>
