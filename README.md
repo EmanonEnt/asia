@@ -1,4 +1,4 @@
-# LiveGigs Editor 弹窗修复说明
+# LiveGigs Editor  v8.8.6v3弹窗修复说明
 
 ## 修复内容概览
 
