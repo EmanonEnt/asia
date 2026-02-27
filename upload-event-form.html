@@ -50,9 +50,7 @@
             border-radius: 8px;
             width: 90%;
             max-width: 600px;
-            /* 修改点: 限制最大高度为视口高度的85% */
-            max-height: 85vh;
-            /* 修改点: 内部滚动而非外部 */
+            max-height: 95vh;
             overflow-y: auto;
             overflow-x: hidden;
             position: relative;
@@ -64,41 +62,44 @@
            ============================================ */
         .close-btn {
             position: absolute;
-            top: 15px;
-            right: 20px;
+            top: 10px;
+            right: 10px;
             background: none;
             border: none;
             color: #666;
             font-size: 28px;
             cursor: pointer;
-            z-index: 10;
-            transition: color 0.3s;
-            /* 修改点: 增大点击区域 */
+            z-index: 100;
+            transition: all 0.3s ease;
             width: 44px;
             height: 44px;
             display: flex;
             align-items: center;
             justify-content: center;
-            /* 修改点: 防止文本选择 */
             user-select: none;
             -webkit-user-select: none;
-            /* 修改点: 防止触摸高亮 */
             -webkit-tap-highlight-color: transparent;
         }
 
         .close-btn:hover {
-            color: #fff;
+            color: #ff0000;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.8), 0 0 20px rgba(255, 0, 0, 0.5), 0 0 30px rgba(255, 0, 0, 0.3);
+            animation: redFlash 0.5s ease-in-out infinite alternate;
         }
 
-        /* 修改点: 移动端优化点击 */
+        @keyframes redFlash {
+            from { text-shadow: 0 0 10px rgba(255, 0, 0, 0.8), 0 0 20px rgba(255, 0, 0, 0.5); }
+            to { text-shadow: 0 0 15px rgba(255, 0, 0, 1), 0 0 30px rgba(255, 0, 0, 0.8), 0 0 45px rgba(255, 0, 0, 0.5); }
+        }
+
         .close-btn:active {
-            color: #8b0000;
+            color: #ff0000;
         }
 
         /* 头部 */
         .modal-header {
             text-align: center;
-            padding: 30px 20px 20px;
+            padding: 45px 20px 15px;
             border-bottom: 1px solid #333;
         }
 
@@ -120,8 +121,8 @@
         .step-indicator {
             display: flex;
             justify-content: center;
-            gap: 10px;
-            margin: 20px 0;
+            gap: 8px;
+            margin: 12px 0;
             padding: 0 20px;
         }
 
@@ -144,7 +145,7 @@
 
         /* 内容区域 */
         .modal-content {
-            padding: 20px 30px 30px;
+            padding: 15px 25px 20px;
         }
 
         .step-content {
@@ -163,9 +164,9 @@
 
         .step-title {
             text-align: center;
-            font-size: 14px;
+            font-size: 13px;
             color: #888;
-            margin-bottom: 25px;
+            margin-bottom: 15px;
             letter-spacing: 2px;
             text-transform: uppercase;
         }
@@ -174,21 +175,20 @@
         .type-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-bottom: 20px;
+            gap: 12px;
+            margin-bottom: 15px;
         }
 
         .type-btn {
             background: #8b0000;
             border: 2px solid #8b0000;
             border-radius: 4px;
-            padding: 20px 15px;
+            padding: 15px 10px;
             cursor: pointer;
             transition: all 0.3s ease;
             text-align: center;
             position: relative;
             overflow: hidden;
-            /* 修改点: 移动端优化点击区域 */
             min-height: 44px;
         }
 
@@ -235,19 +235,18 @@
         .package-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-bottom: 25px;
+            gap: 10px;
+            margin-bottom: 15px;
         }
 
         .package-btn {
             background: #8b0000;
             border: 2px solid #8b0000;
             border-radius: 4px;
-            padding: 18px 12px;
+            padding: 14px 10px;
             cursor: pointer;
             transition: all 0.3s ease;
             text-align: center;
-            /* 修改点: 移动端优化点击区域 */
             min-height: 44px;
         }
 
@@ -295,9 +294,9 @@
         .payment-section {
             background: #222;
             border-radius: 8px;
-            padding: 25px;
+            padding: 15px;
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 15px;
         }
 
         .payment-title {
@@ -309,15 +308,15 @@
 
         .qr-container {
             background: #fff;
-            padding: 15px;
+            padding: 12px;
             border-radius: 8px;
             display: inline-block;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
         .qr-code {
-            width: 180px;
-            height: 180px;
+            width: 240px;
+            height: 240px;
             object-fit: contain;
         }
 
@@ -336,15 +335,15 @@
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 15px;
+            gap: 8px;
+            margin-bottom: 10px;
         }
 
         .managed-form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 15px;
+            gap: 8px;
+            margin-bottom: 10px;
         }
 
         .managed-form-grid .form-group {
@@ -368,7 +367,7 @@
         .form-group {
             display: flex;
             flex-direction: column;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
         }
 
         .form-group.full-width {
@@ -418,8 +417,8 @@
         /* 按钮组容器 */
         .btn-group {
             display: flex;
-            gap: 12px;
-            margin-top: 20px;
+            gap: 10px;
+            margin-top: 12px;
             justify-content: center;
         }
 
@@ -660,8 +659,8 @@
 
             /* QR码适配 */
             .qr-code {
-                width: 200px;
-                height: 200px;
+                width: 220px;
+                height: 220px;
             }
 
             .payment-section {
@@ -680,19 +679,17 @@
 
             /* 修改点: 弹窗容器宽度适配设备 */
             .upload-modal {
-                width: 100%;
-                max-width: 100%;
-                /* 修改点: 移动端全屏显示 */
-                height: 100vh;
-                max-height: 100vh;
-                border-radius: 0;
-                border: none;
+                width: 95%;
+                max-width: 95%;
+                height: auto;
+                max-height: 95vh;
+                border-radius: 8px;
+                border: 1px solid #333;
             }
 
-            /* 修改点: 遮罩层全屏 */
             .modal-overlay {
-                padding: 0;
-                align-items: flex-start;
+                padding: 10px;
+                align-items: center;
             }
 
             .modal-content {
@@ -714,41 +711,41 @@
 
             /* 修改点: 海报区域手机单列布局 */
             .type-grid {
-                grid-template-columns: 1fr;
-                gap: 10px;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 6px;
             }
 
             .type-btn {
-                padding: 18px 15px;
-                /* 修改点: 移动端点击区域 ≥44px */
+                padding: 10px 6px;
                 min-height: 44px;
             }
 
             .type-btn h3 {
-                font-size: 13px;
+                font-size: 10px;
+                letter-spacing: 0.5px;
             }
 
             .type-btn .price {
-                font-size: 11px;
+                font-size: 9px;
             }
 
             .package-grid {
-                grid-template-columns: 1fr;
-                gap: 10px;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 6px;
             }
 
             .package-btn {
-                padding: 16px 12px;
-                /* 修改点: 移动端点击区域 ≥44px */
+                padding: 10px 6px;
                 min-height: 44px;
             }
 
             .package-btn h4 {
-                font-size: 11px;
+                font-size: 9px;
+                letter-spacing: 0.5px;
             }
 
             .package-btn .price-tag {
-                font-size: 16px;
+                font-size: 12px;
             }
 
             /* 修改点: 表单单列布局 */
@@ -828,8 +825,8 @@
             }
 
             .qr-code {
-                width: 160px;
-                height: 160px;
+                width: 200px;
+                height: 200px;
             }
 
             .payment-note {
@@ -920,8 +917,8 @@
             }
 
             .qr-code {
-                width: 140px;
-                height: 140px;
+                width: 180px;
+                height: 180px;
             }
 
             .payment-section {
@@ -1061,8 +1058,8 @@
             }
 
             .type-grid {
-                grid-template-columns: 1fr;
-                gap: 10px;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 6px;
             }
 
             .type-btn {
@@ -1079,8 +1076,8 @@
             }
 
             .package-grid {
-                grid-template-columns: 1fr;
-                gap: 10px;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 6px;
             }
 
             .package-btn {
@@ -1167,8 +1164,8 @@
             }
 
             .qr-code {
-                width: 160px;
-                height: 160px;
+                width: 200px;
+                height: 200px;
             }
 
             .payment-note {
@@ -1595,9 +1592,7 @@
     let selectedPrice = 1;
     let totalSteps = 4;
     let hasRestoredData = false;
-    // 【修改点10】保存原始body overflow状态
-    let originalBodyOverflow = '';
-    // 修改点: 保存原始body overflow状态
+    // 【修改点】保存原始body overflow状态
     let originalBodyOverflow = '';
 
     // ============================================
@@ -1611,7 +1606,12 @@
         originalBodyOverflow = document.body.style.overflow;
         document.body.style.overflow = 'hidden';
         
-        // 修改点: 添加modal-open类用于CSS控制
+        // 【修改点】添加body固定样式，防止页面滚动
+        document.body.style.position = 'fixed';
+        document.body.style.width = '100%';
+        document.body.style.height = '100%';
+
+        // 【修改点】添加modal-open类用于CSS控制
         document.body.classList.add('modal-open');
 
         // 检查是否有保存的数据
@@ -1627,24 +1627,34 @@
     // 关闭弹窗 - 修改点7: 阻止事件冒泡，恢复页面滚动
     // ============================================
     function closeModal(event) {
-        // 修改点: 阻止事件冒泡，防止触发其他点击事件
+        // 【修改点】阻止事件冒泡，防止触发其他点击事件
         if (event) {
             event.preventDefault();
             event.stopPropagation();
+            event.stopImmediatePropagation();
         }
-        
+
         const modal = document.getElementById('uploadModal');
         modal.style.display = 'none';
-        
-        // 修改点: 恢复body滚动
+
+        // 【修改点】恢复body滚动和样式
         document.body.style.overflow = originalBodyOverflow;
+        document.body.style.position = '';
+        document.body.style.width = '';
+        document.body.style.height = '';
         document.body.classList.remove('modal-open');
-        
+
         // 保存当前状态
         saveCurrentState();
+
+        // 【修改点】通知父窗口弹窗已关闭（用于iframe通信）
+        if (window.parent !== window) {
+            window.parent.postMessage({ type: 'modalClosed' }, '*');
+        }
+
+        return false;
     }
 
-    // 保存当前状态
     function saveCurrentState() {
         localStorage.setItem(STORAGE_STEP_KEY, currentStep);
         localStorage.setItem(STORAGE_TYPE_KEY, selectedType);

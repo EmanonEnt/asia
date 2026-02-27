@@ -44,7 +44,7 @@
             border-radius: 8px;
             width: 90%;
             max-width: 600px;
-            max-height: 85vh;
+            max-height: 95vh;
             overflow-y: auto;
             position: relative;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
@@ -53,36 +53,40 @@
         /* 关闭按钮 */
         .close-btn {
             position: absolute;
-            top: 15px;
-            right: 20px;
+            top: 10px;
+            right: 10px;
             background: none;
             border: none;
             color: #666;
             font-size: 28px;
             cursor: pointer;
-            z-index: 10;
-            transition: color 0.3s;
-            /* 【修改点】增大点击区域 */
+            z-index: 100;
+            transition: all 0.3s ease;
             width: 44px;
             height: 44px;
             display: flex;
             align-items: center;
             justify-content: center;
-            /* 【修改点】防止文本选择 */
             user-select: none;
             -webkit-user-select: none;
-            /* 【修改点】防止触摸高亮 */
             -webkit-tap-highlight-color: transparent;
         }
 
         .close-btn:hover {
-            color: #fff;
+            color: #ff0000;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.8), 0 0 20px rgba(255, 0, 0, 0.5), 0 0 30px rgba(255, 0, 0, 0.3);
+            animation: redFlash 0.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes redFlash {
+            from { text-shadow: 0 0 10px rgba(255, 0, 0, 0.8), 0 0 20px rgba(255, 0, 0, 0.5); }
+            to { text-shadow: 0 0 15px rgba(255, 0, 0, 1), 0 0 30px rgba(255, 0, 0, 0.8), 0 0 45px rgba(255, 0, 0, 0.5); }
         }
 
         /* 头部 */
         .modal-header {
             text-align: center;
-            padding: 30px 20px 20px;
+            padding: 45px 20px 15px;
             border-bottom: 1px solid #333;
         }
 
@@ -104,8 +108,8 @@
         .step-indicator {
             display: flex;
             justify-content: center;
-            gap: 10px;
-            margin: 20px 0;
+            gap: 8px;
+            margin: 12px 0;
             padding: 0 20px;
         }
 
@@ -128,7 +132,7 @@
 
         /* 内容区域 */
         .modal-content {
-            padding: 20px 30px 30px;
+            padding: 15px 25px 20px;
         }
 
         .step-content {
@@ -147,9 +151,9 @@
 
         .step-title {
             text-align: center;
-            font-size: 14px;
+            font-size: 13px;
             color: #888;
-            margin-bottom: 25px;
+            margin-bottom: 15px;
             letter-spacing: 2px;
             text-transform: uppercase;
         }
@@ -158,15 +162,15 @@
         .type-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-bottom: 20px;
+            gap: 12px;
+            margin-bottom: 15px;
         }
 
         .type-btn {
             background: #8b0000;
             border: 2px solid #8b0000;
             border-radius: 4px;
-            padding: 20px 15px;
+            padding: 15px 10px;
             cursor: pointer;
             transition: all 0.3s ease;
             text-align: center;
@@ -217,15 +221,15 @@
         .package-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-bottom: 25px;
+            gap: 10px;
+            margin-bottom: 15px;
         }
 
         .package-btn {
             background: #8b0000;
             border: 2px solid #8b0000;
             border-radius: 4px;
-            padding: 18px 12px;
+            padding: 14px 10px;
             cursor: pointer;
             transition: all 0.3s ease;
             text-align: center;
@@ -275,9 +279,9 @@
         .payment-section {
             background: #222;
             border-radius: 8px;
-            padding: 25px;
+            padding: 15px;
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 15px;
         }
 
         .payment-title {
@@ -289,15 +293,15 @@
 
         .qr-container {
             background: #fff;
-            padding: 20px;
+            padding: 12px;
             border-radius: 8px;
             display: inline-block;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
         .qr-code {
-            width: 280px;
-            height: 280px;
+            width: 320px;
+            height: 320px;
             object-fit: contain;
         }
 
@@ -316,16 +320,16 @@
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 15px;
+            gap: 8px;
+            margin-bottom: 10px;
         }
 
         /* Managed 专用紧凑布局 */
         .managed-form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 15px;
+            gap: 8px;
+            margin-bottom: 10px;
         }
 
         .managed-form-grid .form-group {
@@ -349,7 +353,7 @@
         .form-group {
             display: flex;
             flex-direction: column;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
         }
 
         .form-group.full-width {
@@ -401,8 +405,8 @@
         /* 按钮组容器 */
         .btn-group {
             display: flex;
-            gap: 12px;
-            margin-top: 20px;
+            gap: 10px;
+            margin-top: 12px;
             justify-content: center;
         }
 
@@ -643,8 +647,8 @@
             }
 
             .qr-code {
-                width: 220px;
-                height: 220px;
+                width: 240px;
+                height: 240px;
             }
         }
 
@@ -672,8 +676,8 @@
             }
 
             .qr-code {
-                width: 200px;
-                height: 200px;
+                width: 260px;
+                height: 260px;
             }
         }
     
@@ -721,8 +725,8 @@
             }
 
             .qr-code {
-                width: 200px;
-                height: 200px;
+                width: 260px;
+                height: 260px;
             }
 
             .payment-section {
@@ -770,39 +774,41 @@
             }
 
             .type-grid {
-                grid-template-columns: 1fr;
-                gap: 10px;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 6px;
             }
 
             .type-btn {
-                padding: 18px 15px;
+                padding: 10px 6px;
                 min-height: 44px;
             }
 
             .type-btn h3 {
-                font-size: 13px;
+                font-size: 10px;
+                letter-spacing: 0.5px;
             }
 
             .type-btn .price {
-                font-size: 11px;
+                font-size: 9px;
             }
 
             .package-grid {
-                grid-template-columns: 1fr;
-                gap: 10px;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 6px;
             }
 
             .package-btn {
-                padding: 16px 12px;
+                padding: 10px 6px;
                 min-height: 44px;
             }
 
             .package-btn h4 {
-                font-size: 11px;
+                font-size: 9px;
+                letter-spacing: 0.5px;
             }
 
             .package-btn .price-tag {
-                font-size: 16px;
+                font-size: 12px;
             }
 
             .form-grid,
@@ -876,8 +882,8 @@
             }
 
             .qr-code {
-                width: 160px;
-                height: 160px;
+                width: 200px;
+                height: 200px;
             }
 
             .payment-note {
@@ -964,8 +970,8 @@
             }
 
             .qr-code {
-                width: 140px;
-                height: 140px;
+                width: 180px;
+                height: 180px;
             }
 
             .payment-section {
