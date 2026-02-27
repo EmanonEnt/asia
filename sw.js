@@ -1,5 +1,5 @@
-const CACHE_NAME = 'livegigs-v2';  // 增加版本号强制更新
-const EXTERNAL_IMAGE_CACHE = 'external-images-v2';  // 增加版本号
+const CACHE_NAME = 'livegigs-v3';
+const EXTERNAL_IMAGE_CACHE = 'external-images-v3';
 
 const CACHE_LIMITS = {
     [EXTERNAL_IMAGE_CACHE]: {
@@ -8,90 +8,109 @@ const CACHE_LIMITS = {
     }
 };
 
+const PRECACHE_URLS = [
+    './index.html',
+    './events.html',
+    './partners.html'
+];
+
 self.addEventListener('install', event => {
+    console.log('[SW] Installing v3...');
     event.waitUntil(
-        caches.open(CACHE_NAME).then(cache => {
-            return cache.addAll([
-                './index.html',
-                './events.html',
-                './partners.html'
-            ]).catch(() => {});
-        })
+        caches.open(CACHE_NAME)
+            .then(cache => {
+                console.log('[SW] Pre-caching');
+                return cache.addAll(PRECACHE_URLS).catch(() => {});
+            })
+            .then(() => self.skipWaiting())
     );
-    self.skipWaiting();
 });
 
 self.addEventListener('activate', event => {
+    console.log('[SW] Activating v3...');
     event.waitUntil(
-        Promise.all([
-            // 删除所有旧缓存
-            caches.keys().then(cacheNames => {
-                return Promise.all(
-                    cacheNames
-                        .filter(name => name !== CACHE_NAME && name !== EXTERNAL_IMAGE_CACHE)
-                        .map(name => caches.delete(name))
-                );
-            }),
-            cleanupCache()
-        ])
+        caches.keys().then(cacheNames => {
+            return Promise.all(
+                cacheNames.map(name => {
+                    if (name !== CACHE_NAME && name !== EXTERNAL_IMAGE_CACHE) {
+                        console.log('[SW] Deleting old:', name);
+                        return caches.delete(name);
+                    }
+                })
+            );
+        }).then(() => self.clients.claim())
     );
-    self.clients.claim();
 });
 
 self.addEventListener('fetch', event => {
     const { request } = event;
-
-    // 关键修复：跳过所有非 GET 请求
-    if (request.method !== 'GET') {
-        return;
-    }
+    
+    if (request.method !== 'GET') return;
+    
+    const url = new URL(request.url);
+    if (!url.protocol.startsWith('http')) return;
 
     if (request.destination === 'image') {
-        event.respondWith(
-            caches.open(EXTERNAL_IMAGE_CACHE).then(cache => {
-                return cache.match(request).then(response => {
-                    if (response) {
-                        const dateHeader = response.headers.get('date');
-                        if (dateHeader) {
-                            const age = Date.now() - new Date(dateHeader).getTime();
-                            if (age > CACHE_LIMITS[EXTERNAL_IMAGE_CACHE].maxAge) {
-                                cache.delete(request);
-                                return fetchAndCache(request, cache);
-                            }
-                        }
-                        return response;
-                    }
-                    return fetchAndCache(request, cache);
-                });
-            })
-        );
+        event.respondWith(handleImage(request));
     } else {
-        event.respondWith(
-            caches.match(request).then(response => {
-                return response || fetch(request);
-            })
-        );
+        event.respondWith(handleDefault(request));
     }
 });
 
-function fetchAndCache(request, cache) {
-    return fetch(request).then(response => {
+async function handleImage(request) {
+    const cache = await caches.open(EXTERNAL_IMAGE_CACHE);
+    const cached = await cache.match(request);
+    
+    if (cached) {
+        const date = cached.headers.get('date');
+        if (date) {
+            const age = Date.now() - new Date(date).getTime();
+            if (age > CACHE_LIMITS[EXTERNAL_IMAGE_CACHE].maxAge) {
+                cache.delete(request);
+                return fetchImage(request, cache);
+            }
+        }
+        fetchImage(request, cache).catch(() => {});
+        return cached;
+    }
+    
+    return fetchImage(request, cache);
+}
+
+async function fetchImage(request, cache) {
+    try {
+        const response = await fetch(request, { mode: 'cors', credentials: 'omit' });
         if (response.ok) {
-            cache.put(request, response.clone());
+            await cache.put(request, response.clone());
             cleanupCache();
         }
         return response;
-    }).catch(() => {
-        return new Response('Offline', { status: 503 });
-    });
+    } catch (err) {
+        const cached = await cache.match(request);
+        if (cached) return cached;
+        throw err;
+    }
+}
+
+async function handleDefault(request) {
+    try {
+        const response = await fetch(request);
+        const cache = await caches.open(CACHE_NAME);
+        cache.put(request, response.clone());
+        return response;
+    } catch (err) {
+        const cached = await caches.match(request);
+        if (cached) return cached;
+        throw err;
+    }
 }
 
 function cleanupCache() {
     caches.open(EXTERNAL_IMAGE_CACHE).then(cache => {
         cache.keys().then(keys => {
-            if (keys.length > CACHE_LIMITS[EXTERNAL_IMAGE_CACHE].maxEntries) {
-                const toDelete = keys.slice(0, keys.length - CACHE_LIMITS[EXTERNAL_IMAGE_CACHE].maxEntries);
-                toDelete.forEach(key => cache.delete(key));
+            const limit = CACHE_LIMITS[EXTERNAL_IMAGE_CACHE].maxEntries;
+            if (keys.length > limit) {
+                keys.slice(0, keys.length - limit).forEach(key => cache.delete(key));
             }
         });
     });
