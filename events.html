@@ -3570,7 +3570,8 @@ document.addEventListener('click', function(e) {
 </div>
 <script>
 function openUploadModal() { 
-    document.getElementById('uploadModal').style.display = 'flex'; 
+    var modal = document.getElementById('uploadModal');
+    if (modal) modal.style.display = 'flex'; 
     // 强制注入3列布局CSS到iframe
     setTimeout(function() {
         const iframe = document.querySelector('#uploadModal iframe');
@@ -3581,13 +3582,16 @@ function openUploadModal() {
         }
     }, 100);
 }
-function closeUploadModal() { document.getElementById('uploadModal').style.display = 'none'; }
+function closeUploadModal() { var modal = document.getElementById('uploadModal'); if (modal) modal.style.display = 'none'; }
 document.addEventListener('click', function(e) { 
-    const modal = document.getElementById('uploadModal'); 
-    if (e.target === modal) closeUploadModal(); 
+    var modal = document.getElementById('uploadModal'); 
+    if (modal && e.target === modal) closeUploadModal(); 
 });
 document.addEventListener('keydown', function(e) { 
-    if (e.key === 'Escape') closeUploadModal(); 
+    if (e.key === 'Escape') {
+        var modal = document.getElementById('uploadModal');
+        if (modal && modal.style.display === 'flex') closeUploadModal(); 
+    }
 });
 </script></body>
 </html>
