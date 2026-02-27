@@ -627,7 +627,7 @@
 
             /* 修改点: 海报区域平板两列布局 */
             .type-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(3, 1fr);
                 gap: 12px;
             }
 
@@ -672,7 +672,12 @@
            响应式CSS - 手机 (≤767px)
            ============================================ */
         @media (max-width: 767px) {
-            /* 修改点: 修复移动端全屏占屏导致的版面混乱 */
+                        /* 移动端隐藏内部关闭按钮 */
+            .close-btn {
+                display: none !important;
+            }
+
+/* 修改点: 修复移动端全屏占屏导致的版面混乱 */
             body {
                 padding: 0;
             }
@@ -941,7 +946,12 @@
         }
 
         @media (max-width: 767px) {
-            .footer-copyright {
+                        /* 移动端隐藏内部关闭按钮 */
+            .close-btn {
+                display: none !important;
+            }
+
+.footer-copyright {
                 /* 修改点: 底部版权文字手机字号适配 */
                 font-size: 11px;
                 padding: 15px;
@@ -980,7 +990,7 @@
             }
 
             .type-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(3, 1fr);
                 gap: 12px;
             }
 
@@ -1022,7 +1032,12 @@
            【修改点5】响应式CSS - 手机 (≤767px)
            ============================================ */
         @media (max-width: 767px) {
-            body {
+                        /* 移动端隐藏内部关闭按钮 */
+            .close-btn {
+                display: none !important;
+            }
+
+body {
                 padding: 0;
             }
 
@@ -1276,7 +1291,12 @@
         }
 
         @media (max-width: 767px) {
-            .footer-copyright {
+                        /* 移动端隐藏内部关闭按钮 */
+            .close-btn {
+                display: none !important;
+            }
+
+.footer-copyright {
                 font-size: 11px;
                 padding: 15px;
             }
@@ -1446,7 +1466,7 @@
                         </div>
 
                         <div class="form-group full-width">
-                            <label>Poster URL *</label>
+                            <label>Poster URL * <small style="color:#666;font-size:10px;">(2067×2916, ratio 2:3, upload icon)</small></label>
                             <input type="url" name="posterUrl" placeholder="https://example.com/image.jpg" required onchange="saveFormData()">
                         </div>
 
@@ -1496,7 +1516,7 @@
                         </div>
 
                         <div class="form-group full-width">
-                            <label>Poster URL *</label>
+                            <label>Poster URL * <small style="color:#666;font-size:10px;">(2067×2916, ratio 2:3, upload icon)</small></label>
                             <input type="url" name="posterUrl" placeholder="https://example.com/image.jpg" required onchange="saveFormData()">
                         </div>
 
@@ -1531,7 +1551,7 @@
                         </div>
 
                         <div class="form-group full-width">
-                            <label>Poster URL *</label>
+                            <label>Poster URL * <small style="color:#666;font-size:10px;">(2067×2916, ratio 2:3, upload icon)</small></label>
                             <input type="url" name="posterUrl" placeholder="https://example.com/image.jpg" required onchange="saveFormData()">
                         </div>
 

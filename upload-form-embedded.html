@@ -696,7 +696,7 @@
             }
 
             .type-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(3, 1fr);
                 gap: 12px;
             }
 
@@ -738,7 +738,12 @@
            【修改点】响应式CSS - 手机 (≤767px)
            ============================================ */
         @media (max-width: 767px) {
-            body {
+                        /* 移动端隐藏内部关闭按钮 */
+            .close-btn {
+                display: none !important;
+            }
+
+body {
                 padding: 0;
             }
 
@@ -1131,7 +1136,7 @@
                         </div>
 
                         <div class="form-group full-width">
-                            <label>Poster URL *</label>
+                            <label>Poster URL * <small style="color:#666;font-size:10px;">(2067×2916, ratio 2:3, upload icon)</small></label>
                             <input type="url" name="posterUrl" placeholder="https://example.com/image.jpg" required onchange="saveFormData()">
                         </div>
 
@@ -1181,7 +1186,7 @@
                         </div>
 
                         <div class="form-group full-width">
-                            <label>Poster URL *</label>
+                            <label>Poster URL * <small style="color:#666;font-size:10px;">(2067×2916, ratio 2:3, upload icon)</small></label>
                             <input type="url" name="posterUrl" placeholder="https://example.com/image.jpg" required onchange="saveFormData()">
                         </div>
 
@@ -1216,7 +1221,7 @@
                         </div>
 
                         <div class="form-group full-width">
-                            <label>Poster URL *</label>
+                            <label>Poster URL * <small style="color:#666;font-size:10px;">(2067×2916, ratio 2:3, upload icon)</small></label>
                             <input type="url" name="posterUrl" placeholder="https://example.com/image.jpg" required onchange="saveFormData()">
                         </div>
 
