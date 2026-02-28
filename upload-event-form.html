@@ -681,16 +681,17 @@
 
             /* 修改点: 弹窗容器宽度适配设备 */
             .upload-modal {
-                width: 95%;
-                max-width: 95%;
+                width: 92%;
+                max-width: 400px;
                 height: auto;
-                max-height: 95vh;
+                max-height: 90vh;
                 border-radius: 8px;
                 border: 1px solid #333;
+                margin: auto;
             }
 
             .modal-overlay {
-                padding: 10px;
+                padding: 15px;
                 align-items: center;
             }
 
@@ -1922,13 +1923,13 @@
     }
 
     // ============================================
-    // 点击遮罩关闭 - 修改点8: 统一关闭逻辑
+    // 点击遮罩关闭 - 已禁用，只能通过X按钮关闭
     // ============================================
-    document.getElementById('uploadModal').addEventListener('click', function(e) {
-        if (e.target === this) {
-            closeModal(e);
-        }
-    });
+    // document.getElementById('uploadModal').addEventListener('click', function(e) {
+    //     if (e.target === this) {
+    //         closeModal(e);
+    //     }
+    // });
 
     // ============================================
     // ESC键关闭 - 修改点9: 统一关闭逻辑

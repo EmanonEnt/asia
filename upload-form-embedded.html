@@ -737,17 +737,18 @@
             }
 
             .upload-modal {
-                width: 100%;
-                max-width: 100%;
-                height: 100vh;
-                max-height: 100vh;
-                border-radius: 0;
-                border: none;
+                width: 92%;
+                max-width: 400px;
+                height: auto;
+                max-height: 90vh;
+                border-radius: 8px;
+                border: 1px solid #333;
+                margin: auto;
             }
 
             .modal-overlay {
-                padding: 0;
-                align-items: flex-start;
+                padding: 15px;
+                align-items: center;
             }
 
             .modal-content {
@@ -1957,12 +1958,12 @@
         }
     }
 
-    // 【修改点】点击遮罩关闭 - 统一关闭逻辑
-    document.getElementById('uploadModal').addEventListener('click', function(e) {
-        if (e.target === this) {
-            closeModal(e);
-        }
-    });
+    // 【修改点】点击遮罩关闭 - 已禁用，只能通过X按钮关闭
+    // document.getElementById('uploadModal').addEventListener('click', function(e) {
+    //     if (e.target === this) {
+    //         closeModal(e);
+    //     }
+    // });
 
     // 【修改点】ESC键关闭 - 统一关闭逻辑
     document.addEventListener('keydown', function(e) {
