@@ -1076,9 +1076,30 @@
     
         /* 海报2轮播样式 */
         .poster-carousel-wrapper { position: relative; width: 100%; height: 100%; overflow: hidden; }
-        .poster-carousel-img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
-        .poster-carousel-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 0.8s ease-in-out; z-index: 1; }
+        .poster-carousel-img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            object-position: center; 
+            display: block;
+            aspect-ratio: 2/3;
+        }
+        .poster-carousel-slide { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            opacity: 0; 
+            transition: opacity 0.8s ease-in-out; 
+            z-index: 1;
+        }
         .poster-carousel-slide.active { opacity: 1; z-index: 2; }
+
+        /* 海报2容器保持与其他海报一致的比例 */
+        .poster-item-alt .poster-carousel-wrapper {
+            aspect-ratio: 2/3;
+        }
         .poster-carousel { position: relative; width: 100%; height: 100%; }
         .poster-carousel-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 0.8s ease-in-out; z-index: 1; }
         .poster-carousel-slide.active { opacity: 1; z-index: 2; }
@@ -1336,11 +1357,11 @@
                         <div class="poster-carousel" id="posterCarousel">
                             <div class="poster-carousel-slide active" data-editable="poster-2-1">
                                 <img src="https://new.brg-radio.com/wp-content/uploads/2026/02/Black-Flag-web.jpg.jpeg" alt="Event 1" class="poster-carousel-img"
-                                     onerror="this.src='./image/asia-asiaad.jpg'; this.onerror=null;" data-editable="poster-2-1-image">
+                                     onerror="this.src='./image/asia-asiaad.jpg'; this.style.objectFit='cover'; this.onerror=null;" data-editable="poster-2-1-image">
                             </div>
                             <div class="poster-carousel-slide" data-editable="poster-2-2">
-                                <img src="./image/asia-bannerbg.webp" alt="LiveGigs CN" class="poster-carousel-img"
-                                     onerror="this.src='./image/asia-asiaad.jpg'; this.onerror=null;" data-editable="poster-2-2-image">
+                                <img src="./image/livegigscnad.webp" alt="LiveGigs CN" class="poster-carousel-img"
+                                     onerror="this.src='./image/asia-asiaad.jpg'; this.style.objectFit='cover'; this.onerror=null;" data-editable="poster-2-2-image">
                             </div>
                         </div>
                         <div class="carousel-dots" id="carouselDots">
