@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LiveGigs CN</title>
     <!-- Tab图标 -->
+        <!-- 预加载关键资源 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://weibo.com">
+    <link rel="dns-prefetch" href="https://www.xiaohongshu.com">
+
     <link rel="icon" type="image/png" href="./image/webtop.png">
     <link rel="shortcut icon" type="image/png" href="./image/webtop.png">
     <style>
@@ -1018,12 +1024,197 @@
         }
 
     </style>
+
+    <!-- 懒加载 + WebP 自适应 优化 -->
+    <style>
+        /* 懒加载占位样式 - 修复版 */
+        .lazy-image {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            background-color: #0a0a0a;
+        }
+        .lazy-image.loaded {
+            opacity: 1;
+        }
+        .lazy-image.loading {
+            filter: blur(10px);
+            transform: scale(1.02);
+        }
+
+        /* Banner 专用占位背景色 */
+        .banner-placeholder {
+            background-color: #0a0a0a;
+        }
+
+        /* 图片容器占位 */
+        .img-container {
+            position: relative;
+            overflow: hidden;
+            background: #0a0a0a;
+        }
+
+        /* 低质量占位图 - 已简化 */
+        .lqip-placeholder, .lqip-placeholder-banner {
+            display: none;
+        }
+
+        /* 图片容器 */
+        .img-container {
+            position: relative;
+            overflow: hidden;
+            background: #0a0a0a;
+        }
+
+        /* 加载动画 - 简化版 */
+        .img-loading-spinner { display: none; }
+    </style>
+
+    <script>
+        // WebP 支持检测 - 简化版（避免转换问题）
+        const WebPHelper = {
+            supported: null,
+
+            checkSupport: function() {
+                if (this.supported !== null) return this.supported;
+                const canvas = document.createElement('canvas');
+                if (canvas.getContext && canvas.getContext('2d')) {
+                    this.supported = canvas.toDataURL('image/webp').indexOf('data:image/webp') === 0;
+                } else {
+                    this.supported = false;
+                }
+                return this.supported;
+            },
+
+            // 转换 URL 为 WebP（如果支持）- 简化版，避免本地图片转换问题
+            getOptimizedUrl: function(originalUrl) {
+                // 暂时禁用 WebP 转换，直接使用原图，避免路径问题
+                return originalUrl;
+
+                /* 如需启用 WebP，取消下面注释：
+                if (!this.checkSupport()) return originalUrl;
+                if (!originalUrl) return originalUrl;
+                if (originalUrl.toLowerCase().includes('.webp')) return originalUrl;
+
+                // 只转换 Cloudinary 图片
+                if (originalUrl.includes('cloudinary') || originalUrl.includes('res.cloudinary')) {
+                    return originalUrl.includes('?') ? originalUrl + '&f=webp' : originalUrl + '?f=webp';
+                }
+
+                return originalUrl;
+                */
+            }
+        };
+
+        // 懒加载管理器 - 修复版
+        const LazyLoader = {
+            observer: null,
+
+            init: function() {
+                // 创建 Intersection Observer
+                const options = {
+                    root: null,
+                    rootMargin: '100px 0px',
+                    threshold: 0.01
+                };
+
+                this.observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            this.loadImage(entry.target);
+                            this.observer.unobserve(entry.target);
+                        }
+                    });
+                }, options);
+
+                // 观察所有需要懒加载的图片
+                this.observeImages();
+
+                // 立即加载首屏图片
+                this.loadAboveFoldImages();
+            },
+
+            observeImages: function() {
+                const images = document.querySelectorAll('img[data-src]:not([data-loaded])');
+                images.forEach(img => {
+                    if (!img.dataset.loaded) {
+                        this.observer.observe(img);
+                    }
+                });
+            },
+
+            loadAboveFoldImages: function() {
+                const viewportHeight = window.innerHeight;
+                const images = document.querySelectorAll('img[data-src]:not([data-loaded])');
+
+                images.forEach(img => {
+                    const rect = img.getBoundingClientRect();
+                    if (rect.top < viewportHeight + 200) {
+                        this.loadImage(img);
+                    }
+                });
+            },
+
+            loadImage: function(img) {
+                if (img.dataset.loaded) return;
+
+                const originalSrc = img.dataset.src;
+                if (!originalSrc) return;
+
+                img.classList.add('loading');
+                img.dataset.loaded = 'true';
+
+                // 获取优化后的 URL（WebP 格式）
+                const optimizedSrc = WebPHelper.getOptimizedUrl(originalSrc);
+
+                // 创建新图片对象预加载
+                const preloadImg = new Image();
+
+                preloadImg.onload = function() {
+                    img.src = optimizedSrc;
+                    img.classList.remove('loading');
+                    img.classList.add('loaded');
+                };
+
+                preloadImg.onerror = function() {
+                    // WebP 加载失败，回退到原格式
+                    if (optimizedSrc !== originalSrc && optimizedSrc.includes('.webp')) {
+                        const fallbackImg = new Image();
+                        fallbackImg.onload = function() {
+                            img.src = originalSrc;
+                            img.classList.remove('loading');
+                            img.classList.add('loaded');
+                        };
+                        fallbackImg.onerror = function() {
+                            // 原格式也失败，让 img 的 onerror 处理
+                            img.src = originalSrc;
+                            img.classList.remove('loading');
+                        };
+                        fallbackImg.src = originalSrc;
+                    } else {
+                        // 直接加载原图，让 onerror 处理失败情况
+                        img.src = originalSrc;
+                        img.classList.remove('loading');
+                    }
+                };
+
+                preloadImg.src = optimizedSrc;
+            }
+        };
+
+        // 页面加载完成后初始化
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => LazyLoader.init());
+        } else {
+            LazyLoader.init();
+        }
+    </script>
+
 </head>
 <body>
 
     <!-- 导航栏 -->
     <nav>
-        <img src="./image/cnlogo.png" alt="LiveGigs CN" class="logo-img" id="logo" onclick="location.reload()" data-editable="logo" data-src="./image/cnlogo.png">
+        <img data-src="./image/cnlogo.png" alt="LiveGigs CN" class="logo-img lazy-image" id="logo" onclick="location.reload()" data-editable="logo">
         <div class="nav-links">
             <a href="events.html" data-editable="nav-events" data-text="Events" data-href="events.html">Events</a>
             <a href="partners.html" data-editable="nav-partners" data-text="Partners" data-href="partners.html">Partners</a>
@@ -1062,24 +1253,24 @@
             <div class="rebel-banner">
                 <div class="rebel-slider" id="rebelSlider">
                     <div class="rebel-slide" data-editable="banner-slide-1">
-                        <img src="./image/thenonameanti-.jpg" alt="The Noname Anti-IPA" class="rebel-poster"
-                             onerror="this.src='https://via.placeholder.com/1920x1080/1a0000/8b0000?text=THE+NONAME '" data-editable="banner-1-image" data-src="./image/thenonameanti-.jpg">
+                        <img data-src="./image/thenonameanti-.jpg" alt="The Noname Anti-IPA" class="rebel-poster lazy-image banner-placeholder"
+                             onerror="this.src='./image/asia-bannerbg.webp'" data-editable="banner-1-image">
                         <div class="rebel-content">
                             <h2 data-editable="banner-1-title" data-text="THE NONAME ANTI-IPA">THE NONAME ANTI-IPA</h2>
                             <button class="neon-btn" onclick="window.open('https://emanonent.wixstudio.com/livegigs/antiipa', '_blank')" data-editable="banner-1-btn" data-text="無名逆襲社交 IPA" data-href="https://emanonent.wixstudio.com/livegigs/antiipa">無名逆襲社交 IPA</button>
                         </div>
                     </div>
                     <div class="rebel-slide" data-editable="banner-slide-2">
-                        <img src="./image/punkheartbanner.jpg" alt="Punk Heart Festival 2026" class="rebel-poster"
-                             onerror="this.src='https://via.placeholder.com/1920x1080/1a0000/8b0000?text=PUNK+HEART '" data-editable="banner-2-image" data-src="./image/punkheartbanner.jpg">
+                        <img data-src="./image/punkheartbanner.jpg" alt="Punk Heart Festival 2026" class="rebel-poster lazy-image banner-placeholder"
+                             onerror="this.src='./image/asia-bannerbg.webp'" data-editable="banner-2-image">
                         <div class="rebel-content">
                             <h2 data-editable="banner-2-title" data-text="朋克心音樂節 2026">朋克心音樂節 2026</h2>
                             <button class="neon-btn" onclick="window.open('http://punkheartfest.com', '_blank')" data-editable="banner-2-btn" data-text="PUNK HEART FESTIVAL" data-href="http://punkheartfest.com">PUNK HEART FESTIVAL</button>
                         </div>
                     </div>
                     <div class="rebel-slide" data-editable="banner-slide-3">
-                        <img src="./image/newbanner1.jpg" alt="一体共和乐队2026巡演" class="rebel-poster"
-                             onerror="this.src='https://via.placeholder.com/1920x1080/1a0000/8b0000?text=OneRepublic+Tour '" data-editable="banner-3-image" data-src="./image/newbanner1.jpg">
+                        <img data-src="./image/newbanner1.jpg" alt="一体共和乐队2026巡演" class="rebel-poster lazy-image banner-placeholder"
+                             onerror="this.src='./image/asia-bannerbg.webp'" data-editable="banner-3-image">
                         <div class="rebel-content">
                             <h2 data-editable="banner-3-title" data-text="一体共和乐队2026巡演">一体共和乐队2026巡演</h2>
                             <button class="neon-btn" onclick="window.open('https://www.livenation.cn/', '_blank')" data-editable="banner-3-btn" data-text="演出信息" data-href="https://www.livenation.cn/">演出信息</button>
@@ -1093,24 +1284,24 @@
         <section class="posters-showcase">
             <div class="posters-container">
                 <div class="poster-item" data-poster-id="1" data-link="https://wxaurl.cn/HMcAK6R7fou" data-editable="poster-1">
-                    <img src="./image/livegigscn1.png" alt="LiveGigs WeChat"
-                         onerror="this.src='https://via.placeholder.com/400x600/8b0000/000?text=LiveGigs+WeChat '" data-editable="poster-1-image" data-src="./image/livegigscn1.png">
+                    <img data-src="./image/livegigscn1.png" alt="LiveGigs WeChat" class="lazy-image"
+                         onerror="this.src='./image/asia-asiaad.jpg'" data-editable="poster-1-image">
                     <div class="poster-overlay">
                         <div class="poster-title" data-editable="poster-1-title" data-text="LiveGigs CN">LiveGigs CN</div>
                         <a href="https://wxaurl.cn/HMcAK6R7fou" target="_blank" class="poster-link" data-editable="poster-1-link-text" data-text="Get on WeChat →" onclick="event.stopPropagation();">Get on WeChat →</a>
                     </div>
                 </div>
                 <div class="poster-item-alt" data-poster-id="2" data-link="https://www.livegigsasia.com" data-editable="poster-2">
-                    <img src="./image/cn-asiaad.jpg" alt="LiveGigs Asia"
-                         onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=LiveGigs+Asia '" data-editable="poster-2-image" data-src="./image/cn-asiaad.jpg">
+                    <img data-src="./image/cn-asiaad.jpg" alt="LiveGigs Asia" class="lazy-image"
+                         onerror="this.src='./image/asia-asiaad.jpg'" data-editable="poster-2-image">
                     <div class="poster-overlay">
                         <div class="poster-title" data-editable="poster-2-title" data-text="LiveGigs Asia">LiveGigs Asia</div>
                         <a href="https://www.livegigsasia.com" target="_blank" class="poster-link" data-editable="poster-2-link-text" data-text="More Events →" onclick="event.stopPropagation();">More Events →</a>
                     </div>
                 </div>
                 <div class="poster-item-alt" data-poster-id="3" data-link="http://thenoname.cn" data-editable="poster-3">
-                    <img src="./image/1-b-3.jpg" alt="Event 2"
-                         onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=EVENT+2 '" data-editable="poster-3-image" data-src="./image/1-b-3.jpg">
+                    <img data-src="./image/1-b-3.jpg" alt="Event 2" class="lazy-image"
+                         onerror="this.src='./image/asia-asiaad.jpg'" data-editable="poster-3-image">
                     <div class="poster-overlay">
                         <div class="poster-title" data-editable="poster-3-title" data-text="NONAMEFEST 2026">NONAMEFEST 2026</div>
                         <a href="http://thenoname.cn" target="_blank" class="poster-link" data-editable="poster-3-link-text" data-text="View Details →" onclick="event.stopPropagation();">View Details →</a>
@@ -1169,9 +1360,9 @@
 
                         <div class="producer-section">
                             <div class="producer-label">Produced by</div>
-                            <img src="./image/emanonent-logo.png" alt="EMANON ENT." class="producer-logo" 
+                            <img data-src="./image/emanonent-logo.png" alt="EMANON ENT." class="producer-logo lazy-image" 
                                  onerror="this.style.display='none'" 
-                                 data-editable="producer-logo" data-src="./image/emanonent-logo.png">
+                                 data-editable="producer-logo">
                         </div>
                     </div>
 
@@ -1436,5 +1627,68 @@
     LiveGigsData.loadAndRender('cn');
   }
 </script>
+
+    <!-- 背景图懒加载 -->
+    <script>
+        // 背景图懒加载
+        const BgLazyLoader = {
+            observer: null,
+
+            init: function() {
+                const options = {
+                    root: null,
+                    rootMargin: '100px 0px',
+                    threshold: 0.01
+                };
+
+                this.observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            this.loadBg(entry.target);
+                            this.observer.unobserve(entry.target);
+                        }
+                    });
+                }, options);
+
+                // 观察所有需要懒加载的背景
+                document.querySelectorAll('[data-lazy-bg="true"]').forEach(el => {
+                    this.observer.observe(el);
+                });
+            },
+
+            loadBg: function(element) {
+                const originalSrc = element.dataset.src;
+                if (!originalSrc) return;
+
+                const optimizedSrc = WebPHelper.getOptimizedUrl(originalSrc);
+
+                const img = new Image();
+                img.onload = function() {
+                    element.style.backgroundImage = `url(${optimizedSrc})`;
+                    element.classList.add('bg-loaded');
+                };
+                img.onerror = function() {
+                    // 回退到原格式
+                    if (optimizedSrc !== originalSrc) {
+                        const fallbackImg = new Image();
+                        fallbackImg.onload = function() {
+                            element.style.backgroundImage = `url(${originalSrc})`;
+                            element.classList.add('bg-loaded');
+                        };
+                        fallbackImg.src = originalSrc;
+                    }
+                };
+                img.src = optimizedSrc;
+            }
+        };
+
+        // 初始化背景懒加载
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => BgLazyLoader.init());
+        } else {
+            BgLazyLoader.init();
+        }
+    </script>
+
 </body>
 </html>
