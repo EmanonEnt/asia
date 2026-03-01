@@ -449,7 +449,7 @@
             position: relative;
             overflow: hidden;
             cursor: default;
-            background: #000;
+            background-color: #000;
             transition: all 0.4s ease;
         }
 
@@ -518,7 +518,7 @@
             position: relative;
             overflow: hidden;
             cursor: default;
-            background: #000;
+            background-color: #000;
             transition: all 0.4s ease;
             border: none;
         }
@@ -1031,11 +1031,11 @@
         .lazy-image {
             opacity: 0;
             transition: opacity 0.5s ease;
-            background: url('./image/asia-asiaad.jpg') center/cover;
-            background-color: #0a0a0a;
+            /* 背景已移除避免PNG透明问题 */
         }
         .lazy-image.loaded {
             opacity: 1;
+            background: none !important;
         }
         .lazy-image.loading {
             filter: blur(10px);
@@ -1044,11 +1044,10 @@
 
         /* Banner 专用占位 */
         .banner-placeholder {
-            background: url('./image/asia-bannerbg.webp') center/cover;
-            background-color: #0a0a0a;
+            background-color: #000;
         }
 
-        /* 低质量占位图 */
+        /* 低质量占位图 - 已禁用 */
         .lqip-placeholder {
             position: absolute;
             top: 0;
@@ -1263,7 +1262,7 @@
 
     <!-- 导航栏 -->
     <nav>
-        <img data-src="./image/cnlogo.png" alt="LiveGigs CN" class="logo-img lazy-image" id="logo" onclick="location.reload()" data-editable="logo" data-src="./image/cnlogo.png">
+        <img data-src="./image/cnlogo.png" alt="LiveGigs CN" class="logo-img lazy-image" id="logo" onclick="location.reload()" data-editable="logo">
         <div class="nav-links">
             <a href="events.html" data-editable="nav-events" data-text="Events" data-href="events.html">Events</a>
             <a href="partners.html" data-editable="nav-partners" data-text="Partners" data-href="partners.html">Partners</a>
@@ -1303,7 +1302,7 @@
                 <div class="rebel-slider" id="rebelSlider">
                     <div class="rebel-slide" data-editable="banner-slide-1">
                         <img data-src="./image/thenonameanti-.jpg" alt="The Noname Anti-IPA" class="rebel-poster lazy-image banner-placeholder"
-                             onerror="this.src='https://via.placeholder.com/1920x1080/1a0000/8b0000?text=THE+NONAME '" data-editable="banner-1-image" data-src="./image/thenonameanti-.jpg">
+                             onerror="this.src='./image/asia-bannerbg.webp'" data-editable="banner-1-image">
                         <div class="rebel-content">
                             <h2 data-editable="banner-1-title" data-text="THE NONAME ANTI-IPA">THE NONAME ANTI-IPA</h2>
                             <button class="neon-btn" onclick="window.open('https://emanonent.wixstudio.com/livegigs/antiipa', '_blank')" data-editable="banner-1-btn" data-text="無名逆襲社交 IPA" data-href="https://emanonent.wixstudio.com/livegigs/antiipa">無名逆襲社交 IPA</button>
@@ -1311,7 +1310,7 @@
                     </div>
                     <div class="rebel-slide" data-editable="banner-slide-2">
                         <img data-src="./image/punkheartbanner.jpg" alt="Punk Heart Festival 2026" class="rebel-poster lazy-image banner-placeholder"
-                             onerror="this.src='https://via.placeholder.com/1920x1080/1a0000/8b0000?text=PUNK+HEART '" data-editable="banner-2-image" data-src="./image/punkheartbanner.jpg">
+                             onerror="this.src='./image/asia-bannerbg.webp'" data-editable="banner-2-image">
                         <div class="rebel-content">
                             <h2 data-editable="banner-2-title" data-text="朋克心音樂節 2026">朋克心音樂節 2026</h2>
                             <button class="neon-btn" onclick="window.open('http://punkheartfest.com', '_blank')" data-editable="banner-2-btn" data-text="PUNK HEART FESTIVAL" data-href="http://punkheartfest.com">PUNK HEART FESTIVAL</button>
@@ -1319,7 +1318,7 @@
                     </div>
                     <div class="rebel-slide" data-editable="banner-slide-3">
                         <img data-src="./image/newbanner1.jpg" alt="一体共和乐队2026巡演" class="rebel-poster lazy-image banner-placeholder"
-                             onerror="this.src='https://via.placeholder.com/1920x1080/1a0000/8b0000?text=OneRepublic+Tour '" data-editable="banner-3-image" data-src="./image/newbanner1.jpg">
+                             onerror="this.src='./image/asia-bannerbg.webp'" data-editable="banner-3-image">
                         <div class="rebel-content">
                             <h2 data-editable="banner-3-title" data-text="一体共和乐队2026巡演">一体共和乐队2026巡演</h2>
                             <button class="neon-btn" onclick="window.open('https://www.livenation.cn/', '_blank')" data-editable="banner-3-btn" data-text="演出信息" data-href="https://www.livenation.cn/">演出信息</button>
@@ -1333,24 +1332,24 @@
         <section class="posters-showcase">
             <div class="posters-container">
                 <div class="poster-item" data-poster-id="1" data-link="https://wxaurl.cn/HMcAK6R7fou" data-editable="poster-1">
-                    <img data-src="./image/livegigscn1.png" alt="LiveGigs WeChat"
-                         onerror="this.src='https://via.placeholder.com/400x600/8b0000/000?text=LiveGigs+WeChat '" data-editable="poster-1-image" data-src="./image/livegigscn1.png">
+                    <img data-src="./image/livegigscn1.png" alt="LiveGigs WeChat" class="lazy-image"
+                         onerror="this.src='./image/asia-asiaad.jpg'" data-editable="poster-1-image">
                     <div class="poster-overlay">
                         <div class="poster-title" data-editable="poster-1-title" data-text="LiveGigs CN">LiveGigs CN</div>
                         <a href="https://wxaurl.cn/HMcAK6R7fou" target="_blank" class="poster-link" data-editable="poster-1-link-text" data-text="Get on WeChat →" onclick="event.stopPropagation();">Get on WeChat →</a>
                     </div>
                 </div>
                 <div class="poster-item-alt" data-poster-id="2" data-link="https://www.livegigsasia.com" data-editable="poster-2">
-                    <img data-src="./image/cn-asiaad.jpg" alt="LiveGigs Asia"
-                         onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=LiveGigs+Asia '" data-editable="poster-2-image" data-src="./image/cn-asiaad.jpg">
+                    <img data-src="./image/cn-asiaad.jpg" alt="LiveGigs Asia" class="lazy-image"
+                         onerror="this.src='./image/asia-asiaad.jpg'" data-editable="poster-2-image">
                     <div class="poster-overlay">
                         <div class="poster-title" data-editable="poster-2-title" data-text="LiveGigs Asia">LiveGigs Asia</div>
                         <a href="https://www.livegigsasia.com" target="_blank" class="poster-link" data-editable="poster-2-link-text" data-text="More Events →" onclick="event.stopPropagation();">More Events →</a>
                     </div>
                 </div>
                 <div class="poster-item-alt" data-poster-id="3" data-link="http://thenoname.cn" data-editable="poster-3">
-                    <img data-src="./image/1-b-3.jpg" alt="Event 2"
-                         onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=EVENT+2 '" data-editable="poster-3-image" data-src="./image/1-b-3.jpg">
+                    <img data-src="./image/1-b-3.jpg" alt="Event 2" class="lazy-image"
+                         onerror="this.src='./image/asia-asiaad.jpg'" data-editable="poster-3-image">
                     <div class="poster-overlay">
                         <div class="poster-title" data-editable="poster-3-title" data-text="NONAMEFEST 2026">NONAMEFEST 2026</div>
                         <a href="http://thenoname.cn" target="_blank" class="poster-link" data-editable="poster-3-link-text" data-text="View Details →" onclick="event.stopPropagation();">View Details →</a>
@@ -1411,7 +1410,7 @@
                             <div class="producer-label">Produced by</div>
                             <img data-src="./image/emanonent-logo.png" alt="EMANON ENT." class="producer-logo lazy-image" 
                                  onerror="this.style.display='none'" 
-                                 data-editable="producer-logo" data-src="./image/emanonent-logo.png">
+                                 data-editable="producer-logo">
                         </div>
                     </div>
 
