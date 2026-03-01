@@ -1076,34 +1076,11 @@
     
         /* 海报2轮播样式 */
         .poster-carousel-wrapper { position: relative; width: 100%; height: 100%; overflow: hidden; }
-        .poster-carousel-img { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
-            object-position: center; 
-            display: block;
-            aspect-ratio: 2/3;
-        }
-        .poster-carousel-slide { 
-            position: absolute; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            opacity: 0; 
-            transition: opacity 0.8s ease-in-out; 
-            z-index: 1;
-        }
-        .poster-carousel-slide.active { opacity: 1; z-index: 2; }
-
-        /* 海报2容器保持与其他海报一致的比例 */
-        .poster-item-alt .poster-carousel-wrapper {
-            aspect-ratio: 2/3;
-        }
         .poster-carousel { position: relative; width: 100%; height: 100%; }
         .poster-carousel-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 0.8s ease-in-out; z-index: 1; }
         .poster-carousel-slide.active { opacity: 1; z-index: 2; }
         .poster-carousel-slide img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+        .poster-carousel-img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
         .carousel-dots { position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; z-index: 10; }
         .carousel-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.3); cursor: pointer; transition: all 0.3s; border: 1px solid rgba(255,255,255,0.5); }
         .carousel-dot.active { background: var(--dark-red); border-color: var(--dark-red); box-shadow: 0 0 10px rgba(139, 0, 0, 0.8); transform: scale(1.2); }
@@ -1892,70 +1869,82 @@
         // 海报2轮播数据
         const poster2Data = [
             { title: 'Upcoming Event', linkText: 'More Events →', img: 'https://new.brg-radio.com/wp-content/uploads/2026/02/Black-Flag-web.jpg.jpeg', link: 'events.html' },
-            { title: 'LiveGigs Cn', linkText: 'CN特别版 →', img: './image/asia-bannerbg.webp', link: './cn.html' }
+            { title: 'LiveGigs Cn', linkText: 'CN特别版 →', img: './image/livegigscnad.webp', link: './cn.html' }
         ];
 
-        // 使用独立变量名避免冲突
         let poster2CurrentSlide = 0;
         let poster2SlideInterval = null;
-        let poster2Initialized = false;
 
         function initPoster2Carousel() {
-            if (poster2Initialized) return;
-
             const slides = document.querySelectorAll('.poster-carousel-slide');
             const dots = document.querySelectorAll('.carousel-dot');
             const carousel = document.getElementById('posterCarousel');
-
-            if (slides.length === 0 || !carousel) {
-                console.log('Poster2 carousel elements not found, retrying...');
-                setTimeout(initPoster2Carousel, 500);
-                return;
-            }
-
-            poster2Initialized = true;
-            console.log('Poster2 carousel initialized with', slides.length, 'slides');
-
-            // 确保第一张图片加载
-            loadPoster2Images();
+            if (slides.length === 0 || !carousel) return;
 
             // 启动自动轮播
             startPoster2Autoplay();
 
-            // 圆点点击事件
             dots.forEach((dot, index) => {
                 dot.addEventListener('click', (e) => {
                     e.preventDefault();
-                    e.stopPropagation();
-                    console.log('Dot clicked:', index);
                     stopPoster2Autoplay();
                     goToPoster2Slide(index);
                     startPoster2Autoplay();
                 });
             });
 
-            // 鼠标悬停暂停
             carousel.addEventListener('mouseenter', stopPoster2Autoplay);
             carousel.addEventListener('mouseleave', startPoster2Autoplay);
+        }
 
-            // 触摸滑动支持
-            let touchStartX = 0;
-            carousel.addEventListener('touchstart', (e) => {
-                touchStartX = e.touches[0].clientX;
-                stopPoster2Autoplay();
-            }, { passive: true });
+        function startPoster2Autoplay() {
+            stopPoster2Autoplay();
+            poster2SlideInterval = setInterval(() => { goToPoster2Slide(poster2CurrentSlide + 1); }, 5000);
+        }
 
-            carousel.addEventListener('touchend', (e) => {
-                const touchEndX = e.changedTouches[0].clientX;
-                const diff = touchStartX - touchEndX;
-                if (Math.abs(diff) > 50) {
-                    if (diff > 0) {
-                        goToPoster2Slide(poster2CurrentSlide + 1);
-                    } else {
-                        goToPoster2Slide(poster2CurrentSlide - 1);
-                    }
+        function stopPoster2Autoplay() {
+            if (poster2SlideInterval) {
+                clearInterval(poster2SlideInterval);
+                poster2SlideInterval = null;
+            }
+        }
+
+        function goToPoster2Slide(n) {
+            const slides = document.querySelectorAll('.poster-carousel-slide');
+            const dots = document.querySelectorAll('.carousel-dot');
+            const titleEl = document.getElementById('poster2Title');
+            const linkEl = document.getElementById('poster2Link');
+            if (slides.length === 0) return;
+
+            slides[poster2CurrentSlide].classList.remove('active');
+            dots[poster2CurrentSlide].classList.remove('active');
+            poster2CurrentSlide = (n + slides.length) % slides.length;
+            slides[poster2CurrentSlide].classList.add('active');
+            dots[poster2CurrentSlide].classList.add('active');
+
+            if (titleEl && linkEl && poster2Data[poster2CurrentSlide]) {
+                titleEl.textContent = poster2Data[poster2CurrentSlide].title;
+                linkEl.textContent = poster2Data[poster2CurrentSlide].linkText;
+                if (poster2Data[poster2CurrentSlide].link && poster2Data[poster2CurrentSlide].link.trim() !== '') {
+                    linkEl.href = poster2Data[poster2CurrentSlide].link;
+                    linkEl.style.pointerEvents = 'auto';
+                } else {
+                    linkEl.href = '#';
+                    linkEl.style.pointerEvents = 'none';
                 }
-                startPoster2Autoplay();
+            }
+        }
+
+        // 初始化
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initPoster2Carousel);
+        } else {
+            setTimeout(initPoster2Carousel, 100);
+        }
+        window.addEventListener('load', initPoster2Carousel);
+    </script>
+</body>
+</html>ay();
             }, { passive: true });
         }
 
