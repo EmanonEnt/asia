@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Partners - LiveGigs Asia</title>
+        <!-- 预加载关键资源 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://livegigs.cn">
+    <link rel="dns-prefetch" href="http://kids-union.com">
+    <link rel="dns-prefetch" href="http://xrebooking.com">
+    <link rel="dns-prefetch" href="http://chineserocks.net">
+
     <link rel="icon" type="image/png" href="./image/webtop.png">
     <link rel="shortcut icon" type="image/png" href="./image/webtop.png">
     <link rel="preload" href="./image/webtop.png" as="image">
@@ -1632,12 +1640,190 @@
             .banner1-desc { font-size: 11px; }
         }
         </style>
+
+    <!-- 懒加载 + WebP 自适应 优化 -->
+    <style>
+        /* 懒加载占位样式 - PNG透明修复版 */
+        .lazy-image {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            /* 背景已移除 - PNG图片需要透明 */
+        }
+        .lazy-image.loaded {
+            opacity: 1;
+            background: none !important;
+        }
+        .lazy-image.loading {
+            filter: blur(10px);
+            transform: scale(1.02);
+        }
+
+        /* Banner 专用占位 */
+        .banner-placeholder {
+            background-color: #000;
+        }
+
+        /* 合作伙伴 Logo 专用占位 - 已移除避免PNG问题 */
+        .partner-logo-placeholder {
+            background-color: rgba(255,255,255,0.05);
+        }
+
+        /* 低质量占位图 - 已禁用避免PNG透明问题 */
+        .lqip-placeholder, .lqip-placeholder-banner {
+            display: none;
+        }
+
+        /* 图片容器 */
+        .img-container {
+            position: relative;
+            overflow: hidden;
+            /* 背景已移除 */
+        }
+
+        /* 加载动画 - 已禁用 */
+        .img-loading-spinner { display: none; }
+    </style>
+
+    <script>
+        // WebP 支持检测 - 禁用自动转换避免PNG问题
+        const WebPHelper = {
+            supported: null,
+            checkSupport: function() {
+                if (this.supported !== null) return this.supported;
+                const canvas = document.createElement('canvas');
+                if (canvas.getContext && canvas.getContext('2d')) {
+                    this.supported = canvas.toDataURL('image/webp').indexOf('data:image/webp') === 0;
+                } else {
+                    this.supported = false;
+                }
+                return this.supported;
+            },
+            // 禁用自动转换，直接使用原图
+            getOptimizedUrl: function(originalUrl) {
+                return originalUrl;
+            }
+        };
+
+        // 懒加载管理器
+        const LazyLoader = {
+            observer: null,
+            imageQueue: [],
+
+            init: function() {
+                // 创建 Intersection Observer
+                const options = {
+                    root: null,
+                    rootMargin: '50px 0px',
+                    threshold: 0.01
+                };
+
+                this.observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            this.loadImage(entry.target);
+                            this.observer.unobserve(entry.target);
+                        }
+                    });
+                }, options);
+
+                // 观察所有需要懒加载的图片
+                this.observeImages();
+
+                // 立即加载首屏图片
+                this.loadAboveFoldImages();
+            },
+
+            observeImages: function() {
+                const images = document.querySelectorAll('img[data-src]:not([data-loaded])');
+                images.forEach(img => {
+                    if (!img.dataset.loaded) {
+                        this.observer.observe(img);
+                    }
+                });
+            },
+
+            loadAboveFoldImages: function() {
+                const viewportHeight = window.innerHeight;
+                const images = document.querySelectorAll('img[data-src]:not([data-loaded])');
+
+                images.forEach(img => {
+                    const rect = img.getBoundingClientRect();
+                    if (rect.top < viewportHeight + 100) {
+                        this.loadImage(img);
+                    }
+                });
+            },
+
+            loadImage: function(img) {
+                if (img.dataset.loaded) return;
+
+                const originalSrc = img.dataset.src;
+                if (!originalSrc) return;
+
+                img.classList.add('loading');
+                img.dataset.loaded = 'true';
+
+                // 获取优化后的 URL（WebP 格式）
+                const optimizedSrc = WebPHelper.getOptimizedUrl(originalSrc);
+
+                // 创建新图片对象预加载
+                const preloadImg = new Image();
+
+                preloadImg.onload = function() {
+                    img.src = optimizedSrc;
+                    img.classList.remove('loading');
+                    img.classList.add('loaded');
+                };
+
+                preloadImg.onerror = function() {
+                    // WebP 加载失败，回退到原格式
+                    if (optimizedSrc !== originalSrc) {
+                        const fallbackImg = new Image();
+                        fallbackImg.onload = function() {
+                            img.src = originalSrc;
+                            img.classList.remove('loading');
+                            img.classList.add('loaded');
+                        };
+                        fallbackImg.onerror = function() {
+                            // 判断图片类型，使用对应占位图
+                            let placeholder = './image/asia-asiaad.jpg';
+                            if (img.classList.contains('partner-block-bg') || img.classList.contains('banner2-bg-img')) {
+                                placeholder = './image/asia-bannerbg.webp';
+                            } else if (img.closest('.partner-logo-item')) {
+                                placeholder = './image/asia-asiaad.jpg';
+                            }
+                            img.src = placeholder;
+                            img.classList.remove('loading');
+                        };
+                        fallbackImg.src = originalSrc;
+                    } else {
+                        let placeholder = './image/asia-asiaad.jpg';
+                        if (img.classList.contains('partner-block-bg') || img.classList.contains('banner2-bg-img')) {
+                            placeholder = './image/asia-bannerbg.webp';
+                        }
+                        img.src = placeholder;
+                        img.classList.remove('loading');
+                    }
+                };
+
+                preloadImg.src = optimizedSrc;
+            }
+        };
+
+        // 页面加载完成后初始化
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => LazyLoader.init());
+        } else {
+            LazyLoader.init();
+        }
+    </script>
+
 </head>
 <body>
 
     <!-- 导航栏 -->
     <nav>
-        <img src="./image/logo.png" alt="LiveGigs Asia" class="logo-img" id="logo" onclick="location.href='./index.html'" data-editable="logo" data-src="./image/logo.png">
+        <img data-src="./image/logo.png" alt="LiveGigs Asia" class="logo-img lazy-image" id="logo" onclick="location.href='./index.html'" data-editable="logo">
         <div class="nav-links">
             <a href="events.html" data-editable="nav-events" data-text="Events" data-href="events.html">Events</a>
             <a href="#" class="active" data-editable="nav-partners" data-text="Partners" data-href="partners.html">Partners</a>
@@ -1676,8 +1862,8 @@
             
             <!-- Banner 1 - 高度自适应背景图，左图右文 -->
             <div class="partner-block banner1" data-editable="partner-block-1" data-block-id="1">
-                <img src="./image/p-p-1.jpg" alt="Partner Background" class="partner-block-bg" 
-                     data-editable="partner-1-bg" data-src="./image/p-p-1.jpg">
+                <img data-src="./image/p-p-1.jpg" alt="Partner Background" class="partner-block-bg lazy-image banner-placeholder" 
+                     data-editable="partner-1-bg">
                 <div class="partner-block-overlay"></div>
                 <div class="partner-block-content banner1-layout" data-editable="partner-1-position" data-position="left">
                     <div class="banner1-phone" data-editable="partner-1-phone" data-src="./image/livegigscn1.png">
@@ -1697,7 +1883,7 @@
             <!-- Banner 2 - 高度自适应背景图，16:9等比例，无logo -->
             <div class="partner-block banner2" data-editable="partner-block-2" data-block-id="2">
                 <div class="banner2-container">
-                    <img src="./image/p-p-2.jpg" alt="Partner Background" class="banner2-bg-img" data-editable="partner-2-bg" data-src="./image/p-p-2.jpg">
+                    <img data-src="./image/p-p-2.jpg" alt="Partner Background" class="banner2-bg-img lazy-image banner-placeholder" data-editable="partner-2-bg">
                 </div>
                 <div class="partner-block-overlay"></div>
                 <div class="partner-block-content banner2-layout" data-editable="partner-2-position" data-position="center">
@@ -1710,8 +1896,8 @@
 
             <!-- Banner 3 - 高度自适应背景图，大logo上移与文字中心对齐 -->
             <div class="partner-block banner3" data-editable="partner-block-3" data-block-id="3">
-                <img src="./image/p-p-3.png" alt="Partner Background" class="partner-block-bg" 
-                     data-editable="partner-3-bg" data-src="./image/p-p-3.png">
+                <img data-src="./image/p-p-3.png" alt="Partner Background" class="partner-block-bg lazy-image banner-placeholder" 
+                     data-editable="partner-3-bg">
                 <div class="partner-block-overlay"></div>
                 <div class="partner-block-content banner3-layout" data-editable="partner-3-position" data-position="center">
                     <div class="banner3-bg-logo">
@@ -1733,13 +1919,13 @@
 
             <!-- Banner 4 - 高度自适应背景图，大logo下移四分之一高度 -->
             <div class="partner-block banner4" data-editable="partner-block-4" data-block-id="4">
-                <img src="./image/p-p-4.jpg" alt="Partner Background" class="partner-block-bg" 
-                     data-editable="partner-4-bg" data-src="./image/p-p-4.jpg">
+                <img data-src="./image/p-p-4.jpg" alt="Partner Background" class="partner-block-bg lazy-image banner-placeholder" 
+                     data-editable="partner-4-bg">
                 <div class="partner-block-overlay"></div>
                 <div class="partner-block-content banner4-layout" data-editable="partner-4-position" data-position="center">
                     <div class="banner4-logo-container">
-                        <img src="./image/p-p-4logo.png" alt="ChineseRocks Logo" class="banner4-logo"
-                             data-editable="partner-4-logo" data-src="./image/p-p-4logo.png"
+                        <img data-src="./image/p-p-4logo.png" alt="ChineseRocks Logo" class="banner4-logo lazy-image"
+                             data-editable="partner-4-logo"
                              onerror="this.style.display='none'">
                     </div>
                     <div class="banner4-btn-wrapper">
@@ -1829,9 +2015,9 @@
 
                         <div class="producer-section">
                             <div class="producer-label">Produced by</div>
-                            <img src="./image/emanonent-logo.png" alt="EMANON ENT." class="producer-logo" 
+                            <img data-src="./image/emanonent-logo.png" alt="EMANON ENT." class="producer-logo lazy-image" 
                                  onerror="this.style.display='none'" 
-                                 data-editable="producer-logo" data-src="./image/emanonent-logo.png">
+                                 data-editable="producer-logo">
                         </div>
                     </div>
 
@@ -2311,5 +2497,68 @@
     LiveGigsData.loadAndRender('partners');
   }
 </script>
+
+    <!-- 背景图懒加载 -->
+    <script>
+        // 背景图懒加载
+        const BgLazyLoader = {
+            observer: null,
+
+            init: function() {
+                const options = {
+                    root: null,
+                    rootMargin: '100px 0px',
+                    threshold: 0.01
+                };
+
+                this.observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            this.loadBg(entry.target);
+                            this.observer.unobserve(entry.target);
+                        }
+                    });
+                }, options);
+
+                // 观察所有需要懒加载的背景
+                document.querySelectorAll('[data-lazy-bg="true"]').forEach(el => {
+                    this.observer.observe(el);
+                });
+            },
+
+            loadBg: function(element) {
+                const originalSrc = element.dataset.src;
+                if (!originalSrc) return;
+
+                const optimizedSrc = WebPHelper.getOptimizedUrl(originalSrc);
+
+                const img = new Image();
+                img.onload = function() {
+                    element.style.backgroundImage = `url(${optimizedSrc})`;
+                    element.classList.add('bg-loaded');
+                };
+                img.onerror = function() {
+                    // 回退到原格式
+                    if (optimizedSrc !== originalSrc) {
+                        const fallbackImg = new Image();
+                        fallbackImg.onload = function() {
+                            element.style.backgroundImage = `url(${originalSrc})`;
+                            element.classList.add('bg-loaded');
+                        };
+                        fallbackImg.src = originalSrc;
+                    }
+                };
+                img.src = optimizedSrc;
+            }
+        };
+
+        // 初始化背景懒加载
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => BgLazyLoader.init());
+        } else {
+            BgLazyLoader.init();
+        }
+    </script>
+
 </body>
 </html>
