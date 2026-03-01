@@ -1871,63 +1871,147 @@
             { title: 'LiveGigs Cn', linkText: 'CN特别版 →', img: './image/asia-bannerbg.webp', link: './cn.html' }
         ];
 
-        let currentSlide = 0;
-        let carouselSlideInterval;
+        // 使用独立变量名避免冲突
+        let poster2CurrentSlide = 0;
+        let poster2SlideInterval = null;
+        let poster2Initialized = false;
 
         function initPoster2Carousel() {
+            if (poster2Initialized) return;
+
             const slides = document.querySelectorAll('.poster-carousel-slide');
             const dots = document.querySelectorAll('.carousel-dot');
-            if (slides.length === 0) return;
+            const carousel = document.getElementById('posterCarousel');
 
-            carouselSlideInterval = setInterval(() => { goToSlide(currentSlide + 1); }, 5000);
+            if (slides.length === 0 || !carousel) {
+                console.log('Poster2 carousel elements not found, retrying...');
+                setTimeout(initPoster2Carousel, 500);
+                return;
+            }
 
+            poster2Initialized = true;
+            console.log('Poster2 carousel initialized with', slides.length, 'slides');
+
+            // 确保第一张图片加载
+            loadPoster2Images();
+
+            // 启动自动轮播
+            startPoster2Autoplay();
+
+            // 圆点点击事件
             dots.forEach((dot, index) => {
-                dot.addEventListener('click', () => {
-                    clearInterval(carouselSlideInterval);
-                    goToSlide(index);
-                    carouselSlideInterval = setInterval(() => { goToSlide(currentSlide + 1); }, 5000);
+                dot.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Dot clicked:', index);
+                    stopPoster2Autoplay();
+                    goToPoster2Slide(index);
+                    startPoster2Autoplay();
                 });
             });
 
-            const carousel = document.getElementById('posterCarousel');
-            if (carousel) {
-                carousel.addEventListener('mouseenter', () => { clearInterval(carouselSlideInterval); });
-                carousel.addEventListener('mouseleave', () => { carouselSlideInterval = setInterval(() => { goToSlide(currentSlide + 1); }, 5000); });
+            // 鼠标悬停暂停
+            carousel.addEventListener('mouseenter', stopPoster2Autoplay);
+            carousel.addEventListener('mouseleave', startPoster2Autoplay);
+
+            // 触摸滑动支持
+            let touchStartX = 0;
+            carousel.addEventListener('touchstart', (e) => {
+                touchStartX = e.touches[0].clientX;
+                stopPoster2Autoplay();
+            }, { passive: true });
+
+            carousel.addEventListener('touchend', (e) => {
+                const touchEndX = e.changedTouches[0].clientX;
+                const diff = touchStartX - touchEndX;
+                if (Math.abs(diff) > 50) {
+                    if (diff > 0) {
+                        goToPoster2Slide(poster2CurrentSlide + 1);
+                    } else {
+                        goToPoster2Slide(poster2CurrentSlide - 1);
+                    }
+                }
+                startPoster2Autoplay();
+            }, { passive: true });
+        }
+
+        function loadPoster2Images() {
+            const slides = document.querySelectorAll('.poster-carousel-slide');
+            slides.forEach((slide, index) => {
+                const img = slide.querySelector('img');
+                if (img && img.dataset.src && !img.src) {
+                    img.src = img.dataset.src;
+                    img.classList.add('loaded');
+                }
+            });
+        }
+
+        function startPoster2Autoplay() {
+            stopPoster2Autoplay();
+            poster2SlideInterval = setInterval(() => {
+                goToPoster2Slide(poster2CurrentSlide + 1);
+            }, 5000);
+        }
+
+        function stopPoster2Autoplay() {
+            if (poster2SlideInterval) {
+                clearInterval(poster2SlideInterval);
+                poster2SlideInterval = null;
             }
         }
 
-        function goToSlide(n) {
+        function goToPoster2Slide(n) {
             const slides = document.querySelectorAll('.poster-carousel-slide');
             const dots = document.querySelectorAll('.carousel-dot');
             const titleEl = document.getElementById('poster2Title');
             const linkEl = document.getElementById('poster2Link');
+
             if (slides.length === 0) return;
 
-            slides[currentSlide].classList.remove('active');
-            dots[currentSlide].classList.remove('active');
-            currentSlide = (n + slides.length) % slides.length;
-            slides[currentSlide].classList.add('active');
-            dots[currentSlide].classList.add('active');
+            // 移除当前激活状态
+            slides[poster2CurrentSlide].classList.remove('active');
+            dots[poster2CurrentSlide].classList.remove('active');
 
-            if (titleEl && linkEl && poster2Data[currentSlide]) {
-                titleEl.textContent = poster2Data[currentSlide].title;
-                linkEl.textContent = poster2Data[currentSlide].linkText;
-                if (poster2Data[currentSlide].link && poster2Data[currentSlide].link.trim() !== '') {
-                    linkEl.href = poster2Data[currentSlide].link;
+            // 计算新索引
+            poster2CurrentSlide = (n + slides.length) % slides.length;
+
+            // 添加新激活状态
+            slides[poster2CurrentSlide].classList.add('active');
+            dots[poster2CurrentSlide].classList.add('active');
+
+            // 更新文字和链接
+            if (titleEl && linkEl && poster2Data[poster2CurrentSlide]) {
+                titleEl.textContent = poster2Data[poster2CurrentSlide].title;
+                linkEl.textContent = poster2Data[poster2CurrentSlide].linkText;
+                const link = poster2Data[poster2CurrentSlide].link;
+                if (link && link.trim() !== '' && link !== '#') {
+                    linkEl.href = link;
                     linkEl.style.pointerEvents = 'auto';
+                    linkEl.style.opacity = '1';
                 } else {
                     linkEl.href = '#';
                     linkEl.style.pointerEvents = 'none';
+                    linkEl.style.opacity = '0.5';
                 }
             }
+
+            console.log('Poster2 slide changed to:', poster2CurrentSlide);
         }
 
-        // 初始化
+        // 确保在 DOM 加载完成后初始化
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', initPoster2Carousel);
         } else {
-            initPoster2Carousel();
+            // DOM 已加载，但可能需要等待其他脚本
+            setTimeout(initPoster2Carousel, 100);
         }
+
+        // 额外的窗口加载事件作为后备
+        window.addEventListener('load', () => {
+            if (!poster2Initialized) {
+                initPoster2Carousel();
+            }
+        });
     </script>
 </body>
 </html>
