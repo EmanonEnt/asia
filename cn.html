@@ -1027,10 +1027,11 @@
 
     <!-- 懒加载 + WebP 自适应 优化 -->
     <style>
-        /* 懒加载占位样式 - 修复版 */
+        /* 懒加载占位样式 */
         .lazy-image {
             opacity: 0;
             transition: opacity 0.5s ease;
+            background: url('./image/asia-asiaad.jpg') center/cover;
             background-color: #0a0a0a;
         }
         .lazy-image.loaded {
@@ -1041,21 +1042,36 @@
             transform: scale(1.02);
         }
 
-        /* Banner 专用占位背景色 */
+        /* Banner 专用占位 */
         .banner-placeholder {
+            background: url('./image/asia-bannerbg.webp') center/cover;
             background-color: #0a0a0a;
         }
 
-        /* 图片容器占位 */
-        .img-container {
-            position: relative;
-            overflow: hidden;
-            background: #0a0a0a;
+        /* 低质量占位图 */
+        .lqip-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('./image/asia-asiaad.jpg') center/cover;
+            filter: blur(20px) brightness(0.3);
+            opacity: 0.6;
+            z-index: 0;
         }
 
-        /* 低质量占位图 - 已简化 */
-        .lqip-placeholder, .lqip-placeholder-banner {
-            display: none;
+        /* Banner 占位 */
+        .lqip-placeholder-banner {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('./image/asia-bannerbg.webp') center/cover;
+            filter: blur(20px) brightness(0.3);
+            opacity: 0.6;
+            z-index: 0;
         }
 
         /* 图片容器 */
@@ -1065,17 +1081,40 @@
             background: #0a0a0a;
         }
 
-        /* 加载动画 - 简化版 */
-        .img-loading-spinner { display: none; }
+        /* 加载动画 */
+        .img-loading-spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgba(139, 0, 0, 0.3);
+            border-top-color: var(--dark-red);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .img-container.loading .img-loading-spinner {
+            opacity: 1;
+        }
+
+        @keyframes spin {
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
     </style>
 
     <script>
-        // WebP 支持检测 - 简化版（避免转换问题）
+        // WebP 支持检测
         const WebPHelper = {
             supported: null,
 
             checkSupport: function() {
                 if (this.supported !== null) return this.supported;
+
                 const canvas = document.createElement('canvas');
                 if (canvas.getContext && canvas.getContext('2d')) {
                     this.supported = canvas.toDataURL('image/webp').indexOf('data:image/webp') === 0;
@@ -1085,35 +1124,44 @@
                 return this.supported;
             },
 
-            // 转换 URL 为 WebP（如果支持）- 简化版，避免本地图片转换问题
+            // 转换 URL 为 WebP（如果支持）
             getOptimizedUrl: function(originalUrl) {
-                // 暂时禁用 WebP 转换，直接使用原图，避免路径问题
-                return originalUrl;
-
-                /* 如需启用 WebP，取消下面注释：
                 if (!this.checkSupport()) return originalUrl;
                 if (!originalUrl) return originalUrl;
+
+                // 跳过已经是 WebP 的链接
                 if (originalUrl.toLowerCase().includes('.webp')) return originalUrl;
 
-                // 只转换 Cloudinary 图片
+                // 跳过外部链接（非本地图片）
+                if (originalUrl.startsWith('http') && !originalUrl.includes(window.location.hostname)) {
+                    return originalUrl;
+                }
+
+                // 尝试添加 ?format=webp 参数（适用于 Cloudinary 等 CDN）
                 if (originalUrl.includes('cloudinary') || originalUrl.includes('res.cloudinary')) {
                     return originalUrl.includes('?') ? originalUrl + '&f=webp' : originalUrl + '?f=webp';
                 }
 
+                // 对于本地图片，尝试直接使用 .webp 扩展名
+                if (originalUrl.match(/\.(jpg|jpeg|png)$/i)) {
+                    const webpUrl = originalUrl.replace(/\.(jpg|jpeg|png)$/i, '.webp');
+                    return webpUrl;
+                }
+
                 return originalUrl;
-                */
             }
         };
 
-        // 懒加载管理器 - 修复版
+        // 懒加载管理器
         const LazyLoader = {
             observer: null,
+            imageQueue: [],
 
             init: function() {
                 // 创建 Intersection Observer
                 const options = {
                     root: null,
-                    rootMargin: '100px 0px',
+                    rootMargin: '50px 0px',
                     threshold: 0.01
                 };
 
@@ -1148,7 +1196,7 @@
 
                 images.forEach(img => {
                     const rect = img.getBoundingClientRect();
-                    if (rect.top < viewportHeight + 200) {
+                    if (rect.top < viewportHeight + 100) {
                         this.loadImage(img);
                     }
                 });
@@ -1177,7 +1225,7 @@
 
                 preloadImg.onerror = function() {
                     // WebP 加载失败，回退到原格式
-                    if (optimizedSrc !== originalSrc && optimizedSrc.includes('.webp')) {
+                    if (optimizedSrc !== originalSrc) {
                         const fallbackImg = new Image();
                         fallbackImg.onload = function() {
                             img.src = originalSrc;
@@ -1185,14 +1233,15 @@
                             img.classList.add('loaded');
                         };
                         fallbackImg.onerror = function() {
-                            // 原格式也失败，让 img 的 onerror 处理
-                            img.src = originalSrc;
+                            // 判断是 banner 还是海报，使用对应占位图
+                            const isBanner = img.classList.contains('rebel-poster');
+                            img.src = isBanner ? './image/asia-bannerbg.webp' : './image/asia-asiaad.jpg';
                             img.classList.remove('loading');
                         };
                         fallbackImg.src = originalSrc;
                     } else {
-                        // 直接加载原图，让 onerror 处理失败情况
-                        img.src = originalSrc;
+                        const isBanner = img.classList.contains('rebel-poster');
+                        img.src = isBanner ? './image/asia-bannerbg.webp' : './image/asia-asiaad.jpg';
                         img.classList.remove('loading');
                     }
                 };
@@ -1214,7 +1263,7 @@
 
     <!-- 导航栏 -->
     <nav>
-        <img data-src="./image/cnlogo.png" alt="LiveGigs CN" class="logo-img lazy-image" id="logo" onclick="location.reload()" data-editable="logo">
+        <img data-src="./image/cnlogo.png" alt="LiveGigs CN" class="logo-img lazy-image" id="logo" onclick="location.reload()" data-editable="logo" data-src="./image/cnlogo.png">
         <div class="nav-links">
             <a href="events.html" data-editable="nav-events" data-text="Events" data-href="events.html">Events</a>
             <a href="partners.html" data-editable="nav-partners" data-text="Partners" data-href="partners.html">Partners</a>
@@ -1254,7 +1303,7 @@
                 <div class="rebel-slider" id="rebelSlider">
                     <div class="rebel-slide" data-editable="banner-slide-1">
                         <img data-src="./image/thenonameanti-.jpg" alt="The Noname Anti-IPA" class="rebel-poster lazy-image banner-placeholder"
-                             onerror="this.src='./image/asia-bannerbg.webp'" data-editable="banner-1-image">
+                             onerror="this.src='https://via.placeholder.com/1920x1080/1a0000/8b0000?text=THE+NONAME '" data-editable="banner-1-image" data-src="./image/thenonameanti-.jpg">
                         <div class="rebel-content">
                             <h2 data-editable="banner-1-title" data-text="THE NONAME ANTI-IPA">THE NONAME ANTI-IPA</h2>
                             <button class="neon-btn" onclick="window.open('https://emanonent.wixstudio.com/livegigs/antiipa', '_blank')" data-editable="banner-1-btn" data-text="無名逆襲社交 IPA" data-href="https://emanonent.wixstudio.com/livegigs/antiipa">無名逆襲社交 IPA</button>
@@ -1262,7 +1311,7 @@
                     </div>
                     <div class="rebel-slide" data-editable="banner-slide-2">
                         <img data-src="./image/punkheartbanner.jpg" alt="Punk Heart Festival 2026" class="rebel-poster lazy-image banner-placeholder"
-                             onerror="this.src='./image/asia-bannerbg.webp'" data-editable="banner-2-image">
+                             onerror="this.src='https://via.placeholder.com/1920x1080/1a0000/8b0000?text=PUNK+HEART '" data-editable="banner-2-image" data-src="./image/punkheartbanner.jpg">
                         <div class="rebel-content">
                             <h2 data-editable="banner-2-title" data-text="朋克心音樂節 2026">朋克心音樂節 2026</h2>
                             <button class="neon-btn" onclick="window.open('http://punkheartfest.com', '_blank')" data-editable="banner-2-btn" data-text="PUNK HEART FESTIVAL" data-href="http://punkheartfest.com">PUNK HEART FESTIVAL</button>
@@ -1270,7 +1319,7 @@
                     </div>
                     <div class="rebel-slide" data-editable="banner-slide-3">
                         <img data-src="./image/newbanner1.jpg" alt="一体共和乐队2026巡演" class="rebel-poster lazy-image banner-placeholder"
-                             onerror="this.src='./image/asia-bannerbg.webp'" data-editable="banner-3-image">
+                             onerror="this.src='https://via.placeholder.com/1920x1080/1a0000/8b0000?text=OneRepublic+Tour '" data-editable="banner-3-image" data-src="./image/newbanner1.jpg">
                         <div class="rebel-content">
                             <h2 data-editable="banner-3-title" data-text="一体共和乐队2026巡演">一体共和乐队2026巡演</h2>
                             <button class="neon-btn" onclick="window.open('https://www.livenation.cn/', '_blank')" data-editable="banner-3-btn" data-text="演出信息" data-href="https://www.livenation.cn/">演出信息</button>
@@ -1284,24 +1333,24 @@
         <section class="posters-showcase">
             <div class="posters-container">
                 <div class="poster-item" data-poster-id="1" data-link="https://wxaurl.cn/HMcAK6R7fou" data-editable="poster-1">
-                    <img data-src="./image/livegigscn1.png" alt="LiveGigs WeChat" class="lazy-image"
-                         onerror="this.src='./image/asia-asiaad.jpg'" data-editable="poster-1-image">
+                    <img data-src="./image/livegigscn1.png" alt="LiveGigs WeChat"
+                         onerror="this.src='https://via.placeholder.com/400x600/8b0000/000?text=LiveGigs+WeChat '" data-editable="poster-1-image" data-src="./image/livegigscn1.png">
                     <div class="poster-overlay">
                         <div class="poster-title" data-editable="poster-1-title" data-text="LiveGigs CN">LiveGigs CN</div>
                         <a href="https://wxaurl.cn/HMcAK6R7fou" target="_blank" class="poster-link" data-editable="poster-1-link-text" data-text="Get on WeChat →" onclick="event.stopPropagation();">Get on WeChat →</a>
                     </div>
                 </div>
                 <div class="poster-item-alt" data-poster-id="2" data-link="https://www.livegigsasia.com" data-editable="poster-2">
-                    <img data-src="./image/cn-asiaad.jpg" alt="LiveGigs Asia" class="lazy-image"
-                         onerror="this.src='./image/asia-asiaad.jpg'" data-editable="poster-2-image">
+                    <img data-src="./image/cn-asiaad.jpg" alt="LiveGigs Asia"
+                         onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=LiveGigs+Asia '" data-editable="poster-2-image" data-src="./image/cn-asiaad.jpg">
                     <div class="poster-overlay">
                         <div class="poster-title" data-editable="poster-2-title" data-text="LiveGigs Asia">LiveGigs Asia</div>
                         <a href="https://www.livegigsasia.com" target="_blank" class="poster-link" data-editable="poster-2-link-text" data-text="More Events →" onclick="event.stopPropagation();">More Events →</a>
                     </div>
                 </div>
                 <div class="poster-item-alt" data-poster-id="3" data-link="http://thenoname.cn" data-editable="poster-3">
-                    <img data-src="./image/1-b-3.jpg" alt="Event 2" class="lazy-image"
-                         onerror="this.src='./image/asia-asiaad.jpg'" data-editable="poster-3-image">
+                    <img data-src="./image/1-b-3.jpg" alt="Event 2"
+                         onerror="this.src='https://via.placeholder.com/400x600/1a0000/8b0000?text=EVENT+2 '" data-editable="poster-3-image" data-src="./image/1-b-3.jpg">
                     <div class="poster-overlay">
                         <div class="poster-title" data-editable="poster-3-title" data-text="NONAMEFEST 2026">NONAMEFEST 2026</div>
                         <a href="http://thenoname.cn" target="_blank" class="poster-link" data-editable="poster-3-link-text" data-text="View Details →" onclick="event.stopPropagation();">View Details →</a>
@@ -1362,7 +1411,7 @@
                             <div class="producer-label">Produced by</div>
                             <img data-src="./image/emanonent-logo.png" alt="EMANON ENT." class="producer-logo lazy-image" 
                                  onerror="this.style.display='none'" 
-                                 data-editable="producer-logo">
+                                 data-editable="producer-logo" data-src="./image/emanonent-logo.png">
                         </div>
                     </div>
 
