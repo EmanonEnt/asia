@@ -247,7 +247,7 @@
         .poster-item:hover img { filter: brightness(0.65); transform: scale(1.08); }
         .poster-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 35px 20px 25px; background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 50%, transparent 100%); opacity: 0; transition: opacity 0.4s; }
         .poster-item:hover .poster-overlay { opacity: 1; }
-        .poster-title { font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; font-size: 18px; color: #fff; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 8px; text-shadow: 0 0 20px rgba(139, 0, 0, 0.8); pointer-events: none; }
+        .poster-title { font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; font-size: 18px; color: #fff; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 8px; text-shadow: 0 0 20px rgba(139, 0, 0, 0.8); }
         .poster-link { display: inline-block; color: var(--silver); font-size: 12px; text-decoration: none; letter-spacing: 1px; transition: color 0.3s; cursor: pointer; padding: 5px 0; }
         .poster-link:hover { color: var(--dark-red); }
         .poster-item-alt { flex: 1; min-width: 0; max-width: none; position: relative; overflow: hidden; cursor: default; background: #000; transition: all 0.4s ease; border: none; }
@@ -450,7 +450,7 @@
             .poster-item-alt { flex: 0 0 calc(33.333% - 10px); max-width: calc(33.333% - 10px); min-width: auto; border-radius: 4px; border: none; }
             .poster-item-alt:hover { transform: translateY(-12px); box-shadow: 0 25px 60px rgba(139, 0, 0, 0.4); }
             .poster-item-alt img { transition: all 0.4s; }
-            .poster-item-alt:hover img { filter: brightness(0.65); transform: scale(1.08); }
+            .poster-item-alt:hover img { filter: brightness(0.65); }
             .poster-item-alt .poster-overlay { padding: 12px 6px 10px; }
             .poster-title { font-size: 10px; letter-spacing: 1px; margin-bottom: 4px; }
             .poster-link { font-size: 9px; letter-spacing: 0.5px; }
@@ -1137,17 +1137,6 @@
         .upload-success { background: rgba(40, 167, 69, 0.2); border: 1px solid #28a745; color: #28a745; padding: 15px; border-radius: 8px; text-align: center; display: none; margin-top: 15px; }
         .upload-error { background: rgba(220, 53, 69, 0.2); border: 1px solid #dc3545; color: #dc3545; padding: 15px; border-radius: 8px; text-align: center; display: none; margin-top: 15px; }
 
-/* ç¡®ä¿æµ·æ¥æ é¢åé¾æ¥åç´æå */
-.poster-item .poster-title {
-    display: block;
-    width: 100%;
-}
-.poster-item .poster-link {
-    display: block;
-    width: 100%;
-    margin-top: 5px;
-}
-
         .load-more-container { text-align: center !important; width: 100%; }
 
         .event-btn.disabled { pointer-events: auto; cursor: default; }
@@ -1473,11 +1462,11 @@ if ('serviceWorker' in navigator) {
                     <div class="mobile-poster2-text"><h3>Legendary Live Events</h3></div>
                 </div>
 
-                <div class="poster-item" data-poster-id="3">
+                <div class="poster-item-alt" data-poster-id="3">
                     <img src="./image/xrebookingad.jpg" alt="XRE Booking" onerror="this.src='./image/asia-asiaad.jpg'">
                     <div class="poster-overlay">
                         <div class="poster-title">XRE Booking</div>
-                        <a href="./partners.html" target="_blank" class="poster-link" onclick="event.stopPropagation();">Check Out More Partners →</a>
+                        <a href="./partners.html" class="poster-link" onclick="event.stopPropagation();">Check Out More Partners →</a>
                     </div>
                 </div>
             </div>
