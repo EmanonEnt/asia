@@ -3611,5 +3611,22 @@ function loadMoreEvents() {
     var btn = document.getElementById('loadMoreBtn');
     if (btn && loadedCount >= totalCards) btn.style.display = 'none';
 }
+
+
+// poster3点击事件处理
+document.addEventListener('DOMContentLoaded', function() {
+    var poster3 = document.querySelector('[data-poster-id="3"]');
+    if (poster3) {
+        poster3.addEventListener('click', function(e) {
+            // 只有has-link类时才允许点击
+            if (this.classList.contains('has-link')) {
+                var link = this.getAttribute('data-link');
+                if (link && link.trim() !== '') {
+                    window.open(link, '_blank');
+                }
+            }
+        });
+    }
+});
 </script></body>
 </html>
