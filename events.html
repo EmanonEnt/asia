@@ -1462,7 +1462,7 @@ if ('serviceWorker' in navigator) {
                     <div class="mobile-poster2-text"><h3>Legendary Live Events</h3></div>
                 </div>
 
-                <div class="poster-item-alt" data-poster-id="3">
+                <div class="poster-item-alt no-link" data-poster-id="3" data-link="" data-link="./partners.html">
                     <img src="./image/xrebookingad.jpg" alt="XRE Booking" onerror="this.src='./image/asia-asiaad.jpg'">
                     <div class="poster-overlay">
                         <div class="poster-title">XRE Booking</div>
@@ -3579,5 +3579,37 @@ document.addEventListener('keydown', function(e) {
         if (modal && modal.style.display === 'flex') closeUploadModal(); 
     }
 });
+
+// 修复添加的函数
+function updateCountdowns() {
+    const countdownElements = document.querySelectorAll('.countdown-text');
+    const today = new Date();
+    today.setHours(0,0,0,0);
+    countdownElements.forEach(function(el) {
+        const startDate = el.dataset.startDate;
+        const endDate = el.dataset.endDate;
+        if (!startDate) return;
+        const s = new Date(startDate.replace(/./g, '-')); s.setHours(0,0,0,0);
+        let e = endDate ? new Date(endDate.replace(/./g, '-')) : new Date(s);
+        e.setHours(23,59,59,999);
+        if (today >= s && today <= e) { el.textContent = 'TODAY'; el.className = 'countdown-text today'; return; }
+        if (today > e) { el.textContent = 'COMPLETED'; el.className = 'countdown-text completed'; return; }
+        const diff = Math.ceil((s - today) / (1000 * 60 * 60 * 24));
+        if (diff > 0) { el.textContent = diff + ' DAYS'; el.className = 'countdown-text countdown'; }
+    });
+}
+function openModal() { var m = document.getElementById('membershipModal'); if (m) m.style.display = 'flex'; }
+function closeModal() { var m = document.getElementById('membershipModal'); if (m) m.style.display = 'none'; }
+function loadMoreEvents() {
+    var loadedCount = window.loadedCount || 3;
+    var cards = document.querySelectorAll('.event-card');
+    var totalCards = cards.length;
+    loadedCount += 3;
+    if (loadedCount > totalCards) loadedCount = totalCards;
+    window.loadedCount = loadedCount;
+    cards.forEach(function(c, i) { if (i < loadedCount) c.classList.remove('hidden'); });
+    var btn = document.getElementById('loadMoreBtn');
+    if (btn && loadedCount >= totalCards) btn.style.display = 'none';
+}
 </script></body>
 </html>
