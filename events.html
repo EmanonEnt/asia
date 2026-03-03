@@ -239,7 +239,12 @@
         .scroll-arrow.left { left: 0; border-radius: 0 8px 8px 0; border-left: none; }
         .scroll-arrow.right { right: 0; border-radius: 8px 0 0 8px; border-right: none; }
 
-        .posters-showcase { width: 100%; padding: 0; background: linear-gradient(180deg, #050505 0%, #0a0a0a 50%, #050505 100%); position: relative; }
+/* æµ·æ¥3ç¹æ®æ ·å¼ - æ æ¾å¤§ææï¼èç+ä¸ç§» */
+        .poster-item[data-no-scale="true"]:hover img { transform: none !important; filter: brightness(0.7) !important; }
+        .poster-item[data-no-scale="true"] img { pointer-events: none; }
+        .poster-item[data-no-scale="true"] .poster-title { pointer-events: none; }
+
+                .posters-showcase { width: 100%; padding: 0; background: linear-gradient(180deg, #050505 0%, #0a0a0a 50%, #050505 100%); position: relative; }
         .posters-container { width: 100%; max-width: none; margin: 0 auto; display: flex; justify-content: stretch; align-items: stretch; gap: 0; padding: 0; }
         .poster-item { flex: 1; min-width: 0; max-width: none; position: relative; overflow: hidden; cursor: default; background: #000; transition: all 0.4s ease; }
         .poster-item:hover { transform: translateY(-12px); box-shadow: 0 25px 60px rgba(139, 0, 0, 0.4); }
@@ -1462,11 +1467,11 @@ if ('serviceWorker' in navigator) {
                     <div class="mobile-poster2-text"><h3>Legendary Live Events</h3></div>
                 </div>
 
-                <div class="poster-item-alt" data-poster-id="3" data-link="./partners.html">
-                    <img src="./image/xrebookingad.jpg" alt="XRE Booking" onerror="this.src='./image/asia-asiaad.jpg'">
+                <div class="poster-item" data-poster-id="3" data-link="./partners.html" data-no-scale="true">
+                    <img src="./image/xrebookingad.jpg" alt="XRE Booking" onerror="this.src='./image/asia-asiaad.jpg'" style="pointer-events: none;">
                     <div class="poster-overlay">
                         <div class="poster-title">XRE Booking</div>
-                        <a href="./partners.html" class="poster-link" onclick="event.stopPropagation();">Check Out More Partners →</a>
+                        <a href="partners.html" class="poster-link" onclick="event.stopPropagation();">Check Out More Partners →</a>
                     </div>
                 </div>
             </div>
