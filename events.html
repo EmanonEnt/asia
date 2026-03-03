@@ -299,7 +299,17 @@
         .modal-overlay.active { display: flex; }
         .modal-content { background: linear-gradient(135deg, #0a0000 0%, #050505 100%); border: 1px solid var(--darker-red); padding: 40px 35px; max-width: 480px; width: 100%; max-height: 98vh; overflow-y: auto; position: relative; box-shadow: 0 0 50px rgba(74, 0, 0, 0.5); }
         .modal-close { position: absolute; top: 15px; right: 20px; font-size: 28px; color: #666; cursor: pointer; transition: all 0.3s; }
-        .modal-close:hover { color: var(--dark-red); transform: scale(1.2); }
+        .modal-close:hover { 
+            color: var(--dark-red); 
+            transform: scale(1.2); 
+            text-shadow: 0 0 10px rgba(139, 0, 0, 0.8), 0 0 20px rgba(139, 0, 0, 0.4);
+            animation: closeBtnFlash 1.5s ease-in-out infinite;
+        }
+
+        @keyframes closeBtnFlash {
+            0%, 100% { text-shadow: 0 0 10px rgba(139, 0, 0, 0.8), 0 0 20px rgba(139, 0, 0, 0.4); }
+            50% { text-shadow: 0 0 20px rgba(139, 0, 0, 1), 0 0 30px rgba(139, 0, 0, 0.6), 0 0 40px rgba(255, 0, 0, 0.3); }
+        }
         .modal-content h2 { font-size: 28px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 10px; color: #fff; text-align: center; }
         .modal-content p { font-size: 13px; color: var(--silver); text-align: center; margin-bottom: 25px; }
         .form-group { margin-bottom: 18px; }
@@ -1462,11 +1472,11 @@ if ('serviceWorker' in navigator) {
                     <div class="mobile-poster2-text"><h3>Legendary Live Events</h3></div>
                 </div>
 
-                <div class="poster-item-alt" data-poster-id="3" data-link="./partners.html">
+                <div class="poster-item-alt" data-poster-id="3">
                     <img src="./image/xrebookingad.jpg" alt="XRE Booking" onerror="this.src='./image/asia-asiaad.jpg'">
                     <div class="poster-overlay">
                         <div class="poster-title">XRE Booking</div>
-                        <a href="./partners.html" class="poster-link" onclick="event.stopPropagation();">Check Out More Partners →</a>
+                        <span class="poster-link">Check Out More Partners â</span>
                     </div>
                 </div>
             </div>
@@ -1478,7 +1488,7 @@ if ('serviceWorker' in navigator) {
             <div class="footer-main">
                 <div class="footer-container">
                     <div class="footer-contact-left">
-                        <div class="contact-item"><a href="mailto:LiveGigsCn@Hotmail.Com">LiveGigsCn@Hotmail.Com</a></div>
+                        <div class="contact-item"><a href="./partners.html">LiveGigsCn@Hotmail.Com</a></div>
                         <div class="contact-item"><a href="tel:+852-456-7890">+852-456-7890</a></div>
                     </div>
                     <div class="footer-brand">
