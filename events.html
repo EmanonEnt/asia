@@ -1515,7 +1515,7 @@ if ('serviceWorker' in navigator) {
                         </div>
                     </div>
                     <div class="footer-contact-right">
-                        <div class="contact-item">#303 TERRY FRANCINE STREET,<br>HONGKONG,<br>CN 999077</div>
+                        <div class="contact-item">#303 TERRY FRANCINE STREET,<br>HONGKONG, CN 999077</div>
                     </div>
                 </div>
             </div>
@@ -3558,8 +3558,27 @@ document.addEventListener('click', function(e) {
         to { text-shadow: 0 0 15px rgba(255, 0, 0, 1), 0 0 30px rgba(255, 0, 0, 0.8), 0 0 45px rgba(255, 0, 0, 0.5); }
       }
     
-    /* 隐藏内部关闭按钮 */
-    .close-btn, .modal-close, .upload-close-internal {
+    /* 统一关闭按钮样式 - 灰色X带hover效果 */
+    .modal-close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      background: none;
+      border: none;
+      color: #888;
+      font-size: 28px;
+      cursor: pointer;
+      z-index: 100;
+      padding: 5px 10px;
+      line-height: 1;
+      transition: all 0.3s ease;
+    }
+    .modal-close:hover {
+      color: #ff0000 !important;
+      text-shadow: 0 0 10px rgba(255, 0, 0, 0.8), 0 0 20px rgba(255, 0, 0, 0.5);
+      transform: scale(1.1);
+    }
+    .close-btn, .upload-close-internal {
       display: none !important;
       visibility: hidden !important;
       opacity: 0 !important;
