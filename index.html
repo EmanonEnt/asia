@@ -595,5 +595,192 @@
     </script>
     <script src="./js/livegigs-data.js"></script>
     <script>if(typeof LiveGigsData!=='undefined')LiveGigsData.loadAndRender('index')</script>
+
+    <!-- ==================== 加载动画覆盖层 ==================== -->
+    <div id="loader-container" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:99999;display:flex;flex-direction:column;justify-content:center;align-items:center;transition:opacity 0.8s ease,visibility 0.8s">
+        <div class="logo-wrapper" style="position:relative;width:200px;height:200px;display:flex;justify-content:center;align-items:center">
+            <svg class="progress-ring" viewBox="0 0 200 200" style="position:absolute;width:180px;height:180px;transform:rotate(-90deg)">
+                <defs>
+                    <linearGradient id="loaderGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:#8b0000"/>
+                        <stop offset="100%" style="stop-color:#c0c0c0"/>
+                    </linearGradient>
+                </defs>
+                <circle cx="100" cy="100" r="90" fill="none" stroke="#8b0000" stroke-width="3" opacity="0.3"/>
+                <circle id="progressCircle" cx="100" cy="100" r="90" fill="none" stroke="url(#loaderGradient)" stroke-width="3" stroke-linecap="round" stroke-dasharray="565" stroke-dashoffset="565" style="transition:stroke-dashoffset 0.1s"/>
+            </svg>
+            <div id="ring1" style="position:absolute;width:100%;height:100%;border-radius:50%;border:2px solid transparent;opacity:0"></div>
+            <div id="ring2" style="position:absolute;width:100%;height:100%;border-radius:50%;border:2px solid transparent;opacity:0"></div>
+            <div id="ring3" style="position:absolute;width:100%;height:100%;border-radius:50%;border:2px solid transparent;opacity:0"></div>
+            <div id="chromatic" style="position:absolute;width:100%;height:100%;opacity:0;pointer-events:none">
+                <img src="./image/webtop.png" style="position:absolute;width:100%;height:100%;object-fit:contain;opacity:0.5;filter:drop-shadow(3px 0 0 rgba(255,0,0,0.5))" alt="">
+                <img src="./image/webtop.png" style="position:absolute;width:100%;height:100%;object-fit:contain;opacity:0.5" alt="">
+                <img src="./image/webtop.png" style="position:absolute;width:100%;height:100%;object-fit:contain;opacity:0.5;filter:drop-shadow(-3px 0 0 rgba(0,0,255,0.5))" alt="">
+            </div>
+            <img src="./image/webtop.png" alt="LiveGigs Asia" id="mainLogo" style="width:150px;height:150px;object-fit:contain;opacity:0;filter:drop-shadow(0 0 0 transparent);animation:logoAppear 0.8s ease forwards">
+            <canvas id="particleCanvas" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none"></canvas>
+        </div>
+        <div style="margin-top:30px;color:#c0c0c0;font-size:18px;letter-spacing:3px;text-transform:uppercase;opacity:0;animation:textFadeIn 0.5s ease 0.5s forwards">
+            Loading<span id="percent" style="color:#8b0000;font-size:24px;margin-left:10px">0%</span>
+        </div>
+        <div id="scanline" style="position:fixed;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,#ff0000,transparent);box-shadow:0 0 10px #ff0000;opacity:0;z-index:100000"></div>
+        <button id="skipBtn" onclick="skipLoading()" style="position:fixed;bottom:30px;right:30px;color:#555;font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;opacity:0;transition:all 0.3s;padding:10px 20px;border:1px solid #333;background:transparent;font-family:Impact,Haettenschweiler,'Arial Narrow Bold',sans-serif">Skip →</button>
+    </div>
+
+    <style>
+        @keyframes logoAppear{0%{opacity:0;filter:drop-shadow(0 0 0 transparent)}100%{opacity:0.3;filter:drop-shadow(0 0 30px rgba(139,0,0,0.3))}}
+        @keyframes textFadeIn{0%{opacity:0;transform:translateY(10px)}100%{opacity:1;transform:translateY(0)}}
+        @keyframes energyBurst{0%{transform:scale(0.8);opacity:1;border-color:#8b0000;box-shadow:0 0 20px #8b0000}100%{transform:scale(2);opacity:0;border-color:#c0c0c0;box-shadow:0 0 60px #c0c0c0}}
+        @keyframes scan{0%{top:0;opacity:1}100%{top:100%;opacity:1}}
+        @keyframes shake{0%,100%{transform:translate(0,0)}25%{transform:translate(1px,1px)}50%{transform:translate(-1px,-1px)}75%{transform:translate(-1px,1px)}}
+        @keyframes chromaticEffect{0%{opacity:0;transform:scale(1)}50%{opacity:0.5;transform:scale(1.1)}100%{opacity:0;transform:scale(1)}}
+        @keyframes logoRotate{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+        .energy-active{animation:energyBurst 0.7s ease forwards}
+        .scan-active{animation:scan 1s ease-in-out forwards}
+        .shake-active{animation:shake 0.1s ease-in-out}
+        .chromatic-active{animation:chromaticEffect 0.5s ease forwards}
+        #skipBtn:hover{color:#8b0000;border-color:#8b0000}
+        #skipBtn.visible{opacity:1}
+        #loader-container.hidden{opacity:0;visibility:hidden;pointer-events:none}
+    </style>
+
+    <script>
+        (function(){
+            const CONFIG={particleCount:60,loadTime:4500}
+            let progress=0,particles=[],animationId=null,isSkipping=false
+            const loaderContainer=document.getElementById('loader-container')
+            const mainLogo=document.getElementById('mainLogo')
+            const progressCircle=document.getElementById('progressCircle')
+            const percentText=document.getElementById('percent')
+            const scanline=document.getElementById('scanline')
+            const skipBtn=document.getElementById('skipBtn')
+            const logoWrapper=document.querySelector('.logo-wrapper')
+            const chromatic=document.getElementById('chromatic')
+            const canvas=document.getElementById('particleCanvas')
+            const ctx=canvas.getContext('2d')
+
+            function initCanvas(){
+                canvas.width=logoWrapper.offsetWidth
+                canvas.height=logoWrapper.offsetHeight
+            }
+
+            class Particle{
+                constructor(){
+                    this.reset()
+                }
+                reset(){
+                    const angle=Math.random()*Math.PI*2
+                    const radius=100+Math.random()*50
+                    this.x=canvas.width/2+Math.cos(angle)*radius
+                    this.y=canvas.height/2+Math.sin(angle)*radius
+                    this.angle=angle
+                    this.radius=radius
+                    this.speed=0.02+Math.random()*0.03
+                    this.size=1+Math.random()*2
+                    this.alpha=0.5+Math.random()*0.5
+                    this.decay=0.98
+                }
+                update(){
+                    this.angle+=this.speed
+                    this.radius*=this.decay
+                    this.x=canvas.width/2+Math.cos(this.angle)*this.radius
+                    this.y=canvas.height/2+Math.sin(this.angle)*this.radius
+                    this.alpha*=0.99
+                    if(this.radius<30||this.alpha<0.01)this.reset()
+                }
+                draw(){
+                    ctx.beginPath()
+                    ctx.arc(this.x,this.y,this.size,0,Math.PI*2)
+                    ctx.fillStyle='rgba(192,192,192,'+this.alpha+')'
+                    ctx.fill()
+                }
+            }
+
+            function initParticles(){
+                for(let i=0;i<CONFIG.particleCount;i++)particles.push(new Particle())
+            }
+
+            function animate(){
+                ctx.clearRect(0,0,canvas.width,canvas.height)
+                particles.forEach(p=>{p.update();p.draw()})
+                animationId=requestAnimationFrame(animate)
+            }
+
+            function triggerEnergyBurst(){
+                logoWrapper.classList.add('shake-active')
+                setTimeout(()=>logoWrapper.classList.remove('shake-active'),100)
+                ;['ring1','ring2','ring3'].forEach((id,i)=>{
+                    setTimeout(()=>{
+                        const ring=document.getElementById(id)
+                        ring.classList.add('energy-active')
+                        setTimeout(()=>ring.classList.remove('energy-active'),700)
+                    },i*200)
+                })
+            }
+
+            function startParticleAnimation(){
+                initCanvas()
+                initParticles()
+                animate()
+                mainLogo.style.animation='logoRotate 2s linear infinite'
+            }
+
+            function triggerChromatic(){
+                chromatic.classList.add('chromatic-active')
+                setTimeout(()=>chromatic.classList.remove('chromatic-active'),500)
+            }
+
+            function triggerScanline(){
+                scanline.classList.add('scan-active')
+                setTimeout(()=>{
+                    loaderContainer.classList.add('hidden')
+                    document.body.style.overflow='auto'
+                },800)
+            }
+
+            window.skipLoading=function(){
+                isSkipping=true
+                cancelAnimationFrame(animationId)
+                loaderContainer.classList.add('hidden')
+                document.body.style.overflow='auto'
+            }
+
+            function updateProgress(){
+                const interval=setInterval(()=>{
+                    if(isSkipping){clearInterval(interval);return}
+                    progress+=2
+                    if(progress>100)progress=100
+                    progressCircle.style.strokeDashoffset=565-(565*progress/100)
+                    percentText.textContent=progress+'%'
+                    if(progress===20)triggerEnergyBurst()
+                    if(progress===40)startParticleAnimation()
+                    if(progress===60)triggerChromatic()
+                    if(progress===80){
+                        mainLogo.style.animation='none'
+                        mainLogo.style.opacity='1'
+                        mainLogo.style.filter='drop-shadow(0 0 30px rgba(139,0,0,0.8))'
+                    }
+                    if(progress===100){
+                        clearInterval(interval)
+                        triggerScanline()
+                    }
+                },CONFIG.loadTime/50)
+            }
+
+            // 检查是否已加载过
+            if(sessionStorage.getItem('livegigs_loaded')){
+                loaderContainer.style.display='none'
+                document.body.style.overflow='auto'
+            }else{
+                sessionStorage.setItem('livegigs_loaded','true')
+                document.body.style.overflow='hidden'
+                updateProgress()
+                setTimeout(()=>skipBtn.classList.add('visible'),1500)
+            }
+
+            window.addEventListener('resize',initCanvas)
+        })()
+    </script>
+
 </body>
 </html>
