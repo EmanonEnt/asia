@@ -1449,7 +1449,7 @@ if ('serviceWorker' in navigator) {
 
         <section class="posters-showcase" style="margin-top: 40px;">
             <div class="posters-container">
-                <div class="poster-item" data-poster-id="1" data-link="https://wxaurl.cn/HMcAK6R7fou">
+                <div class="poster-item" data-poster-id="1" >
                     <img src="./image/livegigscn1.png" alt="LiveGigs WeChat" onerror="this.src='./image/asia-asiaad.jpg'">
                     <div class="poster-overlay">
                         <div class="poster-title">LiveGigs CN</div>
@@ -1482,7 +1482,7 @@ if ('serviceWorker' in navigator) {
                     <div class="mobile-poster2-text"><h3>Legendary Live Events</h3></div>
                 </div>
 
-                <div class="poster-item-alt" data-poster-id="3" data-link="./partners.html">
+                <div class="poster-item-alt" data-poster-id="3" >
                     <img src="./image/xrebookingad.jpg" alt="XRE Booking" onerror="this.src='./image/asia-asiaad.jpg'">
                     <div class="poster-overlay">
                         <div class="poster-title">XRE Booking</div>
@@ -1515,7 +1515,7 @@ if ('serviceWorker' in navigator) {
                         </div>
                     </div>
                     <div class="footer-contact-right">
-                        <div class="contact-item">#303 TERRY FRANCINE STREET,<br>HONGKONG,<br>CN 999077</div>
+                        <div class="contact-item">#303 TERRY FRANCINE STREET,<br>HONGKONG, CN 999077</div>
                     </div>
                 </div>
             </div>
@@ -3558,12 +3558,51 @@ document.addEventListener('click', function(e) {
         to { text-shadow: 0 0 15px rgba(255, 0, 0, 1), 0 0 30px rgba(255, 0, 0, 0.8), 0 0 45px rgba(255, 0, 0, 0.5); }
       }
     
-    /* 隐藏内部关闭按钮 */
-    .close-btn, .modal-close, .upload-close-internal {
+    /* 统一关闭按钮样式 - 灰色X带hover效果 */
+    .modal-close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      background: none;
+      border: none;
+      color: #888;
+      font-size: 28px;
+      cursor: pointer;
+      z-index: 100;
+      padding: 5px 10px;
+      line-height: 1;
+      transition: all 0.3s ease;
+    }
+    .modal-close:hover {
+      color: #ff0000 !important;
+      text-shadow: 0 0 10px rgba(255, 0, 0, 0.8), 0 0 20px rgba(255, 0, 0, 0.5);
+      transform: scale(1.1);
+    }
+    .close-btn, .upload-close-internal {
       display: none !important;
       visibility: hidden !important;
       opacity: 0 !important;
       pointer-events: none !important;
+    }
+
+    /* 海报标题和链接分两排显示，左对齐 */
+    .poster-overlay {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+      padding-left: 20px;
+      padding-bottom: 20px;
+    }
+    .poster-title {
+      display: block;
+      width: 100%;
+      text-align: left;
+      margin-bottom: 5px;
+    }
+    .poster-link {
+      display: inline-block;
+      text-align: left;
     }
 </style>
     <button class="upload-modal-close" onclick="closeUploadModal()" style="position:absolute; top:10px; right:10px; background:none; border:none; color:#fff; font-size:28px; cursor:pointer; z-index:100; padding:5px 10px; line-height:1;">&times;</button>
