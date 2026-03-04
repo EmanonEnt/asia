@@ -1449,7 +1449,7 @@ if ('serviceWorker' in navigator) {
 
         <section class="posters-showcase" style="margin-top: 40px;">
             <div class="posters-container">
-                <div class="poster-item" data-poster-id="1" data-link="https://wxaurl.cn/HMcAK6R7fou">
+                <div class="poster-item" data-poster-id="1" >
                     <img src="./image/livegigscn1.png" alt="LiveGigs WeChat" onerror="this.src='./image/asia-asiaad.jpg'">
                     <div class="poster-overlay">
                         <div class="poster-title">LiveGigs CN</div>
@@ -1482,7 +1482,7 @@ if ('serviceWorker' in navigator) {
                     <div class="mobile-poster2-text"><h3>Legendary Live Events</h3></div>
                 </div>
 
-                <div class="poster-item-alt" data-poster-id="3" data-link="./partners.html">
+                <div class="poster-item-alt" data-poster-id="3" >
                     <img src="./image/xrebookingad.jpg" alt="XRE Booking" onerror="this.src='./image/asia-asiaad.jpg'">
                     <div class="poster-overlay">
                         <div class="poster-title">XRE Booking</div>
@@ -3583,6 +3583,24 @@ document.addEventListener('click', function(e) {
       visibility: hidden !important;
       opacity: 0 !important;
       pointer-events: none !important;
+    }
+
+    /* 海报标题和链接分两排显示 */
+    .poster-overlay {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .poster-title {
+      display: block;
+      width: 100%;
+      text-align: center;
+      margin-bottom: 5px;
+    }
+    .poster-link {
+      display: inline-block;
+      text-align: center;
     }
 </style>
     <button class="upload-modal-close" onclick="closeUploadModal()" style="position:absolute; top:10px; right:10px; background:none; border:none; color:#fff; font-size:28px; cursor:pointer; z-index:100; padding:5px 10px; line-height:1;">&times;</button>
