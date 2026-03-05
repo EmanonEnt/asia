@@ -4,16 +4,339 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LiveGigs Asia</title>
-    <!-- Tab图标 -->
-        <!-- 预加载关键资源 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="dns-prefetch" href="https://eplus.jp">
     <link rel="dns-prefetch" href="https://bandmaid.tokyo">
     <link rel="dns-prefetch" href="https://www.summersonic.com">
-
     <link rel="icon" type="image/png" href="./image/webtop.png">
     <link rel="shortcut icon" type="image/png" href="./image/webtop.png">
+
+    <!-- 加载动画样式 -->
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        /* 加载动画容器 */
+        #loader-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* 噪点层 */
+        .noise {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            animation: noise 0.1s steps(2) infinite;
+        }
+
+        @keyframes noise {
+            0%, 100% { transform: translate(0, 0); }
+            10% { transform: translate(-5%, -5%); }
+            20% { transform: translate(-10%, 5%); }
+            30% { transform: translate(5%, -10%); }
+            40% { transform: translate(-5%, 15%); }
+            50% { transform: translate(-10%, 5%); }
+            60% { transform: translate(15%, 0); }
+            70% { transform: translate(0, 10%); }
+            80% { transform: translate(-15%, 0); }
+            90% { transform: translate(10%, 5%); }
+        }
+
+        /* 震动线条 */
+        .scan-lines {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 0;
+            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255, 0, 0, 0.1) 2px, rgba(255, 0, 0, 0.1) 4px);
+            animation: scanlines 0.8s ease-out forwards;
+        }
+
+        @keyframes scanlines {
+            0% { height: 0; opacity: 0; }
+            100% { height: 100%; opacity: 1; }
+        }
+
+        /* 红色扫描线 */
+        .red-scan {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ff0000, transparent);
+            box-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000;
+            opacity: 0;
+        }
+
+        .red-scan.active { animation: scanMove 1s ease-in-out; }
+
+        @keyframes scanMove {
+            0% { left: -100%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { left: 100%; opacity: 0; }
+        }
+
+        /* 故障文字 - 副标题 */
+        .glitch-text {
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: clamp(16px, 3vw, 28px);
+            color: #fff;
+            letter-spacing: clamp(4px, 1vw, 12px);
+            text-transform: uppercase;
+            opacity: 0;
+            position: relative;
+            text-align: center;
+            line-height: 2;
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+        }
+
+        .glitch-text.active { animation: glitchIn 1.2s ease-out forwards; }
+
+        @keyframes glitchIn {
+            0% { opacity: 0; transform: translateX(-20px); text-shadow: -2px 0 #ff0000, 2px 0 #00ffff; }
+            20% { opacity: 1; text-shadow: 2px 0 #ff0000, -2px 0 #00ffff; }
+            40% { text-shadow: -3px 0 #ff0000, 3px 0 #00ffff; transform: translateX(2px); }
+            60% { text-shadow: 3px 0 #ff0000, -3px 0 #00ffff; transform: translateX(-2px); }
+            80% { text-shadow: -1px 0 #ff0000, 1px 0 #00ffff; }
+            100% { opacity: 1; text-shadow: 0 0 30px rgba(255, 0, 0, 0.8); transform: translateX(0); }
+        }
+
+        /* 副标题行 */
+        .glitch-line { display: block; }
+        .glitch-line.small { font-size: 0.7em; letter-spacing: clamp(2px, 0.5vw, 6px); color: rgba(255, 255, 255, 0.8); }
+
+        /* LOGO容器 */
+        .logo-container {
+            position: relative;
+            width: clamp(200px, 30vw, 400px);
+            height: clamp(200px, 30vw, 400px);
+            opacity: 0;
+            transform: scale(0.5);
+            margin: 40px 0;
+        }
+
+        .logo-container.active { animation: logoAwaken 1.2s ease-out forwards; }
+
+        @keyframes logoAwaken {
+            0% { opacity: 0; transform: scale(0.5) rotateY(0deg); }
+            30% { opacity: 1; transform: scale(1.1) rotateY(180deg); }
+            60% { transform: scale(0.95) rotateY(360deg); }
+            100% { opacity: 1; transform: scale(1) rotateY(360deg); }
+        }
+
+        /* 脉冲圆环 */
+        .pulse-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            border: 2px solid rgba(255, 0, 0, 0.5);
+            border-radius: 50%;
+            opacity: 0;
+        }
+
+        .pulse-ring.active { animation: pulseRing 1.2s ease-out; }
+
+        @keyframes pulseRing {
+            0% { width: 50%; height: 50%; opacity: 1; border-color: rgba(255, 0, 0, 0.8); }
+            100% { width: 150%; height: 150%; opacity: 0; border-color: rgba(255, 0, 0, 0); }
+        }
+
+        /* LOGO图片 */
+        .logo-img-loader {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 0 30px rgba(255, 0, 0, 0.8));
+            animation: neonFlicker 0.1s infinite alternate;
+        }
+
+        @keyframes neonFlicker {
+            0% { filter: drop-shadow(0 0 20px rgba(255, 0, 0, 0.5)) brightness(1); }
+            100% { filter: drop-shadow(0 0 40px rgba(255, 0, 0, 1)) brightness(1.3); }
+        }
+
+        /* 火花粒子 */
+        .sparks { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+
+        .spark {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #ff0000;
+            border-radius: 50%;
+            box-shadow: 0 0 6px #ff0000, 0 0 12px #ffaa00;
+            opacity: 0;
+        }
+
+        .spark.active { animation: sparkFly 0.8s ease-out forwards; }
+
+        @keyframes sparkFly {
+            0% { opacity: 1; transform: translate(0, 0) scale(1); }
+            100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0); }
+        }
+
+        /* 音浪环 */
+        .sound-waves {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .wave {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            border-radius: 50%;
+            opacity: 0;
+        }
+
+        .wave.active { animation: waveExpand 1s ease-out forwards; }
+
+        @keyframes waveExpand {
+            0% { width: 80%; height: 80%; opacity: 0.8; border-color: rgba(255, 0, 0, 0.6); }
+            100% { width: 200%; height: 200%; opacity: 0; border-color: rgba(255, 0, 0, 0); }
+        }
+
+        /* 炸裂效果 */
+        .explosion {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, rgba(255, 0, 0, 1) 0%, rgba(255, 50, 0, 0.8) 30%, transparent 70%);
+            border-radius: 50%;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .explosion.active { animation: explode 0.5s ease-out forwards; }
+
+        @keyframes explode {
+            0% { width: 0; height: 0; opacity: 1; }
+            50% { width: 300vmax; height: 300vmax; opacity: 0.8; }
+            100% { width: 400vmax; height: 400vmax; opacity: 0; }
+        }
+
+        /* 进度条 */
+        .progress-container {
+            width: 300px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            margin-top: 40px;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+        }
+
+        .progress-container.active { opacity: 1; transition: opacity 0.3s; }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #ff0000, #ff6600, #ff0000);
+            width: 0%;
+            box-shadow: 0 0 10px #ff0000;
+            transition: width 0.1s linear;
+        }
+
+        .progress-text {
+            color: #ff0000;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            margin-top: 10px;
+            letter-spacing: 0.2em;
+            opacity: 0;
+        }
+
+        .progress-text.active { opacity: 1; animation: blink 0.5s infinite; }
+
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+        /* 最终WELCOME画面 */
+        .welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: url('https://livegigsasia.com/image/e-hero%20bg.jpg') center/cover no-repeat;
+            z-index: 99998;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(1.1);
+        }
+
+        .welcome-screen.active {
+            opacity: 1;
+            transform: scale(1);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .welcome-screen.fade-out {
+            opacity: 0;
+            transform: scale(1.05);
+            transition: all 0.5s ease-out;
+        }
+
+        .welcome-text {
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: clamp(24px, 5vw, 48px);
+            color: #fff;
+            letter-spacing: clamp(8px, 2vw, 16px);
+            text-transform: uppercase;
+            text-align: center;
+            text-shadow: 0 0 40px rgba(0, 0, 0, 0.8), 0 0 80px rgba(139, 0, 0, 0.5);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .welcome-screen.active .welcome-text {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.6s ease-out 0.3s;
+        }
+
+        /* 隐藏状态 */
+        .hidden { display: none !important; }
+
+        #main-content { opacity: 0; }
+        #main-content.show { opacity: 1; transition: opacity 0.5s ease; }
+    </style>
+
     <style>
         :root {
             --dark-red: #8b0000;
@@ -21,16 +344,6 @@
             --silver: #c0c0c0;
             --silver-bg: #d0d0d0;
             --black: #050505;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
         }
 
         body {
@@ -41,7 +354,7 @@
             overflow-x: hidden;
         }
 
-        /* ==================== 导航栏 ==================== */
+        /* 导航栏 */
         nav {
             position: fixed;
             top: 0;
@@ -121,9 +434,7 @@
             transition: left 0.5s;
         }
 
-        .nav-links .neon-btn:hover::before {
-            left: 100%;
-        }
+        .nav-links .neon-btn:hover::before { left: 100%; }
 
         .nav-links .neon-btn:hover {
             background: var(--dark-red);
@@ -133,7 +444,7 @@
             letter-spacing: 3px;
         }
 
-        /* ==================== Hero Section ==================== */
+        /* Hero Section */
         .hero {
             position: fixed;
             top: 0;
@@ -253,13 +564,8 @@
             95% { opacity: 1; text-shadow: 0 0 60px rgba(139, 0, 0, 0.8), 0 0 100px rgba(255, 255, 255, 0.3); }
         }
 
-        .hero-title .gray {
-            color: rgba(100, 100, 100, 0.95);
-        }
-
-        .hero-title .red {
-            color: rgba(139, 0, 0, 0.95);
-        }
+        .hero-title .gray { color: rgba(100, 100, 100, 0.95); }
+        .hero-title .red { color: rgba(139, 0, 0, 0.95); }
 
         .hero-subtitle {
             font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
@@ -275,18 +581,10 @@
             animation-delay: 0.3s;
         }
 
-        .hero-subtitle .line1 {
-            display: block;
-            margin-bottom: 8px;
-        }
+        .hero-subtitle .line1 { display: block; margin-bottom: 8px; }
+        .hero-subtitle .line2 { display: block; color: rgba(200, 200, 200, 0.9); font-size: 0.95em; }
 
-        .hero-subtitle .line2 {
-            display: block;
-            color: rgba(200, 200, 200, 0.9);
-            font-size: 0.95em;
-        }
-
-        /* ==================== 内容包装器 ==================== */
+        /* 内容包装器 */
         .content-wrapper {
             position: relative;
             z-index: 10;
@@ -295,7 +593,7 @@
             min-height: 100vh;
         }
 
-        /* ==================== Banner ==================== */
+        /* Banner */
         .banner-section {
             position: relative;
             width: 100%;
@@ -328,10 +626,10 @@
             justify-content: center;
             cursor: pointer;
             box-shadow: inset 0 0 0 2px rgba(192, 192, 192, 0.3), inset 0 0 20px rgba(192, 192, 192, 0.1);
+            aspect-ratio: 1280/672;
         }
 
-        .rebel-slide::before,
-        .rebel-slide::after {
+        .rebel-slide::before, .rebel-slide::after {
             content: '';
             position: absolute;
             left: 0;
@@ -346,10 +644,16 @@
 
         .rebel-poster {
             width: 100%;
-            height: auto;
+            height: 100%;
+            object-fit: fill;
+            object-position: center;
             display: block;
             filter: brightness(0.7);
             transition: filter 0.5s;
+            background-image: url('./image/asia-bannerbg.webp');
+            background-size: cover;
+            background-position: center;
+            min-height: 400px;
         }
 
         .rebel-slide:hover .rebel-poster { filter: brightness(0.5); }
@@ -368,9 +672,7 @@
             max-width: 800px;
         }
 
-        .rebel-slide:hover .rebel-content {
-            opacity: 1;
-        }
+        .rebel-slide:hover .rebel-content { opacity: 1; }
 
         .rebel-content h2 {
             font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
@@ -411,9 +713,7 @@
             transition: left 0.5s;
         }
 
-        .rebel-content .neon-btn:hover::before {
-            left: 100%;
-        }
+        .rebel-content .neon-btn:hover::before { left: 100%; }
 
         .rebel-content .neon-btn:hover {
             background: var(--dark-red);
@@ -423,7 +723,7 @@
             letter-spacing: 3px;
         }
 
-        /* ==================== 海报区域 - 满屏显示 ==================== */
+        /* 海报区域 */
         .posters-showcase {
             width: 100%;
             padding: 0;
@@ -442,7 +742,6 @@
             padding: 0;
         }
 
-        /* 海报1 - 保持原有效果 */
         .poster-item {
             flex: 1;
             min-width: 0;
@@ -507,11 +806,8 @@
             padding: 5px 0;
         }
 
-        .poster-link:hover { 
-            color: var(--dark-red); 
-        }
+        .poster-link:hover { color: var(--dark-red); }
 
-        /* 海报2和3 - 桌面端边框发光效果（无放大） */
         .poster-item-alt {
             flex: 1;
             min-width: 0;
@@ -539,9 +835,7 @@
             transition: filter 0.4s;
         }
 
-        .poster-item-alt:hover img {
-            filter: brightness(0.7);
-        }
+        .poster-item-alt:hover img { filter: brightness(0.7); }
 
         .poster-item-alt .poster-overlay {
             position: absolute;
@@ -556,14 +850,14 @@
 
         .poster-item-alt:hover .poster-overlay { opacity: 1; }
 
-        /* ==================== 间隙区域 ==================== */
+        /* 间隙区域 */
         .footer-gap {
             height: 150px;
             background: linear-gradient(180deg, #050505 0%, #1a1a1a 30%, var(--silver-bg) 100%);
             position: relative;
         }
 
-        /* ==================== 底部区域 ==================== */
+        /* 底部区域 */
         .site-footer {
             background: var(--silver-bg);
             color: #333;
@@ -606,9 +900,7 @@
             font-weight: bold;
         }
 
-        .contact-item a:hover {
-            color: var(--dark-red);
-        }
+        .contact-item a:hover { color: var(--dark-red); }
 
         .footer-brand {
             flex: 0 0 auto;
@@ -626,23 +918,12 @@
         }
 
         @keyframes simpleGlow {
-            0%, 100% { 
-                text-shadow: 0 0 10px rgba(139, 0, 0, 0.3);
-                opacity: 0.95;
-            }
-            50% { 
-                text-shadow: 0 0 20px rgba(139, 0, 0, 0.6), 0 0 30px rgba(139, 0, 0, 0.3);
-                opacity: 1;
-            }
+            0%, 100% { text-shadow: 0 0 10px rgba(139, 0, 0, 0.3); opacity: 0.95; }
+            50% { text-shadow: 0 0 20px rgba(139, 0, 0, 0.6), 0 0 30px rgba(139, 0, 0, 0.3); opacity: 1; }
         }
 
-        .footer-logo .livegigs {
-            color: #222;
-        }
-
-        .footer-logo .asia {
-            color: var(--dark-red);
-        }
+        .footer-logo .livegigs { color: #222; }
+        .footer-logo .asia { color: var(--dark-red); }
 
         .social-links {
             display: flex;
@@ -672,9 +953,7 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
-        .producer-section {
-            text-align: center;
-        }
+        .producer-section { text-align: center; }
 
         .producer-label {
             font-size: 10px;
@@ -692,9 +971,7 @@
             transition: opacity 0.3s;
         }
 
-        .producer-logo:hover {
-            opacity: 1;
-        }
+        .producer-logo:hover { opacity: 1; }
 
         .footer-contact-right {
             flex: 1;
@@ -713,10 +990,7 @@
             flex-wrap: wrap;
         }
 
-        .footer-legal {
-            display: flex;
-            gap: 25px;
-        }
+        .footer-legal { display: flex; gap: 25px; }
 
         .footer-legal a {
             color: #555;
@@ -728,9 +1002,7 @@
             font-weight: bold;
         }
 
-        .footer-legal a:hover {
-            color: var(--dark-red);
-        }
+        .footer-legal a:hover { color: var(--dark-red); }
 
         .copyright {
             color: #666;
@@ -739,7 +1011,7 @@
             font-family: 'Courier New', monospace;
         }
 
-        /* ==================== Membership弹窗 ==================== */
+        /* Membership弹窗 */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -807,8 +1079,7 @@
             margin-bottom: 6px;
         }
 
-        .form-group input,
-        .form-group textarea {
+        .form-group input, .form-group textarea {
             width: 100%;
             padding: 12px;
             background: rgba(0, 0, 0, 0.6);
@@ -820,17 +1091,13 @@
             font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
         }
 
-        .form-group input:focus,
-        .form-group textarea:focus {
+        .form-group input:focus, .form-group textarea:focus {
             outline: none;
             border-color: var(--dark-red);
             box-shadow: 0 0 15px rgba(139, 0, 0, 0.3);
         }
 
-        .form-group textarea {
-            min-height: 80px;
-            resize: vertical;
-        }
+        .form-group textarea { min-height: 80px; resize: vertical; }
 
         .modal-content .neon-btn {
             width: 100%;
@@ -852,7 +1119,79 @@
             box-shadow: 0 0 20px rgba(139, 0, 0, 0.5);
         }
 
-        /* ==================== 响应式 ==================== */
+        /* 懒加载 */
+        .lazy-image {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        .lazy-image.loaded { opacity: 1; background: none !important; }
+        .lazy-image.loading { filter: blur(10px); transform: scale(1.02); }
+
+        .banner-placeholder {
+            background-color: #000;
+            background-image: url('./image/asia-bannerbg.webp');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .img-container { position: relative; overflow: hidden; }
+
+        /* 海报2轮播 */
+        .poster-carousel-wrapper { position: relative; width: 100%; height: 100%; overflow: hidden; }
+        .poster-carousel { position: relative; width: 100%; height: 100%; }
+        .poster-carousel-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+            z-index: 1;
+        }
+        .poster-carousel-slide.active { opacity: 1; z-index: 2; }
+        .poster-carousel-slide img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+        .poster-carousel-img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+        .carousel-dots {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+        .carousel-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+        .carousel-dot.active { background: var(--dark-red); border-color: var(--dark-red); box-shadow: 0 0 10px rgba(139, 0, 0, 0.8); transform: scale(1.2); }
+        .mobile-poster2-text {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 5;
+            width: 90%;
+        }
+        .mobile-poster2-text h3 {
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: clamp(18px, 4vw, 24px);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #fff;
+            text-shadow: 0 0 30px rgba(139, 0, 0, 0.8), 0 2px 10px rgba(0,0,0,0.8);
+            line-height: 1.3;
+        }
+
+        /* 响应式 */
         @media (max-width: 1024px) {
             nav { padding: 0 30px; height: 70px; }
             .logo-img { height: 40px; max-width: 150px; }
@@ -903,40 +1242,23 @@
             .rebel-content { width: 95%; padding: 10px; }
             .rebel-content h2 { font-size: clamp(18px, 5.5vw, 28px); letter-spacing: 2px; margin-bottom: 12px; line-height: 1.3; }
             .rebel-content .neon-btn { padding: 8px 16px; font-size: 10px; letter-spacing: 1px; }
-
-            /* 手机端海报恢复有间距的显示 */
             .posters-container { padding: 0 20px; gap: 15px; justify-content: center; }
-
-            .poster-item,
-            .poster-item-alt {
+            .poster-item, .poster-item-alt {
                 flex: 0 0 calc(33.333% - 10px);
                 max-width: calc(33.333% - 10px);
                 min-width: auto;
                 border-radius: 4px;
             }
-
-            .poster-item:hover,
-            .poster-item-alt:hover {
+            .poster-item:hover, .poster-item-alt:hover {
                 transform: translateY(-12px);
                 box-shadow: 0 25px 60px rgba(139, 0, 0, 0.4);
             }
-
-            .poster-item img,
-            .poster-item-alt img {
-                transition: all 0.4s;
-            }
-
-            .poster-item:hover img,
-            .poster-item-alt:hover img {
+            .poster-item img, .poster-item-alt img { transition: all 0.4s; }
+            .poster-item:hover img, .poster-item-alt:hover img {
                 filter: brightness(0.65);
                 transform: scale(1.08);
             }
-
-            .poster-overlay,
-            .poster-item-alt .poster-overlay {
-                padding: 12px 6px 10px;
-            }
-
+            .poster-overlay, .poster-item-alt .poster-overlay { padding: 12px 6px 10px; }
             .poster-title { font-size: 10px; letter-spacing: 1px; margin-bottom: 4px; }
             .poster-link { font-size: 9px; letter-spacing: 0.5px; }
             .footer-gap { height: 80px; }
@@ -958,8 +1280,7 @@
             .hero-title { font-size: 38px; letter-spacing: 3px; }
             .hero-subtitle { font-size: 11px; }
             .posters-container { padding: 0 15px; gap: 12px; }
-            .poster-item,
-            .poster-item-alt {
+            .poster-item, .poster-item-alt {
                 flex: 0 0 calc(33.333% - 8px);
                 max-width: calc(33.333% - 8px);
             }
@@ -971,30 +1292,14 @@
             .social-icon { width: 34px; height: 34px; }
             .contact-item { font-size: 10px; }
         }
-    
-        /* Banner 海报强制拉伸保持 1280*672 比例 */
-        .rebel-slide {
-            aspect-ratio: 1280/672;
-            min-height: 400px;
-        }
-
-        .rebel-poster {
-            width: 100%;
-            height: 100%;
-            object-fit: fill !important;
-            object-position: center;
-        }
 
         @media (max-width: 768px) {
-            .rebel-slide {
-                min-height: 250px;
-            }
+            .rebel-slide { min-height: 250px; }
+            .rebel-poster { min-height: 250px; }
         }
-
         @media (max-width: 480px) {
-            .rebel-slide {
-                min-height: 200px;
-            }
+            .rebel-slide { min-height: 200px; }
+            .rebel-poster { min-height: 200px; }
         }
 
         /* 触摸滑动支持 */
@@ -1003,231 +1308,58 @@
             user-select: none;
             -webkit-user-select: none;
         }
-
         .rebel-slider {
             touch-action: pan-y pinch-zoom;
             cursor: grab;
         }
-
         .rebel-slider.dragging {
             cursor: grabbing;
             transition: none;
         }
-
-        .rebel-slide {
-            touch-action: pan-y;
-        }
-</style>
-
-    <!-- 懒加载 + WebP 自适应 优化 -->
-    <style>
-        /* 懒加载占位样式 - PNG透明修复版 */
-        .lazy-image {
-            opacity: 0;
-            transition: opacity 0.5s ease;
-            /* 背景已移除 - PNG图片需要透明 */
-        }
-        .lazy-image.loaded {
-            opacity: 1;
-            background: none !important;
-        }
-        .lazy-image.loading {
-            filter: blur(10px);
-            transform: scale(1.02);
-        }
-
-        /* Banner 专用占位 */
-        .banner-placeholder {
-            background-color: #000;
-            background-image: url('./image/asia-bannerbg.webp');
-            background-size: cover;
-            background-position: center;
-        }
-
-        /* Banner 图片加载失败时的回退 */
-        .rebel-poster {
-            background-image: url('./image/asia-bannerbg.webp');
-            background-size: cover;
-            background-position: center;
-            min-height: 400px;
-        }
-
-        @media (max-width: 768px) {
-            .rebel-poster { min-height: 250px; }
-        }
-        @media (max-width: 480px) {
-            .rebel-poster { min-height: 200px; }
-        }
-
-        /* 低质量占位图 - 已禁用避免PNG透明问题 */
-        .lqip-placeholder, .lqip-placeholder-banner {
-            display: none;
-        }
-
-        /* 图片容器 */
-        .img-container {
-            position: relative;
-            overflow: hidden;
-            /* 背景已移除 */
-        }
-
-        /* 加载动画 - 已禁用 */
-        .img-loading-spinner { display: none; }
-    
-        /* 海报2轮播样式 */
-        .poster-carousel-wrapper { position: relative; width: 100%; height: 100%; overflow: hidden; }
-        .poster-carousel { position: relative; width: 100%; height: 100%; }
-        .poster-carousel-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 0.8s ease-in-out; z-index: 1; }
-        .poster-carousel-slide.active { opacity: 1; z-index: 2; }
-        .poster-carousel-slide img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
-        .poster-carousel-img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
-        .carousel-dots { position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; z-index: 10; }
-        .carousel-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.3); cursor: pointer; transition: all 0.3s; border: 1px solid rgba(255,255,255,0.5); }
-        .carousel-dot.active { background: var(--dark-red); border-color: var(--dark-red); box-shadow: 0 0 10px rgba(139, 0, 0, 0.8); transform: scale(1.2); }
-        .poster-item-alt .poster-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 35px 20px 25px; background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 50%, transparent 100%); opacity: 0; transition: opacity 0.4s; z-index: 5; }
-        .poster-item-alt:hover .poster-overlay { opacity: 1; }
-        .mobile-poster2-text { display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; z-index: 5; width: 90%; }
-        .mobile-poster2-text h3 { font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; font-size: clamp(18px, 4vw, 24px); letter-spacing: 3px; text-transform: uppercase; color: #fff; text-shadow: 0 0 30px rgba(139, 0, 0, 0.8), 0 2px 10px rgba(0,0,0,0.8); line-height: 1.3; }
-</style>
-
-    <script>
-        // WebP 支持检测 - 禁用自动转换避免PNG问题
-        const WebPHelper = {
-            supported: null,
-            checkSupport: function() {
-                if (this.supported !== null) return this.supported;
-                const canvas = document.createElement('canvas');
-                if (canvas.getContext && canvas.getContext('2d')) {
-                    this.supported = canvas.toDataURL('image/webp').indexOf('data:image/webp') === 0;
-                } else {
-                    this.supported = false;
-                }
-                return this.supported;
-            },
-            // 禁用自动转换，直接使用原图
-            getOptimizedUrl: function(originalUrl) {
-                return originalUrl;
-            }
-        };
-
-        // 懒加载管理器
-        const LazyLoader = {
-            observer: null,
-            imageQueue: [],
-
-            init: function() {
-                // 创建 Intersection Observer
-                const options = {
-                    root: null,
-                    rootMargin: '50px 0px',
-                    threshold: 0.01
-                };
-
-                this.observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            this.loadImage(entry.target);
-                            this.observer.unobserve(entry.target);
-                        }
-                    });
-                }, options);
-
-                // 观察所有需要懒加载的图片
-                this.observeImages();
-
-                // 立即加载首屏图片
-                this.loadAboveFoldImages();
-            },
-
-            observeImages: function() {
-                const images = document.querySelectorAll('img[data-src]:not([data-loaded])');
-                images.forEach(img => {
-                    if (!img.dataset.loaded) {
-                        this.observer.observe(img);
-                    }
-                });
-            },
-
-            loadAboveFoldImages: function() {
-                const viewportHeight = window.innerHeight;
-                const images = document.querySelectorAll('img[data-src]:not([data-loaded])');
-
-                images.forEach(img => {
-                    const rect = img.getBoundingClientRect();
-                    if (rect.top < viewportHeight + 100) {
-                        this.loadImage(img);
-                    }
-                });
-            },
-
-            loadImage: function(img) {
-                if (img.dataset.loaded) return;
-
-                const originalSrc = img.dataset.src;
-                if (!originalSrc) return;
-
-                img.classList.add('loading');
-                img.dataset.loaded = 'true';
-
-                // 获取优化后的 URL（WebP 格式）
-                const optimizedSrc = WebPHelper.getOptimizedUrl(originalSrc);
-
-                // 创建新图片对象预加载
-                const preloadImg = new Image();
-
-                preloadImg.onload = function() {
-                    img.src = optimizedSrc;
-                    img.classList.remove('loading');
-                    img.classList.add('loaded');
-                };
-
-                preloadImg.onerror = function() {
-                    // WebP 加载失败，回退到原格式
-                    if (optimizedSrc !== originalSrc) {
-                        const fallbackImg = new Image();
-                        fallbackImg.onload = function() {
-                            img.src = originalSrc;
-                            img.classList.remove('loading');
-                            img.classList.add('loaded');
-                        };
-                        fallbackImg.onerror = function() {
-                            // 判断是 banner 还是海报，使用对应占位图
-                            const isBanner = img.classList.contains('rebel-poster');
-                            img.src = isBanner ? './image/asia-bannerbg.webp' : './image/asia-asiaad.jpg';
-                            img.classList.remove('loading');
-                        };
-                        fallbackImg.src = originalSrc;
-                    } else {
-                        const isBanner = img.classList.contains('rebel-poster');
-                        img.src = isBanner ? './image/asia-bannerbg.webp' : './image/asia-asiaad.jpg';
-                        img.classList.remove('loading');
-                    }
-                };
-
-                preloadImg.src = optimizedSrc;
-            }
-        };
-
-        // 页面加载完成后初始化
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => LazyLoader.init());
-        } else {
-            LazyLoader.init();
-        }
-
-        // 强制立即加载首屏 Banner 图片（解决外部链接加载问题）
-        document.querySelectorAll('.rebel-poster').forEach(img => {
-            if (img.dataset.src && !img.src) {
-                img.src = img.dataset.src;
-            }
-        });
-    </script>
-
+        .rebel-slide { touch-action: pan-y; }
+    </style>
 </head>
 <body>
+    <!-- 加载动画 -->
+    <div id="loader-container">
+        <div class="noise" id="noise"></div>
+        <div class="scan-lines" id="scanlines"></div>
+        <div class="red-scan" id="redscan"></div>
 
-    <!-- 导航栏 -->
-    <nav>
+        <!-- 故障文字副标题 -->
+        <div class="glitch-text" id="glitchtext">
+            <span class="glitch-line">CONCERTS, FESTIVALS, TICKETS, TOUR DATES</span>
+            <span class="glitch-line small">- LIVE GIGS -</span>
+        </div>
+
+        <!-- LOGO -->
+        <div class="logo-container" id="logocontainer">
+            <div class="pulse-ring" id="pulsering"></div>
+            <div class="sound-waves" id="soundwaves">
+                <div class="wave" style="animation-delay: 0s"></div>
+                <div class="wave" style="animation-delay: 0.2s"></div>
+                <div class="wave" style="animation-delay: 0.4s"></div>
+            </div>
+            <img src="https://livegigsasia.com/image/webtop.png" alt="LIVEGIGS ASIA" class="logo-img-loader" id="logoimg">
+            <div class="sparks" id="sparks"></div>
+        </div>
+
+        <div class="explosion" id="explosion"></div>
+
+        <div class="progress-container" id="progresscontainer">
+            <div class="progress-bar" id="progressbar"></div>
+        </div>
+        <div class="progress-text" id="progresstext">SYSTEM INITIALIZING...</div>
+    </div>
+
+    <!-- WELCOME画面 -->
+    <div class="welcome-screen" id="welcomescreen">
+        <div class="welcome-text">WELCOME TO THE FUTURE OF LIVE</div>
+    </div>
+
+    <!-- 主内容 -->
+    <div id="main-content">
+<nav>
         <img data-src="./image/logo.png" alt="LiveGigs Asia" class="logo-img lazy-image" id="logo" onclick="location.href='./index.html'" data-editable="logo">
         <div class="nav-links">
             <a href="events.html" data-editable="nav-events" data-text="Events" data-href="events.html">Events</a>
@@ -1942,6 +2074,515 @@
             setTimeout(initPoster2Carousel, 100);
         }
         window.addEventListener('load', initPoster2Carousel);
+    </script>
+    </div>
+
+    <!-- 加载动画脚本 -->
+    <script>
+        (function() {
+            const elements = {
+                container: document.getElementById('loader-container'),
+                noise: document.getElementById('noise'),
+                scanlines: document.getElementById('scanlines'),
+                redscan: document.getElementById('redscan'),
+                glitchtext: document.getElementById('glitchtext'),
+                logocontainer: document.getElementById('logocontainer'),
+                pulsering: document.getElementById('pulsering'),
+                soundwaves: document.getElementById('soundwaves'),
+                sparks: document.getElementById('sparks'),
+                explosion: document.getElementById('explosion'),
+                progresscontainer: document.getElementById('progresscontainer'),
+                progressbar: document.getElementById('progressbar'),
+                progresstext: document.getElementById('progresstext'),
+                welcomescreen: document.getElementById('welcomescreen'),
+                maincontent: document.getElementById('main-content')
+            };
+
+            let progress = 0;
+
+            // 阶段1: 0-0.8s 黑场噪点
+            setTimeout(() => { elements.noise.style.opacity = '0.3'; }, 100);
+
+            // 阶段2: 0.8-2s 故障文字
+            setTimeout(() => {
+                elements.noise.style.opacity = '0.1';
+                elements.glitchtext.classList.add('active');
+                elements.redscan.classList.add('active');
+            }, 800);
+
+            // 阶段3: 2-3.2s LOGO觉醒
+            setTimeout(() => {
+                elements.glitchtext.style.opacity = '0.3';
+                elements.logocontainer.classList.add('active');
+                elements.pulsering.classList.add('active');
+
+                const waves = elements.soundwaves.querySelectorAll('.wave');
+                waves.forEach((wave, i) => setTimeout(() => wave.classList.add('active'), i * 200));
+
+                // 生成火花
+                for (let i = 0; i < 20; i++) {
+                    setTimeout(() => {
+                        const spark = document.createElement('div');
+                        spark.className = 'spark';
+                        const angle = (Math.PI * 2 * i) / 20;
+                        const distance = 80 + Math.random() * 40;
+                        const x = Math.cos(angle) * distance;
+                        const y = Math.sin(angle) * distance;
+                        spark.style.left = `calc(50% + ${x}px)`;
+                        spark.style.top = `calc(50% + ${y}px)`;
+                        spark.style.setProperty('--tx', `${x * 2}px`);
+                        spark.style.setProperty('--ty', `${y * 2}px`);
+                        elements.sparks.appendChild(spark);
+                        spark.classList.add('active');
+                        setTimeout(() => spark.remove(), 800);
+                    }, i * 30);
+                }
+
+                elements.progresscontainer.classList.add('active');
+                elements.progresstext.classList.add('active');
+
+                // 模拟进度
+                const interval = setInterval(() => {
+                    if (progress < 90) {
+                        progress += Math.random() * 15;
+                        if (progress > 90) progress = 90;
+                        elements.progressbar.style.width = progress + '%';
+                    } else {
+                        clearInterval(interval);
+                    }
+                }, 100);
+            }, 2000);
+
+            // 阶段4: 3.2-3.5s 炸裂转场 -> WELCOME画面
+            setTimeout(() => {
+                elements.explosion.classList.add('active');
+                elements.noise.style.opacity = '0';
+                progress = 100;
+                elements.progressbar.style.width = '100%';
+                elements.progresstext.textContent = 'SYSTEM READY';
+
+                setTimeout(() => {
+                    // 淡出加载器
+                    elements.container.style.transition = 'opacity 0.3s';
+                    elements.container.style.opacity = '0';
+
+                    // 显示WELCOME画面
+                    setTimeout(() => {
+                        elements.container.classList.add('hidden');
+                        elements.welcomescreen.classList.add('active');
+
+                        // 1.5秒后进入主页
+                        setTimeout(() => {
+                            elements.welcomescreen.classList.add('fade-out');
+                            elements.maincontent.classList.add('show');
+
+                            setTimeout(() => {
+                                elements.welcomescreen.classList.add('hidden');
+                                window.dispatchEvent(new Event('loaderComplete'));
+                            }, 500);
+                        }, 1500);
+                    }, 300);
+                }, 300);
+            }, 3200);
+
+            // 预加载关键资源
+            ['https://livegigsasia.com/image/webtop.png', 'https://livegigsasia.com/image/e-hero%20bg.jpg'].forEach(url => {
+                const img = new Image();
+                img.src = url;
+            });
+        })();
+    </script>
+
+    <!-- Membership弹窗脚本 -->
+    <script>
+        function openModal() {
+            document.getElementById('membershipModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeModal() {
+            document.getElementById('membershipModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+        document.getElementById('membershipModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const form = document.getElementById('membershipForm');
+            const formData = new FormData(form);
+            const successDiv = document.getElementById('formSuccess');
+            formData.append('timestamp', new Date().toISOString());
+            fetch(form.action, { method: 'POST', body: formData })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        successDiv.style.display = 'block';
+                        const submissionData = {
+                            name: document.getElementById('memberName').value,
+                            email: document.getElementById('memberEmail').value,
+                            phone: document.getElementById('memberPhone').value,
+                            message: document.getElementById('memberMessage').value,
+                            timestamp: new Date().toISOString(),
+                            source: 'LiveGigs Asia Homepage'
+                        };
+                        let submissions = JSON.parse(localStorage.getItem('membershipSubmissions') || '[]');
+                        submissions.push(submissionData);
+                        localStorage.setItem('membershipSubmissions', JSON.stringify(submissions));
+                        setTimeout(() => { closeModal(); form.reset(); successDiv.style.display = 'none'; }, 3000);
+                    } else {
+                        alert('There was an error submitting your application. Please try again.');
+                    }
+                }).catch(error => {
+                    console.error('Error:', error);
+                    alert('There was an error submitting your application. Please try again.');
+                });
+        }
+    </script>
+
+    <!-- Banner轮播脚本 -->
+    <script>
+        (function() {
+            const slider = document.getElementById('rebelSlider');
+            if (!slider) return;
+            let currentSlide = 0;
+            const slides = document.querySelectorAll('.rebel-slide');
+            const totalSlides = slides.length;
+            let autoSlideInterval, startX = 0, currentX = 0, isDragging = false;
+
+            function goToSlide(index) {
+                currentSlide = index;
+                if (currentSlide < 0) currentSlide = totalSlides - 1;
+                if (currentSlide >= totalSlides) currentSlide = 0;
+                slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+            }
+            function nextSlide() { goToSlide(currentSlide + 1); }
+            function prevSlide() { goToSlide(currentSlide - 1); }
+            function startAutoSlide() { autoSlideInterval = setInterval(nextSlide, 5000); }
+            function stopAutoSlide() { clearInterval(autoSlideInterval); }
+
+            slider.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+                currentX = startX;
+                isDragging = true;
+                stopAutoSlide();
+                slider.classList.add('dragging');
+            }, { passive: true });
+
+            slider.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                currentX = e.touches[0].clientX;
+                const diff = currentX - startX;
+                const slideWidth = slider.offsetWidth;
+                const translate = -(currentSlide * 100) + (diff / slideWidth * 100);
+                slider.style.transform = `translateX(${translate}%)`;
+            }, { passive: true });
+
+            slider.addEventListener('touchend', () => {
+                if (!isDragging) return;
+                isDragging = false;
+                slider.classList.remove('dragging');
+                const diff = currentX - startX;
+                const threshold = slider.offsetWidth * 0.15;
+                if (Math.abs(diff) > threshold) {
+                    diff > 0 ? prevSlide() : nextSlide();
+                } else {
+                    goToSlide(currentSlide);
+                }
+                startAutoSlide();
+            });
+
+            slider.addEventListener('mousedown', (e) => {
+                startX = e.clientX;
+                currentX = startX;
+                isDragging = true;
+                stopAutoSlide();
+                slider.classList.add('dragging');
+                e.preventDefault();
+            });
+
+            slider.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                currentX = e.clientX;
+                const diff = currentX - startX;
+                const slideWidth = slider.offsetWidth;
+                const translate = -(currentSlide * 100) + (diff / slideWidth * 100);
+                slider.style.transform = `translateX(${translate}%)`;
+            });
+
+            slider.addEventListener('mouseup', () => {
+                if (!isDragging) return;
+                isDragging = false;
+                slider.classList.remove('dragging');
+                const diff = currentX - startX;
+                const threshold = slider.offsetWidth * 0.15;
+                if (Math.abs(diff) > threshold) {
+                    diff > 0 ? prevSlide() : nextSlide();
+                } else {
+                    goToSlide(currentSlide);
+                }
+                startAutoSlide();
+            });
+
+            slider.addEventListener('mouseleave', () => {
+                if (isDragging) {
+                    isDragging = false;
+                    slider.classList.remove('dragging');
+                    goToSlide(currentSlide);
+                    startAutoSlide();
+                }
+            });
+
+            startAutoSlide();
+        })();
+    </script>
+
+    <!-- 懒加载脚本 -->
+    <script>
+        (function() {
+            const LazyLoader = {
+                observer: null,
+                init: function() {
+                    this.observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                this.loadImage(entry.target);
+                                this.observer.unobserve(entry.target);
+                            }
+                        });
+                    }, { root: null, rootMargin: '50px 0px', threshold: 0.01 });
+
+                    document.querySelectorAll('img[data-src]:not([data-loaded])').forEach(img => {
+                        if (!img.dataset.loaded) this.observer.observe(img);
+                    });
+
+                    this.loadAboveFoldImages();
+                },
+                loadAboveFoldImages: function() {
+                    const viewportHeight = window.innerHeight;
+                    document.querySelectorAll('img[data-src]:not([data-loaded])').forEach(img => {
+                        if (img.getBoundingClientRect().top < viewportHeight + 100) {
+                            this.loadImage(img);
+                        }
+                    });
+                },
+                loadImage: function(img) {
+                    if (img.dataset.loaded) return;
+                    const originalSrc = img.dataset.src;
+                    if (!originalSrc) return;
+                    img.classList.add('loading');
+                    img.dataset.loaded = 'true';
+                    const preloadImg = new Image();
+                    preloadImg.onload = function() {
+                        img.src = originalSrc;
+                        img.classList.remove('loading');
+                        img.classList.add('loaded');
+                    };
+                    preloadImg.onerror = function() {
+                        const isBanner = img.classList.contains('rebel-poster');
+                        img.src = isBanner ? './image/asia-bannerbg.webp' : './image/asia-asiaad.jpg';
+                        img.classList.remove('loading');
+                    };
+                    preloadImg.src = originalSrc;
+                }
+            };
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', () => LazyLoader.init());
+            } else {
+                LazyLoader.init();
+            }
+
+            // 强制立即加载首屏Banner图片
+            document.querySelectorAll('.rebel-poster').forEach(img => {
+                if (img.dataset.src && !img.src) img.src = img.dataset.src;
+            });
+        })();
+    </script>
+
+    <!-- 海报2轮播脚本 -->
+    <script>
+        (function() {
+            const poster2Data = [
+                { title: 'Upcoming Event', linkText: 'More Events →', img: 'https://new.brg-radio.com/wp-content/uploads/2026/02/Black-Flag-web.jpg.jpeg', link: 'events.html' },
+                { title: 'LiveGigs Cn', linkText: 'CN特别版 →', img: './image/livegigscnad.webp', link: './cn.html' }
+            ];
+            let poster2CurrentSlide = 0, poster2SlideInterval = null;
+
+            function initPoster2Carousel() {
+                const slides = document.querySelectorAll('.poster-carousel-slide');
+                const dots = document.querySelectorAll('.carousel-dot');
+                const carousel = document.getElementById('posterCarousel');
+                const titleEl = document.getElementById('poster2Title');
+                const linkEl = document.getElementById('poster2Link');
+
+                if (slides.length === 0 || !carousel) return;
+
+                function goToSlide(n) {
+                    slides[poster2CurrentSlide].classList.remove('active');
+                    dots[poster2CurrentSlide].classList.remove('active');
+                    poster2CurrentSlide = (n + slides.length) % slides.length;
+                    slides[poster2CurrentSlide].classList.add('active');
+                    dots[poster2CurrentSlide].classList.add('active');
+                    if (titleEl && linkEl && poster2Data[poster2CurrentSlide]) {
+                        titleEl.textContent = poster2Data[poster2CurrentSlide].title;
+                        linkEl.textContent = poster2Data[poster2CurrentSlide].linkText;
+                        linkEl.href = poster2Data[poster2CurrentSlide].link || '#';
+                        linkEl.style.pointerEvents = poster2Data[poster2CurrentSlide].link ? 'auto' : 'none';
+                    }
+                }
+
+                function startAutoplay() {
+                    stopAutoplay();
+                    poster2SlideInterval = setInterval(() => goToSlide(poster2CurrentSlide + 1), 5000);
+                }
+
+                function stopAutoplay() {
+                    if (poster2SlideInterval) {
+                        clearInterval(poster2SlideInterval);
+                        poster2SlideInterval = null;
+                    }
+                }
+
+                dots.forEach((dot, index) => {
+                    dot.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        stopAutoplay();
+                        goToSlide(index);
+                        startAutoplay();
+                    });
+                });
+
+                carousel.addEventListener('mouseenter', stopAutoplay);
+                carousel.addEventListener('mouseleave', startAutoplay);
+                startAutoplay();
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initPoster2Carousel);
+            } else {
+                setTimeout(initPoster2Carousel, 100);
+            }
+            window.addEventListener('load', initPoster2Carousel);
+        })();
+    </script>
+
+    <!-- Admin管理脚本 -->
+    <script>
+        window.LiveGigsAdmin = {
+            update: function(editableId, newValue, type = 'text') {
+                const element = document.querySelector(`[data-editable="${editableId}"]`);
+                if (!element) return;
+                if (type === 'src') {
+                    element.src = newValue;
+                    element.setAttribute('data-src', newValue);
+                } else if (type === 'href') {
+                    element.href = newValue;
+                    element.setAttribute('data-href', newValue);
+                    if (element.tagName === 'BUTTON') {
+                        element.onclick = function() { window.open(newValue, '_blank'); };
+                    }
+                } else if (type === 'link') {
+                    element.setAttribute('data-link', newValue);
+                    const linkElement = element.querySelector('.poster-link');
+                    if (linkElement) linkElement.href = newValue;
+                } else if (type === 'mailto') {
+                    element.href = 'mailto:' + newValue;
+                    element.textContent = newValue;
+                } else if (type === 'tel') {
+                    element.href = 'tel:' + newValue;
+                    element.textContent = newValue;
+                } else {
+                    element.textContent = newValue;
+                    element.setAttribute('data-text', newValue);
+                }
+            },
+            updateMultiple: function(updates) {
+                updates.forEach(update => this.update(update.id, update.value, update.type));
+            },
+            getAll: function() {
+                const elements = document.querySelectorAll('[data-editable]');
+                const content = {};
+                elements.forEach(el => {
+                    const id = el.getAttribute('data-editable');
+                    let type = 'text';
+                    if (el.hasAttribute('data-src')) type = 'image';
+                    else if (el.hasAttribute('data-href')) type = 'link';
+                    else if (el.hasAttribute('data-link')) type = 'poster-link';
+                    content[id] = {
+                        type: type,
+                        value: type === 'image' ? el.getAttribute('data-src') :
+                              type === 'link' ? el.getAttribute('data-href') :
+                              type === 'poster-link' ? el.getAttribute('data-link') :
+                              el.getAttribute('data-text'),
+                        element: el.tagName
+                    };
+                });
+                return content;
+            },
+            updatePosterLink: function(posterId, newLink) {
+                const poster = document.querySelector(`[data-poster-id="${posterId}"]`);
+                if (poster) {
+                    poster.setAttribute('data-link', newLink);
+                    const linkElement = poster.querySelector('.poster-link');
+                    if (linkElement) linkElement.href = newLink;
+                }
+            },
+            updateBanner: function(index, image, title, buttonText, buttonLink) {
+                this.update(`banner-${index}-image`, image, 'src');
+                this.update(`banner-${index}-title`, title, 'text');
+                this.update(`banner-${index}-btn`, buttonText, 'text');
+                const btn = document.querySelector(`[data-editable="banner-${index}-btn"]`);
+                if (btn) {
+                    btn.setAttribute('data-href', buttonLink);
+                    btn.onclick = function() { window.open(buttonLink, '_blank'); };
+                }
+            },
+            updatePoster: function(index, image, title, linkText, link) {
+                this.update(`poster-${index}-image`, image, 'src');
+                this.update(`poster-${index}-title`, title, 'text');
+                this.update(`poster-${index}-link-text`, linkText, 'text');
+                this.updatePosterLink(index, link);
+            },
+            social: {
+                add: function(platform, href, svgPath) {
+                    const container = document.getElementById('socialContainer');
+                    const a = document.createElement('a');
+                    a.href = href;
+                    a.className = 'social-icon';
+                    a.title = platform;
+                    a.setAttribute('data-platform', platform);
+                    a.setAttribute('data-editable', 'social-' + platform);
+                    a.setAttribute('data-href', href);
+                    a.innerHTML = svgPath;
+                    container.appendChild(a);
+                },
+                update: function(platform, newHref) {
+                    const icon = document.querySelector(`[data-platform="${platform}"]`);
+                    if (icon) {
+                        icon.href = newHref;
+                        icon.setAttribute('data-href', newHref);
+                    }
+                },
+                remove: function(platform) {
+                    const icon = document.querySelector(`[data-platform="${platform}"]`);
+                    if (icon) icon.remove();
+                }
+            },
+            footer: {
+                updateText: function(id, value) { window.LiveGigsAdmin.update(id, value, 'text'); },
+                updateHref: function(id, href) { window.LiveGigsAdmin.update(id, href, 'href'); },
+                updateImage: function(id, src) { window.LiveGigsAdmin.update(id, src, 'src'); },
+                updateEmail: function(id, email) { window.LiveGigsAdmin.update(id, email, 'mailto'); },
+                updatePhone: function(id, phone) { window.LiveGigsAdmin.update(id, phone, 'tel'); }
+            }
+        };
+    </script>
+
+    <script src="./js/livegigs-data.js"></script>
+    <script>
+        if (typeof LiveGigsData !== 'undefined') {
+            LiveGigsData.loadAndRender('index');
+        }
     </script>
 </body>
 </html>
