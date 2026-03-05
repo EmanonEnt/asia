@@ -99,15 +99,16 @@
         /* 故障文字 - 副标题 */
         .glitch-text {
             font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-            font-size: clamp(16px, 3vw, 28px);
+            font-size: clamp(14px, 2.5vw, 24px);
             color: #fff;
-            letter-spacing: clamp(4px, 1vw, 12px);
+            letter-spacing: clamp(3px, 0.8vw, 10px);
             text-transform: uppercase;
             opacity: 0;
             position: relative;
             text-align: center;
-            line-height: 2;
+            line-height: 1.8;
             text-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+            white-space: nowrap;
         }
 
         .glitch-text.active { animation: glitchIn 1.2s ease-out forwards; }
@@ -122,8 +123,43 @@
         }
 
         /* 副标题行 */
-        .glitch-line { display: block; }
-        .glitch-line.small { font-size: 0.7em; letter-spacing: clamp(2px, 0.5vw, 6px); color: rgba(255, 255, 255, 0.8); }
+        .glitch-line { 
+            display: block; 
+            white-space: nowrap;
+        }
+        .glitch-line.line1 { font-size: 1em; }
+        .glitch-line.line2 { font-size: 1em; margin-top: 5px; }
+        .glitch-line.small { 
+            font-size: 0.6em; 
+            letter-spacing: clamp(2px, 0.5vw, 6px); 
+            color: rgba(255, 255, 255, 0.8); 
+            margin-top: 10px;
+        }
+
+        /* 移动端强制适配 */
+        @media (max-width: 480px) {
+            .glitch-text {
+                font-size: clamp(11px, 3.5vw, 16px);
+                letter-spacing: clamp(2px, 0.6vw, 4px);
+                line-height: 1.6;
+            }
+            .glitch-line.line2 { margin-top: 3px; }
+            .glitch-line.small { margin-top: 8px; }
+        }
+
+        @media (max-width: 375px) {
+            .glitch-text {
+                font-size: clamp(10px, 3.2vw, 14px);
+                letter-spacing: clamp(1.5px, 0.5vw, 3px);
+            }
+        }
+
+        @media (max-width: 320px) {
+            .glitch-text {
+                font-size: 9px;
+                letter-spacing: 1.5px;
+            }
+        }
 
         /* LOGO容器 */
         .logo-container {
@@ -1434,7 +1470,8 @@
 
         <!-- 故障文字副标题 -->
         <div class="glitch-text" id="glitchtext">
-            <span class="glitch-line">CONCERTS, FESTIVALS, TICKETS, TOUR DATES</span>
+            <span class="glitch-line line1">CONCERTS, FESTIVALS, TICKETS,</span>
+            <span class="glitch-line line2">TOUR DATES</span>
             <span class="glitch-line small">- LIVE GIGS -</span>
         </div>
 
