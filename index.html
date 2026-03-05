@@ -527,6 +527,16 @@
             transition: opacity 0.4s;
         }
 
+        /* 静态显示的overlay - 用于轮播海报 */
+        .poster-overlay-static {
+            opacity: 1 !important;
+            z-index: 10;
+        }
+
+        .poster-item-alt:hover .poster-overlay-static {
+            opacity: 1 !important;
+        }
+
         .poster-item-alt:hover .poster-overlay { opacity: 1; }
 
         /* 间隙区域 */
@@ -954,7 +964,26 @@
                 filter: brightness(0.65);
                 transform: scale(1.08);
             }
-            .poster-overlay, .poster-item-alt .poster-overlay { padding: 12px 6px 10px; }
+            .poster-overlay, .poster-item-alt .poster-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 35px 20px 25px;
+            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 50%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        /* 静态显示的overlay - 用于轮播海报 */
+        .poster-overlay-static {
+            opacity: 1 !important;
+            z-index: 10;
+        }
+
+        .poster-item-alt:hover .poster-overlay-static {
+            opacity: 1 !important;
+        }
             .poster-title { font-size: 10px; letter-spacing: 1px; margin-bottom: 4px; }
             .poster-link { font-size: 9px; letter-spacing: 0.5px; }
             .footer-gap { height: 80px; }
@@ -1176,20 +1205,26 @@
         <!-- 海报区域 -->
         <section class="posters-showcase">
             <div class="posters-container">
-                <!-- 海报1 -->
-                <div class="poster-item" data-poster-id="1" data-link="https://wxairl.cn/HMcAK6R7fou" data-editable="poster-1">
-                    <img src="./image/livegigscn1.png" alt="LiveGigs WeChat" 
-                         onerror="this.src='./image/asia-asiaad.jpg'" data-editable="poster-1-image">
-                    <div class="poster-overlay">
-                        <div class="poster-title" data-editable="poster-1-title" data-text="LIVE GIGS CN">LIVE GIGS CN</div>
-                        <a href="https://wxairl.cn/HMcAK6R7fou" target="_blank" class="poster-link" data-editable="poster-1-link-text" data-text="Get on WeChat →" onclick="event.stopPropagation();">Get on WeChat →</a>
+                <!-- 海报1 - 轮播结构 -->
+                <div class="poster-item-alt" data-poster-id="1" data-editable="poster-1">
+                    <div class="poster-carousel-wrapper">
+                        <div class="poster-carousel" id="posterCarousel1">
+                            <div class="poster-carousel-slide active" data-editable="poster-1-1">
+                                <img src="./image/cn-asiaad.jpg" alt="Update Your Gigs" class="poster-carousel-img" loading="lazy"
+                                     onerror="this.src='./image/asia-asiaad.jpg'; this.style.objectFit='fill'; this.onerror=null;" data-editable="poster-1-1-image">
+                            </div>
+                        </div>
+                        <div class="poster-overlay poster-overlay-static" id="poster1Overlay">
+                            <div class="poster-title" id="poster1Title" data-editable="poster-1-title" data-text="Update Your Gigs">Update Your Gigs</div>
+                            <a href="events.html" class="poster-link" id="poster1Link" data-editable="poster-1-link-text" data-text="Right Now →" onclick="event.stopPropagation();">Right Now →</a>
+                        </div>
                     </div>
                 </div>
-                <!-- 海报2 -->
-                                <!-- 海报2 - 滚播轮播 -->
+
+                <!-- 海报2 - 滚播轮播 -->
                 <div class="poster-item-alt" data-poster-id="2" data-editable="poster-2">
                     <div class="poster-carousel-wrapper">
-                        <div class="poster-carousel" id="posterCarousel">
+                        <div class="poster-carousel" id="posterCarousel2">
                             <div class="poster-carousel-slide active" data-editable="poster-2-1">
                                 <img src="https://new.brg-radio.com/wp-content/uploads/2026/02/Black-Flag-web.jpg.jpeg" alt="Event 1" class="poster-carousel-img" loading="lazy"
                                      onerror="this.src='./image/asia-asiaad.jpg'; this.style.objectFit='fill'; this.onerror=null;" data-editable="poster-2-1-image">
@@ -1199,20 +1234,18 @@
                                      onerror="this.src='./image/asia-asiaad.jpg'; this.style.objectFit='fill'; this.onerror=null;" data-editable="poster-2-2-image">
                             </div>
                         </div>
-                        <div class="carousel-dots" id="carouselDots">
+                        <div class="carousel-dots" id="carouselDots2">
                             <span class="carousel-dot active" data-slide="0"></span>
                             <span class="carousel-dot" data-slide="1"></span>
                         </div>
-                        <div class="poster-overlay" id="poster2Overlay">
-                            <div class="poster-title" id="poster2Title" data-editable="poster-2-1-title" data-text="Upcoming Event">Upcoming Event</div>
-                            <a href="events.html" class="poster-link" id="poster2Link" target="_blank" data-editable="poster-2-1-link-text" data-text="More Events →" onclick="event.stopPropagation();">More Events →</a>
+                        <div class="poster-overlay poster-overlay-static" id="poster2Overlay">
+                            <div class="poster-title" id="poster2Title" data-editable="poster-2-title" data-text="Upcoming Event">Upcoming Event</div>
+                            <a href="events.html" class="poster-link" id="poster2Link" data-editable="poster-2-link-text" data-text="More Events →" onclick="event.stopPropagation();">More Events →</a>
                         </div>
                     </div>
-                    <div class="mobile-poster2-text">
-                        <h3 data-editable="poster-2-mobile-text" data-text="Legendary Live Events">Legendary Live Events</h3>
-                    </div>
                 </div>
-<!-- 海报3 (图片地址为 ./image/1-b-3.jpg) -->
+
+                <!-- 海报3 -->
                 <div class="poster-item-alt" data-poster-id="3" data-link="http://Nonamepunks.com" data-editable="poster-3">
                     <img src="./image/1-b-3.jpg" alt="Event 2" 
                          onerror="this.src='./image/asia-asiaad.jpg'" data-editable="poster-3-image">
