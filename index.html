@@ -99,16 +99,12 @@
         /* 故障文字 - 副标题 */
         .glitch-text {
             font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-            font-size: clamp(14px, 2.5vw, 24px);
             color: #fff;
-            letter-spacing: clamp(3px, 0.8vw, 10px);
             text-transform: uppercase;
             opacity: 0;
             position: relative;
             text-align: center;
-            line-height: 1.8;
             text-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
-            white-space: nowrap;
         }
 
         .glitch-text.active { animation: glitchIn 1.2s ease-out forwards; }
@@ -122,41 +118,72 @@
             100% { opacity: 1; text-shadow: 0 0 30px rgba(255, 0, 0, 0.8); transform: translateX(0); }
         }
 
-        /* 副标题行 */
-        .glitch-line { 
-            display: block; 
-            white-space: nowrap;
-        }
-        .glitch-line.line1 { font-size: 1em; }
-        .glitch-line.line2 { font-size: 1em; margin-top: 5px; }
-        .glitch-line.small { 
-            font-size: 0.6em; 
-            letter-spacing: clamp(2px, 0.5vw, 6px); 
-            color: rgba(255, 255, 255, 0.8); 
-            margin-top: 10px;
+        /* 桌面端样式 - 大字体一行显示 */
+        .glitch-text.desktop {
+            display: block;
+            font-size: clamp(20px, 3.5vw, 36px);
+            letter-spacing: clamp(6px, 1.2vw, 14px);
+            line-height: 1.6;
         }
 
-        /* 移动端强制适配 */
+        .glitch-text.desktop .glitch-line {
+            display: block;
+            white-space: nowrap;
+        }
+
+        .glitch-text.desktop .glitch-line.small {
+            font-size: 0.65em;
+            letter-spacing: clamp(4px, 0.8vw, 8px);
+            color: rgba(255, 255, 255, 0.85);
+            margin-top: 15px;
+        }
+
+        /* 移动端样式 - 默认隐藏 */
+        .glitch-text.mobile {
+            display: none;
+            font-size: clamp(14px, 4vw, 20px);
+            letter-spacing: clamp(3px, 0.8vw, 6px);
+            line-height: 1.7;
+        }
+
+        .glitch-text.mobile .glitch-line {
+            display: block;
+            white-space: nowrap;
+        }
+
+        .glitch-text.mobile .glitch-line.line1 { font-size: 1em; }
+        .glitch-text.mobile .glitch-line.line2 { font-size: 1em; margin-top: 5px; }
+        .glitch-text.mobile .glitch-line.small {
+            font-size: 0.65em;
+            letter-spacing: clamp(2px, 0.5vw, 4px);
+            color: rgba(255, 255, 255, 0.85);
+            margin-top: 12px;
+        }
+
+        /* 移动端显示切换 */
+        @media (max-width: 768px) {
+            .glitch-text.desktop { display: none; }
+            .glitch-text.mobile { display: block; }
+        }
+
+        /* 小屏移动端适配 */
         @media (max-width: 480px) {
-            .glitch-text {
-                font-size: clamp(11px, 3.5vw, 16px);
+            .glitch-text.mobile {
+                font-size: clamp(12px, 3.8vw, 16px);
                 letter-spacing: clamp(2px, 0.6vw, 4px);
-                line-height: 1.6;
             }
-            .glitch-line.line2 { margin-top: 3px; }
-            .glitch-line.small { margin-top: 8px; }
         }
 
         @media (max-width: 375px) {
-            .glitch-text {
-                font-size: clamp(10px, 3.2vw, 14px);
+            .glitch-text.mobile {
+                font-size: clamp(11px, 3.5vw, 14px);
                 letter-spacing: clamp(1.5px, 0.5vw, 3px);
             }
         }
 
         @media (max-width: 320px) {
-            .glitch-text {
-                font-size: 9px;
+            .glitch-text.mobile {
+                font-size: 10px;
                 letter-spacing: 1.5px;
             }
         }
@@ -1460,6 +1487,18 @@
         }
         .rebel-slide { touch-action: pan-y; }
     </style>
+
+    <!-- 性能优化：预加载关键资源 -->
+    <link rel="preload" href="./image/hero%20bg.jpeg" as="image">
+    <link rel="preload" href="./image/logo.png" as="image">
+    <link rel="preload" href="./image/webtop.png" as="image">
+    <link rel="preload" href="https://livegigsasia.com/image/e-hero%20bg.jpg" as="image">
+
+    <!-- 预连接关键域名 -->
+    <link rel="preconnect" href="https://livegigsasia.com">
+    <link rel="dns-prefetch" href="https://eplus.jp">
+    <link rel="dns-prefetch" href="https://bandmaid.tokyo">
+    <link rel="dns-prefetch" href="https://www.summersonic.com">
 </head>
 <body>
     <!-- 加载动画 -->
@@ -1468,8 +1507,13 @@
         <div class="scan-lines" id="scanlines"></div>
         <div class="red-scan" id="redscan"></div>
 
-        <!-- 故障文字副标题 -->
-        <div class="glitch-text" id="glitchtext">
+        <!-- 故障文字副标题 - 桌面端 -->
+        <div class="glitch-text desktop" id="glitchtext-desktop">
+            <span class="glitch-line">CONCERTS, FESTIVALS, TICKETS, TOUR DATES</span>
+            <span class="glitch-line small">- LIVE GIGS -</span>
+        </div>
+        <!-- 故障文字副标题 - 移动端 -->
+        <div class="glitch-text mobile" id="glitchtext-mobile">
             <span class="glitch-line line1">CONCERTS, FESTIVALS, TICKETS,</span>
             <span class="glitch-line line2">TOUR DATES</span>
             <span class="glitch-line small">- LIVE GIGS -</span>
@@ -2249,13 +2293,19 @@
             // 阶段2: 0.8-2s 故障文字
             setTimeout(() => {
                 elements.noise.style.opacity = '0.1';
-                elements.glitchtext.classList.add('active');
+                const glitchDesktop = document.getElementById('glitchtext-desktop');
+                const glitchMobile = document.getElementById('glitchtext-mobile');
+                if (glitchDesktop) glitchDesktop.classList.add('active');
+                if (glitchMobile) glitchMobile.classList.add('active');
                 elements.redscan.classList.add('active');
             }, 800);
 
             // 阶段3: 2-3.2s LOGO觉醒
             setTimeout(() => {
-                elements.glitchtext.style.opacity = '0.3';
+                const glitchDesktop = document.getElementById('glitchtext-desktop');
+                const glitchMobile = document.getElementById('glitchtext-mobile');
+                if (glitchDesktop) glitchDesktop.style.opacity = '0.3';
+                if (glitchMobile) glitchMobile.style.opacity = '0.3';
                 elements.logocontainer.classList.add('active');
                 elements.pulsering.classList.add('active');
 
@@ -2479,12 +2529,15 @@
         })();
     </script>
 
-    <!-- 懒加载脚本 -->
+    <!-- 懒加载脚本 - 优化版 -->
     <script>
         (function() {
             const LazyLoader = {
                 observer: null,
+                imageCache: new Map(),
+
                 init: function() {
+                    // 使用更大的rootMargin提前加载
                     this.observer = new IntersectionObserver((entries) => {
                         entries.forEach(entry => {
                             if (entry.isIntersecting) {
@@ -2492,43 +2545,82 @@
                                 this.observer.unobserve(entry.target);
                             }
                         });
-                    }, { root: null, rootMargin: '50px 0px', threshold: 0.01 });
-
-                    document.querySelectorAll('img[data-src]:not([data-loaded])').forEach(img => {
-                        if (!img.dataset.loaded) this.observer.observe(img);
+                    }, { 
+                        root: null, 
+                        rootMargin: '200px 0px', // 提前200px开始加载
+                        threshold: 0 
                     });
 
-                    this.loadAboveFoldImages();
+                    // 分批处理图片，避免阻塞
+                    requestIdleCallback ? 
+                        requestIdleCallback(() => this.observeImages(), { timeout: 1000 }) :
+                        setTimeout(() => this.observeImages(), 100);
+
+                    // 立即加载首屏
+                    this.loadCriticalImages();
                 },
-                loadAboveFoldImages: function() {
-                    const viewportHeight = window.innerHeight;
-                    document.querySelectorAll('img[data-src]:not([data-loaded])').forEach(img => {
-                        if (img.getBoundingClientRect().top < viewportHeight + 100) {
-                            this.loadImage(img);
+
+                observeImages: function() {
+                    const images = document.querySelectorAll('img[data-src]:not([data-loaded])');
+                    images.forEach((img, index) => {
+                        // 使用requestAnimationFrame分批处理
+                        if (index < 10) {
+                            this.observer.observe(img);
+                        } else {
+                            setTimeout(() => this.observer.observe(img), index * 10);
                         }
                     });
                 },
-                loadImage: function(img) {
+
+                loadCriticalImages: function() {
+                    const viewportHeight = window.innerHeight;
+                    document.querySelectorAll('img[data-src]:not([data-loaded])').forEach(img => {
+                        const rect = img.getBoundingClientRect();
+                        // 首屏+缓冲区内的图片立即加载
+                        if (rect.top < viewportHeight + 200) {
+                            this.loadImage(img, true);
+                        }
+                    });
+                },
+
+                loadImage: function(img, isCritical = false) {
                     if (img.dataset.loaded) return;
                     const originalSrc = img.dataset.src;
                     if (!originalSrc) return;
+
+                    // 检查缓存
+                    if (this.imageCache.has(originalSrc)) {
+                        img.src = originalSrc;
+                        img.classList.add('loaded');
+                        img.dataset.loaded = 'true';
+                        return;
+                    }
+
                     img.classList.add('loading');
                     img.dataset.loaded = 'true';
+
                     const preloadImg = new Image();
-                    preloadImg.onload = function() {
+                    preloadImg.onload = () => {
+                        this.imageCache.set(originalSrc, true);
                         img.src = originalSrc;
                         img.classList.remove('loading');
                         img.classList.add('loaded');
                     };
-                    preloadImg.onerror = function() {
+                    preloadImg.onerror = () => {
                         const isBanner = img.classList.contains('rebel-poster');
                         img.src = isBanner ? './image/asia-bannerbg.webp' : './image/asia-asiaad.jpg';
                         img.classList.remove('loading');
                     };
+
+                    // 关键图片优先加载
+                    if (isCritical) {
+                        preloadImg.fetchPriority = 'high';
+                    }
                     preloadImg.src = originalSrc;
                 }
             };
 
+            // 使用 requestIdleCallback 或 setTimeout 延迟初始化
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', () => LazyLoader.init());
             } else {
@@ -2537,7 +2629,10 @@
 
             // 强制立即加载首屏Banner图片
             document.querySelectorAll('.rebel-poster').forEach(img => {
-                if (img.dataset.src && !img.src) img.src = img.dataset.src;
+                if (img.dataset.src && !img.src) {
+                    img.src = img.dataset.src;
+                    img.dataset.loaded = 'true';
+                }
             });
         })();
     </script>
