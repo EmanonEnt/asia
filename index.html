@@ -1136,11 +1136,28 @@
         .producer-logo {
             height: 35px;
             width: auto;
+            max-width: 150px;
             opacity: 0.8;
             transition: opacity 0.3s;
+            display: block;
+            margin: 0 auto;
         }
 
         .producer-logo:hover { opacity: 1; }
+
+        @media (max-width: 480px) {
+            .producer-logo {
+                height: 30px;
+                max-width: 120px;
+            }
+        }
+
+        @media (max-width: 375px) {
+            .producer-logo {
+                height: 28px;
+                max-width: 100px;
+            }
+        }
 
         .footer-contact-right {
             flex: 1;
@@ -1639,7 +1656,7 @@
             <div class="posters-container">
                 <!-- 海报1 -->
                 <div class="poster-item" data-poster-id="1" data-link="https://wxairl.cn/HMcAK6R7fou" data-editable="poster-1">
-                    <img data-src="./image/livegigscn1.png" alt="LiveGigs WeChat" class="lazy-image"
+                    <img src="./image/livegigscn1.png" alt="LiveGigs WeChat" 
                          onerror="this.src='./image/asia-asiaad.jpg'" data-editable="poster-1-image">
                     <div class="poster-overlay">
                         <div class="poster-title" data-editable="poster-1-title" data-text="LIVE GIGS CN">LIVE GIGS CN</div>
@@ -1675,7 +1692,7 @@
                 </div>
 <!-- 海报3 (图片地址为 ./image/1-b-3.jpg) -->
                 <div class="poster-item-alt" data-poster-id="3" data-link="http://Nonamepunks.com" data-editable="poster-3">
-                    <img data-src="./image/1-b-3.jpg" alt="Event 2" class="lazy-image"
+                    <img src="./image/1-b-3.jpg" alt="Event 2" 
                          onerror="this.src='./image/asia-asiaad.jpg'" data-editable="poster-3-image">
                     <div class="poster-overlay">
                         <div class="poster-title" data-editable="poster-3-title" data-text="NONAMEFEST 2026">NONAMEFEST 2026</div>
@@ -1723,7 +1740,7 @@
 
                         <div class="producer-section">
                             <div class="producer-label">Produced by</div>
-                            <img data-src="./image/emanonent-logo.png" alt="EMANON ENT." class="producer-logo lazy-image" 
+                            <img src="./image/emanonent-logo.png" alt="EMANON ENT." class="producer-logo" 
                                  onerror="this.style.display='none'" 
                                  data-editable="producer-logo">
                         </div>
