@@ -2527,8 +2527,7 @@
     <script>
         // 重置加载动画状态（用于测试）
         function resetLoaderState() {
-            localStorage.removeItem('livegigs_loaded_once');
-            sessionStorage.removeItem('livegigs_session_loaded');
+            localStorage.removeItem('livegigs_last_load');
             console.log('Loader state reset - animation will play on next visit');
         }
 
