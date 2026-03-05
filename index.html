@@ -525,19 +525,91 @@
             background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 50%, transparent 100%);
             opacity: 0;
             transition: opacity 0.4s;
+            pointer-events: none; /* 防止overlay阻挡点击 */
         }
+
+        .poster-item-alt:hover .poster-overlay { opacity: 1; }
 
         /* 静态显示的overlay - 用于轮播海报 */
         .poster-overlay-static {
             opacity: 1 !important;
             z-index: 10;
+            pointer-events: none;
         }
 
         .poster-item-alt:hover .poster-overlay-static {
             opacity: 1 !important;
         }
 
-        .poster-item-alt:hover .poster-overlay { opacity: 1; }
+        /* overlay内的元素恢复点击 */
+        .poster-overlay-static .poster-title,
+        .poster-overlay-static .poster-link {
+            pointer-events: auto;
+        }
+
+        /* 确保轮播按钮可点击 */
+        .carousel-dots {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 1000 !important;
+            pointer-events: auto !important;
+        }
+
+        .carousel-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            cursor: pointer !important;
+            transition: all 0.3s;
+            border: 1px solid rgba(255,255,255,0.5);
+            pointer-events: auto !important;
+            position: relative;
+            z-index: 1001 !important;
+        }
+
+        .carousel-dot.active { 
+            background: var(--dark-red); 
+            border-color: var(--dark-red); 
+            box-shadow: 0 0 10px rgba(139, 0, 0, 0.8); 
+            transform: scale(1.2); 
+        }
+
+        .poster-link {
+            pointer-events: auto;
+            position: relative;
+            z-index: 20;
+        }
+
+        /* 确保轮播按钮可点击 */
+        .carousel-dot {
+            cursor: pointer;
+            pointer-events: auto !important;
+            position: relative;
+            z-index: 100;
+        }
+
+        .poster-link {
+            pointer-events: auto;
+            position: relative;
+            z-index: 20;
+        }
+
+        /* 确保海报2的dots在最上层 */
+        #carouselDots2 {
+            z-index: 1000 !important;
+            pointer-events: auto !important;
+        }
+
+        #carouselDots2 .carousel-dot {
+            z-index: 1001 !important;
+            pointer-events: auto !important;
+            cursor: pointer !important;
+        }
 
         /* 间隙区域 */
         .footer-gap {
@@ -865,7 +937,8 @@
             transform: translateX(-50%);
             display: flex;
             gap: 10px;
-            z-index: 10;
+            z-index: 100;
+            pointer-events: auto;
         }
         .carousel-dot {
             width: 10px;
@@ -875,6 +948,9 @@
             cursor: pointer;
             transition: all 0.3s;
             border: 1px solid rgba(255,255,255,0.5);
+            pointer-events: auto;
+            position: relative;
+            z-index: 100;
         }
         .carousel-dot.active { background: var(--dark-red); border-color: var(--dark-red); box-shadow: 0 0 10px rgba(139, 0, 0, 0.8); transform: scale(1.2); }
         .mobile-poster2-text {
@@ -1215,13 +1291,13 @@
                                      onerror="this.src='./image/asia-asiaad.jpg'; this.style.objectFit='fill'; this.onerror=null;" data-editable="poster-2-2-image">
                             </div>
                         </div>
-                        <div class="carousel-dots" id="carouselDots2">
-                            <span class="carousel-dot active" data-slide="0"></span>
-                            <span class="carousel-dot" data-slide="1"></span>
-                        </div>
                         <div class="poster-overlay poster-overlay-static" id="poster2Overlay">
                             <div class="poster-title" id="poster2Title" data-editable="poster-2-title" data-text="Upcoming Event">Upcoming Event</div>
                             <a href="events.html" class="poster-link" id="poster2Link" data-editable="poster-2-link-text" data-text="More Events →" onclick="event.stopPropagation();">More Events →</a>
+                        </div>
+                        <div class="carousel-dots" id="carouselDots2">
+                            <span class="carousel-dot active" data-slide="0"></span>
+                            <span class="carousel-dot" data-slide="1"></span>
                         </div>
                     </div>
                 </div>
@@ -1351,101 +1427,127 @@
 </script>
 
     <!-- 海报2轮播脚本 -->
-    <script>// 海报2轮播数据
+    <script>
+        // 海报2轮播脚本
+        // 海报2轮播数据
         const poster2Data = [
             { title: 'Upcoming Event', linkText: 'More Events →', img: 'https://new.brg-radio.com/wp-content/uploads/2026/02/Black-Flag-web.jpg.jpeg', link: 'events.html' },
             { title: 'LiveGigs Cn', linkText: 'CN特别版 →', img: './image/livegigscnad.webp', link: './cn.html' }
         ];
 
         let poster2CurrentSlide = 0;
-        let poster2RafId = null;
-        let poster2LastTime = 0;
+        let poster2Interval = null;
 
         function initPoster2Carousel() {
             const carousel = document.getElementById('posterCarousel2');
-            if (!carousel) return;
+            const dotsContainer = document.getElementById('carouselDots2');
+
+            if (!carousel || !dotsContainer) {
+                console.log('海报2轮播元素未找到');
+                return;
+            }
 
             const slides = carousel.querySelectorAll('.poster-carousel-slide');
-            const dots = document.getElementById('carouselDots2');
-            const dotElements = dots ? dots.querySelectorAll('.carousel-dot') : [];
+            const dots = dotsContainer.querySelectorAll('.carousel-dot');
 
-            if (slides.length === 0) return;
+            if (slides.length === 0) {
+                console.log('海报2没有幻灯片');
+                return;
+            }
 
-            startPoster2Autoplay();
+            console.log('海报2轮播初始化，幻灯片数:', slides.length);
 
-            dotElements.forEach((dot, index) => {
-                dot.addEventListener('click', function(e) {
+            // 绑定dots点击事件
+            dots.forEach((dot, index) => {
+                dot.style.cursor = 'pointer';
+                dot.style.pointerEvents = 'auto';
+
+                // 移除旧的事件监听器（如果有）
+                const newDot = dot.cloneNode(true);
+                dot.parentNode.replaceChild(newDot, dot);
+
+                newDot.addEventListener('click', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
+                    console.log('点击dot:', index);
                     stopPoster2Autoplay();
                     goToPoster2Slide(index);
                     startPoster2Autoplay();
                 });
             });
 
-            carousel.addEventListener('mouseenter', stopPoster2Autoplay);
-            carousel.addEventListener('mouseleave', startPoster2Autoplay);
+            // 鼠标悬停暂停
+            carousel.addEventListener('mouseenter', function() {
+                console.log('鼠标进入，暂停轮播');
+                stopPoster2Autoplay();
+            });
+
+            carousel.addEventListener('mouseleave', function() {
+                console.log('鼠标离开，开始轮播');
+                startPoster2Autoplay();
+            });
+
+            // 启动自动轮播
+            startPoster2Autoplay();
         }
 
         function startPoster2Autoplay() {
-            if (poster2RafId) cancelAnimationFrame(poster2RafId);
-            poster2LastTime = performance.now();
-            function loop(now) {
-                if (now - poster2LastTime >= 5000) {
-                    goToPoster2Slide(poster2CurrentSlide + 1);
-                    poster2LastTime = now;
-                }
-                poster2RafId = requestAnimationFrame(loop);
-            }
-            poster2RafId = requestAnimationFrame(loop);
+            stopPoster2Autoplay(); // 先清除之前的
+            console.log('启动海报2自动轮播');
+            poster2Interval = setInterval(function() {
+                goToPoster2Slide(poster2CurrentSlide + 1);
+            }, 5000);
         }
 
         function stopPoster2Autoplay() {
-            if (poster2RafId) {
-                cancelAnimationFrame(poster2RafId);
-                poster2RafId = null;
+            if (poster2Interval) {
+                clearInterval(poster2Interval);
+                poster2Interval = null;
             }
         }
 
         function goToPoster2Slide(n) {
             const carousel = document.getElementById('posterCarousel2');
-            if (!carousel) return;
+            const dotsContainer = document.getElementById('carouselDots2');
+
+            if (!carousel || !dotsContainer) return;
 
             const slides = carousel.querySelectorAll('.poster-carousel-slide');
-            const dots = document.getElementById('carouselDots2');
-            const dotElements = dots ? dots.querySelectorAll('.carousel-dot') : [];
+            const dots = dotsContainer.querySelectorAll('.carousel-dot');
             const titleEl = document.getElementById('poster2Title');
             const linkEl = document.getElementById('poster2Link');
 
             if (slides.length === 0) return;
 
+            // 移除当前active
             slides[poster2CurrentSlide].classList.remove('active');
-            if (dotElements[poster2CurrentSlide]) dotElements[poster2CurrentSlide].classList.remove('active');
+            if (dots[poster2CurrentSlide]) dots[poster2CurrentSlide].classList.remove('active');
 
+            // 计算新的索引
             poster2CurrentSlide = (n + slides.length) % slides.length;
 
+            // 添加新的active
             slides[poster2CurrentSlide].classList.add('active');
-            if (dotElements[poster2CurrentSlide]) dotElements[poster2CurrentSlide].classList.add('active');
+            if (dots[poster2CurrentSlide]) dots[poster2CurrentSlide].classList.add('active');
 
+            console.log('切换到幻灯片:', poster2CurrentSlide);
+
+            // 更新标题和链接
             if (titleEl && linkEl && poster2Data[poster2CurrentSlide]) {
                 titleEl.textContent = poster2Data[poster2CurrentSlide].title;
                 linkEl.textContent = poster2Data[poster2CurrentSlide].linkText;
-                if (poster2Data[poster2CurrentSlide].link && poster2Data[poster2CurrentSlide].link.trim() !== '') {
-                    linkEl.href = poster2Data[poster2CurrentSlide].link;
-                    linkEl.style.pointerEvents = 'auto';
-                } else {
-                    linkEl.href = '#';
-                    linkEl.style.pointerEvents = 'none';
-                }
+                linkEl.href = poster2Data[poster2CurrentSlide].link || '#';
             }
         }
 
+        // 初始化
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', initPoster2Carousel);
         } else {
-            setTimeout(initPoster2Carousel, 100);
+            initPoster2Carousel();
         }
-        window.addEventListener('load', initPoster2Carousel);</script>
+        window.addEventListener('load', initPoster2Carousel);
+    </script>
     </div>
 
     <!-- 加载动画脚本 -->
