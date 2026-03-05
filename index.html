@@ -4,15 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LiveGigs Asia</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="icon" type="image/png" href="./image/webtop.png">
 
     <!-- 加载动画样式 -->
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #000; overflow-x: hidden; font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; }
 
+        html, body { 
+            background: #000; 
+            overflow-x: hidden; 
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        }
+
+        /* 加载容器 - 确保在最上层 */
         #loading-container {
             position: fixed;
             top: 0;
@@ -20,52 +24,57 @@
             width: 100vw;
             height: 100vh;
             background: #000;
-            z-index: 99999;
-            transition: opacity 0.8s ease-out, visibility 0.8s;
+            z-index: 999999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
         #loading-container.hidden {
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
+            transition: opacity 0.5s ease-out, visibility 0.5s;
         }
 
-        /* 副标题 */
+        /* 副标题 - 居中放大 */
         #loading-subtitle-container {
             position: absolute;
-            top: 15%;
+            top: 50%;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translate(-50%, -50%);
             text-align: center;
             z-index: 10;
-            transition: opacity 0.3s;
+            width: 90vw;
         }
 
         #loading-subtitle-line1 {
             color: #c0c0c0;
-            font-size: clamp(10px, 1.5vw, 16px);
-            letter-spacing: 3px;
+            font-size: clamp(16px, 3vw, 32px);
+            letter-spacing: clamp(4px, 1vw, 8px);
             text-transform: uppercase;
-            text-shadow: 0 0 10px rgba(192, 192, 192, 0.5);
+            text-shadow: 0 0 20px rgba(192, 192, 192, 0.6);
             white-space: nowrap;
             overflow: hidden;
-            border-right: 2px solid #8b0000;
+            border-right: 3px solid #8b0000;
             width: 0;
+            margin: 0 auto;
             font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
         }
 
         #loading-subtitle-line1.typing {
-            animation: loadingTyping 1.5s steps(35) forwards, loadingBlink 0.7s infinite;
+            animation: loadingTyping 2s steps(35) forwards, loadingBlink 0.7s infinite;
         }
 
         #loading-subtitle-line2 {
-            color: #8b0000;
-            font-size: clamp(14px, 2vw, 22px);
-            letter-spacing: 4px;
+            color: #ff0000;
+            font-size: clamp(24px, 5vw, 48px);
+            letter-spacing: clamp(6px, 1.5vw, 12px);
             text-transform: uppercase;
-            margin-top: 10px;
+            margin-top: 20px;
             opacity: 0;
-            text-shadow: 0 0 20px rgba(139, 0, 0, 0.8);
+            text-shadow: 0 0 30px rgba(255, 0, 0, 0.9), 0 0 60px rgba(139, 0, 0, 0.6);
             font-weight: bold;
             font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
         }
@@ -79,11 +88,15 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 80vw;
-            max-width: 600px;
-            height: 180px;
+            width: 90vw;
+            max-width: 800px;
+            height: 250px;
             z-index: 100;
-            pointer-events: none;
+            display: none; /* 初始隐藏 */
+        }
+
+        #loading-logo-wrapper.visible {
+            display: block;
         }
 
         /* 完整Logo */
@@ -98,15 +111,14 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: opacity 0.1s;
         }
 
         #loading-logo-full.impact {
-            animation: logoFlyIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            animation: logoFlyIn 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
         }
 
         #loading-logo-full.pulsing {
-            animation: logoPulse 0.15s ease-in-out infinite;
+            animation: logoPulse 0.2s ease-in-out infinite;
         }
 
         #loading-logo-img {
@@ -115,19 +127,20 @@
             width: auto;
             height: auto;
             object-fit: contain;
-            filter: drop-shadow(0 0 30px rgba(139, 0, 0, 0.9));
+            filter: drop-shadow(0 0 50px rgba(139, 0, 0, 1));
         }
 
         @keyframes logoFlyIn {
-            0% { transform: scale(0.1); opacity: 0; filter: drop-shadow(0 0 5px rgba(139, 0, 0, 0.2)) blur(10px); }
-            50% { opacity: 1; filter: drop-shadow(0 0 30px rgba(139, 0, 0, 0.6)) blur(2px); }
-            80% { transform: scale(1.15); filter: drop-shadow(0 0 60px rgba(255, 0, 0, 1)); }
-            100% { transform: scale(1); opacity: 1; filter: drop-shadow(0 0 40px rgba(139, 0, 0, 1)); }
+            0% { transform: scale(0.1); opacity: 0; filter: drop-shadow(0 0 10px rgba(139, 0, 0, 0.3)) blur(15px); }
+            40% { opacity: 1; filter: drop-shadow(0 0 40px rgba(139, 0, 0, 0.7)) blur(3px); }
+            75% { transform: scale(1.2); filter: drop-shadow(0 0 100px rgba(255, 0, 0, 1)) drop-shadow(0 0 150px rgba(255, 255, 255, 0.5)); }
+            90% { transform: scale(0.95); filter: drop-shadow(0 0 120px rgba(255, 0, 0, 1)); }
+            100% { transform: scale(1); opacity: 1; filter: drop-shadow(0 0 80px rgba(139, 0, 0, 1)) drop-shadow(0 0 120px rgba(255, 0, 0, 0.6)); }
         }
 
         @keyframes logoPulse {
-            0%, 100% { filter: drop-shadow(0 0 40px rgba(139, 0, 0, 1)) brightness(1) scale(1); }
-            50% { filter: drop-shadow(0 0 100px rgba(255, 0, 0, 1)) brightness(1.5) scale(1.02); }
+            0%, 100% { filter: drop-shadow(0 0 80px rgba(139, 0, 0, 1)) brightness(1) scale(1); }
+            50% { filter: drop-shadow(0 0 150px rgba(255, 0, 0, 1)) brightness(1.8) scale(1.05); }
         }
 
         /* Logo碎片 */
@@ -138,7 +151,6 @@
             width: 100%;
             height: 100%;
             display: none;
-            pointer-events: none;
         }
 
         .logo-shard {
@@ -156,7 +168,7 @@
             height: 100%;
             object-fit: contain;
             object-position: center;
-            filter: drop-shadow(0 0 15px rgba(255, 0, 0, 0.9));
+            filter: drop-shadow(0 0 20px rgba(255, 0, 0, 1));
         }
 
         /* 进度条 */
@@ -177,9 +189,9 @@
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
-            height: 3px;
-            background: linear-gradient(90deg, transparent, #8b0000, #ff0000, #fff, #ff0000, #8b0000, transparent);
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.8), 0 0 40px rgba(139, 0, 0, 0.6);
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #8b0000, #ff0000, #ffffff, #ff0000, #8b0000, transparent);
+            box-shadow: 0 0 30px rgba(255, 0, 0, 1), 0 0 60px rgba(139, 0, 0, 0.8);
             width: 0%;
         }
 
@@ -188,22 +200,22 @@
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
-            width: 3px;
-            background: linear-gradient(180deg, transparent, #8b0000, #ff0000, #fff, #ff0000, #8b0000, transparent);
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.8), 0 0 40px rgba(139, 0, 0, 0.6);
+            width: 4px;
+            background: linear-gradient(180deg, transparent, #8b0000, #ff0000, #ffffff, #ff0000, #8b0000, transparent);
+            box-shadow: 0 0 30px rgba(255, 0, 0, 1), 0 0 60px rgba(139, 0, 0, 0.8);
             height: 0%;
         }
 
         #loading-progress-text {
             position: absolute;
-            top: calc(50% + 110px);
+            top: calc(50% + 140px);
             left: 50%;
             transform: translateX(-50%);
             color: #fff;
-            font-size: clamp(36px, 4vw, 60px);
+            font-size: clamp(48px, 6vw, 80px);
             font-weight: bold;
             font-family: 'Courier New', monospace;
-            text-shadow: 0 0 20px rgba(255, 0, 0, 1), 0 0 40px rgba(139, 0, 0, 0.8);
+            text-shadow: 0 0 30px rgba(255, 0, 0, 1), 0 0 60px rgba(139, 0, 0, 1);
             opacity: 0;
             z-index: 60;
         }
@@ -216,7 +228,7 @@
             width: 100vw;
             height: 100vh;
             pointer-events: none;
-            z-index: 80;
+            z-index: 70;
             opacity: 0;
         }
 
@@ -224,19 +236,19 @@
             position: absolute;
             left: 0;
             width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, #ff0000, #ffffff, #ff0000, transparent);
-            box-shadow: 0 0 20px #ff0000, 0 0 40px rgba(255, 0, 0, 0.8), 0 0 60px rgba(139, 0, 0, 0.6);
+            height: 4px;
+            background: linear-gradient(90deg, transparent 0%, #ff0000 20%, #ffffff 50%, #ff0000 80%, transparent 100%);
+            box-shadow: 0 0 30px #ff0000, 0 0 60px rgba(255, 0, 0, 0.9), 0 0 90px rgba(139, 0, 0, 0.7);
             opacity: 0;
         }
 
         .loading-laser-v {
             position: absolute;
             top: 0;
-            width: 3px;
+            width: 4px;
             height: 100%;
-            background: linear-gradient(180deg, transparent, #ff0000, #ffffff, #ff0000, transparent);
-            box-shadow: 0 0 20px #ff0000, 0 0 40px rgba(255, 0, 0, 0.8), 0 0 60px rgba(139, 0, 0, 0.6);
+            background: linear-gradient(180deg, transparent 0%, #ff0000 20%, #ffffff 50%, #ff0000 80%, transparent 100%);
+            box-shadow: 0 0 30px #ff0000, 0 0 60px rgba(255, 0, 0, 0.9), 0 0 90px rgba(139, 0, 0, 0.7);
             opacity: 0;
         }
 
@@ -247,24 +259,13 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: radial-gradient(circle at center, #ffffff 0%, #ff0000 15%, #8b0000 30%, #000000 60%);
+            background: radial-gradient(ellipse at center, #ffffff 0%, #ff0000 20%, #8b0000 40%, #000000 70%);
             opacity: 0;
             z-index: 150;
             pointer-events: none;
-            transition: none;
         }
 
-        #loading-flash.active {
-            animation: flashBurst 0.3s ease-out forwards;
-        }
-
-        @keyframes flashBurst {
-            0% { opacity: 0; }
-            20% { opacity: 1; }
-            100% { opacity: 0; }
-        }
-
-        /* 红色填充爆发 */
+        /* 红色爆发 */
         #loading-red-burst {
             position: fixed;
             top: 50%;
@@ -272,20 +273,11 @@
             transform: translate(-50%, -50%);
             width: 0;
             height: 0;
-            background: radial-gradient(circle, rgba(255,0,0,1) 0%, rgba(139,0,0,0.9) 30%, rgba(139,0,0,0.4) 60%, transparent 80%);
+            background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,0,0,1) 20%, rgba(139,0,0,0.9) 50%, transparent 80%);
             border-radius: 50%;
             opacity: 0;
             z-index: 140;
             pointer-events: none;
-        }
-
-        #loading-red-burst.active {
-            animation: redBurst 1s ease-out forwards;
-        }
-
-        @keyframes redBurst {
-            0% { width: 0; height: 0; opacity: 1; }
-            100% { width: 300vw; height: 300vw; opacity: 0; }
         }
 
         /* 电波 */
@@ -296,7 +288,7 @@
             transform: translate(-50%, -50%);
             width: 0;
             height: 0;
-            z-index: 70;
+            z-index: 60;
             pointer-events: none;
         }
 
@@ -305,9 +297,9 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            border: 3px solid rgba(255, 0, 0, 0.9);
+            border: 4px solid rgba(255, 0, 0, 0.9);
             border-radius: 50%;
-            box-shadow: 0 0 30px rgba(255, 0, 0, 1), 0 0 60px rgba(139, 0, 0, 0.8), inset 0 0 40px rgba(139, 0, 0, 0.4);
+            box-shadow: 0 0 40px rgba(255, 0, 0, 1), 0 0 80px rgba(139, 0, 0, 0.9), inset 0 0 60px rgba(139, 0, 0, 0.5);
             opacity: 0;
         }
 
@@ -318,7 +310,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(to bottom, transparent 50%, rgba(139, 0, 0, 0.03) 50%);
+            background: linear-gradient(to bottom, transparent 50%, rgba(139, 0, 0, 0.04) 50%);
             background-size: 100% 4px;
             pointer-events: none;
             z-index: 200;
@@ -327,13 +319,15 @@
         /* 主页内容 */
         #main-content {
             opacity: 0;
-            transition: opacity 1s ease-out;
+            visibility: hidden;
+            transition: opacity 0.8s ease-out, visibility 0.8s;
             position: relative;
             z-index: 1;
         }
 
         #main-content.visible {
             opacity: 1;
+            visibility: visible;
         }
     </style>
 
@@ -1554,17 +1548,11 @@
     <div id="loading-container">
         <div class="loading-scanline"></div>
 
+        <!-- 副标题 - 居中 -->
         <div id="loading-subtitle-container">
             <div id="loading-subtitle-line1">CONCERTS, FESTIVALS, TICKETS, TOUR DATES</div>
             <div id="loading-subtitle-line2">- LIVE GIGS</div>
         </div>
-
-        <div id="loading-progress-container">
-            <div class="loading-progress-h" id="loading-progress-h"></div>
-            <div class="loading-progress-v" id="loading-progress-v"></div>
-        </div>
-
-        <div id="loading-progress-text">0%</div>
 
         <!-- Logo区域 -->
         <div id="loading-logo-wrapper">
@@ -1574,6 +1562,14 @@
             <div id="loading-shards"></div>
         </div>
 
+        <!-- 进度条 -->
+        <div id="loading-progress-container">
+            <div class="loading-progress-h" id="loading-progress-h"></div>
+            <div class="loading-progress-v" id="loading-progress-v"></div>
+        </div>
+        <div id="loading-progress-text">0%</div>
+
+        <!-- 特效层 -->
         <div id="loading-laser-grid"></div>
         <div id="loading-wave-container"></div>
         <div id="loading-red-burst"></div>
@@ -2308,11 +2304,12 @@
     (function() {
         const $ = id => document.getElementById(id);
 
-        const loading = {
+        window.LoadingAnimation = {
             container: $('loading-container'),
             subtitleContainer: $('loading-subtitle-container'),
             subtitleLine1: $('loading-subtitle-line1'),
             subtitleLine2: $('loading-subtitle-line2'),
+            logoWrapper: $('loading-logo-wrapper'),
             logoFull: $('loading-logo-full'),
             logoImg: $('loading-logo-img'),
             shardsContainer: $('loading-shards'),
@@ -2326,49 +2323,55 @@
             waveContainer: $('loading-wave-container'),
             mainContent: $('main-content'),
 
+            // 强制进入主页（防止卡住）
+            forceEnterTimeout: null,
+
             init() {
-                this.mainContent.style.opacity = '0';
-                // 检查Logo是否存在
-                this.logoImg.onerror = () => {
-                    console.log('Logo not found, skipping animation');
+                console.log('Loading animation init');
+
+                // 设置强制进入超时（10秒后无论如何都进入）
+                this.forceEnterTimeout = setTimeout(() => {
+                    console.log('Force entering main page');
                     this.enterMain();
-                };
-                this.logoImg.onload = () => {
-                    this.startSequence();
-                };
-                // 如果已经缓存，onload可能不触发
-                if (this.logoImg.complete) {
-                    setTimeout(() => this.startSequence(), 100);
+                }, 10000);
+
+                // 检查Logo
+                if (!this.logoImg.complete) {
+                    this.logoImg.onload = () => this.start();
+                    this.logoImg.onerror = () => this.start();
+                } else {
+                    setTimeout(() => this.start(), 100);
                 }
             },
 
-            async startSequence() {
+            async start() {
                 try {
-                    // 1. 打字
+                    // 阶段1: 打字（文字已经在屏幕中心）
                     this.subtitleLine1.classList.add('typing');
-                    await this.wait(1500);
+                    await this.wait(2000);
 
-                    // 2. LIVE GIGS
+                    // 阶段2: LIVE GIGS
                     this.subtitleLine2.style.opacity = '1';
-                    await this.wait(800);
+                    await this.wait(1000);
 
-                    // 3. 隐藏副标题
+                    // 阶段3: 切换到Logo
                     this.subtitleContainer.style.opacity = '0';
                     await this.wait(300);
                     this.subtitleContainer.style.display = 'none';
 
-                    // 4. Logo砸入
+                    // 显示Logo区域
+                    this.logoWrapper.classList.add('visible');
                     this.logoFull.classList.add('impact');
                     this.progressContainer.style.opacity = '1';
                     this.progressText.style.opacity = '1';
 
-                    // 5. 进度条
+                    // 阶段4: 进度条
                     await this.runProgress();
 
-                    // 6. 超级爆炸
+                    // 阶段5: 超级爆炸
                     await this.megaExplosion();
 
-                    // 7. 进入主页
+                    // 阶段6: 进入主页
                     await this.enterMain();
 
                 } catch(e) {
@@ -2381,27 +2384,24 @@
                 return new Promise(resolve => {
                     let progress = 0;
                     const timer = setInterval(() => {
-                        progress += 3;
+                        progress += 2;
                         if (progress > 100) progress = 100;
 
                         this.progressH.style.width = progress + 'vw';
                         this.progressV.style.height = progress + 'vh';
                         this.progressText.textContent = progress + '%';
 
-                        // 90%开始脉冲
-                        if (progress > 90) {
+                        if (progress > 85) {
                             this.logoFull.classList.add('pulsing');
                             this.progressText.style.color = '#ff0000';
-                            this.progressText.style.textShadow = '0 0 30px #ff0000, 0 0 60px #ff0000';
-                        } else if (progress > 70) {
-                            this.progressText.style.color = '#ff3333';
+                            this.progressText.style.transform = 'translateX(-50%) scale(1.2)';
                         }
 
                         if (progress >= 100) {
                             clearInterval(timer);
-                            resolve();
+                            setTimeout(resolve, 200);
                         }
-                    }, 25);
+                    }, 30);
                 });
             },
 
@@ -2410,66 +2410,89 @@
                 const centerX = logoRect.left + logoRect.width / 2;
                 const centerY = logoRect.top + logoRect.height / 2;
 
-                // 1. 激光网格 - 更密集
+                // 1. 激光网格
                 this.laserGrid.style.opacity = '1';
 
-                // 水平激光 - 从Logo中心向上下
-                for (let i = -6; i <= 6; i++) {
+                // 水平激光 - 从中心向外
+                for (let i = -8; i <= 8; i++) {
                     const laser = document.createElement('div');
                     laser.className = 'loading-laser-h';
-                    laser.style.top = (centerY + i * 50) + 'px';
+                    laser.style.top = (centerY + i * 60) + 'px';
+                    laser.style.animation = `laserExpandH 0.5s ease-out ${Math.abs(i)*30}ms forwards`;
                     this.laserGrid.appendChild(laser);
-
-                    laser.animate([
-                        { transform: 'scaleX(0)', opacity: 0 },
-                        { transform: 'scaleX(1)', opacity: 1, offset: 0.3 },
-                        { transform: 'scaleX(1)', opacity: 1 }
-                    ], { duration: 400, delay: Math.abs(i) * 30, fill: 'forwards' });
                 }
 
                 // 垂直激光
-                for (let i = 0; i < 12; i++) {
+                for (let i = 0; i < 15; i++) {
                     const laser = document.createElement('div');
                     laser.className = 'loading-laser-v';
-                    laser.style.left = ((i + 1) * 8) + 'vw';
+                    laser.style.left = ((i + 1) * 6.5) + 'vw';
+                    laser.style.animation = `laserExpandV 0.5s ease-out ${Math.abs(i-7)*25}ms forwards`;
                     this.laserGrid.appendChild(laser);
-
-                    laser.animate([
-                        { transform: 'scaleY(0)', opacity: 0 },
-                        { transform: 'scaleY(1)', opacity: 1, offset: 0.3 },
-                        { transform: 'scaleY(1)', opacity: 1 }
-                    ], { duration: 400, delay: Math.abs(i - 6) * 25, fill: 'forwards' });
                 }
 
-                await this.wait(400);
+                // 添加激光动画样式
+                const style = document.createElement('style');
+                style.textContent = `
+                    @keyframes laserExpandH {
+                        0% { transform: scaleX(0); opacity: 0; }
+                        50% { opacity: 1; }
+                        100% { transform: scaleX(1); opacity: 1; }
+                    }
+                    @keyframes laserExpandV {
+                        0% { transform: scaleY(0); opacity: 0; }
+                        50% { opacity: 1; }
+                        100% { transform: scaleY(1); opacity: 1; }
+                    }
+                `;
+                document.head.appendChild(style);
 
-                // 2. 红色填充爆发
-                this.redBurst.classList.add('active');
+                await this.wait(500);
+
+                // 2. 红色爆发
+                this.redBurst.style.animation = 'redBurstAnim 0.8s ease-out forwards';
+                const burstStyle = document.createElement('style');
+                burstStyle.textContent = `
+                    @keyframes redBurstAnim {
+                        0% { width: 0; height: 0; opacity: 1; }
+                        100% { width: 400vw; height: 400vw; opacity: 0; }
+                    }
+                `;
+                document.head.appendChild(burstStyle);
 
                 // 3. 闪光
-                this.flash.classList.add('active');
+                this.flash.style.opacity = '1';
+                this.flash.style.transition = 'opacity 0.1s';
+                setTimeout(() => {
+                    this.flash.style.transition = 'opacity 1s ease-out';
+                    this.flash.style.opacity = '0';
+                }, 100);
 
-                // 4. Logo碎裂爆炸
+                // 4. Logo碎裂
                 this.shatterAndExplode(centerX, centerY);
 
-                // 5. 多层电波
-                for (let i = 0; i < 8; i++) {
+                // 5. 电波
+                for (let i = 0; i < 10; i++) {
                     setTimeout(() => {
                         const wave = document.createElement('div');
                         wave.className = 'loading-wave';
                         wave.style.width = '100px';
                         wave.style.height = '100px';
+                        wave.style.animation = `waveExpand 2s ease-out forwards`;
                         this.waveContainer.appendChild(wave);
 
-                        wave.animate([
-                            { width: '100px', height: '100px', opacity: 1, borderWidth: '4px' },
-                            { width: '400vw', height: '400vw', opacity: 0, borderWidth: '0px' }
-                        ], { duration: 2000, easing: 'ease-out', fill: 'forwards' });
-                    }, i * 80);
+                        const waveStyle = document.createElement('style');
+                        waveStyle.textContent = `
+                            @keyframes waveExpand {
+                                0% { width: 100px; height: 100px; opacity: 1; border-width: 4px; }
+                                100% { width: 500vw; height: 500vw; opacity: 0; border-width: 0px; }
+                            }
+                        `;
+                        document.head.appendChild(waveStyle);
+                    }, i * 60);
                 }
 
-                // 等待爆炸完成
-                await this.wait(1200);
+                await this.wait(1500);
             },
 
             shatterAndExplode(centerX, centerY) {
@@ -2479,16 +2502,14 @@
 
                 const rows = 5;
                 const cols = 8;
-                const total = rows * cols;
 
-                for (let i = 0; i < total; i++) {
+                for (let i = 0; i < rows * cols; i++) {
                     const row = Math.floor(i / cols);
                     const col = i % cols;
 
                     const shard = document.createElement('div');
                     shard.className = 'logo-shard';
 
-                    // 碎片位置
                     const left = (col / cols) * 100;
                     const top = (row / rows) * 100;
                     const width = 100 / cols;
@@ -2496,10 +2517,9 @@
 
                     shard.style.left = left + '%';
                     shard.style.top = top + '%';
-                    shard.style.width = (width + 2) + '%'; // 稍微重叠避免缝隙
-                    shard.style.height = (height + 2) + '%';
+                    shard.style.width = (width + 1) + '%';
+                    shard.style.height = (height + 1) + '%';
 
-                    // 图片
                     const img = document.createElement('img');
                     img.src = './image/webtop.png';
                     img.style.left = (-col * 100) + '%';
@@ -2510,66 +2530,60 @@
                     shard.appendChild(img);
                     this.shardsContainer.appendChild(shard);
 
-                    // 计算飞出方向（从Logo中心向外）
+                    // 计算飞出
                     const shardRect = shard.getBoundingClientRect();
                     const sx = shardRect.left + shardRect.width / 2;
                     const sy = shardRect.top + shardRect.height / 2;
                     const angle = Math.atan2(sy - centerY, sx - centerX);
 
-                    // 超远飞出距离 - 确保飞出屏幕
-                    const dist = Math.max(window.innerWidth, window.innerHeight) * (1.2 + Math.random() * 0.8);
+                    // 超远距离
+                    const dist = Math.max(window.innerWidth, window.innerHeight) * (1.5 + Math.random());
                     const destX = Math.cos(angle) * dist;
                     const destY = Math.sin(angle) * dist;
 
-                    // 随机旋转
-                    const rotX = (Math.random() - 0.5) * 1080;
-                    const rotY = (Math.random() - 0.5) * 1080;
-                    const rotZ = (Math.random() - 0.5) * 1440;
-                    const scale = 0.3 + Math.random() * 0.4;
+                    const rotX = (Math.random() - 0.5) * 1440;
+                    const rotY = (Math.random() - 0.5) * 1440;
+                    const rotZ = (Math.random() - 0.5) * 1800;
 
-                    // 延迟 - 中心先爆
                     const centerRow = 2;
                     const centerCol = 3.5;
                     const distFromCenter = Math.sqrt(Math.pow(row - centerRow, 2) + Math.pow(col - centerCol, 2));
-                    const delay = distFromCenter * 40;
+                    const delay = distFromCenter * 35;
 
-                    // 显示并动画
                     shard.style.opacity = '1';
                     shard.animate([
-                        { 
-                            transform: 'translate(0,0) rotateX(0) rotateY(0) rotateZ(0) scale(1)', 
-                            opacity: 1 
-                        },
-                        { 
-                            transform: `translate(${destX}px, ${destY}px) rotateX(${rotX}deg) rotateY(${rotY}deg) rotateZ(${rotZ}deg) scale(${scale})`, 
-                            opacity: 0,
-                            offset: 1
-                        }
+                        { transform: 'translate(0,0) rotateX(0) rotateY(0) rotateZ(0) scale(1)', opacity: 1 },
+                        { transform: `translate(${destX}px, ${destY}px) rotateX(${rotX}deg) rotateY(${rotY}deg) rotateZ(${rotZ}deg) scale(0.2)`, opacity: 0 }
                     ], {
-                        duration: 1000 + Math.random() * 600,
+                        duration: 1200 + Math.random() * 500,
                         delay: delay,
-                        easing: 'cubic-bezier(0.25, 0.1, 0.25, 1)',
+                        easing: 'cubic-bezier(0.15, 0.9, 0.25, 1)',
                         fill: 'forwards'
                     });
                 }
             },
 
-            async enterMain() {
+            enterMain() {
+                console.log('Entering main page');
+
+                // 清除强制超时
+                if (this.forceEnterTimeout) {
+                    clearTimeout(this.forceEnterTimeout);
+                }
+
                 // 显示主页
+                this.mainContent.style.visibility = 'visible';
                 this.mainContent.classList.add('visible');
 
-                // 延迟隐藏加载容器
-                await this.wait(300);
+                // 隐藏加载容器
                 this.container.classList.add('hidden');
 
-                // 完全移除加载层
-                await this.wait(800);
-                this.container.style.display = 'none';
-
-                // 清理DOM
-                this.laserGrid.innerHTML = '';
-                this.waveContainer.innerHTML = '';
-                this.shardsContainer.innerHTML = '';
+                // 彻底移除
+                setTimeout(() => {
+                    this.container.style.display = 'none';
+                    document.body.removeChild(this.container);
+                    console.log('Loading container removed');
+                }, 1000);
             },
 
             wait(ms) {
@@ -2579,9 +2593,9 @@
 
         // 启动
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => loading.init());
+            document.addEventListener('DOMContentLoaded', () => window.LoadingAnimation.init());
         } else {
-            loading.init();
+            window.LoadingAnimation.init();
         }
     })();
     </script>
