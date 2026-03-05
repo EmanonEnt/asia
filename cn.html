@@ -1778,10 +1778,9 @@
 <div id="main-content">
 
 
-
     <!-- 导航栏 -->
     <nav>
-        <img data-src="./image/cnlogo.png" alt="LiveGigs CN" class="logo-img lazy-image" id="logo" onclick="location.reload()" data-editable="logo">
+        <img src="./image/cnlogo.png" alt="LiveGigs CN" class="logo-img" id="logo" onclick="location.reload()" data-editable="logo" onerror="this.style.display='none'">
         <div class="nav-links">
             <a href="events.html" data-editable="nav-events" data-text="Events" data-href="events.html">Events</a>
             <a href="partners.html" data-editable="nav-partners" data-text="Partners" data-href="partners.html">Partners</a>
@@ -1991,12 +1990,7 @@
     </div>
 
     
-<script src="./js/livegigs-data.js"></script>
-<script>
-  if (typeof LiveGigsData !== 'undefined') {
-    LiveGigsData.loadAndRender('cn');
-  }
-</script>
+
 
     <script>
         // Membership弹窗控制
@@ -2188,7 +2182,6 @@
         // 启动自动轮播
         startAutoSlide();
     </script>
-<script src="./js/livegigs-data.js"></script>
 
 
     <!-- 背景图懒加载 -->
@@ -2253,119 +2246,102 @@
         }
     </script>
 
-
 </div>
 
 <!-- 加载动画脚本 -->
 <script>
 (function() {
-    const elements = {
-        container: document.getElementById('loader-container'),
-        noise: document.getElementById('noise'),
-        scanlines: document.getElementById('scanlines'),
-        redscan: document.getElementById('redscan'),
-        logocontainer: document.getElementById('logocontainer'),
-        pulsering: document.getElementById('pulsering'),
-        soundwaves: document.getElementById('soundwaves'),
-        sparks: document.getElementById('sparks'),
-        explosion: document.getElementById('explosion'),
-        progresscontainer: document.getElementById('progresscontainer'),
-        progressbar: document.getElementById('progressbar'),
-        progresstext: document.getElementById('progresstext'),
-        welcomescreen: document.getElementById('welcomescreen'),
-        maincontent: document.getElementById('main-content')
-    };
+    const container = document.getElementById('loader-container');
+    const welcomescreen = document.getElementById('welcomescreen');
+    const maincontent = document.getElementById('main-content');
+    const noise = document.getElementById('noise');
+    const progressbar = document.getElementById('progressbar');
 
+    // 检查是否需要跳过动画（30分钟内）
     const lastLoadTime = localStorage.getItem('livegigs_last_load');
     const currentTime = Date.now();
     const timeDiff = lastLoadTime ? currentTime - parseInt(lastLoadTime) : 99999999;
-    localStorage.setItem('livegigs_last_load', currentTime.toString());
+
+    // 强制播放动画（调试用）- 删除下一行注释可强制播放
+    // localStorage.removeItem('livegigs_last_load');
 
     if (timeDiff < 1800000) {
-        elements.container.classList.add('hidden');
-        elements.welcomescreen.classList.add('hidden');
-        elements.maincontent.classList.add('show');
+        console.log('Skipping loader (within 30min)');
+        container.style.display = 'none';
+        welcomescreen.style.display = 'none';
+        maincontent.style.opacity = '1';
         document.body.style.overflow = 'auto';
         return;
     }
 
+    console.log('Playing loader animation');
+    localStorage.setItem('livegigs_last_load', currentTime.toString());
+
+    // 确保 container 可见
+    container.style.display = 'flex';
+    container.style.opacity = '1';
+    maincontent.style.opacity = '0';
+
     let progress = 0;
 
-    setTimeout(() => { elements.noise.style.opacity = '0.3'; }, 100);
+    // 阶段1: 噪点 (0.1s)
+    setTimeout(() => { 
+        noise.style.opacity = '0.3'; 
+    }, 100);
 
+    // 阶段2: 文字和扫描线 (0.8s)
     setTimeout(() => {
-        elements.noise.style.opacity = '0.1';
-        const glitchDesktop = document.getElementById('glitchtext-desktop');
-        const glitchMobile = document.getElementById('glitchtext-mobile');
-        if (glitchDesktop) glitchDesktop.classList.add('active');
-        if (glitchMobile) glitchMobile.classList.add('active');
-        elements.redscan.classList.add('active');
+        noise.style.opacity = '0.1';
+        const gtDesktop = document.getElementById('glitchtext-desktop');
+        const gtMobile = document.getElementById('glitchtext-mobile');
+        if (gtDesktop) gtDesktop.classList.add('active');
+        if (gtMobile) gtMobile.classList.add('active');
+        document.getElementById('redscan').classList.add('active');
     }, 800);
 
+    // 阶段3: LOGO动画 (2s)
     setTimeout(() => {
-        const glitchDesktop = document.getElementById('glitchtext-desktop');
-        const glitchMobile = document.getElementById('glitchtext-mobile');
-        if (glitchDesktop) glitchDesktop.style.opacity = '0.3';
-        if (glitchMobile) glitchMobile.style.opacity = '0.3';
-        elements.logocontainer.classList.add('active');
-        elements.pulsering.classList.add('active');
+        document.getElementById('logocontainer').classList.add('active');
+        document.getElementById('pulsering').classList.add('active');
+        document.querySelectorAll('.wave').forEach((w, i) => {
+            setTimeout(() => w.classList.add('active'), i * 200);
+        });
+        document.getElementById('progresscontainer').classList.add('active');
+        document.getElementById('progresstext').classList.add('active');
 
-        const waves = elements.soundwaves.querySelectorAll('.wave');
-        waves.forEach((wave, i) => setTimeout(() => wave.classList.add('active'), i * 200));
-
-        for (let i = 0; i < 20; i++) {
-            setTimeout(() => {
-                const spark = document.createElement('div');
-                spark.className = 'spark';
-                const angle = (Math.PI * 2 * i) / 20;
-                const distance = 80 + Math.random() * 40;
-                const x = Math.cos(angle) * distance;
-                const y = Math.sin(angle) * distance;
-                spark.style.left = 'calc(50% + ' + x + 'px)';
-                spark.style.top = 'calc(50% + ' + y + 'px)';
-                spark.style.setProperty('--tx', (x * 2) + 'px');
-                spark.style.setProperty('--ty', (y * 2) + 'px');
-                elements.sparks.appendChild(spark);
-                spark.classList.add('active');
-                setTimeout(() => spark.remove(), 800);
-            }, i * 30);
-        }
-
-        elements.progresscontainer.classList.add('active');
-        elements.progresstext.classList.add('active');
-
-        const interval = setInterval(() => {
-            if (progress < 90) {
-                progress += Math.random() * 15;
-                if (progress > 90) progress = 90;
-                elements.progressbar.style.width = progress + '%';
-            } else {
-                clearInterval(interval);
+        // 进度条动画
+        const progInt = setInterval(() => {
+            progress += Math.random() * 15;
+            if (progress > 90) {
+                progress = 90;
+                clearInterval(progInt);
             }
+            progressbar.style.width = progress + '%';
         }, 100);
     }, 2000);
 
+    // 阶段4: 爆炸转场 (3.2s)
     setTimeout(() => {
-        elements.explosion.classList.add('active');
-        elements.noise.style.opacity = '0';
-        progress = 100;
-        elements.progressbar.style.width = '100%';
-        elements.progresstext.textContent = 'SYSTEM READY';
+        document.getElementById('explosion').classList.add('active');
+        noise.style.opacity = '0';
+        progressbar.style.width = '100%';
+        document.getElementById('progresstext').textContent = 'SYSTEM READY';
 
         setTimeout(() => {
-            elements.container.style.transition = 'opacity 0.3s';
-            elements.container.style.opacity = '0';
+            container.style.opacity = '0';
+            container.style.transition = 'opacity 0.3s';
 
             setTimeout(() => {
-                elements.container.classList.add('hidden');
-                elements.welcomescreen.classList.add('active');
+                container.style.display = 'none';
+                welcomescreen.classList.add('active');
 
                 setTimeout(() => {
-                    elements.welcomescreen.classList.add('fade-out');
-                    elements.maincontent.classList.add('show');
+                    welcomescreen.classList.add('fade-out');
+                    maincontent.style.opacity = '1';
+                    maincontent.style.transition = 'opacity 0.5s ease';
 
                     setTimeout(() => {
-                        elements.welcomescreen.classList.add('hidden');
+                        welcomescreen.style.display = 'none';
                         window.dispatchEvent(new Event('loaderComplete'));
                     }, 500);
                 }, 1500);
@@ -2373,12 +2349,26 @@
         }, 300);
     }, 3200);
 
+    // 预加载图片
     ['https://livegigsasia.com/image/webtop.png', './image/cn-hero-bg.jpg'].forEach(url => {
         const img = new Image();
         img.src = url;
     });
 })();
-</script>
 
+// 重置加载动画函数（在控制台调用 resetLoader() 可重新观看动画）
+function resetLoader() {
+    localStorage.removeItem('livegigs_last_load');
+    location.reload();
+}
+</script>
+</body>
+</html>
+�台调用 resetLoader() 可重新观看动画）
+function resetLoader() {
+    localStorage.removeItem('livegigs_last_load');
+    location.reload();
+}
+</script>
 </body>
 </html>
