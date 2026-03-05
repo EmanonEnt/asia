@@ -1,16 +1,1280 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LiveGigs CN</title>
+    <!-- Tab图标 -->
+        <!-- 预加载关键资源 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="dns-prefetch" href="https://eplus.jp">
-    <link rel="dns-prefetch" href="https://bandmaid.tokyo">
-    <link rel="dns-prefetch" href="https://www.summersonic.com">
+    <link rel="dns-prefetch" href="https://weibo.com">
+    <link rel="dns-prefetch" href="https://www.xiaohongshu.com">
+
     <link rel="icon" type="image/png" href="./image/webtop.png">
     <link rel="shortcut icon" type="image/png" href="./image/webtop.png">
+    <style>
+        :root {
+            --dark-red: #8b0000;
+            --darker-red: #4a0000;
+            --silver: #c0c0c0;
+            --silver-bg: #d0d0d0;
+            --black: #050505;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100%;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            background-color: var(--black);
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* ==================== 导航栏 ==================== */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 80px;
+            padding: 0 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 9999;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .logo-img {
+            height: 45px;
+            width: auto;
+            max-width: 180px;
+            object-fit: contain;
+            cursor: pointer;
+            animation: logoBreathe 8s ease-in-out infinite, logoFlash 8s ease-in-out infinite;
+        }
+
+        @keyframes logoBreathe {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 5px rgba(139, 0, 0, 0.4)); }
+            50% { transform: scale(1.03); filter: drop-shadow(0 0 15px rgba(139, 0, 0, 0.8)); }
+        }
+
+        @keyframes logoFlash {
+            0%, 90%, 100% { filter: drop-shadow(0 0 5px rgba(139, 0, 0, 0.4)); }
+            95% { filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.8)) drop-shadow(0 0 15px rgba(139, 0, 0, 1)); }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .nav-links a:hover {
+            color: var(--dark-red);
+            text-shadow: 0 0 10px rgba(139, 0, 0, 0.8);
+        }
+
+        .nav-links .neon-btn {
+            background: rgba(139, 0, 0, 0.3);
+            color: #fff;
+            border: 2px solid var(--dark-red);
+            padding: 10px 25px;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-links .neon-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-links .neon-btn:hover::before {
+            left: 100%;
+        }
+
+        .nav-links .neon-btn:hover {
+            background: var(--dark-red);
+            border-color: var(--dark-red);
+            box-shadow: 0 0 30px rgba(139, 0, 0, 0.8), 0 0 60px rgba(139, 0, 0, 0.4);
+            transform: scale(1.05);
+            letter-spacing: 3px;
+        }
+
+        /* ==================== Hero Section ==================== */
+        .hero {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('./image/cn-hero-bg.jpg');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            filter: grayscale(100%) brightness(0.35);
+            z-index: 0;
+            animation: bgFlash 8s ease-in-out infinite;
+        }
+
+        @keyframes bgFlash {
+            0%, 85%, 100% { filter: grayscale(100%) brightness(0.35); }
+            90%, 95% { filter: grayscale(80%) brightness(0.5); }
+        }
+
+        .smoke-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 3;
+            overflow: hidden;
+            pointer-events: none;
+            opacity: 0.5;
+            animation: breathe 8s ease-in-out infinite;
+        }
+
+        .smoke {
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(ellipse at center, rgba(255,255,255,0.04) 0%, transparent 50%);
+            filter: blur(60px);
+        }
+
+        .smoke:nth-child(1) { top: -30%; left: -30%; animation: smokeFloat1 18s ease-in-out infinite; }
+        .smoke:nth-child(2) { top: 10%; right: -30%; animation: smokeFloat2 22s ease-in-out infinite; opacity: 0.6; }
+        .smoke:nth-child(3) { bottom: -30%; left: 10%; animation: smokeFloat3 20s ease-in-out infinite; opacity: 0.4; }
+
+        @keyframes breathe {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.02); }
+        }
+
+        @keyframes smokeFloat1 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(5%, 3%) scale(1.1); }
+        }
+
+        @keyframes smokeFloat2 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-5%, -3%) scale(1.05); }
+        }
+
+        @keyframes smokeFloat3 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(3%, -5%) scale(1.08); }
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 100%);
+            z-index: 2;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            width: 100%;
+            padding: 0 20px;
+            margin-top: 120px;
+        }
+
+        .hero-title {
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: clamp(80px, 14vw, 220px);
+            font-weight: 400;
+            letter-spacing: clamp(8px, 2vw, 20px);
+            line-height: 0.85;
+            margin-bottom: 40px;
+            max-width: 1900px;
+            margin-left: auto;
+            margin-right: auto;
+            text-transform: uppercase;
+            animation: textFlash 8s ease-in-out infinite;
+        }
+
+        @keyframes textFlash {
+            0%, 90%, 100% { opacity: 0.9; text-shadow: 0 0 30px rgba(139, 0, 0, 0.3); }
+            95% { opacity: 1; text-shadow: 0 0 60px rgba(139, 0, 0, 0.8), 0 0 100px rgba(255, 255, 255, 0.3); }
+        }
+
+        .hero-title .gray {
+            color: rgba(100, 100, 100, 0.95);
+        }
+
+        .hero-title .red {
+            color: rgba(139, 0, 0, 0.95);
+        }
+
+        .hero-subtitle {
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: clamp(22px, 3.5vw, 42px);
+            letter-spacing: clamp(4px, 1vw, 10px);
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 1400px;
+            margin: 80px auto 0;
+            padding: 0 20px;
+            line-height: 1.8;
+            animation: textFlash 8s ease-in-out infinite;
+            animation-delay: 0.3s;
+        }
+
+        .hero-subtitle .line1 {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .hero-subtitle .line2 {
+            display: block;
+            color: rgba(200, 200, 200, 0.9);
+            font-size: 0.95em;
+        }
+
+        /* ==================== 内容包装器 ==================== */
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
+            margin-top: 100vh;
+            background: var(--black);
+            min-height: 100vh;
+        }
+
+        /* ==================== Banner ==================== */
+        .banner-section {
+            position: relative;
+            width: 100%;
+            background: var(--black);
+            padding-top: 0;
+        }
+
+        .rebel-banner {
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            height: auto;
+            min-height: 400px;
+            background: #000;
+        }
+
+        .rebel-slider {
+            display: flex;
+            height: 100%;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .rebel-slide {
+            min-width: 100%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: inset 0 0 0 2px rgba(192, 192, 192, 0.3), inset 0 0 20px rgba(192, 192, 192, 0.1);
+        }
+
+        .rebel-slide::before,
+        .rebel-slide::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(192, 192, 192, 0.6), transparent);
+            z-index: 5;
+        }
+
+        .rebel-slide::before { top: 0; }
+        .rebel-slide::after { bottom: 0; }
+
+        .rebel-poster {
+            width: 100%;
+            height: auto;
+            display: block;
+            filter: brightness(0.7);
+            transition: filter 0.5s;
+        }
+
+        .rebel-slide:hover .rebel-poster { filter: brightness(0.5); }
+
+        .rebel-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            text-align: center;
+            padding: 20px;
+            opacity: 0;
+            transition: all 0.6s ease;
+            width: 90%;
+            max-width: 800px;
+        }
+
+        .rebel-slide:hover .rebel-content {
+            opacity: 1;
+        }
+
+        .rebel-content h2 {
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: clamp(24px, 5vw, 56px);
+            letter-spacing: clamp(2px, 1vw, 5px);
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            color: #fff;
+            text-shadow: 0 0 30px rgba(139, 0, 0, 0.8);
+            line-height: 1.2;
+            word-wrap: break-word;
+        }
+
+        .rebel-content .neon-btn {
+            background: rgba(192, 192, 192, 0.2);
+            color: #fff;
+            border: 2px solid rgba(192, 192, 192, 0.5);
+            padding: 12px 30px;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: clamp(11px, 2vw, 13px);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .rebel-content .neon-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .rebel-content .neon-btn:hover::before {
+            left: 100%;
+        }
+
+        .rebel-content .neon-btn:hover {
+            background: var(--dark-red);
+            border-color: var(--dark-red);
+            box-shadow: 0 0 30px rgba(139, 0, 0, 0.8), 0 0 60px rgba(139, 0, 0, 0.4);
+            transform: scale(1.05);
+            letter-spacing: 3px;
+        }
+
+        /* ==================== 海报区域 ==================== */
+        .posters-showcase {
+            width: 100%;
+            padding: 0;
+            background: linear-gradient(180deg, #050505 0%, #0a0a0a 50%, #050505 100%);
+            position: relative;
+        }
+
+        .posters-container {
+            width: 100%;
+            max-width: none;
+            margin: 0 auto;
+            display: flex;
+            justify-content: stretch;
+            align-items: stretch;
+            gap: 0;
+            padding: 0;
+        }
+
+        /* 海报1 - 保持原有效果 */
+        .poster-item {
+            flex: 1;
+            min-width: 0;
+            max-width: none;
+            position: relative;
+            overflow: hidden;
+            cursor: default;
+            background-color: #000;
+            transition: all 0.4s ease;
+        }
+
+        .poster-item:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 25px 60px rgba(139, 0, 0, 0.4);
+        }
+
+        .poster-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            transition: all 0.4s;
+        }
+
+        .poster-item:hover img {
+            filter: brightness(0.65);
+            transform: scale(1.08);
+        }
+
+        .poster-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 35px 20px 25px;
+            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 50%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .poster-item:hover .poster-overlay { opacity: 1; }
+
+        .poster-title {
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: 18px;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 8px;
+            text-shadow: 0 0 20px rgba(139, 0, 0, 0.8);
+        }
+
+        .poster-link {
+            display: inline-block;
+            color: var(--silver);
+            font-size: 12px;
+            text-decoration: none;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+            cursor: pointer;
+            padding: 5px 0;
+        }
+
+        .poster-link:hover { 
+            color: var(--dark-red); 
+        }
+
+        /* 海报2和3 - 桌面端边框发光效果（无放大） */
+        .poster-item-alt {
+            flex: 1;
+            min-width: 0;
+            max-width: none;
+            position: relative;
+            overflow: hidden;
+            cursor: default;
+            background-color: #000;
+            transition: all 0.4s ease;
+            border: none;
+        }
+
+        .poster-item-alt:hover {
+            border-color: rgba(139, 0, 0, 0.6);
+            box-shadow: 0 0 30px rgba(139, 0, 0, 0.3), inset 0 0 20px rgba(139, 0, 0, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .poster-item-alt img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            transition: filter 0.4s;
+        }
+
+        .poster-item-alt:hover img {
+            filter: brightness(0.7);
+        }
+
+        .poster-item-alt .poster-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 35px 20px 25px;
+            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 50%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .poster-item-alt:hover .poster-overlay { opacity: 1; }
+
+        /* ==================== 间隙区域 ==================== */
+        .footer-gap {
+            height: 150px;
+            background: linear-gradient(180deg, #050505 0%, #1a1a1a 30%, var(--silver-bg) 100%);
+            position: relative;
+        }
+
+        /* ==================== 底部区域 ==================== */
+        .site-footer {
+            background: var(--silver-bg);
+            color: #333;
+            position: relative;
+            z-index: 100;
+        }
+
+        .footer-main {
+            padding: 50px 40px 40px;
+            position: relative;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .footer-contact-left {
+            flex: 1;
+            text-align: left;
+            font-family: 'Courier New', monospace;
+        }
+
+        .contact-item {
+            margin-bottom: 10px;
+            color: #555;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+            line-height: 1.5;
+        }
+
+        .contact-item a {
+            color: #555;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .contact-item a:hover {
+            color: var(--dark-red);
+        }
+
+        .footer-brand {
+            flex: 0 0 auto;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-size: clamp(32px, 6vw, 48px);
+            font-weight: 400;
+            letter-spacing: 4px;
+            line-height: 1;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            animation: simpleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes simpleGlow {
+            0%, 100% { 
+                text-shadow: 0 0 10px rgba(139, 0, 0, 0.3);
+                opacity: 0.95;
+            }
+            50% { 
+                text-shadow: 0 0 20px rgba(139, 0, 0, 0.6), 0 0 30px rgba(139, 0, 0, 0.3);
+                opacity: 1;
+            }
+        }
+
+        .footer-logo .livegigs {
+            color: #222;
+        }
+
+        .footer-logo .cn {
+            color: var(--dark-red);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 25px;
+        }
+
+        .social-icon {
+            width: 44px;
+            height: 44px;
+            border: 2px solid #666;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #555;
+            text-decoration: none;
+            transition: all 0.3s;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .social-icon:hover {
+            border-color: var(--dark-red);
+            color: var(--dark-red);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .social-icon svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor;
+        }
+
+        .producer-section {
+            text-align: center;
+        }
+
+        .producer-label {
+            font-size: 10px;
+            color: #777;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .producer-logo {
+            height: 35px;
+            width: auto;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .producer-logo:hover {
+            opacity: 1;
+        }
+
+        .footer-contact-right {
+            flex: 1;
+            text-align: right;
+            font-family: 'Courier New', monospace;
+        }
+
+        .footer-bottom {
+            background: #b8b8b8;
+            border-top: 1px solid #999;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .footer-legal {
+            display: flex;
+            gap: 25px;
+        }
+
+        .footer-legal a {
+            color: #555;
+            text-decoration: none;
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .footer-legal a:hover {
+            color: var(--dark-red);
+        }
+
+        .copyright {
+            color: #666;
+            font-size: 11px;
+            letter-spacing: 1px;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* ==================== Membership弹窗 ==================== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal-content {
+            background: linear-gradient(135deg, #0a0000 0%, #050505 100%);
+            border: 1px solid var(--darker-red);
+            padding: 40px 35px;
+            max-width: 480px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 0 50px rgba(74, 0, 0, 0.5);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover { color: var(--dark-red); transform: scale(1.2); }
+
+        .modal-content h2 {
+            font-size: 28px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            color: #fff;
+            text-align: center;
+        }
+
+        .modal-content p {
+            font-size: 13px;
+            color: var(--silver);
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .form-group { margin-bottom: 18px; }
+
+        .form-group label {
+            display: block;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--silver);
+            margin-bottom: 6px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--darker-red);
+            color: #fff;
+            font-size: 14px;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--dark-red);
+            box-shadow: 0 0 15px rgba(139, 0, 0, 0.3);
+        }
+
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .modal-content .neon-btn {
+            width: 100%;
+            margin-top: 10px;
+            padding: 14px;
+            font-size: 13px;
+            background: transparent;
+            color: #fff;
+            border: 1px solid var(--darker-red);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .modal-content .neon-btn:hover {
+            background: var(--dark-red);
+            box-shadow: 0 0 20px rgba(139, 0, 0, 0.5);
+        }
+
+        /* ==================== 响应式 ==================== */
+        @media (max-width: 1024px) {
+            nav { padding: 0 30px; height: 70px; }
+            .logo-img { height: 40px; max-width: 150px; }
+            .nav-links { gap: 25px; }
+            .hero-content { margin-top: 100px; }
+            .hero-title { font-size: clamp(70px, 13vw, 120px); }
+            .hero-subtitle { font-size: clamp(20px, 3vw, 32px); margin-top: 60px; }
+            .rebel-banner { min-height: 350px; }
+            .rebel-content h2 { font-size: clamp(22px, 5vw, 48px); }
+            .footer-container { gap: 30px; }
+        }
+
+        @media (max-width: 768px) {
+            nav { padding: 0 20px; height: 65px; }
+            .logo-img { height: 35px; max-width: 130px; }
+            .nav-links a { font-size: 11px; letter-spacing: 2px; }
+            .nav-links .neon-btn { padding: 8px 16px; font-size: 10px; }
+            .hero-content { margin-top: 80px; }
+            .hero-title { font-size: clamp(55px, 14vw, 80px); letter-spacing: 5px; margin-bottom: 35px; }
+            .hero-subtitle { font-size: clamp(16px, 3.5vw, 22px); letter-spacing: 2.5px; margin-top: 50px; }
+            .rebel-banner { min-height: 300px; }
+            .rebel-content { opacity: 1; transform: translate(-50%, -50%); padding: 15px; }
+            .rebel-content h2 { font-size: clamp(20px, 6vw, 40px); letter-spacing: 3px; margin-bottom: 15px; }
+            .rebel-content .neon-btn { padding: 10px 20px; font-size: 11px; }
+            .posters-container { padding: 0 15px; gap: 12px; }
+            .poster-item { border-radius: 6px; }
+            .poster-title { font-size: 14px; }
+            .footer-gap { height: 100px; }
+            .footer-main { padding: 40px 30px 30px; }
+            .footer-container { flex-direction: column; gap: 30px; text-align: center; }
+            .footer-contact-left, .footer-contact-right { text-align: center; flex: 1; width: 100%; }
+            .social-links { margin-bottom: 20px; }
+            .producer-section { text-align: center; }
+            .footer-bottom { flex-direction: column; gap: 15px; padding: 20px 30px; text-align: center; }
+            .footer-legal { flex-wrap: wrap; justify-content: center; gap: 20px; }
+        }
+
+        @media (max-width: 480px) {
+            nav { padding: 0 15px; height: 60px; background: rgba(0, 0, 0, 0.5); }
+            .logo-img { height: 32px; max-width: 120px; }
+            .nav-links { gap: 12px; }
+            .nav-links a { font-size: 10px; letter-spacing: 1px; }
+            .nav-links .neon-btn { padding: 6px 14px; font-size: 9px; }
+            .hero-content { margin-top: 60px; }
+            .hero-title { font-size: clamp(45px, 13vw, 65px); letter-spacing: 4px; margin-bottom: 30px; }
+            .hero-subtitle { font-size: clamp(13px, 3.5vw, 16px); letter-spacing: 2px; margin-top: 40px; line-height: 1.6; }
+            .hero-subtitle .line1 { margin-bottom: 5px; }
+            .smoke-container { opacity: 0.35; }
+            .rebel-banner { min-height: 250px; }
+            .rebel-content { width: 95%; padding: 10px; }
+            .rebel-content h2 { font-size: clamp(18px, 5.5vw, 28px); letter-spacing: 2px; margin-bottom: 12px; line-height: 1.3; }
+            .rebel-content .neon-btn { padding: 8px 16px; font-size: 10px; letter-spacing: 1px; }
+            .posters-showcase { padding: 60px 0; }
+            .posters-container { padding: 0 20px; gap: 15px; justify-content: center; }
+            
+            /* 手机端海报2和3恢复放大效果 */
+            .poster-item-alt {
+                flex: 0 0 calc(33.333% - 10px);
+                max-width: calc(33.333% - 10px);
+                min-width: auto;
+                border-radius: 4px;
+                border: none;
+            }
+            
+            .poster-item-alt:hover {
+                border-color: transparent;
+                box-shadow: 0 25px 60px rgba(139, 0, 0, 0.4);
+                transform: translateY(-12px);
+            }
+            
+            .poster-item-alt img {
+                transition: all 0.4s;
+            }
+            
+            .poster-item-alt:hover img {
+                filter: brightness(0.65);
+                transform: scale(1.08);
+            }
+            
+            .poster-item-alt .poster-overlay {
+                padding: 12px 6px 10px;
+            }
+            
+            .poster-title { font-size: 10px; letter-spacing: 1px; margin-bottom: 4px; }
+            .poster-link { font-size: 9px; letter-spacing: 0.5px; }
+            .poster-overlay { padding: 12px 6px 10px; }
+            .footer-gap { height: 80px; }
+            .footer-main { padding: 35px 25px 25px; }
+            .footer-logo { font-size: 28px; letter-spacing: 3px; margin-bottom: 15px; }
+            .social-links { gap: 12px; margin-bottom: 20px; }
+            .social-icon { width: 40px; height: 40px; }
+            .social-icon svg { width: 20px; height: 20px; }
+            .contact-item { font-size: 11px; margin-bottom: 8px; }
+            .producer-label { font-size: 9px; letter-spacing: 2px; }
+            .producer-logo { height: 30px; }
+            .footer-bottom { padding: 15px 20px; gap: 12px; }
+            .footer-legal { gap: 15px; }
+            .footer-legal a { font-size: 10px; }
+            .copyright { font-size: 10px; }
+        }
+
+        @media (max-width: 375px) {
+            .hero-title { font-size: 38px; letter-spacing: 3px; }
+            .hero-subtitle { font-size: 11px; }
+            .posters-container { padding: 0 15px; gap: 12px; }
+            .poster-item-alt {
+                flex: 0 0 calc(33.333% - 8px);
+                max-width: calc(33.333% - 8px);
+            }
+            .poster-title { font-size: 9px; }
+            .poster-link { font-size: 8px; }
+            .rebel-content h2 { font-size: 16px; letter-spacing: 1.5px; }
+            .rebel-content .neon-btn { padding: 6px 12px; font-size: 9px; }
+            .footer-logo { font-size: 24px; letter-spacing: 2px; }
+            .social-icon { width: 38px; height: 38px; }
+            .social-icon svg { width: 18px; height: 18px; }
+            .contact-item { font-size: 10px; }
+        }
+    
+        /* Banner 海报强制拉伸保持 1280*672 比例 */
+        .rebel-slide {
+            aspect-ratio: 1280/672;
+            min-height: 400px;
+        }
+
+        .rebel-poster {
+            width: 100%;
+            height: 100%;
+            object-fit: fill !important;
+            object-position: center;
+        }
+
+        /* 触摸滑动支持 */
+        .rebel-banner {
+            touch-action: pan-y;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .rebel-slider {
+            touch-action: pan-y pinch-zoom;
+            cursor: grab;
+        }
+
+        .rebel-slider.dragging {
+            cursor: grabbing;
+            transition: none;
+        }
+
+        .rebel-slide {
+            touch-action: pan-y;
+        }
+
+        @media (max-width: 768px) {
+            .rebel-slide {
+                min-height: 250px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .rebel-slide {
+                min-height: 200px;
+            }
+        }
+
+    </style>
+
+    <!-- 懒加载 + WebP 自适应 优化 -->
+    <style>
+        /* 懒加载占位样式 */
+        .lazy-image {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            /* 背景已移除避免PNG透明问题 */
+        }
+        .lazy-image.loaded {
+            opacity: 1;
+            background: none !important;
+        }
+        .lazy-image.loading {
+            filter: blur(10px);
+            transform: scale(1.02);
+        }
+
+        /* Banner 专用占位 */
+        .banner-placeholder {
+            background-color: #000;
+            background-image: url('./image/asia-bannerbg.webp');
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Banner 图片加载失败时的回退 */
+        .rebel-poster {
+            background-image: url('./image/asia-bannerbg.webp');
+            background-size: cover;
+            background-position: center;
+            min-height: 400px;
+        }
+
+        @media (max-width: 768px) {
+            .rebel-poster { min-height: 250px; }
+        }
+        @media (max-width: 480px) {
+            .rebel-poster { min-height: 200px; }
+        }
+
+        /* 低质量占位图 - 已禁用 */
+        .lqip-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('./image/asia-asiaad.jpg') center/cover;
+            filter: blur(20px) brightness(0.3);
+            opacity: 0.6;
+            z-index: 0;
+        }
+
+        /* Banner 占位 */
+        .lqip-placeholder-banner {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('./image/asia-bannerbg.webp') center/cover;
+            filter: blur(20px) brightness(0.3);
+            opacity: 0.6;
+            z-index: 0;
+        }
+
+        /* 图片容器 */
+        .img-container {
+            position: relative;
+            overflow: hidden;
+            background: #0a0a0a;
+        }
+
+        /* 加载动画 */
+        .img-loading-spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgba(139, 0, 0, 0.3);
+            border-top-color: var(--dark-red);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .img-container.loading .img-loading-spinner {
+            opacity: 1;
+        }
+
+        @keyframes spin {
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+    </style>
+
+    <script>
+        // WebP 支持检测
+        const WebPHelper = {
+            supported: null,
+
+            checkSupport: function() {
+                if (this.supported !== null) return this.supported;
+
+                const canvas = document.createElement('canvas');
+                if (canvas.getContext && canvas.getContext('2d')) {
+                    this.supported = canvas.toDataURL('image/webp').indexOf('data:image/webp') === 0;
+                } else {
+                    this.supported = false;
+                }
+                return this.supported;
+            },
+
+            // 转换 URL 为 WebP（如果支持）
+            getOptimizedUrl: function(originalUrl) {
+                if (!this.checkSupport()) return originalUrl;
+                if (!originalUrl) return originalUrl;
+
+                // 跳过已经是 WebP 的链接
+                if (originalUrl.toLowerCase().includes('.webp')) return originalUrl;
+
+                // 跳过外部链接（非本地图片）
+                if (originalUrl.startsWith('http') && !originalUrl.includes(window.location.hostname)) {
+                    return originalUrl;
+                }
+
+                // 尝试添加 ?format=webp 参数（适用于 Cloudinary 等 CDN）
+                if (originalUrl.includes('cloudinary') || originalUrl.includes('res.cloudinary')) {
+                    return originalUrl.includes('?') ? originalUrl + '&f=webp' : originalUrl + '?f=webp';
+                }
+
+                // 对于本地图片，尝试直接使用 .webp 扩展名
+                if (originalUrl.match(/\.(jpg|jpeg|png)$/i)) {
+                    const webpUrl = originalUrl.replace(/\.(jpg|jpeg|png)$/i, '.webp');
+                    return webpUrl;
+                }
+
+                return originalUrl;
+            }
+        };
+
+        // 懒加载管理器
+        const LazyLoader = {
+            observer: null,
+            imageQueue: [],
+
+            init: function() {
+                // 创建 Intersection Observer
+                const options = {
+                    root: null,
+                    rootMargin: '50px 0px',
+                    threshold: 0.01
+                };
+
+                this.observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            this.loadImage(entry.target);
+                            this.observer.unobserve(entry.target);
+                        }
+                    });
+                }, options);
+
+                // 观察所有需要懒加载的图片
+                this.observeImages();
+
+                // 立即加载首屏图片
+                this.loadAboveFoldImages();
+            },
+
+            observeImages: function() {
+                const images = document.querySelectorAll('img[data-src]:not([data-loaded])');
+                images.forEach(img => {
+                    if (!img.dataset.loaded) {
+                        this.observer.observe(img);
+                    }
+                });
+            },
+
+            loadAboveFoldImages: function() {
+                const viewportHeight = window.innerHeight;
+                const images = document.querySelectorAll('img[data-src]:not([data-loaded])');
+
+                images.forEach(img => {
+                    const rect = img.getBoundingClientRect();
+                    if (rect.top < viewportHeight + 100) {
+                        this.loadImage(img);
+                    }
+                });
+            },
+
+            loadImage: function(img) {
+                if (img.dataset.loaded) return;
+
+                const originalSrc = img.dataset.src;
+                if (!originalSrc) return;
+
+                img.classList.add('loading');
+                img.dataset.loaded = 'true';
+
+                // 获取优化后的 URL（WebP 格式）
+                const optimizedSrc = WebPHelper.getOptimizedUrl(originalSrc);
+
+                // 创建新图片对象预加载
+                const preloadImg = new Image();
+
+                preloadImg.onload = function() {
+                    img.src = optimizedSrc;
+                    img.classList.remove('loading');
+                    img.classList.add('loaded');
+                };
+
+                preloadImg.onerror = function() {
+                    // WebP 加载失败，回退到原格式
+                    if (optimizedSrc !== originalSrc) {
+                        const fallbackImg = new Image();
+                        fallbackImg.onload = function() {
+                            img.src = originalSrc;
+                            img.classList.remove('loading');
+                            img.classList.add('loaded');
+                        };
+                        fallbackImg.onerror = function() {
+                            // 判断是 banner 还是海报，使用对应占位图
+                            const isBanner = img.classList.contains('rebel-poster');
+                            img.src = isBanner ? './image/asia-bannerbg.webp' : './image/asia-asiaad.jpg';
+                            img.classList.remove('loading');
+                        };
+                        fallbackImg.src = originalSrc;
+                    } else {
+                        const isBanner = img.classList.contains('rebel-poster');
+                        img.src = isBanner ? './image/asia-bannerbg.webp' : './image/asia-asiaad.jpg';
+                        img.classList.remove('loading');
+                    }
+                };
+
+                preloadImg.src = optimizedSrc;
+            }
+        };
+
+        // 页面加载完成后初始化
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => LazyLoader.init());
+        } else {
+            LazyLoader.init();
+        }
+    </script>
+
 
     <!-- 加载动画样式 -->
     <style>
@@ -353,7 +1617,7 @@
             width: 100vw;
             height: 100vh;
             background: url('./image/cn-hero-bg.jpg') center/cover no-repeat;
-            z-index: 100000;
+            z-index: 99998;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -502,1023 +1766,13 @@
         /* 隐藏状态 */
         .hidden { display: none !important; }
 
-        #main-content { opacity: 0; position: relative; z-index: 1; }
+        #main-content { opacity: 0; }
         #main-content.show { opacity: 1; transition: opacity 0.5s ease; }
     </style>
-
-    <style>
-        :root {
-            --dark-red: #8b0000;
-            --darker-red: #4a0000;
-            --silver: #c0c0c0;
-            --silver-bg: #d0d0d0;
-            --black: #050505;
-        }
-
-        body {
-            min-height: 100%;
-            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-            background-color: var(--black);
-            color: #fff;
-            overflow-x: hidden;
-        }
-
-        /* 导航栏 */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            height: 80px;
-            padding: 0 50px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 9999;
-            background: rgba(0, 0, 0, 0.5);
-        }
-
-        .logo-img {
-            height: 45px;
-            width: auto;
-            max-width: 180px;
-            object-fit: contain;
-            cursor: pointer;
-            animation: logoBreathe 8s ease-in-out infinite, logoFlash 8s ease-in-out infinite;
-        }
-
-        @keyframes logoBreathe {
-            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 5px rgba(139, 0, 0, 0.4)); }
-            50% { transform: scale(1.03); filter: drop-shadow(0 0 15px rgba(139, 0, 0, 0.8)); }
-        }
-
-        @keyframes logoFlash {
-            0%, 90%, 100% { filter: drop-shadow(0 0 5px rgba(139, 0, 0, 0.4)); }
-            95% { filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.8)) drop-shadow(0 0 15px rgba(139, 0, 0, 1)); }
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 40px;
-            align-items: center;
-        }
-
-        .nav-links a {
-            color: #fff;
-            text-decoration: none;
-            font-size: 14px;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            transition: all 0.3s;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-        }
-
-        .nav-links a:hover {
-            color: var(--dark-red);
-            text-shadow: 0 0 10px rgba(139, 0, 0, 0.8);
-        }
-
-        .nav-links .neon-btn {
-            background: rgba(139, 0, 0, 0.3);
-            color: #fff;
-            border: 2px solid var(--dark-red);
-            padding: 10px 25px;
-            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-            font-size: 12px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.4s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .nav-links .neon-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: left 0.5s;
-        }
-
-        .nav-links .neon-btn:hover::before { left: 100%; }
-
-        .nav-links .neon-btn:hover {
-            background: var(--dark-red);
-            border-color: var(--dark-red);
-            box-shadow: 0 0 30px rgba(139, 0, 0, 0.8), 0 0 60px rgba(139, 0, 0, 0.4);
-            transform: scale(1.05);
-            letter-spacing: 3px;
-        }
-
-        /* Hero Section */
-        .hero {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            min-height: 600px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 1;
-            overflow: hidden;
-        }
-
-        .hero-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('./image/hero%20bg.jpeg');
-            background-size: cover;
-            background-position: center center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            filter: grayscale(100%) brightness(0.35);
-            z-index: 0;
-            animation: bgFlash 8s ease-in-out infinite;
-        }
-
-        @keyframes bgFlash {
-            0%, 85%, 100% { filter: grayscale(100%) brightness(0.35); }
-            90%, 95% { filter: grayscale(80%) brightness(0.5); }
-        }
-
-        .smoke-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 3;
-            overflow: hidden;
-            pointer-events: none;
-            opacity: 0.5;
-            animation: breathe 8s ease-in-out infinite;
-        }
-
-        .smoke {
-            position: absolute;
-            width: 150%;
-            height: 150%;
-            background: radial-gradient(ellipse at center, rgba(255,255,255,0.04) 0%, transparent 50%);
-            filter: blur(60px);
-        }
-
-        .smoke:nth-child(1) { top: -30%; left: -30%; animation: smokeFloat1 18s ease-in-out infinite; }
-        .smoke:nth-child(2) { top: 10%; right: -30%; animation: smokeFloat2 22s ease-in-out infinite; opacity: 0.6; }
-        .smoke:nth-child(3) { bottom: -30%; left: 10%; animation: smokeFloat3 20s ease-in-out infinite; opacity: 0.4; }
-
-        @keyframes breathe {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 0.6; transform: scale(1.02); }
-        }
-
-        @keyframes smokeFloat1 {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(5%, 3%) scale(1.1); }
-        }
-
-        @keyframes smokeFloat2 {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(-5%, -3%) scale(1.05); }
-        }
-
-        @keyframes smokeFloat3 {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(3%, -5%) scale(1.08); }
-        }
-
-        .hero-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(ellipse at center, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 100%);
-            z-index: 2;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-            width: 100%;
-            padding: 0 20px;
-            margin-top: 120px;
-        }
-
-        .hero-title {
-            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-            font-size: clamp(80px, 14vw, 220px);
-            font-weight: 400;
-            letter-spacing: clamp(8px, 2vw, 20px);
-            line-height: 0.85;
-            margin-bottom: 40px;
-            max-width: 1900px;
-            margin-left: auto;
-            margin-right: auto;
-            text-transform: uppercase;
-            animation: textFlash 8s ease-in-out infinite;
-        }
-
-        @keyframes textFlash {
-            0%, 90%, 100% { opacity: 0.9; text-shadow: 0 0 30px rgba(139, 0, 0, 0.3); }
-            95% { opacity: 1; text-shadow: 0 0 60px rgba(139, 0, 0, 0.8), 0 0 100px rgba(255, 255, 255, 0.3); }
-        }
-
-        .hero-title .gray { color: rgba(100, 100, 100, 0.95); }
-        .hero-title .red { color: rgba(139, 0, 0, 0.95); }
-
-        .hero-subtitle {
-            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-            font-size: clamp(22px, 3.5vw, 42px);
-            letter-spacing: clamp(4px, 1vw, 10px);
-            text-transform: uppercase;
-            color: rgba(255, 255, 255, 0.9);
-            max-width: 1400px;
-            margin: 80px auto 0;
-            padding: 0 20px;
-            line-height: 1.8;
-            animation: textFlash 8s ease-in-out infinite;
-            animation-delay: 0.3s;
-        }
-
-        .hero-subtitle .line1 { display: block; margin-bottom: 8px; }
-        .hero-subtitle .line2 { display: block; color: rgba(200, 200, 200, 0.9); font-size: 0.95em; }
-
-        /* 内容包装器 */
-        .content-wrapper {
-            position: relative;
-            z-index: 10;
-            margin-top: 100vh;
-            background: var(--black);
-            min-height: 100vh;
-        }
-
-        /* Banner */
-        .banner-section {
-            position: relative;
-            width: 100%;
-            background: var(--black);
-            padding-top: 0;
-        }
-
-        .rebel-banner {
-            width: 100%;
-            position: relative;
-            overflow: hidden;
-            height: auto;
-            min-height: 400px;
-            background: #000;
-        }
-
-        .rebel-slider {
-            display: flex;
-            height: 100%;
-            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .rebel-slide {
-            min-width: 100%;
-            height: 100%;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: inset 0 0 0 2px rgba(192, 192, 192, 0.3), inset 0 0 20px rgba(192, 192, 192, 0.1);
-            aspect-ratio: 1280/672;
-        }
-
-        .rebel-slide::before, .rebel-slide::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, rgba(192, 192, 192, 0.6), transparent);
-            z-index: 5;
-        }
-
-        .rebel-slide::before { top: 0; }
-        .rebel-slide::after { bottom: 0; }
-
-        .rebel-poster {
-            width: 100%;
-            height: 100%;
-            object-fit: fill;
-            object-position: center;
-            display: block;
-            filter: brightness(0.7);
-            transition: filter 0.5s;
-            background-image: url('./image/asia-bannerbg.webp');
-            background-size: cover;
-            background-position: center;
-            min-height: 400px;
-        }
-
-        .rebel-slide:hover .rebel-poster { filter: brightness(0.5); }
-
-        .rebel-content {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 2;
-            text-align: center;
-            padding: 20px;
-            opacity: 0;
-            transition: all 0.6s ease;
-            width: 90%;
-            max-width: 800px;
-        }
-
-        .rebel-slide:hover .rebel-content { opacity: 1; }
-
-        .rebel-content h2 {
-            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-            font-size: clamp(24px, 5vw, 56px);
-            letter-spacing: clamp(2px, 1vw, 5px);
-            text-transform: uppercase;
-            margin-bottom: 20px;
-            color: #fff;
-            text-shadow: 0 0 30px rgba(139, 0, 0, 0.8);
-            line-height: 1.2;
-            word-wrap: break-word;
-        }
-
-        .rebel-content .neon-btn {
-            background: rgba(192, 192, 192, 0.2);
-            color: #fff;
-            border: 2px solid rgba(192, 192, 192, 0.5);
-            padding: 12px 30px;
-            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-            font-size: clamp(11px, 2vw, 13px);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.4s;
-            position: relative;
-            overflow: hidden;
-            white-space: nowrap;
-        }
-
-        .rebel-content .neon-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: left 0.5s;
-        }
-
-        .rebel-content .neon-btn:hover::before { left: 100%; }
-
-        .rebel-content .neon-btn:hover {
-            background: var(--dark-red);
-            border-color: var(--dark-red);
-            box-shadow: 0 0 30px rgba(139, 0, 0, 0.8), 0 0 60px rgba(139, 0, 0, 0.4);
-            transform: scale(1.05);
-            letter-spacing: 3px;
-        }
-
-        /* 海报区域 */
-        .posters-showcase {
-            width: 100%;
-            padding: 0;
-            background: linear-gradient(180deg, #050505 0%, #0a0a0a 50%, #050505 100%);
-            position: relative;
-        }
-
-        .posters-container {
-            width: 100%;
-            max-width: none;
-            margin: 0 auto;
-            display: flex;
-            justify-content: stretch;
-            align-items: stretch;
-            gap: 0;
-            padding: 0;
-        }
-
-        .poster-item {
-            flex: 1;
-            min-width: 0;
-            max-width: none;
-            position: relative;
-            overflow: hidden;
-            cursor: default;
-            background: #000;
-            transition: all 0.4s ease;
-        }
-
-        .poster-item:hover {
-            transform: translateY(-12px);
-            box-shadow: 0 25px 60px rgba(139, 0, 0, 0.4);
-        }
-
-        .poster-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
-            display: block;
-            transition: all 0.4s;
-        }
-
-        .poster-item:hover img {
-            filter: brightness(0.65);
-            transform: scale(1.08);
-        }
-
-        .poster-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 35px 20px 25px;
-            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 50%, transparent 100%);
-            opacity: 0;
-            transition: opacity 0.4s;
-        }
-
-        .poster-item:hover .poster-overlay { opacity: 1; }
-
-        .poster-title {
-            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-            font-size: 18px;
-            color: #fff;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-bottom: 8px;
-            text-shadow: 0 0 20px rgba(139, 0, 0, 0.8);
-        }
-
-        .poster-link {
-            display: inline-block;
-            color: var(--silver);
-            font-size: 12px;
-            text-decoration: none;
-            letter-spacing: 1px;
-            transition: color 0.3s;
-            cursor: pointer;
-            padding: 5px 0;
-        }
-
-        .poster-link:hover { color: var(--dark-red); }
-
-        .poster-item-alt {
-            flex: 1;
-            min-width: 0;
-            max-width: none;
-            position: relative;
-            overflow: hidden;
-            cursor: default;
-            background: #000;
-            transition: all 0.4s ease;
-            border: none;
-        }
-
-        .poster-item-alt:hover {
-            border-color: rgba(139, 0, 0, 0.6);
-            box-shadow: 0 0 30px rgba(139, 0, 0, 0.3), inset 0 0 20px rgba(139, 0, 0, 0.1);
-            transform: translateY(-5px);
-        }
-
-        .poster-item-alt img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
-            display: block;
-            transition: filter 0.4s;
-        }
-
-        .poster-item-alt:hover img { filter: brightness(0.7); }
-
-        .poster-item-alt .poster-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 35px 20px 25px;
-            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 50%, transparent 100%);
-            opacity: 0;
-            transition: opacity 0.4s;
-        }
-
-        .poster-item-alt:hover .poster-overlay { opacity: 1; }
-
-        /* 间隙区域 */
-        .footer-gap {
-            height: 150px;
-            background: linear-gradient(180deg, #050505 0%, #1a1a1a 30%, var(--silver-bg) 100%);
-            position: relative;
-        }
-
-        /* 底部区域 */
-        .site-footer {
-            background: var(--silver-bg);
-            color: #333;
-            position: relative;
-            z-index: 100;
-        }
-
-        .footer-main {
-            padding: 50px 40px 40px;
-            position: relative;
-        }
-
-        .footer-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 40px;
-        }
-
-        .footer-contact-left {
-            flex: 1;
-            text-align: left;
-            font-family: 'Courier New', monospace;
-        }
-
-        .contact-item {
-            margin-bottom: 10px;
-            color: #555;
-            font-size: 13px;
-            letter-spacing: 0.5px;
-            line-height: 1.5;
-        }
-
-        .contact-item a {
-            color: #555;
-            text-decoration: none;
-            transition: all 0.3s;
-            font-weight: bold;
-        }
-
-        .contact-item a:hover { color: var(--dark-red); }
-
-        .footer-brand {
-            flex: 0 0 auto;
-            text-align: center;
-        }
-
-        .footer-logo {
-            font-size: clamp(32px, 6vw, 48px);
-            font-weight: 400;
-            letter-spacing: 4px;
-            line-height: 1;
-            text-transform: uppercase;
-            margin-bottom: 20px;
-            animation: simpleGlow 3s ease-in-out infinite;
-        }
-
-        @keyframes simpleGlow {
-            0%, 100% { text-shadow: 0 0 10px rgba(139, 0, 0, 0.3); opacity: 0.95; }
-            50% { text-shadow: 0 0 20px rgba(139, 0, 0, 0.6), 0 0 30px rgba(139, 0, 0, 0.3); opacity: 1; }
-        }
-
-        .footer-logo .livegigs { color: #222; }
-        .footer-logo .asia { color: var(--dark-red); }
-
-        .social-links {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin-bottom: 25px;
-        }
-
-        .social-icon {
-            width: 40px;
-            height: 40px;
-            border: 2px solid #666;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #555;
-            text-decoration: none;
-            transition: all 0.3s;
-            background: rgba(255,255,255,0.1);
-        }
-
-        .social-icon:hover {
-            border-color: var(--dark-red);
-            color: var(--dark-red);
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        .producer-section { text-align: center; }
-
-        .producer-label {
-            font-size: 10px;
-            color: #777;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-bottom: 10px;
-            font-family: 'Courier New', monospace;
-        }
-
-        .producer-logo {
-            height: 35px;
-            width: auto;
-            max-width: 150px;
-            opacity: 0.8;
-            transition: opacity 0.3s;
-            display: block;
-            margin: 0 auto;
-        }
-
-        .producer-logo:hover { opacity: 1; }
-
-        @media (max-width: 480px) {
-            .producer-logo {
-                height: 30px;
-                max-width: 120px;
-            }
-        }
-
-        @media (max-width: 375px) {
-            .producer-logo {
-                height: 28px;
-                max-width: 100px;
-            }
-        }
-
-        .footer-contact-right {
-            flex: 1;
-            text-align: right;
-            font-family: 'Courier New', monospace;
-        }
-
-        .footer-bottom {
-            background: #b8b8b8;
-            border-top: 1px solid #999;
-            padding: 20px 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 40px;
-            flex-wrap: wrap;
-        }
-
-        .footer-legal { display: flex; gap: 25px; }
-
-        .footer-legal a {
-            color: #555;
-            text-decoration: none;
-            font-size: 11px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            transition: all 0.3s;
-            font-weight: bold;
-        }
-
-        .footer-legal a:hover { color: var(--dark-red); }
-
-        .copyright {
-            color: #666;
-            font-size: 11px;
-            letter-spacing: 1px;
-            font-family: 'Courier New', monospace;
-        }
-
-        /* Membership弹窗 */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 10000;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .modal-overlay.active { display: flex; }
-
-        .modal-content {
-            background: linear-gradient(135deg, #0a0000 0%, #050505 100%);
-            border: 1px solid var(--darker-red);
-            padding: 40px 35px;
-            max-width: 480px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-            position: relative;
-            box-shadow: 0 0 50px rgba(74, 0, 0, 0.5);
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 28px;
-            color: #666;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .modal-close:hover { color: var(--dark-red); transform: scale(1.2); }
-
-        .modal-content h2 {
-            font-size: 28px;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-            color: #fff;
-            text-align: center;
-        }
-
-        .modal-content p {
-            font-size: 13px;
-            color: var(--silver);
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .form-group { margin-bottom: 18px; }
-
-        .form-group label {
-            display: block;
-            font-size: 11px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--silver);
-            margin-bottom: 6px;
-        }
-
-        .form-group input, .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid var(--darker-red);
-            color: #fff;
-            font-size: 14px;
-            letter-spacing: 1px;
-            transition: all 0.3s;
-            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-        }
-
-        .form-group input:focus, .form-group textarea:focus {
-            outline: none;
-            border-color: var(--dark-red);
-            box-shadow: 0 0 15px rgba(139, 0, 0, 0.3);
-        }
-
-        .form-group textarea { min-height: 80px; resize: vertical; }
-
-        .modal-content .neon-btn {
-            width: 100%;
-            margin-top: 10px;
-            padding: 14px;
-            font-size: 13px;
-            background: transparent;
-            color: #fff;
-            border: 2px solid var(--darker-red);
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        .modal-content .neon-btn:hover {
-            background: var(--dark-red);
-            box-shadow: 0 0 20px rgba(139, 0, 0, 0.5);
-        }
-
-        /* 懒加载 */
-        .lazy-image {
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        }
-        .lazy-image.loaded { opacity: 1; background: none !important; }
-        .lazy-image.loading { filter: blur(10px); transform: scale(1.02); }
-
-        .banner-placeholder {
-            background-color: #000;
-            background-image: url('./image/asia-bannerbg.webp');
-            background-size: cover;
-            background-position: center;
-        }
-
-        .img-container { position: relative; overflow: hidden; }
-
-        /* 海报2轮播 */
-        .poster-carousel-wrapper { position: relative; width: 100%; height: 100%; overflow: hidden; }
-        .poster-carousel { position: relative; width: 100%; height: 100%; }
-        .poster-carousel-slide {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            transition: opacity 0.8s ease-in-out;
-            z-index: 1;
-        }
-        .poster-carousel-slide.active { opacity: 1; z-index: 2; }
-        .poster-carousel-slide img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
-        .poster-carousel-img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
-        .carousel-dots {
-            position: absolute;
-            bottom: 60px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 10px;
-            z-index: 10;
-        }
-        .carousel-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.3);
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 1px solid rgba(255,255,255,0.5);
-        }
-        .carousel-dot.active { background: var(--dark-red); border-color: var(--dark-red); box-shadow: 0 0 10px rgba(139, 0, 0, 0.8); transform: scale(1.2); }
-        .mobile-poster2-text {
-            display: none;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            z-index: 5;
-            width: 90%;
-        }
-        .mobile-poster2-text h3 {
-            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-            font-size: clamp(18px, 4vw, 24px);
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: #fff;
-            text-shadow: 0 0 30px rgba(139, 0, 0, 0.8), 0 2px 10px rgba(0,0,0,0.8);
-            line-height: 1.3;
-        }
-
-        /* 响应式 */
-        @media (max-width: 1024px) {
-            nav { padding: 0 30px; height: 70px; }
-            .logo-img { height: 40px; max-width: 150px; }
-            .nav-links { gap: 25px; }
-            .hero-content { margin-top: 100px; }
-            .hero-title { font-size: clamp(70px, 13vw, 120px); }
-            .hero-subtitle { font-size: clamp(20px, 3vw, 32px); margin-top: 60px; }
-            .rebel-banner { min-height: 350px; }
-            .rebel-content h2 { font-size: clamp(22px, 5vw, 48px); }
-            .footer-container { gap: 30px; }
-        }
-
-        @media (max-width: 768px) {
-            nav { padding: 0 20px; height: 65px; }
-            .logo-img { height: 35px; max-width: 130px; }
-            .nav-links a { font-size: 11px; letter-spacing: 2px; }
-            .nav-links .neon-btn { padding: 8px 16px; font-size: 10px; }
-            .hero-content { margin-top: 80px; }
-            .hero-title { font-size: clamp(55px, 14vw, 80px); letter-spacing: 5px; margin-bottom: 35px; }
-            .hero-subtitle { font-size: clamp(16px, 3.5vw, 22px); letter-spacing: 2.5px; margin-top: 50px; }
-            .rebel-banner { min-height: 300px; }
-            .rebel-content { opacity: 1; transform: translate(-50%, -50%); padding: 15px; }
-            .rebel-content h2 { font-size: clamp(20px, 6vw, 40px); letter-spacing: 3px; margin-bottom: 15px; }
-            .rebel-content .neon-btn { padding: 10px 20px; font-size: 11px; }
-            .poster-title { font-size: 14px; }
-            .footer-gap { height: 100px; }
-            .footer-main { padding: 40px 30px 30px; }
-            .footer-container { flex-direction: column; gap: 30px; text-align: center; }
-            .footer-contact-left, .footer-contact-right { text-align: center; flex: 1; width: 100%; }
-            .social-links { margin-bottom: 20px; }
-            .producer-section { text-align: center; }
-            .footer-bottom { flex-direction: column; gap: 15px; padding: 20px 30px; text-align: center; }
-            .footer-legal { flex-wrap: wrap; justify-content: center; gap: 20px; }
-        }
-
-        @media (max-width: 480px) {
-            nav { padding: 0 15px; height: 60px; background: rgba(0, 0, 0, 0.5); }
-            .logo-img { height: 32px; max-width: 120px; }
-            .nav-links { gap: 12px; }
-            .nav-links a { font-size: 10px; letter-spacing: 1px; }
-            .nav-links .neon-btn { padding: 6px 14px; font-size: 9px; }
-            .hero-content { margin-top: 60px; }
-            .hero-title { font-size: clamp(45px, 13vw, 65px); letter-spacing: 4px; margin-bottom: 30px; }
-            .hero-subtitle { font-size: clamp(13px, 3.5vw, 16px); letter-spacing: 2px; margin-top: 40px; line-height: 1.6; }
-            .hero-subtitle .line1 { margin-bottom: 5px; }
-            .smoke-container { opacity: 0.35; }
-            .rebel-banner { min-height: 250px; }
-            .rebel-content { width: 95%; padding: 10px; }
-            .rebel-content h2 { font-size: clamp(18px, 5.5vw, 28px); letter-spacing: 2px; margin-bottom: 12px; line-height: 1.3; }
-            .rebel-content .neon-btn { padding: 8px 16px; font-size: 10px; letter-spacing: 1px; }
-            .posters-container { padding: 0 20px; gap: 15px; justify-content: center; }
-            .poster-item, .poster-item-alt {
-                flex: 0 0 calc(33.333% - 10px);
-                max-width: calc(33.333% - 10px);
-                min-width: auto;
-                border-radius: 4px;
-            }
-            .poster-item:hover, .poster-item-alt:hover {
-                transform: translateY(-12px);
-                box-shadow: 0 25px 60px rgba(139, 0, 0, 0.4);
-            }
-            .poster-item img, .poster-item-alt img { transition: all 0.4s; }
-            .poster-item:hover img, .poster-item-alt:hover img {
-                filter: brightness(0.65);
-                transform: scale(1.08);
-            }
-            .poster-overlay, .poster-item-alt .poster-overlay { padding: 12px 6px 10px; }
-            .poster-title { font-size: 10px; letter-spacing: 1px; margin-bottom: 4px; }
-            .poster-link { font-size: 9px; letter-spacing: 0.5px; }
-            .footer-gap { height: 80px; }
-            .footer-main { padding: 35px 25px 25px; }
-            .footer-logo { font-size: 28px; letter-spacing: 3px; margin-bottom: 15px; }
-            .social-links { gap: 12px; margin-bottom: 20px; }
-            .social-icon { width: 36px; height: 36px; }
-            .social-icon svg { width: 14px; height: 14px; }
-            .contact-item { font-size: 11px; margin-bottom: 8px; }
-            .producer-label { font-size: 9px; letter-spacing: 2px; }
-            .producer-logo { height: 30px; }
-            .footer-bottom { padding: 15px 20px; gap: 12px; }
-            .footer-legal { gap: 15px; }
-            .footer-legal a { font-size: 10px; }
-            .copyright { font-size: 10px; }
-        }
-
-        @media (max-width: 375px) {
-            .hero-title { font-size: 38px; letter-spacing: 3px; }
-            .hero-subtitle { font-size: 11px; }
-            .posters-container { padding: 0 15px; gap: 12px; }
-            .poster-item, .poster-item-alt {
-                flex: 0 0 calc(33.333% - 8px);
-                max-width: calc(33.333% - 8px);
-            }
-            .poster-title { font-size: 9px; }
-            .poster-link { font-size: 8px; }
-            .rebel-content h2 { font-size: 16px; letter-spacing: 1.5px; }
-            .rebel-content .neon-btn { padding: 6px 12px; font-size: 9px; }
-            .footer-logo { font-size: 24px; letter-spacing: 2px; }
-            .social-icon { width: 34px; height: 34px; }
-            .contact-item { font-size: 10px; }
-        }
-
-        @media (max-width: 768px) {
-            .rebel-slide { min-height: 250px; }
-            .rebel-poster { min-height: 250px; }
-        }
-        @media (max-width: 480px) {
-            .rebel-slide { min-height: 200px; }
-            .rebel-poster { min-height: 200px; }
-        }
-
-        /* 触摸滑动支持 */
-        .rebel-banner {
-            touch-action: pan-y;
-            user-select: none;
-            -webkit-user-select: none;
-        }
-        .rebel-slider {
-            touch-action: pan-y pinch-zoom;
-            cursor: grab;
-        }
-        .rebel-slider.dragging {
-            cursor: grabbing;
-            transition: none;
-        }
-        .rebel-slide { touch-action: pan-y; }
-    </style>
-
-    <!-- 性能优化：预加载关键资源 -->
-    <link rel="preload" href="./image/hero%20bg.jpeg" as="image">
-    <link rel="preload" href="./image/logo.png" as="image">
-    <link rel="preload" href="./image/webtop.png" as="image">
-    <link rel="preload" href="./image/cn-hero-bg.jpg" as="image">
-
-    <!-- 预连接关键域名 -->
-    <link rel="preconnect" href="https://livegigsasia.com">
-    <link rel="dns-prefetch" href="https://eplus.jp">
-    <link rel="dns-prefetch" href="https://bandmaid.tokyo">
-    <link rel="dns-prefetch" href="https://www.summersonic.com">
-
+</head>
 <body>
-    <!-- 加载动画 -->
+<!-- 加载动画 -->
+<!-- 加载动画 -->
     <div id="loader-container">
         <div class="noise" id="noise"></div>
         <div class="scan-lines" id="scanlines"></div>
@@ -1544,25 +1798,13 @@
                 <div class="wave" style="animation-delay: 0.2s"></div>
                 <div class="wave" style="animation-delay: 0.4s"></div>
             </div>
-            <img src="https://livegigsasia.com/image/webtop.png" alt="LIVEGIGS ASIA" class="logo-img-loader" id="logoimg">
-            <div class="sparks" id="sparks"></div>
-        </div>
-
-        <div class="explosion" id="explosion"></div>
-
-        <div class="progress-container" id="progresscontainer">
-            <div class="progress-bar" id="progressbar"></div>
-        </div>
-        <div class="progress-text" id="progresstext">SYSTEM INITIALIZING...</div>
-    </div>
-
     <!-- WELCOME画面 -->
     <div class="welcome-screen" id="welcomescreen">
         <div class="welcome-text">WELCOME TO THE FUTURE OF LIVE</div>
-    </div>
 
-    <!-- 主内容 -->
-    <div id="main-content">
+<!-- 主内容 -->
+<div id="main-content">
+<!-- 导航栏 -->
     <nav>
         <img data-src="./image/cnlogo.png" alt="LiveGigs CN" class="logo-img lazy-image" id="logo" onclick="location.reload()" data-editable="logo">
         <div class="nav-links">
@@ -1572,6 +1814,7 @@
         </div>
     </nav>
 
+    <!-- Hero Section -->
     <section class="hero">
         <div class="hero-bg" id="heroBg" data-editable="hero-bg" data-src="./image/cn-hero-bg.jpg"></div>
         
@@ -1594,8 +1837,10 @@
         </div>
     </section>
 
+    <!-- 内容包装器 -->
     <div class="content-wrapper">
 
+        <!-- Banner -->
         <section class="banner-section">
             <div class="rebel-banner">
                 <div class="rebel-slider" id="rebelSlider">
@@ -1627,6 +1872,7 @@
             </div>
         </section>
 
+        <!-- 海报 -->
         <section class="posters-showcase">
             <div class="posters-container">
                 <div class="poster-item" data-poster-id="1" data-link="https://wxaurl.cn/HMcAK6R7fou" data-editable="poster-1">
@@ -1656,8 +1902,10 @@
             </div>
         </section>
 
+        <!-- 间隙区域 -->
         <div class="footer-gap"></div>
 
+        <!-- 底部区域 -->
         <footer class="site-footer">
             <div class="footer-main">
                 <div class="footer-container">
@@ -1730,9 +1978,8 @@
             </div>
         </footer>
 
-    </div>
 <!-- Membership 弹窗 -->
-    <div class="modal-overlay" id="membershipModal">
+<div class="modal-overlay" id="membershipModal">
         <div class="modal-content">
             <span class="modal-close" onclick="closeModal()">&times;</span>
             <h2 data-editable="modal-title" data-text="Join Membership">Join Membership</h2>
@@ -1757,18 +2004,19 @@
                     <label for="memberMessage" data-editable="modal-label-message" data-text="Message">Message</label>
                     <textarea id="memberMessage" name="message" placeholder="Tell us what you're interested in..." data-editable="modal-placeholder-message" data-text="Tell us what you're interested in..."></textarea>
                 </div>
-                <input type="hidden" name="source" id="formSource" value="LiveGigs Asia Homepage">
-                <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
                 <div id="formSuccess" style="display: none; text-align: center; padding: 15px; background: rgba(139, 0, 0, 0.2); border: 1px solid var(--dark-red); margin-bottom: 20px;">
                     <p style="color: #fff; margin: 0; font-size: 14px;">✓ Application sent successfully! We'll contact you soon.</p>
                 </div>
                 <button type="submit" class="neon-btn" data-editable="modal-submit" data-text="SUBMIT APPLICATION">SUBMIT APPLICATION</button>
+                            <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
             </form>
         </div>
     </div>
+</div>
 
-    <!-- JavaScript -->
-    <script>
+<script>
+
+        // Membership弹窗控制
         function openModal() {
             document.getElementById('membershipModal').classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -1783,6 +2031,7 @@
             if (e.target === this) closeModal();
         });
 
+        // 表单提交处理
         function handleFormSubmit(e) {
             e.preventDefault();
             const form = document.getElementById('membershipForm');
@@ -1809,7 +2058,7 @@
                         phone: document.getElementById('memberPhone').value,
                         message: document.getElementById('memberMessage').value,
                         timestamp: new Date().toISOString(),
-                        source: 'LiveGigs Asia Homepage'
+                        source: 'LiveGigs Asia'
                     };
                     let submissions = JSON.parse(localStorage.getItem('membershipSubmissions') || '[]');
                     submissions.push(submissionData);
@@ -1830,37 +2079,31 @@
             });
         }
 
-        document.getElementById('logo').addEventListener('error', function() {
-            this.style.display = 'none';
-        });
-
-
-
-        const slider = document.getElementById('rebelSlider');
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.rebel-slide');
-        const totalSlides = slides.length;
+        // Banner轮播 - 支持触摸滑动和鼠标拖拽
+        const rebelSlider = document.getElementById('rebelSlider');
+        const rebelSlides = document.querySelectorAll('.rebel-slide');
+        const totalSlides = rebelSlides.length;
+        let rebelCurrent = 0;
         let autoSlideInterval;
 
-        // 触摸滑动变量
+        // 触摸/拖拽变量
         let startX = 0;
         let currentX = 0;
         let isDragging = false;
-        let startTranslate = 0;
 
         function goToSlide(index) {
-            currentSlide = index;
-            if (currentSlide < 0) currentSlide = totalSlides - 1;
-            if (currentSlide >= totalSlides) currentSlide = 0;
-            slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+            rebelCurrent = index;
+            if (rebelCurrent < 0) rebelCurrent = totalSlides - 1;
+            if (rebelCurrent >= totalSlides) rebelCurrent = 0;
+            rebelSlider.style.transform = `translateX(-${rebelCurrent * 100}%)`;
         }
 
         function nextSlide() {
-            goToSlide(currentSlide + 1);
+            goToSlide(rebelCurrent + 1);
         }
 
         function prevSlide() {
-            goToSlide(currentSlide - 1);
+            goToSlide(rebelCurrent - 1);
         }
 
         function startAutoSlide() {
@@ -1872,30 +2115,30 @@
         }
 
         // 触摸事件处理
-        slider.addEventListener('touchstart', (e) => {
+        rebelSlider.addEventListener('touchstart', (e) => {
             startX = e.touches[0].clientX;
             currentX = startX;
             isDragging = true;
             stopAutoSlide();
-            slider.classList.add('dragging');
+            rebelSlider.classList.add('dragging');
         }, { passive: true });
 
-        slider.addEventListener('touchmove', (e) => {
+        rebelSlider.addEventListener('touchmove', (e) => {
             if (!isDragging) return;
             currentX = e.touches[0].clientX;
             const diff = currentX - startX;
-            const slideWidth = slider.offsetWidth;
-            const translate = -(currentSlide * 100) + (diff / slideWidth * 100);
-            slider.style.transform = `translateX(${translate}%)`;
+            const slideWidth = rebelSlider.offsetWidth;
+            const translate = -(rebelCurrent * 100) + (diff / slideWidth * 100);
+            rebelSlider.style.transform = `translateX(${translate}%)`;
         }, { passive: true });
 
-        slider.addEventListener('touchend', (e) => {
+        rebelSlider.addEventListener('touchend', (e) => {
             if (!isDragging) return;
             isDragging = false;
-            slider.classList.remove('dragging');
+            rebelSlider.classList.remove('dragging');
 
             const diff = currentX - startX;
-            const threshold = slider.offsetWidth * 0.15; // 15% 滑动阈值
+            const threshold = rebelSlider.offsetWidth * 0.15; // 15% 滑动阈值
 
             if (Math.abs(diff) > threshold) {
                 if (diff > 0) {
@@ -1904,38 +2147,38 @@
                     nextSlide();
                 }
             } else {
-                goToSlide(currentSlide);
+                goToSlide(rebelCurrent);
             }
 
             startAutoSlide();
         });
 
         // 鼠标拖拽支持（桌面端）
-        slider.addEventListener('mousedown', (e) => {
+        rebelSlider.addEventListener('mousedown', (e) => {
             startX = e.clientX;
             currentX = startX;
             isDragging = true;
             stopAutoSlide();
-            slider.classList.add('dragging');
+            rebelSlider.classList.add('dragging');
             e.preventDefault();
         });
 
-        slider.addEventListener('mousemove', (e) => {
+        rebelSlider.addEventListener('mousemove', (e) => {
             if (!isDragging) return;
             currentX = e.clientX;
             const diff = currentX - startX;
-            const slideWidth = slider.offsetWidth;
-            const translate = -(currentSlide * 100) + (diff / slideWidth * 100);
-            slider.style.transform = `translateX(${translate}%)`;
+            const slideWidth = rebelSlider.offsetWidth;
+            const translate = -(rebelCurrent * 100) + (diff / slideWidth * 100);
+            rebelSlider.style.transform = `translateX(${translate}%)`;
         });
 
-        slider.addEventListener('mouseup', (e) => {
+        rebelSlider.addEventListener('mouseup', (e) => {
             if (!isDragging) return;
             isDragging = false;
-            slider.classList.remove('dragging');
+            rebelSlider.classList.remove('dragging');
 
             const diff = currentX - startX;
-            const threshold = slider.offsetWidth * 0.15;
+            const threshold = rebelSlider.offsetWidth * 0.15;
 
             if (Math.abs(diff) > threshold) {
                 if (diff > 0) {
@@ -1944,157 +2187,96 @@
                     nextSlide();
                 }
             } else {
-                goToSlide(currentSlide);
+                goToSlide(rebelCurrent);
             }
 
             startAutoSlide();
         });
 
-        slider.addEventListener('mouseleave', () => {
+        rebelSlider.addEventListener('mouseleave', () => {
             if (isDragging) {
                 isDragging = false;
-                slider.classList.remove('dragging');
-                goToSlide(currentSlide);
+                rebelSlider.classList.remove('dragging');
+                goToSlide(rebelCurrent);
                 startAutoSlide();
             }
         });
 
         // 启动自动轮播
         startAutoSlide();
+    
 
-
-
-        window.LiveGigsAdmin = {
-            update: function(editableId, newValue, type = 'text') {
-                const element = document.querySelector(`[data-editable="${editableId}"]`);
-                if (!element) return;
-                if (type === 'src') {
-                    element.src = newValue;
-                    element.setAttribute('data-src', newValue);
-                } else if (type === 'href') {
-                    element.href = newValue;
-                    element.setAttribute('data-href', newValue);
-                    if (element.tagName === 'BUTTON') {
-                        element.onclick = function() { window.open(newValue, '_blank'); };
-                    }
-                } else if (type === 'link') {
-                    element.setAttribute('data-link', newValue);
-                    const linkElement = element.querySelector('.poster-link');
-                    if (linkElement) linkElement.href = newValue;
-                } else if (type === 'mailto') {
-                    element.href = 'mailto:' + newValue;
-                    element.textContent = newValue;
-                } else if (type === 'tel') {
-                    element.href = 'tel:' + newValue;
-                    element.textContent = newValue;
-                } else {
-                    element.textContent = newValue;
-                    element.setAttribute('data-text', newValue);
-                }
-            },
-            updatePosterLink: function(posterId, newLink) {
-                const poster = document.querySelector(`[data-poster-id="${posterId}"]`);
-                if (poster) {
-                    poster.setAttribute('data-link', newLink);
-                    const linkElement = poster.querySelector('.poster-link');
-                    if (linkElement) linkElement.href = newLink;
-                }
-            }
-        };
-    </script>
-<script src="./js/livegigs-data.js"></script>
-    <script>
-  // 自动加载数据并渲染
-  if (typeof LiveGigsData !== 'undefined') {
-    LiveGigsData.loadAndRender('index');
-  }
+// 数据加载
+if (typeof LiveGigsData !== 'undefined') {
+    LiveGigsData.loadAndRender('cn');
+}
 </script>
 
+<script>
 
+        // 背景图懒加载
+        const BgLazyLoader = {
+            observer: null,
 
+            init: function() {
+                const options = {
+                    root: null,
+                    rootMargin: '100px 0px',
+                    threshold: 0.01
+                };
 
-    <!-- 海报2轮播脚本 -->
-    <script>
-        // 海报2轮播数据
-        const poster2Data = [
-            { title: 'Upcoming Event', linkText: 'More Events →', img: 'https://new.brg-radio.com/wp-content/uploads/2026/02/Black-Flag-web.jpg.jpeg', link: 'events.html' },
-            { title: 'LiveGigs Cn', linkText: 'CN特别版 →', img: './image/livegigscnad.webp', link: './cn.html' }
-        ];
+                this.observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            this.loadBg(entry.target);
+                            this.observer.unobserve(entry.target);
+                        }
+                    });
+                }, options);
 
-        let poster2CurrentSlide = 0;
-        let poster2SlideInterval = null;
-
-        function initPoster2Carousel() {
-            const slides = document.querySelectorAll('.poster-carousel-slide');
-            const dots = document.querySelectorAll('.carousel-dot');
-            const carousel = document.getElementById('posterCarousel');
-            if (slides.length === 0 || !carousel) return;
-
-            // 启动自动轮播
-            startPoster2Autoplay();
-
-            dots.forEach((dot, index) => {
-                dot.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    stopPoster2Autoplay();
-                    goToPoster2Slide(index);
-                    startPoster2Autoplay();
+                // 观察所有需要懒加载的背景
+                document.querySelectorAll('[data-lazy-bg="true"]').forEach(el => {
+                    this.observer.observe(el);
                 });
-            });
+            },
 
-            carousel.addEventListener('mouseenter', stopPoster2Autoplay);
-            carousel.addEventListener('mouseleave', startPoster2Autoplay);
-        }
+            loadBg: function(element) {
+                const originalSrc = element.dataset.src;
+                if (!originalSrc) return;
 
-        function startPoster2Autoplay() {
-            stopPoster2Autoplay();
-            poster2SlideInterval = setInterval(() => { goToPoster2Slide(poster2CurrentSlide + 1); }, 5000);
-        }
+                const optimizedSrc = WebPHelper.getOptimizedUrl(originalSrc);
 
-        function stopPoster2Autoplay() {
-            if (poster2SlideInterval) {
-                clearInterval(poster2SlideInterval);
-                poster2SlideInterval = null;
+                const img = new Image();
+                img.onload = function() {
+                    element.style.backgroundImage = `url(${optimizedSrc})`;
+                    element.classList.add('bg-loaded');
+                };
+                img.onerror = function() {
+                    // 回退到原格式
+                    if (optimizedSrc !== originalSrc) {
+                        const fallbackImg = new Image();
+                        fallbackImg.onload = function() {
+                            element.style.backgroundImage = `url(${originalSrc})`;
+                            element.classList.add('bg-loaded');
+                        };
+                        fallbackImg.src = originalSrc;
+                    }
+                };
+                img.src = optimizedSrc;
             }
-        }
+        };
 
-        function goToPoster2Slide(n) {
-            const slides = document.querySelectorAll('.poster-carousel-slide');
-            const dots = document.querySelectorAll('.carousel-dot');
-            const titleEl = document.getElementById('poster2Title');
-            const linkEl = document.getElementById('poster2Link');
-            if (slides.length === 0) return;
-
-            slides[poster2CurrentSlide].classList.remove('active');
-            dots[poster2CurrentSlide].classList.remove('active');
-            poster2CurrentSlide = (n + slides.length) % slides.length;
-            slides[poster2CurrentSlide].classList.add('active');
-            dots[poster2CurrentSlide].classList.add('active');
-
-            if (titleEl && linkEl && poster2Data[poster2CurrentSlide]) {
-                titleEl.textContent = poster2Data[poster2CurrentSlide].title;
-                linkEl.textContent = poster2Data[poster2CurrentSlide].linkText;
-                if (poster2Data[poster2CurrentSlide].link && poster2Data[poster2CurrentSlide].link.trim() !== '') {
-                    linkEl.href = poster2Data[poster2CurrentSlide].link;
-                    linkEl.style.pointerEvents = 'auto';
-                } else {
-                    linkEl.href = '#';
-                    linkEl.style.pointerEvents = 'none';
-                }
-            }
-        }
-
-        // 初始化
+        // 初始化背景懒加载
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initPoster2Carousel);
+            document.addEventListener('DOMContentLoaded', () => BgLazyLoader.init());
         } else {
-            setTimeout(initPoster2Carousel, 100);
+            BgLazyLoader.init();
         }
-        window.addEventListener('load', initPoster2Carousel);
-    </script>
-    </div>
+    
+</script>
 
-    <!-- 加载动画脚本 -->
+<!-- 加载动画脚本 -->
+<!-- 加载动画脚本 -->
     <script>
         (function() {
             const elements = {
@@ -2226,390 +2408,11 @@
             }, 3200);
 
             // 预加载关键资源
-            ['https://livegigsasia.com/image/webtop.png', './image/cn-hero-bg.jpg'].forEach(url => {
+            ['https://livegigsasia.com/image/webtop.png', 'https://livegigsasia.com/image/e-hero%20bg.jpg'].forEach(url => {
                 const img = new Image();
                 img.src = url;
             });
         })();
     </script>
-
-    <!-- Membership弹窗脚本 -->
-    <script>
-        function openModal() {
-            document.getElementById('membershipModal').classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-        function closeModal() {
-            document.getElementById('membershipModal').classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-        document.getElementById('membershipModal').addEventListener('click', function(e) {
-            if (e.target === this) closeModal();
-        });
-        function handleFormSubmit(e) {
-            e.preventDefault();
-            const form = document.getElementById('membershipForm');
-            const formData = new FormData(form);
-            const successDiv = document.getElementById('formSuccess');
-            formData.append('timestamp', new Date().toISOString());
-            fetch(form.action, { method: 'POST', body: formData })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        successDiv.style.display = 'block';
-                        const submissionData = {
-                            name: document.getElementById('memberName').value,
-                            email: document.getElementById('memberEmail').value,
-                            phone: document.getElementById('memberPhone').value,
-                            message: document.getElementById('memberMessage').value,
-                            timestamp: new Date().toISOString(),
-                            source: 'LiveGigs Asia Homepage'
-                        };
-                        let submissions = JSON.parse(localStorage.getItem('membershipSubmissions') || '[]');
-                        submissions.push(submissionData);
-                        localStorage.setItem('membershipSubmissions', JSON.stringify(submissions));
-                        setTimeout(() => { closeModal(); form.reset(); successDiv.style.display = 'none'; }, 3000);
-                    } else {
-                        alert('There was an error submitting your application. Please try again.');
-                    }
-                }).catch(error => {
-                    console.error('Error:', error);
-                    alert('There was an error submitting your application. Please try again.');
-                });
-        }
-    </script>
-
-    <!-- Banner轮播脚本 -->
-    <script>
-        (function() {
-            const slider = document.getElementById('rebelSlider');
-            if (!slider) return;
-            let currentSlide = 0;
-            const slides = document.querySelectorAll('.rebel-slide');
-            const totalSlides = slides.length;
-            let autoSlideInterval, startX = 0, currentX = 0, isDragging = false;
-
-            function goToSlide(index) {
-                currentSlide = index;
-                if (currentSlide < 0) currentSlide = totalSlides - 1;
-                if (currentSlide >= totalSlides) currentSlide = 0;
-                slider.style.transform = `translateX(-${currentSlide * 100}%)`;
-            }
-            function nextSlide() { goToSlide(currentSlide + 1); }
-            function prevSlide() { goToSlide(currentSlide - 1); }
-            function startAutoSlide() { autoSlideInterval = setInterval(nextSlide, 5000); }
-            function stopAutoSlide() { clearInterval(autoSlideInterval); }
-
-            slider.addEventListener('touchstart', (e) => {
-                startX = e.touches[0].clientX;
-                currentX = startX;
-                isDragging = true;
-                stopAutoSlide();
-                slider.classList.add('dragging');
-            }, { passive: true });
-
-            slider.addEventListener('touchmove', (e) => {
-                if (!isDragging) return;
-                currentX = e.touches[0].clientX;
-                const diff = currentX - startX;
-                const slideWidth = slider.offsetWidth;
-                const translate = -(currentSlide * 100) + (diff / slideWidth * 100);
-                slider.style.transform = `translateX(${translate}%)`;
-            }, { passive: true });
-
-            slider.addEventListener('touchend', () => {
-                if (!isDragging) return;
-                isDragging = false;
-                slider.classList.remove('dragging');
-                const diff = currentX - startX;
-                const threshold = slider.offsetWidth * 0.15;
-                if (Math.abs(diff) > threshold) {
-                    diff > 0 ? prevSlide() : nextSlide();
-                } else {
-                    goToSlide(currentSlide);
-                }
-                startAutoSlide();
-            });
-
-            slider.addEventListener('mousedown', (e) => {
-                startX = e.clientX;
-                currentX = startX;
-                isDragging = true;
-                stopAutoSlide();
-                slider.classList.add('dragging');
-                e.preventDefault();
-            });
-
-            slider.addEventListener('mousemove', (e) => {
-                if (!isDragging) return;
-                currentX = e.clientX;
-                const diff = currentX - startX;
-                const slideWidth = slider.offsetWidth;
-                const translate = -(currentSlide * 100) + (diff / slideWidth * 100);
-                slider.style.transform = `translateX(${translate}%)`;
-            });
-
-            slider.addEventListener('mouseup', () => {
-                if (!isDragging) return;
-                isDragging = false;
-                slider.classList.remove('dragging');
-                const diff = currentX - startX;
-                const threshold = slider.offsetWidth * 0.15;
-                if (Math.abs(diff) > threshold) {
-                    diff > 0 ? prevSlide() : nextSlide();
-                } else {
-                    goToSlide(currentSlide);
-                }
-                startAutoSlide();
-            });
-
-            slider.addEventListener('mouseleave', () => {
-                if (isDragging) {
-                    isDragging = false;
-                    slider.classList.remove('dragging');
-                    goToSlide(currentSlide);
-                    startAutoSlide();
-                }
-            });
-
-            startAutoSlide();
-        })();
-    </script>
-
-    <!-- 懒加载脚本 - 优化版 -->
-    <script>
-        (function() {
-            const LazyLoader = {
-                observer: null,
-                imageCache: new Map(),
-
-                init: function() {
-                    // 使用更大的rootMargin提前加载
-                    this.observer = new IntersectionObserver((entries) => {
-                        entries.forEach(entry => {
-                            if (entry.isIntersecting) {
-                                this.loadImage(entry.target);
-                                this.observer.unobserve(entry.target);
-                            }
-                        });
-                    }, { 
-                        root: null, 
-                        rootMargin: '200px 0px', // 提前200px开始加载
-                        threshold: 0 
-                    });
-
-                    // 分批处理图片，避免阻塞
-                    requestIdleCallback ? 
-                        requestIdleCallback(() => this.observeImages(), { timeout: 1000 }) :
-                        setTimeout(() => this.observeImages(), 100);
-
-                    // 立即加载首屏
-                    this.loadCriticalImages();
-                },
-
-                observeImages: function() {
-                    const images = document.querySelectorAll('img[data-src]:not([data-loaded])');
-                    images.forEach((img, index) => {
-                        // 使用requestAnimationFrame分批处理
-                        if (index < 10) {
-                            this.observer.observe(img);
-                        } else {
-                            setTimeout(() => this.observer.observe(img), index * 10);
-                        }
-                    });
-                },
-
-                loadCriticalImages: function() {
-                    const viewportHeight = window.innerHeight;
-                    document.querySelectorAll('img[data-src]:not([data-loaded])').forEach(img => {
-                        const rect = img.getBoundingClientRect();
-                        // 首屏+缓冲区内的图片立即加载
-                        if (rect.top < viewportHeight + 200) {
-                            this.loadImage(img, true);
-                        }
-                    });
-                },
-
-                loadImage: function(img, isCritical = false) {
-                    if (img.dataset.loaded) return;
-                    const originalSrc = img.dataset.src;
-                    if (!originalSrc) return;
-
-                    // 检查缓存
-                    if (this.imageCache.has(originalSrc)) {
-                        img.src = originalSrc;
-                        img.classList.add('loaded');
-                        img.dataset.loaded = 'true';
-                        return;
-                    }
-
-                    img.classList.add('loading');
-                    img.dataset.loaded = 'true';
-
-                    const preloadImg = new Image();
-                    preloadImg.onload = () => {
-                        this.imageCache.set(originalSrc, true);
-                        img.src = originalSrc;
-                        img.classList.remove('loading');
-                        img.classList.add('loaded');
-                    };
-                    preloadImg.onerror = () => {
-                        const isBanner = img.classList.contains('rebel-poster');
-                        img.src = isBanner ? './image/asia-bannerbg.webp' : './image/asia-asiaad.jpg';
-                        img.classList.remove('loading');
-                    };
-
-                    // 关键图片优先加载
-                    if (isCritical) {
-                        preloadImg.fetchPriority = 'high';
-                    }
-                    preloadImg.src = originalSrc;
-                }
-            };
-
-            // 使用 requestIdleCallback 或 setTimeout 延迟初始化
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', () => LazyLoader.init());
-            } else {
-                LazyLoader.init();
-            }
-
-            // 强制立即加载首屏Banner图片
-            document.querySelectorAll('.rebel-poster').forEach(img => {
-                if (img.dataset.src && !img.src) {
-                    img.src = img.dataset.src;
-                    img.dataset.loaded = 'true';
-                }
-            });
-        })();
-    </script>
-
-    
-
-    <!-- Admin管理脚本 -->
-    <script>
-        // 重置加载动画状态（用于测试）
-        function resetLoaderState() {
-            localStorage.removeItem('livegigs_loaded_once');
-            sessionStorage.removeItem('livegigs_session_loaded');
-            console.log('Loader state reset - animation will play on next visit');
-        }
-
-        window.LiveGigsAdmin = {
-            update: function(editableId, newValue, type = 'text') {
-                const element = document.querySelector(`[data-editable="${editableId}"]`);
-                if (!element) return;
-                if (type === 'src') {
-                    element.src = newValue;
-                    element.setAttribute('data-src', newValue);
-                } else if (type === 'href') {
-                    element.href = newValue;
-                    element.setAttribute('data-href', newValue);
-                    if (element.tagName === 'BUTTON') {
-                        element.onclick = function() { window.open(newValue, '_blank'); };
-                    }
-                } else if (type === 'link') {
-                    element.setAttribute('data-link', newValue);
-                    const linkElement = element.querySelector('.poster-link');
-                    if (linkElement) linkElement.href = newValue;
-                } else if (type === 'mailto') {
-                    element.href = 'mailto:' + newValue;
-                    element.textContent = newValue;
-                } else if (type === 'tel') {
-                    element.href = 'tel:' + newValue;
-                    element.textContent = newValue;
-                } else {
-                    element.textContent = newValue;
-                    element.setAttribute('data-text', newValue);
-                }
-            },
-            updateMultiple: function(updates) {
-                updates.forEach(update => this.update(update.id, update.value, update.type));
-            },
-            getAll: function() {
-                const elements = document.querySelectorAll('[data-editable]');
-                const content = {};
-                elements.forEach(el => {
-                    const id = el.getAttribute('data-editable');
-                    let type = 'text';
-                    if (el.hasAttribute('data-src')) type = 'image';
-                    else if (el.hasAttribute('data-href')) type = 'link';
-                    else if (el.hasAttribute('data-link')) type = 'poster-link';
-                    content[id] = {
-                        type: type,
-                        value: type === 'image' ? el.getAttribute('data-src') :
-                              type === 'link' ? el.getAttribute('data-href') :
-                              type === 'poster-link' ? el.getAttribute('data-link') :
-                              el.getAttribute('data-text'),
-                        element: el.tagName
-                    };
-                });
-                return content;
-            },
-            updatePosterLink: function(posterId, newLink) {
-                const poster = document.querySelector(`[data-poster-id="${posterId}"]`);
-                if (poster) {
-                    poster.setAttribute('data-link', newLink);
-                    const linkElement = poster.querySelector('.poster-link');
-                    if (linkElement) linkElement.href = newLink;
-                }
-            },
-            updateBanner: function(index, image, title, buttonText, buttonLink) {
-                this.update(`banner-${index}-image`, image, 'src');
-                this.update(`banner-${index}-title`, title, 'text');
-                this.update(`banner-${index}-btn`, buttonText, 'text');
-                const btn = document.querySelector(`[data-editable="banner-${index}-btn"]`);
-                if (btn) {
-                    btn.setAttribute('data-href', buttonLink);
-                    btn.onclick = function() { window.open(buttonLink, '_blank'); };
-                }
-            },
-            updatePoster: function(index, image, title, linkText, link) {
-                this.update(`poster-${index}-image`, image, 'src');
-                this.update(`poster-${index}-title`, title, 'text');
-                this.update(`poster-${index}-link-text`, linkText, 'text');
-                this.updatePosterLink(index, link);
-            },
-            social: {
-                add: function(platform, href, svgPath) {
-                    const container = document.getElementById('socialContainer');
-                    const a = document.createElement('a');
-                    a.href = href;
-                    a.className = 'social-icon';
-                    a.title = platform;
-                    a.setAttribute('data-platform', platform);
-                    a.setAttribute('data-editable', 'social-' + platform);
-                    a.setAttribute('data-href', href);
-                    a.innerHTML = svgPath;
-                    container.appendChild(a);
-                },
-                update: function(platform, newHref) {
-                    const icon = document.querySelector(`[data-platform="${platform}"]`);
-                    if (icon) {
-                        icon.href = newHref;
-                        icon.setAttribute('data-href', newHref);
-                    }
-                },
-                remove: function(platform) {
-                    const icon = document.querySelector(`[data-platform="${platform}"]`);
-                    if (icon) icon.remove();
-                }
-            },
-            footer: {
-                updateText: function(id, value) { window.LiveGigsAdmin.update(id, value, 'text'); },
-                updateHref: function(id, href) { window.LiveGigsAdmin.update(id, href, 'href'); },
-                updateImage: function(id, src) { window.LiveGigsAdmin.update(id, src, 'src'); },
-                updateEmail: function(id, email) { window.LiveGigsAdmin.update(id, email, 'mailto'); },
-                updatePhone: function(id, phone) { window.LiveGigsAdmin.update(id, phone, 'tel'); }
-            },
-            resetLoader: resetLoaderState
-        };
-    </script>
-
-    <script src="./js/livegigs-data.js"></script>
-    <script>
-        if (typeof LiveGigsData !== 'undefined') {
-            LiveGigsData.loadAndRender('index');
-        }
-    </script>
 </body>
+</html>
