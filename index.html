@@ -1508,7 +1508,7 @@
     <!-- 性能优化：预加载关键资源 -->
     <link rel="preload" href="./image/hero%20bg.jpeg" as="image">
     <link rel="preload" href="./image/logo.png" as="image">
-    <link rel="preload" href="./image/webtop.png" as="image">
+    <link rel="preload" href="https://livegigsasia.com/image/webtop.png" as="image">
     <link rel="preload" href="https://livegigsasia.com/image/e-hero%20bg.jpg" as="image">
 
     <!-- 预连接关键域名 -->
@@ -1805,240 +1805,7 @@
     </div>
 
     <!-- JavaScript -->
-    <script>
-        function openModal() {
-            document.getElementById('membershipModal').classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeModal() {
-            document.getElementById('membershipModal').classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-
-        document.getElementById('membershipModal').addEventListener('click', function(e) {
-            if (e.target === this) closeModal();
-        });
-
-        function handleFormSubmit(e) {
-            e.preventDefault();
-            const form = document.getElementById('membershipForm');
-            const formData = new FormData(form);
-            const successDiv = document.getElementById('formSuccess');
-
-            // 添加时间戳
-            formData.append('timestamp', new Date().toISOString());
-
-            // 发送到 Web3Forms
-            fetch(form.action, {
-                method: 'POST',
-                body: formData
-            }).then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // 显示成功消息
-                    successDiv.style.display = 'block';
-
-                    // 保存到 localStorage 备份
-                    const submissionData = {
-                        name: document.getElementById('memberName').value,
-                        email: document.getElementById('memberEmail').value,
-                        phone: document.getElementById('memberPhone').value,
-                        message: document.getElementById('memberMessage').value,
-                        timestamp: new Date().toISOString(),
-                        source: 'LiveGigs Asia Homepage'
-                    };
-                    let submissions = JSON.parse(localStorage.getItem('membershipSubmissions') || '[]');
-                    submissions.push(submissionData);
-                    localStorage.setItem('membershipSubmissions', JSON.stringify(submissions));
-
-                    // 3秒后关闭弹窗并重置表单
-                    setTimeout(() => {
-                        closeModal();
-                        form.reset();
-                        successDiv.style.display = 'none';
-                    }, 3000);
-                } else {
-                    alert('There was an error submitting your application. Please try again.');
-                }
-            }).catch(error => {
-                console.error('Error:', error);
-                alert('There was an error submitting your application. Please try again.');
-            });
-        }
-
-        document.getElementById('logo').addEventListener('error', function() {
-            this.style.display = 'none';
-        });
-
-
-
-        const slider = document.getElementById('rebelSlider');
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.rebel-slide');
-        const totalSlides = slides.length;
-        let autoSlideInterval;
-
-        // 触摸滑动变量
-        let startX = 0;
-        let currentX = 0;
-        let isDragging = false;
-        let startTranslate = 0;
-
-        function goToSlide(index) {
-            currentSlide = index;
-            if (currentSlide < 0) currentSlide = totalSlides - 1;
-            if (currentSlide >= totalSlides) currentSlide = 0;
-            slider.style.transform = `translateX(-${currentSlide * 100}%)`;
-        }
-
-        function nextSlide() {
-            goToSlide(currentSlide + 1);
-        }
-
-        function prevSlide() {
-            goToSlide(currentSlide - 1);
-        }
-
-        function startAutoSlide() {
-            autoSlideInterval = setInterval(nextSlide, 5000);
-        }
-
-        function stopAutoSlide() {
-            clearInterval(autoSlideInterval);
-        }
-
-        // 触摸事件处理
-        slider.addEventListener('touchstart', (e) => {
-            startX = e.touches[0].clientX;
-            currentX = startX;
-            isDragging = true;
-            stopAutoSlide();
-            slider.classList.add('dragging');
-        }, { passive: true });
-
-        slider.addEventListener('touchmove', (e) => {
-            if (!isDragging) return;
-            currentX = e.touches[0].clientX;
-            const diff = currentX - startX;
-            const slideWidth = slider.offsetWidth;
-            const translate = -(currentSlide * 100) + (diff / slideWidth * 100);
-            slider.style.transform = `translateX(${translate}%)`;
-        }, { passive: true });
-
-        slider.addEventListener('touchend', (e) => {
-            if (!isDragging) return;
-            isDragging = false;
-            slider.classList.remove('dragging');
-
-            const diff = currentX - startX;
-            const threshold = slider.offsetWidth * 0.15; // 15% 滑动阈值
-
-            if (Math.abs(diff) > threshold) {
-                if (diff > 0) {
-                    prevSlide();
-                } else {
-                    nextSlide();
-                }
-            } else {
-                goToSlide(currentSlide);
-            }
-
-            startAutoSlide();
-        });
-
-        // 鼠标拖拽支持（桌面端）
-        slider.addEventListener('mousedown', (e) => {
-            startX = e.clientX;
-            currentX = startX;
-            isDragging = true;
-            stopAutoSlide();
-            slider.classList.add('dragging');
-            e.preventDefault();
-        });
-
-        slider.addEventListener('mousemove', (e) => {
-            if (!isDragging) return;
-            currentX = e.clientX;
-            const diff = currentX - startX;
-            const slideWidth = slider.offsetWidth;
-            const translate = -(currentSlide * 100) + (diff / slideWidth * 100);
-            slider.style.transform = `translateX(${translate}%)`;
-        });
-
-        slider.addEventListener('mouseup', (e) => {
-            if (!isDragging) return;
-            isDragging = false;
-            slider.classList.remove('dragging');
-
-            const diff = currentX - startX;
-            const threshold = slider.offsetWidth * 0.15;
-
-            if (Math.abs(diff) > threshold) {
-                if (diff > 0) {
-                    prevSlide();
-                } else {
-                    nextSlide();
-                }
-            } else {
-                goToSlide(currentSlide);
-            }
-
-            startAutoSlide();
-        });
-
-        slider.addEventListener('mouseleave', () => {
-            if (isDragging) {
-                isDragging = false;
-                slider.classList.remove('dragging');
-                goToSlide(currentSlide);
-                startAutoSlide();
-            }
-        });
-
-        // 启动自动轮播
-        startAutoSlide();
-
-
-
-        window.LiveGigsAdmin = {
-            update: function(editableId, newValue, type = 'text') {
-                const element = document.querySelector(`[data-editable="${editableId}"]`);
-                if (!element) return;
-                if (type === 'src') {
-                    element.src = newValue;
-                    element.setAttribute('data-src', newValue);
-                } else if (type === 'href') {
-                    element.href = newValue;
-                    element.setAttribute('data-href', newValue);
-                    if (element.tagName === 'BUTTON') {
-                        element.onclick = function() { window.open(newValue, '_blank'); };
-                    }
-                } else if (type === 'link') {
-                    element.setAttribute('data-link', newValue);
-                    const linkElement = element.querySelector('.poster-link');
-                    if (linkElement) linkElement.href = newValue;
-                } else if (type === 'mailto') {
-                    element.href = 'mailto:' + newValue;
-                    element.textContent = newValue;
-                } else if (type === 'tel') {
-                    element.href = 'tel:' + newValue;
-                    element.textContent = newValue;
-                } else {
-                    element.textContent = newValue;
-                    element.setAttribute('data-text', newValue);
-                }
-            },
-            updatePosterLink: function(posterId, newLink) {
-                const poster = document.querySelector(`[data-poster-id="${posterId}"]`);
-                if (poster) {
-                    poster.setAttribute('data-link', newLink);
-                    const linkElement = poster.querySelector('.poster-link');
-                    if (linkElement) linkElement.href = newLink;
-                }
-            }
-        };
-    </script>
+    
 <script src="./js/livegigs-data.js"></script>
     <script>
   // 自动加载数据并渲染
@@ -2046,9 +1813,6 @@
     LiveGigsData.loadAndRender('index');
   }
 </script>
-
-
-
 
     <!-- 海报2轮播脚本 -->
     <script>
@@ -2275,50 +2039,7 @@
     </script>
 
     <!-- Membership弹窗脚本 -->
-    <script>
-        function openModal() {
-            document.getElementById('membershipModal').classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-        function closeModal() {
-            document.getElementById('membershipModal').classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-        document.getElementById('membershipModal').addEventListener('click', function(e) {
-            if (e.target === this) closeModal();
-        });
-        function handleFormSubmit(e) {
-            e.preventDefault();
-            const form = document.getElementById('membershipForm');
-            const formData = new FormData(form);
-            const successDiv = document.getElementById('formSuccess');
-            formData.append('timestamp', new Date().toISOString());
-            fetch(form.action, { method: 'POST', body: formData })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        successDiv.style.display = 'block';
-                        const submissionData = {
-                            name: document.getElementById('memberName').value,
-                            email: document.getElementById('memberEmail').value,
-                            phone: document.getElementById('memberPhone').value,
-                            message: document.getElementById('memberMessage').value,
-                            timestamp: new Date().toISOString(),
-                            source: 'LiveGigs Asia Homepage'
-                        };
-                        let submissions = JSON.parse(localStorage.getItem('membershipSubmissions') || '[]');
-                        submissions.push(submissionData);
-                        localStorage.setItem('membershipSubmissions', JSON.stringify(submissions));
-                        setTimeout(() => { closeModal(); form.reset(); successDiv.style.display = 'none'; }, 3000);
-                    } else {
-                        alert('There was an error submitting your application. Please try again.');
-                    }
-                }).catch(error => {
-                    console.error('Error:', error);
-                    alert('There was an error submitting your application. Please try again.');
-                });
-        }
-    </script>
+    
 
     <!-- Banner轮播脚本 -->
     <script>
@@ -2527,7 +2248,7 @@
 
     
 
-    <!-- Admin管理脚本 -->
+        <!-- Membership弹窗脚本 -->
     <script>
         // 重置加载动画状态（用于测试）
         function resetLoaderState() {
@@ -2545,122 +2266,52 @@
             }
         });
 
-        window.LiveGigsAdmin = {
-            update: function(editableId, newValue, type = 'text') {
-                const element = document.querySelector(`[data-editable="${editableId}"]`);
-                if (!element) return;
-                if (type === 'src') {
-                    element.src = newValue;
-                    element.setAttribute('data-src', newValue);
-                } else if (type === 'href') {
-                    element.href = newValue;
-                    element.setAttribute('data-href', newValue);
-                    if (element.tagName === 'BUTTON') {
-                        element.onclick = function() { window.open(newValue, '_blank'); };
+        function openModal() {
+            document.getElementById('membershipModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeModal() {
+            document.getElementById('membershipModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+        document.getElementById('membershipModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const form = document.getElementById('membershipForm');
+            const formData = new FormData(form);
+            const successDiv = document.getElementById('formSuccess');
+            formData.append('timestamp', new Date().toISOString());
+            fetch(form.action, { method: 'POST', body: formData })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        successDiv.style.display = 'block';
+                        const submissionData = {
+                            name: document.getElementById('memberName').value,
+                            email: document.getElementById('memberEmail').value,
+                            phone: document.getElementById('memberPhone').value,
+                            message: document.getElementById('memberMessage').value,
+                            timestamp: new Date().toISOString(),
+                            source: 'LiveGigs Asia Homepage'
+                        };
+                        let submissions = JSON.parse(localStorage.getItem('membershipSubmissions') || '[]');
+                        submissions.push(submissionData);
+                        localStorage.setItem('membershipSubmissions', JSON.stringify(submissions));
+                        setTimeout(() => { closeModal(); form.reset(); successDiv.style.display = 'none'; }, 3000);
+                    } else {
+                        alert('There was an error submitting your application. Please try again.');
                     }
-                } else if (type === 'link') {
-                    element.setAttribute('data-link', newValue);
-                    const linkElement = element.querySelector('.poster-link');
-                    if (linkElement) linkElement.href = newValue;
-                } else if (type === 'mailto') {
-                    element.href = 'mailto:' + newValue;
-                    element.textContent = newValue;
-                } else if (type === 'tel') {
-                    element.href = 'tel:' + newValue;
-                    element.textContent = newValue;
-                } else {
-                    element.textContent = newValue;
-                    element.setAttribute('data-text', newValue);
-                }
-            },
-            updateMultiple: function(updates) {
-                updates.forEach(update => this.update(update.id, update.value, update.type));
-            },
-            getAll: function() {
-                const elements = document.querySelectorAll('[data-editable]');
-                const content = {};
-                elements.forEach(el => {
-                    const id = el.getAttribute('data-editable');
-                    let type = 'text';
-                    if (el.hasAttribute('data-src')) type = 'image';
-                    else if (el.hasAttribute('data-href')) type = 'link';
-                    else if (el.hasAttribute('data-link')) type = 'poster-link';
-                    content[id] = {
-                        type: type,
-                        value: type === 'image' ? el.getAttribute('data-src') :
-                              type === 'link' ? el.getAttribute('data-href') :
-                              type === 'poster-link' ? el.getAttribute('data-link') :
-                              el.getAttribute('data-text'),
-                        element: el.tagName
-                    };
+                }).catch(error => {
+                    console.error('Error:', error);
+                    alert('There was an error submitting your application. Please try again.');
                 });
-                return content;
-            },
-            updatePosterLink: function(posterId, newLink) {
-                const poster = document.querySelector(`[data-poster-id="${posterId}"]`);
-                if (poster) {
-                    poster.setAttribute('data-link', newLink);
-                    const linkElement = poster.querySelector('.poster-link');
-                    if (linkElement) linkElement.href = newLink;
-                }
-            },
-            updateBanner: function(index, image, title, buttonText, buttonLink) {
-                this.update(`banner-${index}-image`, image, 'src');
-                this.update(`banner-${index}-title`, title, 'text');
-                this.update(`banner-${index}-btn`, buttonText, 'text');
-                const btn = document.querySelector(`[data-editable="banner-${index}-btn"]`);
-                if (btn) {
-                    btn.setAttribute('data-href', buttonLink);
-                    btn.onclick = function() { window.open(buttonLink, '_blank'); };
-                }
-            },
-            updatePoster: function(index, image, title, linkText, link) {
-                this.update(`poster-${index}-image`, image, 'src');
-                this.update(`poster-${index}-title`, title, 'text');
-                this.update(`poster-${index}-link-text`, linkText, 'text');
-                this.updatePosterLink(index, link);
-            },
-            social: {
-                add: function(platform, href, svgPath) {
-                    const container = document.getElementById('socialContainer');
-                    const a = document.createElement('a');
-                    a.href = href;
-                    a.className = 'social-icon';
-                    a.title = platform;
-                    a.setAttribute('data-platform', platform);
-                    a.setAttribute('data-editable', 'social-' + platform);
-                    a.setAttribute('data-href', href);
-                    a.innerHTML = svgPath;
-                    container.appendChild(a);
-                },
-                update: function(platform, newHref) {
-                    const icon = document.querySelector(`[data-platform="${platform}"]`);
-                    if (icon) {
-                        icon.href = newHref;
-                        icon.setAttribute('data-href', newHref);
-                    }
-                },
-                remove: function(platform) {
-                    const icon = document.querySelector(`[data-platform="${platform}"]`);
-                    if (icon) icon.remove();
-                }
-            },
-            footer: {
-                updateText: function(id, value) { window.LiveGigsAdmin.update(id, value, 'text'); },
-                updateHref: function(id, href) { window.LiveGigsAdmin.update(id, href, 'href'); },
-                updateImage: function(id, src) { window.LiveGigsAdmin.update(id, src, 'src'); },
-                updateEmail: function(id, email) { window.LiveGigsAdmin.update(id, email, 'mailto'); },
-                updatePhone: function(id, phone) { window.LiveGigsAdmin.update(id, phone, 'tel'); }
-            },
-            resetLoader: resetLoaderState
-        };
-    </script>
-
-    <script src="./js/livegigs-data.js"></script>
-    <script>
-        if (typeof LiveGigsData !== 'undefined') {
-            LiveGigsData.loadAndRender('index');
         }
     </script>
+
+<!-- Admin管理脚本 -->
+    
+
 </body>
 </html>
