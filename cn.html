@@ -1,4 +1,499 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>LiveGigs CN</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="dns-prefetch" href="https://weibo.com"><link rel="dns-prefetch" href="https://www.xiaohongshu.com"><link rel="icon" type="image/png" href="./image/webtop.png"><link rel="shortcut icon" type="image/png" href="./image/webtop.png"><style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        /* 加载动画容器 */
+        #loader-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* 噪点层 */
+        .noise {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            animation: noise 0.1s steps(2) infinite;
+        }
+
+        @keyframes noise {
+            0%, 100% { transform: translate(0, 0); }
+            10% { transform: translate(-5%, -5%); }
+            20% { transform: translate(-10%, 5%); }
+            30% { transform: translate(5%, -10%); }
+            40% { transform: translate(-5%, 15%); }
+            50% { transform: translate(-10%, 5%); }
+            60% { transform: translate(15%, 0); }
+            70% { transform: translate(0, 10%); }
+            80% { transform: translate(-15%, 0); }
+            90% { transform: translate(10%, 5%); }
+        }
+
+        /* 震动线条 */
+        .scan-lines {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 0;
+            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255, 0, 0, 0.1) 2px, rgba(255, 0, 0, 0.1) 4px);
+            animation: scanlines 0.8s ease-out forwards;
+        }
+
+        @keyframes scanlines {
+            0% { height: 0; opacity: 0; }
+            100% { height: 100%; opacity: 1; }
+        }
+
+        /* 红色扫描线 */
+        .red-scan {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ff0000, transparent);
+            box-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000;
+            opacity: 0;
+        }
+
+        .red-scan.active { animation: scanMove 1s ease-in-out; }
+
+        @keyframes scanMove {
+            0% { left: -100%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { left: 100%; opacity: 0; }
+        }
+
+        /* 故障文字 - 副标题 */
+        .glitch-text {
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            color: #fff;
+            text-transform: uppercase;
+            opacity: 0;
+            position: relative;
+            text-align: center;
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+        }
+
+        .glitch-text.active { animation: glitchIn 1.2s ease-out forwards; }
+
+        @keyframes glitchIn {
+            0% { opacity: 0; transform: translateX(-20px); text-shadow: -2px 0 #ff0000, 2px 0 #00ffff; }
+            20% { opacity: 1; text-shadow: 2px 0 #ff0000, -2px 0 #00ffff; }
+            40% { text-shadow: -3px 0 #ff0000, 3px 0 #00ffff; transform: translateX(2px); }
+            60% { text-shadow: 3px 0 #ff0000, -3px 0 #00ffff; transform: translateX(-2px); }
+            80% { text-shadow: -1px 0 #ff0000, 1px 0 #00ffff; }
+            100% { opacity: 1; text-shadow: 0 0 30px rgba(255, 0, 0, 0.8); transform: translateX(0); }
+        }
+
+        /* 桌面端样式 - 大字体一行显示 */
+        .glitch-text.desktop {
+            display: block;
+            font-size: clamp(20px, 3.5vw, 36px);
+            letter-spacing: clamp(6px, 1.2vw, 14px);
+            line-height: 1.6;
+        }
+
+        .glitch-text.desktop .glitch-line {
+            display: block;
+            white-space: nowrap;
+        }
+
+        .glitch-text.desktop .glitch-line.small {
+            font-size: 0.65em;
+            letter-spacing: clamp(4px, 0.8vw, 8px);
+            color: rgba(255, 255, 255, 0.85);
+            margin-top: 15px;
+        }
+
+        /* 移动端样式 - 默认隐藏 */
+        .glitch-text.mobile {
+            display: none;
+            font-size: clamp(14px, 4vw, 20px);
+            letter-spacing: clamp(3px, 0.8vw, 6px);
+            line-height: 1.7;
+        }
+
+        .glitch-text.mobile .glitch-line {
+            display: block;
+            white-space: nowrap;
+        }
+
+        .glitch-text.mobile .glitch-line.line1 { font-size: 1em; }
+        .glitch-text.mobile .glitch-line.line2 { font-size: 1em; margin-top: 5px; }
+        .glitch-text.mobile .glitch-line.small {
+            font-size: 0.65em;
+            letter-spacing: clamp(2px, 0.5vw, 4px);
+            color: rgba(255, 255, 255, 0.85);
+            margin-top: 12px;
+        }
+
+        /* 移动端显示切换 */
+        @media (max-width: 768px) {
+            .glitch-text.desktop { display: none; }
+            .glitch-text.mobile { display: block; }
+        }
+
+        /* 小屏移动端适配 */
+        @media (max-width: 480px) {
+            .glitch-text.mobile {
+                font-size: clamp(12px, 3.8vw, 16px);
+                letter-spacing: clamp(2px, 0.6vw, 4px);
+            }
+        }
+
+        @media (max-width: 375px) {
+            .glitch-text.mobile {
+                font-size: clamp(11px, 3.5vw, 14px);
+                letter-spacing: clamp(1.5px, 0.5vw, 3px);
+            }
+        }
+
+        @media (max-width: 320px) {
+            .glitch-text.mobile {
+                font-size: 10px;
+                letter-spacing: 1.5px;
+            }
+        }
+
+        /* LOGO容器 */
+        .logo-container {
+            position: relative;
+            width: clamp(200px, 30vw, 400px);
+            height: clamp(200px, 30vw, 400px);
+            opacity: 0;
+            transform: scale(0.5);
+            margin: 40px 0;
+        }
+
+        .logo-container.active { animation: logoAwaken 1.2s ease-out forwards; }
+
+        @keyframes logoAwaken {
+            0% { opacity: 0; transform: scale(0.5) rotateY(0deg); }
+            30% { opacity: 1; transform: scale(1.1) rotateY(180deg); }
+            60% { transform: scale(0.95) rotateY(360deg); }
+            100% { opacity: 1; transform: scale(1) rotateY(360deg); }
+        }
+
+        /* 脉冲圆环 */
+        .pulse-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            border: 2px solid rgba(255, 0, 0, 0.5);
+            border-radius: 50%;
+            opacity: 0;
+        }
+
+        .pulse-ring.active { animation: pulseRing 1.2s ease-out; }
+
+        @keyframes pulseRing {
+            0% { width: 50%; height: 50%; opacity: 1; border-color: rgba(255, 0, 0, 0.8); }
+            100% { width: 150%; height: 150%; opacity: 0; border-color: rgba(255, 0, 0, 0); }
+        }
+
+        /* LOGO图片 */
+        .logo-img-loader {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 0 30px rgba(255, 0, 0, 0.8));
+            animation: neonFlicker 0.1s infinite alternate;
+        }
+
+        @keyframes neonFlicker {
+            0% { filter: drop-shadow(0 0 20px rgba(255, 0, 0, 0.5)) brightness(1); }
+            100% { filter: drop-shadow(0 0 40px rgba(255, 0, 0, 1)) brightness(1.3); }
+        }
+
+        /* 火花粒子 */
+        .sparks { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+
+        .spark {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #ff0000;
+            border-radius: 50%;
+            box-shadow: 0 0 6px #ff0000, 0 0 12px #ffaa00;
+            opacity: 0;
+        }
+
+        .spark.active { animation: sparkFly 0.8s ease-out forwards; }
+
+        @keyframes sparkFly {
+            0% { opacity: 1; transform: translate(0, 0) scale(1); }
+            100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0); }
+        }
+
+        /* 音浪环 */
+        .sound-waves {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .wave {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            border-radius: 50%;
+            opacity: 0;
+        }
+
+        .wave.active { animation: waveExpand 1s ease-out forwards; }
+
+        @keyframes waveExpand {
+            0% { width: 80%; height: 80%; opacity: 0.8; border-color: rgba(255, 0, 0, 0.6); }
+            100% { width: 200%; height: 200%; opacity: 0; border-color: rgba(255, 0, 0, 0); }
+        }
+
+        /* 炸裂效果 */
+        .explosion {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, rgba(255, 0, 0, 1) 0%, rgba(255, 50, 0, 0.8) 30%, transparent 70%);
+            border-radius: 50%;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .explosion.active { animation: explode 0.5s ease-out forwards; }
+
+        @keyframes explode {
+            0% { width: 0; height: 0; opacity: 1; }
+            50% { width: 300vmax; height: 300vmax; opacity: 0.8; }
+            100% { width: 400vmax; height: 400vmax; opacity: 0; }
+        }
+
+        /* 进度条 */
+        .progress-container {
+            width: 300px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            margin-top: 40px;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+        }
+
+        .progress-container.active { opacity: 1; transition: opacity 0.3s; }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #ff0000, #ff6600, #ff0000);
+            width: 0%;
+            box-shadow: 0 0 10px #ff0000;
+            transition: width 0.1s linear;
+        }
+
+        .progress-text {
+            color: #ff0000;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            margin-top: 10px;
+            letter-spacing: 0.2em;
+            opacity: 0;
+        }
+
+        .progress-text.active { opacity: 1; animation: blink 0.5s infinite; }
+
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+        /* 最终WELCOME画面 */
+        .welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: url('https://./image/cn-hero-bg.jpg') center/cover no-repeat;
+            z-index: 99998;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(1.1);
+            overflow: hidden;
+        }
+
+        @media (max-width: 768px) {
+            .welcome-screen {
+                background-position: center center;
+                background-size: cover;
+            }
+        }
+
+        @media (orientation: portrait) {
+            .welcome-screen {
+                background-position: center 30%;
+            }
+        }
+
+        .welcome-screen.active {
+            opacity: 1;
+            transform: scale(1);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .welcome-screen.fade-out {
+            opacity: 0;
+            transform: scale(1.05);
+            transition: all 0.5s ease-out;
+        }
+
+        .welcome-text {
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: clamp(28px, 6vw, 72px);
+            color: #fff;
+            letter-spacing: clamp(8px, 2.5vw, 24px);
+            text-transform: uppercase;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: welcomeRedFlash 2s ease-in-out infinite;
+            line-height: 1.2;
+            padding: 0 20px;
+            max-width: 95vw;
+            word-wrap: break-word;
+            hyphens: auto;
+        }
+
+        @keyframes welcomeRedFlash {
+            0%, 100% { 
+                text-shadow: 
+                    0 0 20px rgba(255, 0, 0, 0.8),
+                    0 0 40px rgba(255, 0, 0, 0.6),
+                    0 0 80px rgba(255, 0, 0, 0.4),
+                    0 0 120px rgba(139, 0, 0, 0.3),
+                    0 5px 15px rgba(0, 0, 0, 0.9);
+                filter: brightness(1);
+            }
+            50% { 
+                text-shadow: 
+                    0 0 30px rgba(255, 0, 0, 1),
+                    0 0 60px rgba(255, 0, 0, 0.9),
+                    0 0 100px rgba(255, 0, 0, 0.7),
+                    0 0 150px rgba(255, 50, 50, 0.5),
+                    0 0 200px rgba(139, 0, 0, 0.4),
+                    0 5px 15px rgba(0, 0, 0, 0.9);
+                filter: brightness(1.3);
+            }
+        }
+
+        /* 平板适配 */
+        @media (max-width: 1024px) {
+            .welcome-text {
+                font-size: clamp(24px, 7vw, 56px);
+                letter-spacing: clamp(6px, 2vw, 16px);
+                line-height: 1.3;
+            }
+        }
+
+        /* 手机横屏 */
+        @media (max-width: 768px) {
+            .welcome-text {
+                font-size: clamp(20px, 6vw, 40px);
+                letter-spacing: clamp(4px, 1.5vw, 12px);
+                line-height: 1.4;
+                padding: 0 30px;
+            }
+        }
+
+        /* 手机竖屏 */
+        @media (max-width: 480px) {
+            .welcome-text {
+                font-size: clamp(18px, 8vw, 32px);
+                letter-spacing: clamp(3px, 1.2vw, 8px);
+                line-height: 1.5;
+                padding: 0 20px;
+            }
+        }
+
+        /* 小屏手机 */
+        @media (max-width: 375px) {
+            .welcome-text {
+                font-size: clamp(16px, 7vw, 28px);
+                letter-spacing: clamp(2px, 1vw, 6px);
+                line-height: 1.6;
+                padding: 0 15px;
+            }
+        }
+
+        /* 超小屏 */
+        @media (max-width: 320px) {
+            .welcome-text {
+                font-size: 14px;
+                letter-spacing: 2px;
+                line-height: 1.7;
+                padding: 0 10px;
+            }
+        }
+
+        /* 竖屏模式强制优化 */
+        @media (orientation: portrait) and (max-width: 768px) {
+            .welcome-text {
+                font-size: clamp(20px, 9vw, 36px);
+                letter-spacing: clamp(4px, 2vw, 10px);
+            }
+        }
+
+        /* 横屏模式优化 */
+        @media (orientation: landscape) and (max-height: 500px) {
+            .welcome-text {
+                font-size: clamp(18px, 5vh, 36px);
+                letter-spacing: clamp(4px, 1.5vh, 10px);
+            }
+        }
+
+        .welcome-screen.active .welcome-text {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.6s ease-out 0.3s;
+        }
+
+        /* 隐藏状态 */
+        .hidden { display: none !important; }
+
+        #main-content { opacity: 0; }
+        #main-content.show { opacity: 1; transition: opacity 0.5s ease; }
+    </style>
+
+    <style>
+        
+    <style>
 :root {--dark-red: #8b0000;--darker-red: #4a0000;--silver: #c0c0c0;--silver-bg: #d0d0d0;--black: #050505}
 * {margin: 0;padding: 0;box-sizing: border-box}
 html {scroll-behavior: smooth}
@@ -372,7 +867,51 @@ document.addEventListener('DOMContentLoaded', () => LazyLoader.init());
 } else {
 LazyLoader.init();
 }
-</script><!-- 性能优化 --><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="preconnect" href="https://livegigsasia.com"><link rel="dns-prefetch" href="https://livegigsasia.com"></head><body><nav><img data-src="./image/cnlogo.png" alt="LiveGigs CN" class="logo-img lazy-image" id="logo" width="180" height="45" onclick="location.reload()" data-editable="logo"><div class="nav-links"><a href="events.html" data-editable="nav-events" data-text="Events" data-href="events.html">Events</a><a href="partners.html" data-editable="nav-partners" data-text="Partners" data-href="partners.html">Partners</a><button class="neon-btn" onclick="openModal()" data-editable="nav-membership" data-text="Membership">Membership</button></div></nav><section class="hero"><div class="hero-bg" id="heroBg" data-editable="hero-bg" data-src="./image/cn-hero-bg.jpg"></div><div class="smoke-container"><div class="smoke"></div><div class="smoke"></div><div class="smoke"></div></div><div class="hero-overlay"></div><div class="hero-content"><h1 class="hero-title" data-editable="hero-title"><span class="gray" data-editable="hero-title-gray" data-text="LIVEGIGS">LIVEGIGS</span><span class="red" data-editable="hero-title-red" data-text="CN">CN</span></h1><p class="hero-subtitle" data-editable="hero-subtitle"><span class="line1" data-editable="hero-subtitle-line1" data-text="Concerts, Festivals, Tickets, Tour Dates">Concerts, Festivals, Tickets, Tour Dates</span><span class="line2" data-editable="hero-subtitle-line2" data-text="- Live Gigs">- Live Gigs</span></p></div></section><div class="content-wrapper"><section class="banner-section"><div class="rebel-banner"><div class="rebel-slider" id="rebelSlider"><div class="rebel-slide" data-editable="banner-slide-1"><img src="./image/thenonameanti-.jpg" alt="The Noname Anti-IPA" class="rebel-poster banner-placeholder"
+</script><!-- 性能优化 --><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="preconnect" href="https://livegigsasia.com"><link rel="dns-prefetch" href="https://livegigsasia.com"></head><body>
+<!-- 加载动画 -->
+    <div id="loader-container">
+        <div class="noise" id="noise"></div>
+        <div class="scan-lines" id="scanlines"></div>
+        <div class="red-scan" id="redscan"></div>
+
+        <!-- 故障文字副标题 - 桌面端 -->
+        <div class="glitch-text desktop" id="glitchtext-desktop">
+            <span class="glitch-line">CONCERTS, FESTIVALS, TICKETS, TOUR DATES</span>
+            <span class="glitch-line small">- LIVE GIGS -</span>
+        </div>
+        <!-- 故障文字副标题 - 移动端 -->
+        <div class="glitch-text mobile" id="glitchtext-mobile">
+            <span class="glitch-line line1">CONCERTS, FESTIVALS, TICKETS,</span>
+            <span class="glitch-line line2">TOUR DATES</span>
+            <span class="glitch-line small">- LIVE GIGS -</span>
+        </div>
+
+        <!-- LOGO -->
+        <div class="logo-container" id="logocontainer">
+            <div class="pulse-ring" id="pulsering"></div>
+            <div class="sound-waves" id="soundwaves">
+                <div class="wave" style="animation-delay: 0s"></div>
+                <div class="wave" style="animation-delay: 0.2s"></div>
+                <div class="wave" style="animation-delay: 0.4s"></div>
+            </div>
+            <img src="https://livegigsasia.com/image/webtop.png" alt="LIVEGIGS ASIA" class="logo-img-loader" id="logoimg">
+            <div class="sparks" id="sparks"></div>
+        </div>
+
+        <div class="explosion" id="explosion"></div>
+
+        <div class="progress-container" id="progresscontainer">
+            <div class="progress-bar" id="progressbar"></div>
+        </div>
+        <div class="progress-text" id="progresstext">SYSTEM INITIALIZING...</div>
+    </div>
+
+    <!-- WELCOME画面 -->
+    <div class="welcome-screen" id="welcomescreen">
+        <div class="welcome-text">WELCOME TO THE FUTURE OF LIVE</div>
+    </div>
+
+    <div id="main-content"><nav><img data-src="./image/cnlogo.png" alt="LiveGigs CN" class="logo-img lazy-image" id="logo" width="180" height="45" onclick="location.reload()" data-editable="logo"><div class="nav-links"><a href="events.html" data-editable="nav-events" data-text="Events" data-href="events.html">Events</a><a href="partners.html" data-editable="nav-partners" data-text="Partners" data-href="partners.html">Partners</a><button class="neon-btn" onclick="openModal()" data-editable="nav-membership" data-text="Membership">Membership</button></div></nav><section class="hero"><div class="hero-bg" id="heroBg" data-editable="hero-bg" data-src="./image/cn-hero-bg.jpg"></div><div class="smoke-container"><div class="smoke"></div><div class="smoke"></div><div class="smoke"></div></div><div class="hero-overlay"></div><div class="hero-content"><h1 class="hero-title" data-editable="hero-title"><span class="gray" data-editable="hero-title-gray" data-text="LIVEGIGS">LIVEGIGS</span><span class="red" data-editable="hero-title-red" data-text="CN">CN</span></h1><p class="hero-subtitle" data-editable="hero-subtitle"><span class="line1" data-editable="hero-subtitle-line1" data-text="Concerts, Festivals, Tickets, Tour Dates">Concerts, Festivals, Tickets, Tour Dates</span><span class="line2" data-editable="hero-subtitle-line2" data-text="- Live Gigs">- Live Gigs</span></p></div></section><div class="content-wrapper"><section class="banner-section"><div class="rebel-banner"><div class="rebel-slider" id="rebelSlider"><div class="rebel-slide" data-editable="banner-slide-1"><img src="./image/thenonameanti-.jpg" alt="The Noname Anti-IPA" class="rebel-poster banner-placeholder"
 onerror="this.onerror=null; this.src='./image/asia-bannerbg.webp'; this.style.objectFit='cover';" data-editable="banner-1-image"><div class="rebel-content"><h2 data-editable="banner-1-title" data-text="THE NONAME ANTI-IPA">THE NONAME ANTI-IPA</h2><button class="neon-btn" onclick="window.open('https://emanonent.wixstudio.com/livegigs/antiipa', '_blank')" data-editable="banner-1-btn" data-text="無名逆襲社交 IPA" data-href="https://emanonent.wixstudio.com/livegigs/antiipa">無名逆襲社交 IPA</button></div></div><div class="rebel-slide" data-editable="banner-slide-2"><img src="./image/punkheartbanner.jpg" alt="Punk Heart Festival 2026" class="rebel-poster banner-placeholder"
 onerror="this.onerror=null; this.src='./image/asia-bannerbg.webp'; this.style.objectFit='cover';" data-editable="banner-2-image"><div class="rebel-content"><h2 data-editable="banner-2-title" data-text="朋克心音樂節 2026">朋克心音樂節 2026</h2><button class="neon-btn" onclick="window.open('http://punkheartfest.com', '_blank')" data-editable="banner-2-btn" data-text="PUNK HEART FESTIVAL" data-href="http://punkheartfest.com">PUNK HEART FESTIVAL</button></div></div><div class="rebel-slide" data-editable="banner-slide-3"><img src="./image/newbanner1.jpg" alt="一体共和乐队2026巡演" class="rebel-poster banner-placeholder"
 onerror="this.onerror=null; this.src='./image/asia-bannerbg.webp'; this.style.objectFit='cover';" data-editable="banner-3-image"><div class="rebel-content"><h2 data-editable="banner-3-title" data-text="一体共和乐队2026巡演">一体共和乐队2026巡演</h2><button class="neon-btn" onclick="window.open('https://www.livenation.cn/', '_blank')" data-editable="banner-3-btn" data-text="演出信息" data-href="https://www.livenation.cn/">演出信息</button></div></div></div></div></section><section class="posters-showcase"><div class="posters-container"><div class="poster-item" data-poster-id="1" data-link="https://wxaurl.cn/HMcAK6R7fou" data-editable="poster-1"><img data-src="./image/livegigscn1.png" alt="LiveGigs WeChat" class="lazy-image" width="400" height="600"
@@ -596,4 +1135,143 @@ if (typeof stopAutoSlide === 'function') stopAutoSlide();
 if (typeof startAutoSlide === 'function') startAutoSlide();
 }
 });
-</script></body></html>
+</script>    </div>
+<!-- 加载动画脚本 -->
+    <script>
+        (function() {
+            const elements = {
+                container: document.getElementById('loader-container'),
+                noise: document.getElementById('noise'),
+                scanlines: document.getElementById('scanlines'),
+                redscan: document.getElementById('redscan'),
+                glitchtext: document.getElementById('glitchtext'),
+                logocontainer: document.getElementById('logocontainer'),
+                pulsering: document.getElementById('pulsering'),
+                soundwaves: document.getElementById('soundwaves'),
+                sparks: document.getElementById('sparks'),
+                explosion: document.getElementById('explosion'),
+                progresscontainer: document.getElementById('progresscontainer'),
+                progressbar: document.getElementById('progressbar'),
+                progresstext: document.getElementById('progresstext'),
+                welcomescreen: document.getElementById('welcomescreen'),
+                maincontent: document.getElementById('main-content')
+            };
+
+            // 检查是否需要跳过动画
+            const lastLoadTime = localStorage.getItem('livegigs_last_load');
+            const currentTime = Date.now();
+            const timeDiff = lastLoadTime ? currentTime - parseInt(lastLoadTime) : 99999999;
+
+            // 记录本次加载时间
+            localStorage.setItem('livegigs_last_load', currentTime.toString());
+
+            // 如果30分钟内有加载记录，跳过动画
+            if (timeDiff < 1800000) {
+                elements.container.classList.add('hidden');
+                elements.welcomescreen.classList.add('hidden');
+                elements.maincontent.classList.add('show');
+                document.body.style.overflow = 'auto';
+                return;
+            }
+
+            let progress = 0;
+
+            // 阶段1: 0-0.8s 黑场噪点
+            setTimeout(() => { elements.noise.style.opacity = '0.3'; }, 100);
+
+            // 阶段2: 0.8-2s 故障文字
+            setTimeout(() => {
+                elements.noise.style.opacity = '0.1';
+                const glitchDesktop = document.getElementById('glitchtext-desktop');
+                const glitchMobile = document.getElementById('glitchtext-mobile');
+                if (glitchDesktop) glitchDesktop.classList.add('active');
+                if (glitchMobile) glitchMobile.classList.add('active');
+                elements.redscan.classList.add('active');
+            }, 800);
+
+            // 阶段3: 2-3.2s LOGO觉醒
+            setTimeout(() => {
+                const glitchDesktop = document.getElementById('glitchtext-desktop');
+                const glitchMobile = document.getElementById('glitchtext-mobile');
+                if (glitchDesktop) glitchDesktop.style.opacity = '0.3';
+                if (glitchMobile) glitchMobile.style.opacity = '0.3';
+                elements.logocontainer.classList.add('active');
+                elements.pulsering.classList.add('active');
+
+                const waves = elements.soundwaves.querySelectorAll('.wave');
+                waves.forEach((wave, i) => setTimeout(() => wave.classList.add('active'), i * 200));
+
+                // 生成火花
+                for (let i = 0; i < 20; i++) {
+                    setTimeout(() => {
+                        const spark = document.createElement('div');
+                        spark.className = 'spark';
+                        const angle = (Math.PI * 2 * i) / 20;
+                        const distance = 80 + Math.random() * 40;
+                        const x = Math.cos(angle) * distance;
+                        const y = Math.sin(angle) * distance;
+                        spark.style.left = `calc(50% + ${x}px)`;
+                        spark.style.top = `calc(50% + ${y}px)`;
+                        spark.style.setProperty('--tx', `${x * 2}px`);
+                        spark.style.setProperty('--ty', `${y * 2}px`);
+                        elements.sparks.appendChild(spark);
+                        spark.classList.add('active');
+                        setTimeout(() => spark.remove(), 800);
+                    }, i * 30);
+                }
+
+                elements.progresscontainer.classList.add('active');
+                elements.progresstext.classList.add('active');
+
+                // 模拟进度
+                const interval = setInterval(() => {
+                    if (progress < 90) {
+                        progress += Math.random() * 15;
+                        if (progress > 90) progress = 90;
+                        elements.progressbar.style.width = progress + '%';
+                    } else {
+                        clearInterval(interval);
+                    }
+                }, 100);
+            }, 2000);
+
+            // 阶段4: 3.2-3.5s 炸裂转场 -> WELCOME画面
+            setTimeout(() => {
+                elements.explosion.classList.add('active');
+                elements.noise.style.opacity = '0';
+                progress = 100;
+                elements.progressbar.style.width = '100%';
+                elements.progresstext.textContent = 'SYSTEM READY';
+
+                setTimeout(() => {
+                    // 淡出加载器
+                    elements.container.style.transition = 'opacity 0.3s';
+                    elements.container.style.opacity = '0';
+
+                    // 显示WELCOME画面
+                    setTimeout(() => {
+                        elements.container.classList.add('hidden');
+                        elements.welcomescreen.classList.add('active');
+
+                        // 1.5秒后进入主页
+                        setTimeout(() => {
+                            elements.welcomescreen.classList.add('fade-out');
+                            elements.maincontent.classList.add('show');
+
+                            setTimeout(() => {
+                                elements.welcomescreen.classList.add('hidden');
+                                window.dispatchEvent(new Event('loaderComplete'));
+                            }, 500);
+                        }, 1500);
+                    }, 300);
+                }, 300);
+            }, 3200);
+
+            // 预加载关键资源
+            ['https://livegigsasia.com/image/webtop.png', 'https://./image/cn-hero-bg.jpg'].forEach(url => {
+                const img = new Image();
+                img.src = url;
+            });
+        })();
+    </script>
+</body></html>
