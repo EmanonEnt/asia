@@ -9,14 +9,8 @@
     <!-- 加载动画样式 -->
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { background: #000; overflow-x: hidden; font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; }
 
-        html, body { 
-            background: #000; 
-            overflow-x: hidden; 
-            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-        }
-
-        /* 加载容器 - 确保在最上层 */
         #loading-container {
             position: fixed;
             top: 0;
@@ -38,7 +32,7 @@
             transition: opacity 0.5s ease-out, visibility 0.5s;
         }
 
-        /* 副标题 - 居中放大 */
+        /* 副标题 - 居中 */
         #loading-subtitle-container {
             position: absolute;
             top: 50%;
@@ -92,14 +86,13 @@
             max-width: 800px;
             height: 250px;
             z-index: 100;
-            display: none; /* 初始隐藏 */
+            display: none;
         }
 
         #loading-logo-wrapper.visible {
             display: block;
         }
 
-        /* 完整Logo */
         #loading-logo-full {
             position: absolute;
             top: 0;
@@ -124,8 +117,6 @@
         #loading-logo-img {
             max-width: 100%;
             max-height: 100%;
-            width: auto;
-            height: auto;
             object-fit: contain;
             filter: drop-shadow(0 0 50px rgba(139, 0, 0, 1));
         }
@@ -133,9 +124,9 @@
         @keyframes logoFlyIn {
             0% { transform: scale(0.1); opacity: 0; filter: drop-shadow(0 0 10px rgba(139, 0, 0, 0.3)) blur(15px); }
             40% { opacity: 1; filter: drop-shadow(0 0 40px rgba(139, 0, 0, 0.7)) blur(3px); }
-            75% { transform: scale(1.2); filter: drop-shadow(0 0 100px rgba(255, 0, 0, 1)) drop-shadow(0 0 150px rgba(255, 255, 255, 0.5)); }
+            75% { transform: scale(1.2); filter: drop-shadow(0 0 100px rgba(255, 0, 0, 1)); }
             90% { transform: scale(0.95); filter: drop-shadow(0 0 120px rgba(255, 0, 0, 1)); }
-            100% { transform: scale(1); opacity: 1; filter: drop-shadow(0 0 80px rgba(139, 0, 0, 1)) drop-shadow(0 0 120px rgba(255, 0, 0, 0.6)); }
+            100% { transform: scale(1); opacity: 1; filter: drop-shadow(0 0 80px rgba(139, 0, 0, 1)); }
         }
 
         @keyframes logoPulse {
@@ -220,7 +211,7 @@
             z-index: 60;
         }
 
-        /* 激光网格 */
+        /* 激光 - 精简数量，增强效果 */
         #loading-laser-grid {
             position: fixed;
             top: 0;
@@ -237,8 +228,19 @@
             left: 0;
             width: 100%;
             height: 4px;
-            background: linear-gradient(90deg, transparent 0%, #ff0000 20%, #ffffff 50%, #ff0000 80%, transparent 100%);
-            box-shadow: 0 0 30px #ff0000, 0 0 60px rgba(255, 0, 0, 0.9), 0 0 90px rgba(139, 0, 0, 0.7);
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(255,0,0,0.3) 10%, 
+                #ff0000 30%, 
+                #ffffff 50%, 
+                #ff0000 70%, 
+                rgba(255,0,0,0.3) 90%, 
+                transparent 100%);
+            box-shadow: 
+                0 0 20px #ff0000, 
+                0 0 40px rgba(255, 0, 0, 0.8), 
+                0 0 80px rgba(255, 0, 0, 0.4),
+                0 0 120px rgba(139, 0, 0, 0.3);
             opacity: 0;
         }
 
@@ -247,60 +249,79 @@
             top: 0;
             width: 4px;
             height: 100%;
-            background: linear-gradient(180deg, transparent 0%, #ff0000 20%, #ffffff 50%, #ff0000 80%, transparent 100%);
-            box-shadow: 0 0 30px #ff0000, 0 0 60px rgba(255, 0, 0, 0.9), 0 0 90px rgba(139, 0, 0, 0.7);
+            background: linear-gradient(180deg, 
+                transparent 0%, 
+                rgba(255,0,0,0.3) 10%, 
+                #ff0000 30%, 
+                #ffffff 50%, 
+                #ff0000 70%, 
+                rgba(255,0,0,0.3) 90%, 
+                transparent 100%);
+            box-shadow: 
+                0 0 20px #ff0000, 
+                0 0 40px rgba(255, 0, 0, 0.8), 
+                0 0 80px rgba(255, 0, 0, 0.4),
+                0 0 120px rgba(139, 0, 0, 0.3);
             opacity: 0;
         }
 
-        /* 闪光 */
+        /* 切割闪光 - 激光交叉点闪光 */
+        .cut-flash {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: radial-gradient(circle, #ffffff 0%, #ff0000 40%, transparent 70%);
+            border-radius: 50%;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 75;
+        }
+
+        /* 主闪光 */
         #loading-flash {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: radial-gradient(ellipse at center, #ffffff 0%, #ff0000 20%, #8b0000 40%, #000000 70%);
+            background: radial-gradient(ellipse at center, #ffffff 0%, #ff0000 25%, #8b0000 50%, #000000 80%);
             opacity: 0;
             z-index: 150;
             pointer-events: none;
         }
 
-        /* 红色爆发 */
-        #loading-red-burst {
+        /* 红色十字爆发（代替圆形） */
+        #loading-red-cross {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             width: 0;
             height: 0;
-            background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,0,0,1) 20%, rgba(139,0,0,0.9) 50%, transparent 80%);
-            border-radius: 50%;
-            opacity: 0;
             z-index: 140;
             pointer-events: none;
         }
 
-        /* 电波 */
-        #loading-wave-container {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 0;
-            height: 0;
-            z-index: 60;
-            pointer-events: none;
+        .red-cross-h, .red-cross-v {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, rgba(255,0,0,0.9), rgba(255,255,255,0.8), rgba(255,0,0,0.9), transparent);
+            box-shadow: 0 0 60px rgba(255, 0, 0, 1), 0 0 120px rgba(255, 0, 0, 0.8);
         }
 
-        .loading-wave {
-            position: absolute;
-            top: 50%;
+        .red-cross-h {
             left: 50%;
+            top: 50%;
             transform: translate(-50%, -50%);
-            border: 4px solid rgba(255, 0, 0, 0.9);
-            border-radius: 50%;
-            box-shadow: 0 0 40px rgba(255, 0, 0, 1), 0 0 80px rgba(139, 0, 0, 0.9), inset 0 0 60px rgba(139, 0, 0, 0.5);
-            opacity: 0;
+            height: 100px;
+            width: 0;
+        }
+
+        .red-cross-v {
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 100px;
+            height: 0;
         }
 
         /* 扫描线 */
@@ -1548,13 +1569,11 @@
     <div id="loading-container">
         <div class="loading-scanline"></div>
 
-        <!-- 副标题 - 居中 -->
         <div id="loading-subtitle-container">
             <div id="loading-subtitle-line1">CONCERTS, FESTIVALS, TICKETS, TOUR DATES</div>
             <div id="loading-subtitle-line2">- LIVE GIGS</div>
         </div>
 
-        <!-- Logo区域 -->
         <div id="loading-logo-wrapper">
             <div id="loading-logo-full">
                 <img src="./image/webtop.png" alt="LiveGigs Asia" id="loading-logo-img">
@@ -1562,21 +1581,17 @@
             <div id="loading-shards"></div>
         </div>
 
-        <!-- 进度条 -->
         <div id="loading-progress-container">
             <div class="loading-progress-h" id="loading-progress-h"></div>
             <div class="loading-progress-v" id="loading-progress-v"></div>
         </div>
         <div id="loading-progress-text">0%</div>
 
-        <!-- 特效层 -->
         <div id="loading-laser-grid"></div>
-        <div id="loading-wave-container"></div>
-        <div id="loading-red-burst"></div>
+        <div id="loading-red-cross"></div>
         <div id="loading-flash"></div>
     </div>
 
-    <!-- 主页内容 -->
     <div id="main-content">
 
 
@@ -2298,7 +2313,7 @@
         window.addEventListener('load', initPoster2Carousel);
     </script>
 
-    </div><!-- /main-content -->
+    </div>
 
     <script>
     (function() {
@@ -2319,23 +2334,13 @@
             progressText: $('loading-progress-text'),
             laserGrid: $('loading-laser-grid'),
             flash: $('loading-flash'),
-            redBurst: $('loading-red-burst'),
-            waveContainer: $('loading-wave-container'),
+            redCross: $('loading-red-cross'),
             mainContent: $('main-content'),
-
-            // 强制进入主页（防止卡住）
             forceEnterTimeout: null,
 
             init() {
-                console.log('Loading animation init');
+                this.forceEnterTimeout = setTimeout(() => this.enterMain(), 10000);
 
-                // 设置强制进入超时（10秒后无论如何都进入）
-                this.forceEnterTimeout = setTimeout(() => {
-                    console.log('Force entering main page');
-                    this.enterMain();
-                }, 10000);
-
-                // 检查Logo
                 if (!this.logoImg.complete) {
                     this.logoImg.onload = () => this.start();
                     this.logoImg.onerror = () => this.start();
@@ -2346,36 +2351,28 @@
 
             async start() {
                 try {
-                    // 阶段1: 打字（文字已经在屏幕中心）
+                    // 打字
                     this.subtitleLine1.classList.add('typing');
                     await this.wait(2000);
 
-                    // 阶段2: LIVE GIGS
                     this.subtitleLine2.style.opacity = '1';
                     await this.wait(1000);
 
-                    // 阶段3: 切换到Logo
+                    // 切换到Logo
                     this.subtitleContainer.style.opacity = '0';
                     await this.wait(300);
                     this.subtitleContainer.style.display = 'none';
 
-                    // 显示Logo区域
                     this.logoWrapper.classList.add('visible');
                     this.logoFull.classList.add('impact');
                     this.progressContainer.style.opacity = '1';
                     this.progressText.style.opacity = '1';
 
-                    // 阶段4: 进度条
                     await this.runProgress();
-
-                    // 阶段5: 超级爆炸
-                    await this.megaExplosion();
-
-                    // 阶段6: 进入主页
+                    await this.laserExplosion();
                     await this.enterMain();
 
                 } catch(e) {
-                    console.error('Animation error:', e);
                     this.enterMain();
                 }
             },
@@ -2394,7 +2391,6 @@
                         if (progress > 85) {
                             this.logoFull.classList.add('pulsing');
                             this.progressText.style.color = '#ff0000';
-                            this.progressText.style.transform = 'translateX(-50%) scale(1.2)';
                         }
 
                         if (progress >= 100) {
@@ -2405,98 +2401,115 @@
                 });
             },
 
-            async megaExplosion() {
+            async laserExplosion() {
                 const logoRect = this.logoFull.getBoundingClientRect();
                 const centerX = logoRect.left + logoRect.width / 2;
                 const centerY = logoRect.top + logoRect.height / 2;
 
-                // 1. 激光网格
+                // 显示激光层
                 this.laserGrid.style.opacity = '1';
 
-                // 水平激光 - 从中心向外
-                for (let i = -8; i <= 8; i++) {
+                // 精简的激光：5横 + 5竖，从中心向外
+                const hLasers = [
+                    centerY - 150,
+                    centerY - 75,
+                    centerY,
+                    centerY + 75,
+                    centerY + 150
+                ];
+
+                const vLasers = [
+                    centerX - 200,
+                    centerX - 100,
+                    centerX,
+                    centerX + 100,
+                    centerX + 200
+                ];
+
+                // 创建水平激光
+                hLasers.forEach((y, i) => {
                     const laser = document.createElement('div');
                     laser.className = 'loading-laser-h';
-                    laser.style.top = (centerY + i * 60) + 'px';
-                    laser.style.animation = `laserExpandH 0.5s ease-out ${Math.abs(i)*30}ms forwards`;
+                    laser.style.top = y + 'px';
                     this.laserGrid.appendChild(laser);
-                }
 
-                // 垂直激光
-                for (let i = 0; i < 15; i++) {
+                    // 展开动画
+                    laser.animate([
+                        { transform: 'scaleX(0)', opacity: 0 },
+                        { transform: 'scaleX(1)', opacity: 1, offset: 0.3 },
+                        { transform: 'scaleX(1)', opacity: 1 }
+                    ], { duration: 600, delay: Math.abs(i - 2) * 80, fill: 'forwards' });
+                });
+
+                // 创建垂直激光
+                vLasers.forEach((x, i) => {
                     const laser = document.createElement('div');
                     laser.className = 'loading-laser-v';
-                    laser.style.left = ((i + 1) * 6.5) + 'vw';
-                    laser.style.animation = `laserExpandV 0.5s ease-out ${Math.abs(i-7)*25}ms forwards`;
+                    laser.style.left = x + 'px';
                     this.laserGrid.appendChild(laser);
-                }
 
-                // 添加激光动画样式
-                const style = document.createElement('style');
-                style.textContent = `
-                    @keyframes laserExpandH {
-                        0% { transform: scaleX(0); opacity: 0; }
-                        50% { opacity: 1; }
-                        100% { transform: scaleX(1); opacity: 1; }
-                    }
-                    @keyframes laserExpandV {
-                        0% { transform: scaleY(0); opacity: 0; }
-                        50% { opacity: 1; }
-                        100% { transform: scaleY(1); opacity: 1; }
-                    }
-                `;
-                document.head.appendChild(style);
+                    laser.animate([
+                        { transform: 'scaleY(0)', opacity: 0 },
+                        { transform: 'scaleY(1)', opacity: 1, offset: 0.3 },
+                        { transform: 'scaleY(1)', opacity: 1 }
+                    ], { duration: 600, delay: Math.abs(i - 2) * 80, fill: 'forwards' });
+                });
 
-                await this.wait(500);
+                // 交叉点闪光
+                await this.wait(400);
 
-                // 2. 红色爆发
-                this.redBurst.style.animation = 'redBurstAnim 0.8s ease-out forwards';
-                const burstStyle = document.createElement('style');
-                burstStyle.textContent = `
-                    @keyframes redBurstAnim {
-                        0% { width: 0; height: 0; opacity: 1; }
-                        100% { width: 400vw; height: 400vw; opacity: 0; }
-                    }
-                `;
-                document.head.appendChild(burstStyle);
+                hLasers.forEach(y => {
+                    vLasers.forEach(x => {
+                        const flash = document.createElement('div');
+                        flash.className = 'cut-flash';
+                        flash.style.left = (x - 15) + 'px';
+                        flash.style.top = (y - 15) + 'px';
+                        this.laserGrid.appendChild(flash);
 
-                // 3. 闪光
+                        flash.animate([
+                            { transform: 'scale(0)', opacity: 0 },
+                            { transform: 'scale(1.5)', opacity: 1, offset: 0.3 },
+                            { transform: 'scale(2)', opacity: 0 }
+                        ], { duration: 400, delay: Math.random() * 200, fill: 'forwards' });
+                    });
+                });
+
+                await this.wait(300);
+
+                // 红色十字爆发（代替圆形）
+                const crossH = document.createElement('div');
+                crossH.className = 'red-cross-h';
+                const crossV = document.createElement('div');
+                crossV.className = 'red-cross-v';
+                this.redCross.appendChild(crossH);
+                this.redCross.appendChild(crossV);
+
+                crossH.animate([
+                    { width: '0', opacity: 1 },
+                    { width: '300vw', opacity: 0 }
+                ], { duration: 800, easing: 'ease-out', fill: 'forwards' });
+
+                crossV.animate([
+                    { height: '0', opacity: 1 },
+                    { height: '300vh', opacity: 0 }
+                ], { duration: 800, easing: 'ease-out', fill: 'forwards' });
+
+                // 主闪光
                 this.flash.style.opacity = '1';
-                this.flash.style.transition = 'opacity 0.1s';
+                this.flash.style.transition = 'opacity 0.05s';
+
+                // Logo碎裂
+                this.shatterLogo(centerX, centerY);
+
                 setTimeout(() => {
                     this.flash.style.transition = 'opacity 1s ease-out';
                     this.flash.style.opacity = '0';
-                }, 100);
+                }, 50);
 
-                // 4. Logo碎裂
-                this.shatterAndExplode(centerX, centerY);
-
-                // 5. 电波
-                for (let i = 0; i < 10; i++) {
-                    setTimeout(() => {
-                        const wave = document.createElement('div');
-                        wave.className = 'loading-wave';
-                        wave.style.width = '100px';
-                        wave.style.height = '100px';
-                        wave.style.animation = `waveExpand 2s ease-out forwards`;
-                        this.waveContainer.appendChild(wave);
-
-                        const waveStyle = document.createElement('style');
-                        waveStyle.textContent = `
-                            @keyframes waveExpand {
-                                0% { width: 100px; height: 100px; opacity: 1; border-width: 4px; }
-                                100% { width: 500vw; height: 500vw; opacity: 0; border-width: 0px; }
-                            }
-                        `;
-                        document.head.appendChild(waveStyle);
-                    }, i * 60);
-                }
-
-                await this.wait(1500);
+                await this.wait(1200);
             },
 
-            shatterAndExplode(centerX, centerY) {
-                // 隐藏完整Logo
+            shatterLogo(centerX, centerY) {
                 this.logoFull.style.opacity = '0';
                 this.shardsContainer.style.display = 'block';
 
@@ -2530,13 +2543,11 @@
                     shard.appendChild(img);
                     this.shardsContainer.appendChild(shard);
 
-                    // 计算飞出
                     const shardRect = shard.getBoundingClientRect();
                     const sx = shardRect.left + shardRect.width / 2;
                     const sy = shardRect.top + shardRect.height / 2;
                     const angle = Math.atan2(sy - centerY, sx - centerX);
 
-                    // 超远距离
                     const dist = Math.max(window.innerWidth, window.innerHeight) * (1.5 + Math.random());
                     const destX = Math.cos(angle) * dist;
                     const destY = Math.sin(angle) * dist;
@@ -2548,7 +2559,7 @@
                     const centerRow = 2;
                     const centerCol = 3.5;
                     const distFromCenter = Math.sqrt(Math.pow(row - centerRow, 2) + Math.pow(col - centerCol, 2));
-                    const delay = distFromCenter * 35;
+                    const delay = distFromCenter * 40;
 
                     shard.style.opacity = '1';
                     shard.animate([
@@ -2564,25 +2575,16 @@
             },
 
             enterMain() {
-                console.log('Entering main page');
+                if (this.forceEnterTimeout) clearTimeout(this.forceEnterTimeout);
 
-                // 清除强制超时
-                if (this.forceEnterTimeout) {
-                    clearTimeout(this.forceEnterTimeout);
-                }
-
-                // 显示主页
                 this.mainContent.style.visibility = 'visible';
                 this.mainContent.classList.add('visible');
 
-                // 隐藏加载容器
                 this.container.classList.add('hidden');
 
-                // 彻底移除
                 setTimeout(() => {
                     this.container.style.display = 'none';
                     document.body.removeChild(this.container);
-                    console.log('Loading container removed');
                 }, 1000);
             },
 
@@ -2591,7 +2593,6 @@
             }
         };
 
-        // 启动
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => window.LoadingAnimation.init());
         } else {
