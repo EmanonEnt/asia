@@ -2706,6 +2706,13 @@
 
     <!-- Admin管理脚本 -->
     <script>
+        // 重置加载动画状态（用于测试）
+        function resetLoaderState() {
+            localStorage.removeItem('livegigs_loaded_once');
+            sessionStorage.removeItem('livegigs_session_loaded');
+            console.log('Loader state reset - animation will play on next visit');
+        }
+
         window.LiveGigsAdmin = {
             update: function(editableId, newValue, type = 'text') {
                 const element = document.querySelector(`[data-editable="${editableId}"]`);
@@ -2812,7 +2819,8 @@
                 updateImage: function(id, src) { window.LiveGigsAdmin.update(id, src, 'src'); },
                 updateEmail: function(id, email) { window.LiveGigsAdmin.update(id, email, 'mailto'); },
                 updatePhone: function(id, phone) { window.LiveGigsAdmin.update(id, phone, 'tel'); }
-            }
+            },
+            resetLoader: resetLoaderState
         };
     </script>
 
