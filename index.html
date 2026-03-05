@@ -1347,7 +1347,8 @@
         ];
 
         let poster2CurrentSlide = 0;
-        let poster2SlideInterval = null;
+        let poster2RafId = null;
+        let poster2LastTime = 0;
 
         function initPoster2Carousel() {
             const slides = document.querySelectorAll('.poster-carousel-slide');
@@ -1355,7 +1356,6 @@
             const carousel = document.getElementById('posterCarousel');
             if (slides.length === 0 || !carousel) return;
 
-            // 启动自动轮播
             startPoster2Autoplay();
 
             dots.forEach((dot, index) => {
@@ -1372,7 +1372,7 @@
         }
 
         function startPoster2Autoplay() {
-            cancelAnimationFrame(poster2RafId);
+            if (poster2RafId) cancelAnimationFrame(poster2RafId);
             poster2LastTime = performance.now();
             function loop(now) {
                 if (now - poster2LastTime >= 5000) {
@@ -1385,9 +1385,9 @@
         }
 
         function stopPoster2Autoplay() {
-            if (poster2SlideInterval) {
-                clearInterval(poster2SlideInterval);
-                poster2SlideInterval = null;
+            if (poster2RafId) {
+                cancelAnimationFrame(poster2RafId);
+                poster2RafId = null;
             }
         }
 
@@ -1417,7 +1417,6 @@
             }
         }
 
-        // 初始化
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', initPoster2Carousel);
         } else {
