@@ -467,21 +467,7 @@
             .footer-bottom { padding: 15px 20px; gap: 12px; }
             .footer-legal { gap: 15px; }
             .footer-legal a { font-size: 10px; }
-            
-            .countdown-text {
-                font-size: 10px;
-                padding: 4px 8px;
-            }
-            .countdown-text.completed {
-                color: #888;
-                font-size: 9px;
-            }
-            .countdown-text.today {
-                color: #ff4444;
-                font-size: 10px;
-            }
-
-            ..copyright { font-size: 10px; }
+            .copyright { font-size: 10px; }
             .scroll-arrow { width: 30px; height: 45px; font-size: 16px; }
         }
 
@@ -2042,8 +2028,6 @@ if ('serviceWorker' in navigator) {
 
         // è§£ææ¥æ
         function parseDate(dateStr) {
-            if (!dateStr) return new Date();
-            // æ¯æ YYYY.MM.DD æ ¼å¼
             const parts = dateStr.split('.');
             if (parts.length >= 3) {
                 return new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
@@ -2644,13 +2628,23 @@ if ('serviceWorker' in navigator) {
         function updateCountdowns() {
             const countdownElements = document.querySelectorAll('.event-status.countdown');
             const now = new Date();
-            now.setHours(0, 0, 0, 0);
             countdownElements.forEach(el => {
                 const targetDate = el.getAttribute('data-countdown-date');
                 if (!targetDate) return;
-                // ä½¿ç¨parseDateå½æ°æ­£ç¡®è§£ææ¥æ
-                const target = parseDate(targetDate);
-                target.setHours(0, 0, 0, 0);
+
+                // ä¿®å¤æ¥ææ ¼å¼ï¼å° 2026.01.17 è½¬æ¢ä¸º 2026-01-17
+                let normalizedDate = targetDate;
+                if (targetDate.includes('.') && !targetDate.includes('-')) {
+                    normalizedDate = targetDate.replace(/\./g, '-');
+                }
+
+                const target = new Date(normalizedDate);
+                // æ£æ¥æ¥ææ¯å¦ææ
+                if (isNaN(target.getTime())) {
+                    el.textContent = 'SOON';
+                    return;
+                }
+
                 const diff = target - now;
                 if (diff > 0) {
                     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
