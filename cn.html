@@ -338,7 +338,7 @@
             width: 100vw;
             height: 100vh;
             background: url('./image/cn-hero-bg.jpg') center/cover no-repeat;
-            z-index: 99998;
+            z-index: 100000;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -487,8 +487,8 @@
         /* 隐藏状态 */
         .hidden { display: none !important; }
 
-        #main-content { opacity: 0; }
-        #main-content.show { opacity: 1; transition: opacity 0.5s ease; }
+        #main-content { opacity: 0; position: relative; z-index: 1; }
+        #main-content.show { opacity: 1; transition: opacity 0.5s ease; position: relative; z-index: 1; }
     </style>
 <style>
 :root {--dark-red: #8b0000;--darker-red: #4a0000;--silver: #c0c0c0;--silver-bg: #d0d0d0;--black: #050505}
