@@ -4,36 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LiveGigs Asia</title>
-    <!-- Tab图标 -->
-        <!-- 预加载关键资源 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="dns-prefetch" href="https://eplus.jp">
-    <link rel="dns-prefetch" href="https://bandmaid.tokyo">
-    <link rel="dns-prefetch" href="https://www.summersonic.com">
-
     <link rel="icon" type="image/png" href="./image/webtop.png">
-    <link rel="shortcut icon" type="image/png" href="./image/webtop.png">
-    <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LiveGigs Asia</title>
-    <!-- Tab图标 -->
-        <!-- 预加载关键资源 -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="dns-prefetch" href="https://eplus.jp">
-    <link rel="dns-prefetch" href="https://bandmaid.tokyo">
-    <link rel="dns-prefetch" href="https://www.summersonic.com">
-
-    <link rel="icon" type="image/png" href="./image/webtop.png">
-    <link rel="shortcut icon" type="image/png" href="./image/webtop.png">
 
     <!-- 加载动画样式 -->
     <style>
-        /* ========== 赛博朋克加载动画 ========== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #000; overflow-x: hidden; font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; }
+
+        /* 加载容器 */
         #loading-container {
             position: fixed;
             top: 0;
@@ -46,7 +26,7 @@
             justify-content: center;
             align-items: center;
             z-index: 99999;
-            transition: opacity 1.5s ease-out, visibility 1.5s;
+            transition: opacity 1s ease-out, visibility 1s;
         }
 
         #loading-container.hidden {
@@ -58,7 +38,7 @@
         /* 副标题 */
         #loading-subtitle-container {
             position: absolute;
-            top: 15%;
+            top: 12%;
             left: 50%;
             transform: translateX(-50%);
             text-align: center;
@@ -67,8 +47,8 @@
 
         #loading-subtitle-line1 {
             color: #c0c0c0;
-            font-size: clamp(12px, 2vw, 20px);
-            letter-spacing: clamp(2px, 0.6vw, 4px);
+            font-size: clamp(11px, 1.8vw, 18px);
+            letter-spacing: clamp(2px, 0.5vw, 4px);
             text-transform: uppercase;
             text-shadow: 0 0 10px rgba(192, 192, 192, 0.5);
             white-space: nowrap;
@@ -84,60 +64,82 @@
 
         #loading-subtitle-line2 {
             color: #8b0000;
-            font-size: clamp(16px, 2.5vw, 28px);
-            letter-spacing: clamp(3px, 0.8vw, 6px);
+            font-size: clamp(14px, 2.2vw, 24px);
+            letter-spacing: clamp(3px, 0.7vw, 6px);
             text-transform: uppercase;
-            margin-top: 10px;
+            margin-top: 8px;
             opacity: 0;
             text-shadow: 0 0 20px rgba(139, 0, 0, 0.8), 0 0 40px rgba(255, 0, 0, 0.4);
             font-weight: bold;
             font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
         }
 
-        @keyframes loadingTyping {
-            to { width: 100%; }
-        }
+        @keyframes loadingTyping { to { width: 100%; } }
+        @keyframes loadingBlink { 50% { border-color: transparent; } }
 
-        @keyframes loadingBlink {
-            50% { border-color: transparent; }
-        }
-
-        /* Logo */
-        #loading-logo-container {
+        /* Logo容器 - 用于切割 */
+        #loading-logo-wrapper {
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%) scale(0.05);
-            opacity: 0;
+            transform: translate(-50%, -50%);
             z-index: 100;
         }
 
-        #loading-logo-container.impact {
-            animation: loadingLogoImpact 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-        }
-
-        #loading-logo-container.pulsing {
-            animation: loadingLogoPulse 0.3s ease-in-out infinite;
-        }
-
-        #loading-logo-img {
-            width: clamp(300px, 50vw, 700px);
+        /* 完整的Logo */
+        #loading-logo-intact {
+            width: clamp(280px, 45vw, 600px);
             height: auto;
             display: block;
             filter: drop-shadow(0 0 40px rgba(139, 0, 0, 0.9));
+            opacity: 0;
+            transform: scale(0.05);
         }
 
-        @keyframes loadingLogoImpact {
-            0% { transform: translate(-50%, -50%) scale(0.05); opacity: 0; filter: drop-shadow(0 0 5px rgba(139, 0, 0, 0.2)) blur(20px); }
+        #loading-logo-intact.impact {
+            animation: logoFlyIn 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        #loading-logo-intact.pulsing {
+            animation: logoPulse 0.3s ease-in-out infinite;
+        }
+
+        @keyframes logoFlyIn {
+            0% { transform: scale(0.05); opacity: 0; filter: drop-shadow(0 0 5px rgba(139, 0, 0, 0.2)) blur(20px); }
             40% { opacity: 1; filter: drop-shadow(0 0 30px rgba(139, 0, 0, 0.6)) blur(5px); }
-            75% { transform: translate(-50%, -50%) scale(1.2); filter: drop-shadow(0 0 80px rgba(255, 0, 0, 1)) drop-shadow(0 0 120px rgba(255, 255, 255, 0.6)); }
-            90% { transform: translate(-50%, -50%) scale(0.95); filter: drop-shadow(0 0 100px rgba(255, 0, 0, 1)); }
-            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; filter: drop-shadow(0 0 60px rgba(139, 0, 0, 1)) drop-shadow(0 0 100px rgba(255, 0, 0, 0.5)); }
+            75% { transform: scale(1.15); filter: drop-shadow(0 0 80px rgba(255, 0, 0, 1)) drop-shadow(0 0 120px rgba(255, 255, 255, 0.6)); }
+            90% { transform: scale(0.98); filter: drop-shadow(0 0 100px rgba(255, 0, 0, 1)); }
+            100% { transform: scale(1); opacity: 1; filter: drop-shadow(0 0 60px rgba(139, 0, 0, 1)) drop-shadow(0 0 100px rgba(255, 0, 0, 0.5)); }
         }
 
-        @keyframes loadingLogoPulse {
+        @keyframes logoPulse {
             0%, 100% { filter: drop-shadow(0 0 60px rgba(139, 0, 0, 1)) drop-shadow(0 0 100px rgba(255, 0, 0, 0.5)); }
             50% { filter: drop-shadow(0 0 100px rgba(255, 0, 0, 1)) drop-shadow(0 0 150px rgba(255, 255, 255, 0.3)); }
+        }
+
+        /* Logo碎片容器 */
+        #loading-shards-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: clamp(280px, 45vw, 600px);
+            height: calc(clamp(280px, 45vw, 600px) * 0.3);
+            z-index: 200;
+            display: none;
+        }
+
+        /* Logo碎片 - 使用clip-path切割 */
+        .logo-shard {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://livegigsasia.com/image/webtop.png');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: drop-shadow(0 0 20px rgba(139, 0, 0, 0.8));
+            opacity: 0;
         }
 
         /* 十字进度条 */
@@ -179,17 +181,17 @@
 
         #loading-progress-text {
             position: absolute;
-            top: calc(50% + 150px);
+            top: calc(50% + 130px);
             left: 50%;
             transform: translateX(-50%);
             color: #fff;
-            font-size: clamp(48px, 6vw, 80px);
+            font-size: clamp(40px, 5vw, 72px);
             font-weight: bold;
             font-family: 'Courier New', monospace;
             text-shadow: 0 0 20px rgba(139, 0, 0, 1), 0 0 40px rgba(255, 0, 0, 0.8);
             opacity: 0;
             z-index: 60;
-            letter-spacing: 6px;
+            letter-spacing: 4px;
         }
 
         /* 激光网格 */
@@ -211,28 +213,8 @@
             width: 100vw;
             height: 100vh;
             pointer-events: none;
-            z-index: 200;
+            z-index: 180;
             opacity: 0;
-        }
-
-        /* 玻璃碎片 */
-        .loading-shard {
-            position: absolute;
-            background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(220,220,220,0.8) 30%, rgba(192,192,192,0.6) 60%, rgba(139,0,0,0.3) 100%);
-            border: 1px solid rgba(255,255,255,0.95);
-            box-shadow: 0 0 20px rgba(255,255,255,0.8), inset 0 0 15px rgba(139,0,0,0.3), 0 0 40px rgba(255,0,0,0.4);
-            opacity: 0;
-            z-index: 250;
-        }
-
-        #loading-shatter-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
-            z-index: 250;
         }
 
         /* 闪光 */
@@ -244,9 +226,9 @@
             height: 100vh;
             background: radial-gradient(circle at center, #ffffff 0%, #ff0000 15%, #8b0000 35%, #000 70%);
             opacity: 0;
-            z-index: 240;
+            z-index: 220;
             pointer-events: none;
-            transition: opacity 1.2s ease-out;
+            transition: opacity 1s ease-out;
         }
 
         /* 电波 */
@@ -295,7 +277,7 @@
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
-        /* 主页内容初始隐藏 */
+        /* 主页内容 */
         #main-content {
             opacity: 0;
             transition: opacity 1s ease-out;
@@ -305,6 +287,9 @@
             opacity: 1;
         }
     </style>
+
+    <!-- 原有样式 -->
+    <style>
 <style>
         :root {
             --dark-red: #8b0000;
@@ -1533,17 +1518,20 @@
 
         <div id="loading-progress-text">0%</div>
 
-        <div id="loading-logo-container">
-            <img src="https://livegigsasia.com/image/webtop.png" alt="LiveGigs Asia" id="loading-logo-img" crossorigin="anonymous">
+        <!-- Logo容器 -->
+        <div id="loading-logo-wrapper">
+            <!-- 完整的Logo -->
+            <img src="https://livegigsasia.com/image/webtop.png" alt="LiveGigs Asia" id="loading-logo-intact" crossorigin="anonymous">
+            <!-- Logo碎片容器 -->
+            <div id="loading-shards-container"></div>
         </div>
 
         <div id="loading-laser-grid"></div>
         <div id="loading-wave-container"></div>
         <div id="loading-flash"></div>
-        <div id="loading-shatter-container"></div>
     </div>
 
-    <!-- 主页内容容器 -->
+    <!-- 主页内容 -->
     <div id="main-content">
 
 
@@ -2275,7 +2263,9 @@
                 subtitleContainer: document.getElementById('loading-subtitle-container'),
                 subtitleLine1: document.getElementById('loading-subtitle-line1'),
                 subtitleLine2: document.getElementById('loading-subtitle-line2'),
-                logoContainer: document.getElementById('loading-logo-container'),
+                logoIntact: document.getElementById('loading-logo-intact'),
+                logoWrapper: document.getElementById('loading-logo-wrapper'),
+                shardsContainer: document.getElementById('loading-shards-container'),
                 progressH: document.getElementById('loading-progress-h'),
                 progressV: document.getElementById('loading-progress-v'),
                 progressContainer: document.getElementById('loading-cross-progress'),
@@ -2283,13 +2273,13 @@
                 laserGrid: document.getElementById('loading-laser-grid'),
                 flash: document.getElementById('loading-flash'),
                 waveContainer: document.getElementById('loading-wave-container'),
-                shatterContainer: document.getElementById('loading-shatter-container'),
                 mainContent: document.getElementById('main-content'),
+                shards: [],
 
                 async init() {
-                    // 主页内容先隐藏
                     this.mainContent.style.opacity = '0';
                     await this.preloadLogo();
+                    this.createLogoShards();
                     this.startSequence();
                 },
 
@@ -2300,6 +2290,52 @@
                         img.onerror = resolve;
                         img.src = 'https://livegigsasia.com/image/webtop.png';
                     });
+                },
+
+                // 创建Logo碎片 - 使用CSS clip-path切割Logo图片
+                createLogoShards() {
+                    const rows = 6;
+                    const cols = 10;
+                    const totalShards = rows * cols;
+
+                    this.shardsContainer.style.display = 'block';
+
+                    for (let i = 0; i < totalShards; i++) {
+                        const row = Math.floor(i / cols);
+                        const col = i % cols;
+
+                        const shard = document.createElement('div');
+                        shard.className = 'logo-shard';
+
+                        // 计算clip-path多边形 - 创建不规则碎片形状
+                        const x1 = (col / cols) * 100;
+                        const x2 = ((col + 1) / cols) * 100;
+                        const y1 = (row / rows) * 100;
+                        const y2 = ((row + 1) / rows) * 100;
+
+                        // 添加随机偏移使碎片不规则
+                        const jitter = 3;
+                        const jx1 = x1 + (Math.random() - 0.5) * jitter;
+                        const jx2 = x2 + (Math.random() - 0.5) * jitter;
+                        const jy1 = y1 + (Math.random() - 0.5) * jitter;
+                        const jy2 = y2 + (Math.random() - 0.5) * jitter;
+
+                        // 创建不规则四边形
+                        const polygon = `
+                            ${jx1}% ${jy1}%, 
+                            ${jx2}% ${jy1 + (Math.random() - 0.5) * 2}%, 
+                            ${jx2 + (Math.random() - 0.5) * 2}% ${jy2}%, 
+                            ${jx1 + (Math.random() - 0.5) * 2}% ${jy2}%
+                        `;
+
+                        shard.style.clipPath = `polygon(${polygon})`;
+                        shard.dataset.row = row;
+                        shard.dataset.col = col;
+                        shard.dataset.index = i;
+
+                        this.shardsContainer.appendChild(shard);
+                        this.shards.push(shard);
+                    }
                 },
 
                 async startSequence() {
@@ -2327,15 +2363,15 @@
                     this.subtitleContainer.style.display = 'none';
 
                     // 阶段2: Logo砸入
-                    this.logoContainer.classList.add('impact');
+                    this.logoIntact.classList.add('impact');
                     this.progressContainer.style.opacity = '1';
                     this.progressText.style.opacity = '1';
 
                     // 阶段3: 进度条
                     await this.animateProgress();
 
-                    // 阶段4: 激光网格爆炸
-                    await this.laserExplosion();
+                    // 阶段4: Logo碎裂爆炸
+                    await this.logoShatterExplosion();
 
                     // 阶段5: 显示主页
                     await this.showMainContent();
@@ -2362,8 +2398,8 @@
                             } else {
                                 this.progressText.style.color = '#fff';
                                 this.progressText.style.textShadow = '0 0 30px rgba(255, 0, 0, 1), 0 0 60px rgba(139, 0, 0, 0.9)';
-                                if (percentage > 85 && !this.logoContainer.classList.contains('pulsing')) {
-                                    this.logoContainer.classList.add('pulsing');
+                                if (percentage > 85 && !this.logoIntact.classList.contains('pulsing')) {
+                                    this.logoIntact.classList.add('pulsing');
                                 }
                             }
 
@@ -2378,25 +2414,102 @@
                     });
                 },
 
-                async laserExplosion() {
-                    const logoRect = document.getElementById('loading-logo-img').getBoundingClientRect();
+                async logoShatterExplosion() {
+                    const logoRect = this.logoIntact.getBoundingClientRect();
+                    const centerX = logoRect.left + logoRect.width / 2;
                     const centerY = logoRect.top + logoRect.height / 2;
 
+                    // 1. 创建激光网格
                     this.createLaserGrid(centerY);
-                    await this.wait(600);
+                    await this.wait(400);
 
+                    // 2. 闪光
                     this.flash.style.opacity = '1';
-                    this.createShatter();
+
+                    // 3. 隐藏完整Logo，显示碎片并爆炸
+                    this.logoIntact.style.opacity = '0';
+                    this.shardsContainer.style.display = 'block';
+
+                    // 碎片向四面八方飞溅
+                    this.explodeShards(centerX, centerY);
+
+                    // 4. 电波
                     this.createWaves();
 
                     await this.wait(100);
                     this.flash.style.opacity = '0';
-                    await this.wait(1200);
+                    await this.wait(1500);
+                },
+
+                explodeShards(centerX, centerY) {
+                    this.shards.forEach((shard, index) => {
+                        const row = parseInt(shard.dataset.row);
+                        const col = parseInt(shard.dataset.col);
+
+                        // 计算碎片相对于中心的角度
+                        const shardRect = shard.getBoundingClientRect();
+                        const shardCenterX = shardRect.left + shardRect.width / 2;
+                        const shardCenterY = shardRect.top + shardRect.height / 2;
+
+                        const angle = Math.atan2(shardCenterY - centerY, shardCenterX - centerX);
+                        const angleDeg = angle * (180 / Math.PI);
+
+                        // 随机飞溅距离 - 确保飞出屏幕
+                        const minDistance = Math.max(window.innerWidth, window.innerHeight) * 0.8;
+                        const maxDistance = Math.max(window.innerWidth, window.innerHeight) * 1.5;
+                        const distance = minDistance + Math.random() * (maxDistance - minDistance);
+
+                        // 添加随机角度偏移
+                        const randomAngle = angle + (Math.random() - 0.5) * 0.5;
+
+                        const destX = Math.cos(randomAngle) * distance;
+                        const destY = Math.sin(randomAngle) * distance;
+
+                        // 旋转
+                        const rotationX = Math.random() * 720 - 360;
+                        const rotationY = Math.random() * 720 - 360;
+                        const rotationZ = Math.random() * 1080 - 540;
+
+                        // 延迟 - 中心先爆，边缘后爆
+                        const centerRow = 3;
+                        const centerCol = 5;
+                        const distFromCenter = Math.sqrt(Math.pow(row - centerRow, 2) + Math.pow(col - centerCol, 2));
+                        const delay = distFromCenter * 30;
+
+                        shard.style.opacity = '1';
+
+                        shard.animate([
+                            { 
+                                transform: `translate(0, 0) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1)`,
+                                opacity: 1,
+                                offset: 0
+                            },
+                            { 
+                                transform: `translate(${destX * 0.3}px, ${destY * 0.3}px) rotateX(${rotationX * 0.3}deg) rotateY(${rotationY * 0.3}deg) rotateZ(${rotationZ * 0.3}deg) scale(0.9)`,
+                                opacity: 1,
+                                offset: 0.2
+                            },
+                            { 
+                                transform: `translate(${destX}px, ${destY}px) rotateX(${rotationX}deg) rotateY(${rotationY}deg) rotateZ(${rotationZ}deg) scale(0.3)`,
+                                opacity: 0.8,
+                                offset: 0.7
+                            },
+                            { 
+                                transform: `translate(${destX * 1.2}px, ${destY * 1.2}px) rotateX(${rotationX * 1.2}deg) rotateY(${rotationY * 1.2}deg) rotateZ(${rotationZ * 1.2}deg) scale(0)`,
+                                opacity: 0
+                            }
+                        ], {
+                            duration: 1500 + Math.random() * 500,
+                            delay: delay,
+                            easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                            fill: 'forwards'
+                        });
+                    });
                 },
 
                 createLaserGrid(logoCenterY) {
                     this.laserGrid.style.opacity = '1';
-                    const numH = 12, numV = 16;
+                    const numH = 10, numV = 14;
 
                     for (let i = 0; i < numH; i++) {
                         const laser = document.createElement('div');
@@ -2410,15 +2523,15 @@
                         else if (i % 2 === 1) topPos = logoCenterY - (Math.ceil(i/2) * (window.innerHeight / numH));
                         else topPos = logoCenterY + (i/2 * (window.innerHeight / numH));
 
-                        laser.style.top = topPos + 'px';
+                        laser.style.top = Math.max(0, Math.min(window.innerHeight, topPos)) + 'px';
                         this.laserGrid.appendChild(laser);
 
-                        const delay = Math.abs(i - numH/2) * 30;
+                        const delay = Math.abs(i - numH/2) * 25;
                         laser.animate([
                             { transform: 'scaleX(0)', opacity: 0 },
                             { transform: 'scaleX(1)', opacity: 1, offset: 0.3 },
                             { transform: 'scaleX(1)', opacity: 1 }
-                        ], { duration: 800, delay: delay, easing: 'cubic-bezier(0.4, 0, 0.2, 1)', fill: 'forwards' });
+                        ], { duration: 700, delay: delay, easing: 'cubic-bezier(0.4, 0, 0.2, 1)', fill: 'forwards' });
                     }
 
                     for (let i = 0; i < numV; i++) {
@@ -2430,58 +2543,17 @@
                         laser.style.left = ((i + 1) * (window.innerWidth / (numV + 1))) + 'px';
                         this.laserGrid.appendChild(laser);
 
-                        const delay = Math.abs(i - numV/2) * 25;
+                        const delay = Math.abs(i - numV/2) * 20;
                         laser.animate([
                             { transform: 'scaleY(0)', opacity: 0 },
                             { transform: 'scaleY(1)', opacity: 1, offset: 0.3 },
                             { transform: 'scaleY(1)', opacity: 1 }
-                        ], { duration: 800, delay: delay, easing: 'cubic-bezier(0.4, 0, 0.2, 1)', fill: 'forwards' });
-                    }
-                },
-
-                createShatter() {
-                    const shards = 100;
-                    const logoRect = document.getElementById('loading-logo-img').getBoundingClientRect();
-                    const centerX = logoRect.left + logoRect.width / 2;
-                    const centerY = logoRect.top + logoRect.height / 2;
-
-                    for (let i = 0; i < shards; i++) {
-                        const shard = document.createElement('div');
-                        shard.className = 'loading-shard';
-
-                        const angle = (i / shards) * 360 + Math.random() * 20;
-                        const startDist = Math.random() * 100;
-                        const rad = (angle * Math.PI) / 180;
-                        const startX = centerX + Math.cos(rad) * startDist;
-                        const startY = centerY + Math.sin(rad) * startDist;
-
-                        shard.style.width = (30 + Math.random() * 80) + 'px';
-                        shard.style.height = (30 + Math.random() * 80) + 'px';
-                        shard.style.left = startX + 'px';
-                        shard.style.top = startY + 'px';
-
-                        const p1 = Math.random() * 25, p2 = 25 + Math.random() * 25;
-                        const p3 = 50 + Math.random() * 25, p4 = 75 + Math.random() * 25;
-                        shard.style.clipPath = `polygon(${p1}% 0%, 100% ${p2}%, ${p3}% 100%, 0% ${p4}%)`;
-
-                        this.shatterContainer.appendChild(shard);
-
-                        const flyDist = 300 + Math.random() * 800;
-                        const destX = Math.cos(rad) * flyDist;
-                        const destY = Math.sin(rad) * flyDist;
-                        const rotation = Math.random() * 1440 - 720;
-
-                        shard.animate([
-                            { transform: `translate(-50%, -50%) scale(0.3) rotate(0deg)`, opacity: 0 },
-                            { transform: `translate(-50%, -50%) scale(1.3) rotate(${rotation * 0.15}deg)`, opacity: 1, offset: 0.08 },
-                            { transform: `translate(calc(-50% + ${destX * 0.6}px), calc(-50% + ${destY * 0.6}px)) scale(1) rotate(${rotation * 0.4}deg)`, opacity: 0.95, offset: 0.4 },
-                            { transform: `translate(calc(-50% + ${destX}px), calc(-50% + ${destY}px)) scale(0.2) rotate(${rotation}deg)`, opacity: 0 }
-                        ], { duration: 2000 + Math.random() * 800, easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)', fill: 'forwards' });
+                        ], { duration: 700, delay: delay, easing: 'cubic-bezier(0.4, 0, 0.2, 1)', fill: 'forwards' });
                     }
                 },
 
                 createWaves() {
-                    for (let i = 0; i < 8; i++) {
+                    for (let i = 0; i < 6; i++) {
                         setTimeout(() => {
                             const wave = document.createElement('div');
                             wave.className = 'loading-wave';
@@ -2495,8 +2567,8 @@
                             wave.animate([
                                 { width: '50px', height: '50px', opacity: 1, borderWidth: '4px' },
                                 { width: '500vw', height: '500vw', opacity: 0, borderWidth: '0px' }
-                            ], { duration: 3000, easing: 'ease-out', fill: 'forwards' }).onfinish = () => wave.remove();
-                        }, i * 120);
+                            ], { duration: 2500, easing: 'ease-out', fill: 'forwards' }).onfinish = () => wave.remove();
+                        }, i * 100);
                     }
 
                     const burst = document.createElement('div');
@@ -2505,19 +2577,14 @@
                     burst.animate([
                         { width: '0', height: '0', opacity: 1 },
                         { width: '600vw', height: '600vw', opacity: 0 }
-                    ], { duration: 3500, easing: 'ease-out', fill: 'forwards' });
+                    ], { duration: 3000, easing: 'ease-out', fill: 'forwards' });
                 },
 
                 async showMainContent() {
-                    // 显示主页内容
                     this.mainContent.classList.add('visible');
-
-                    // 隐藏加载动画
-                    await this.wait(500);
+                    await this.wait(800);
                     this.container.classList.add('hidden');
-
-                    // 清理DOM
-                    await this.wait(1500);
+                    await this.wait(1000);
                     this.container.style.display = 'none';
                 },
 
@@ -2526,7 +2593,6 @@
                 }
             };
 
-            // 启动加载动画
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', () => loading.init());
             } else {
