@@ -1898,6 +1898,16 @@
     <!-- 加载动画脚本 -->
     <script>
         (function() {
+            // 隐私模式保护
+            let canUseStorage = false;
+            try {
+                localStorage.setItem('test', 'test');
+                localStorage.removeItem('test');
+                canUseStorage = true;
+            } catch (e) {
+                canUseStorage = false;
+            }
+
             const elements = {
                 container: document.getElementById('loader-container'),
                 noise: document.getElementById('noise'),
@@ -1921,15 +1931,27 @@
             const urlParams = new URLSearchParams(window.location.search);
             const forceShow = urlParams.has('reset');
 
-            const lastLoadTime = localStorage.getItem('livegigs_last_load');
-            const currentTime = Date.now();
-            const timeDiff = lastLoadTime ? currentTime - parseInt(lastLoadTime) : 99999999;
+            let shouldSkip = false;
+            if (canUseStorage) {
+                const lastLoadTime = localStorage.getItem('livegigs_last_load');
+                const currentTime = Date.now();
+                const timeDiff = lastLoadTime ? currentTime - parseInt(lastLoadTime) : 99999999;
 
-            // 记录本次加载时间
-            localStorage.setItem('livegigs_last_load', currentTime.toString());
+                // 如果30分钟内有加载记录，跳过动画
+                if (timeDiff < 1800000) {
+                    shouldSkip = true;
+                }
+
+                // 记录本次加载时间
+                try {
+                    localStorage.setItem('livegigs_last_load', currentTime.toString());
+                } catch (e) {
+                    // 隐私模式下忽略错误
+                }
+            }
 
             // 如果30分钟内有加载记录且没有强制重置参数，跳过动画
-            if (!forceShow && timeDiff < 1800000) {
+            if (!forceShow && shouldSkip) {
                 elements.container.classList.add('hidden');
                 elements.welcomescreen.classList.add('hidden');
                 elements.maincontent.classList.add('show');
