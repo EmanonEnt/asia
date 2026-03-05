@@ -964,26 +964,7 @@
                 filter: brightness(0.65);
                 transform: scale(1.08);
             }
-            .poster-overlay, .poster-item-alt .poster-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 35px 20px 25px;
-            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 50%, transparent 100%);
-            opacity: 0;
-            transition: opacity 0.4s;
-        }
-
-        /* 静态显示的overlay - 用于轮播海报 */
-        .poster-overlay-static {
-            opacity: 1 !important;
-            z-index: 10;
-        }
-
-        .poster-item-alt:hover .poster-overlay-static {
-            opacity: 1 !important;
-        }
+            .poster-overlay, .poster-item-alt .poster-overlay { padding: 12px 6px 10px; }
             .poster-title { font-size: 10px; letter-spacing: 1px; margin-bottom: 4px; }
             .poster-link { font-size: 9px; letter-spacing: 0.5px; }
             .footer-gap { height: 80px; }
@@ -1210,7 +1191,7 @@
                     <div class="poster-carousel-wrapper">
                         <div class="poster-carousel" id="posterCarousel1">
                             <div class="poster-carousel-slide active" data-editable="poster-1-1">
-                                <img src="./image/cn-asiaad.jpg" alt="Update Your Gigs" class="poster-carousel-img" loading="lazy"
+                                <img src="https://totalticketing-ets-ttlcom-prod-singapore-web-files.s3.amazonaws.com/media/uploads/images/056a1c096df6d1bd.jpeg" alt="Update Your Gigs" class="poster-carousel-img" loading="lazy"
                                      onerror="this.src='./image/asia-asiaad.jpg'; this.style.objectFit='fill'; this.onerror=null;" data-editable="poster-1-1-image">
                             </div>
                         </div>
@@ -1370,8 +1351,7 @@
 </script>
 
     <!-- 海报2轮播脚本 -->
-    <script>
-        // 海报2轮播数据
+    <script>// 海报2轮播数据
         const poster2Data = [
             { title: 'Upcoming Event', linkText: 'More Events →', img: 'https://new.brg-radio.com/wp-content/uploads/2026/02/Black-Flag-web.jpg.jpeg', link: 'events.html' },
             { title: 'LiveGigs Cn', linkText: 'CN特别版 →', img: './image/livegigscnad.webp', link: './cn.html' }
@@ -1382,17 +1362,21 @@
         let poster2LastTime = 0;
 
         function initPoster2Carousel() {
-            const slides = document.querySelectorAll('.poster-carousel-slide');
-            const dots = document.querySelectorAll('.carousel-dot');
-            const carousel = document.getElementById('posterCarousel');
-            if (slides.length === 0 || !carousel) return;
+            const carousel = document.getElementById('posterCarousel2');
+            if (!carousel) return;
 
-            // 启动自动轮播
+            const slides = carousel.querySelectorAll('.poster-carousel-slide');
+            const dots = document.getElementById('carouselDots2');
+            const dotElements = dots ? dots.querySelectorAll('.carousel-dot') : [];
+
+            if (slides.length === 0) return;
+
             startPoster2Autoplay();
 
-            dots.forEach((dot, index) => {
-                dot.addEventListener('click', (e) => {
+            dotElements.forEach((dot, index) => {
+                dot.addEventListener('click', function(e) {
                     e.preventDefault();
+                    e.stopPropagation();
                     stopPoster2Autoplay();
                     goToPoster2Slide(index);
                     startPoster2Autoplay();
@@ -1424,17 +1408,24 @@
         }
 
         function goToPoster2Slide(n) {
-            const slides = document.querySelectorAll('.poster-carousel-slide');
-            const dots = document.querySelectorAll('.carousel-dot');
+            const carousel = document.getElementById('posterCarousel2');
+            if (!carousel) return;
+
+            const slides = carousel.querySelectorAll('.poster-carousel-slide');
+            const dots = document.getElementById('carouselDots2');
+            const dotElements = dots ? dots.querySelectorAll('.carousel-dot') : [];
             const titleEl = document.getElementById('poster2Title');
             const linkEl = document.getElementById('poster2Link');
+
             if (slides.length === 0) return;
 
             slides[poster2CurrentSlide].classList.remove('active');
-            dots[poster2CurrentSlide].classList.remove('active');
+            if (dotElements[poster2CurrentSlide]) dotElements[poster2CurrentSlide].classList.remove('active');
+
             poster2CurrentSlide = (n + slides.length) % slides.length;
+
             slides[poster2CurrentSlide].classList.add('active');
-            dots[poster2CurrentSlide].classList.add('active');
+            if (dotElements[poster2CurrentSlide]) dotElements[poster2CurrentSlide].classList.add('active');
 
             if (titleEl && linkEl && poster2Data[poster2CurrentSlide]) {
                 titleEl.textContent = poster2Data[poster2CurrentSlide].title;
@@ -1449,14 +1440,12 @@
             }
         }
 
-        // 初始化
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', initPoster2Carousel);
         } else {
             setTimeout(initPoster2Carousel, 100);
         }
-        window.addEventListener('load', initPoster2Carousel);
-    </script>
+        window.addEventListener('load', initPoster2Carousel);</script>
     </div>
 
     <!-- 加载动画脚本 -->
