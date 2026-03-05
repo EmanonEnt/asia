@@ -13,498 +13,7 @@
     <link rel="shortcut icon" type="image/png" href="./image/webtop.png">
 
     <!-- 加载动画样式 -->
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-
-        /* 加载动画容器 */
-        #loader-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: #000;
-            z-index: 99999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-        }
-
-        /* 噪点层 */
-        .noise {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            pointer-events: none;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-            animation: noise 0.1s steps(2) infinite;
-        }
-
-        @keyframes noise {
-            0%, 100% { transform: translate(0, 0); }
-            10% { transform: translate(-5%, -5%); }
-            20% { transform: translate(-10%, 5%); }
-            30% { transform: translate(5%, -10%); }
-            40% { transform: translate(-5%, 15%); }
-            50% { transform: translate(-10%, 5%); }
-            60% { transform: translate(15%, 0); }
-            70% { transform: translate(0, 10%); }
-            80% { transform: translate(-15%, 0); }
-            90% { transform: translate(10%, 5%); }
-        }
-
-        /* 震动线条 */
-        .scan-lines {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 0;
-            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255, 0, 0, 0.1) 2px, rgba(255, 0, 0, 0.1) 4px);
-            animation: scanlines 0.8s ease-out forwards;
-        }
-
-        @keyframes scanlines {
-            0% { height: 0; opacity: 0; }
-            100% { height: 100%; opacity: 1; }
-        }
-
-        /* 红色扫描线 */
-        .red-scan {
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #ff0000, transparent);
-            box-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000;
-            opacity: 0;
-        }
-
-        .red-scan.active { animation: scanMove 1s ease-in-out; }
-
-        @keyframes scanMove {
-            0% { left: -100%; opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { left: 100%; opacity: 0; }
-        }
-
-        /* 故障文字 - 副标题 */
-        .glitch-text {
-            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-            color: #fff;
-            text-transform: uppercase;
-            opacity: 0;
-            position: relative;
-            text-align: center;
-            text-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
-        }
-
-        .glitch-text.active { animation: glitchIn 1.2s ease-out forwards; }
-
-        @keyframes glitchIn {
-            0% { opacity: 0; transform: translateX(-20px); text-shadow: -2px 0 #ff0000, 2px 0 #00ffff; }
-            20% { opacity: 1; text-shadow: 2px 0 #ff0000, -2px 0 #00ffff; }
-            40% { text-shadow: -3px 0 #ff0000, 3px 0 #00ffff; transform: translateX(2px); }
-            60% { text-shadow: 3px 0 #ff0000, -3px 0 #00ffff; transform: translateX(-2px); }
-            80% { text-shadow: -1px 0 #ff0000, 1px 0 #00ffff; }
-            100% { opacity: 1; text-shadow: 0 0 30px rgba(255, 0, 0, 0.8); transform: translateX(0); }
-        }
-
-        /* 桌面端样式 - 大字体一行显示 */
-        .glitch-text.desktop {
-            display: block;
-            font-size: clamp(20px, 3.5vw, 36px);
-            letter-spacing: clamp(6px, 1.2vw, 14px);
-            line-height: 1.6;
-        }
-
-        .glitch-text.desktop .glitch-line {
-            display: block;
-            white-space: nowrap;
-        }
-
-        .glitch-text.desktop .glitch-line.small {
-            font-size: 0.65em;
-            letter-spacing: clamp(4px, 0.8vw, 8px);
-            color: rgba(255, 255, 255, 0.85);
-            margin-top: 15px;
-        }
-
-        /* 移动端样式 - 默认隐藏 */
-        .glitch-text.mobile {
-            display: none;
-            font-size: clamp(14px, 4vw, 20px);
-            letter-spacing: clamp(3px, 0.8vw, 6px);
-            line-height: 1.7;
-        }
-
-        .glitch-text.mobile .glitch-line {
-            display: block;
-            white-space: nowrap;
-        }
-
-        .glitch-text.mobile .glitch-line.line1 { font-size: 1em; }
-        .glitch-text.mobile .glitch-line.line2 { font-size: 1em; margin-top: 5px; }
-        .glitch-text.mobile .glitch-line.small {
-            font-size: 0.65em;
-            letter-spacing: clamp(2px, 0.5vw, 4px);
-            color: rgba(255, 255, 255, 0.85);
-            margin-top: 12px;
-        }
-
-        /* 移动端显示切换 */
-        @media (max-width: 768px) {
-            .glitch-text.desktop { display: none; }
-            .glitch-text.mobile { display: block; }
-        }
-
-        /* 小屏移动端适配 */
-        @media (max-width: 480px) {
-            .glitch-text.mobile {
-                font-size: clamp(12px, 3.8vw, 16px);
-                letter-spacing: clamp(2px, 0.6vw, 4px);
-            }
-        }
-
-        @media (max-width: 375px) {
-            .glitch-text.mobile {
-                font-size: clamp(11px, 3.5vw, 14px);
-                letter-spacing: clamp(1.5px, 0.5vw, 3px);
-            }
-        }
-
-        @media (max-width: 320px) {
-            .glitch-text.mobile {
-                font-size: 10px;
-                letter-spacing: 1.5px;
-            }
-        }
-
-        /* LOGO容器 */
-        .logo-container {
-            position: relative;
-            width: clamp(200px, 30vw, 400px);
-            height: clamp(200px, 30vw, 400px);
-            opacity: 0;
-            transform: scale(0.5);
-            margin: 40px 0;
-        }
-
-        .logo-container.active { animation: logoAwaken 1.2s ease-out forwards; }
-
-        @keyframes logoAwaken {
-            0% { opacity: 0; transform: scale(0.5) rotateY(0deg); }
-            30% { opacity: 1; transform: scale(1.1) rotateY(180deg); }
-            60% { transform: scale(0.95) rotateY(360deg); }
-            100% { opacity: 1; transform: scale(1) rotateY(360deg); }
-        }
-
-        /* 脉冲圆环 */
-        .pulse-ring {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100%;
-            height: 100%;
-            border: 2px solid rgba(255, 0, 0, 0.5);
-            border-radius: 50%;
-            opacity: 0;
-        }
-
-        .pulse-ring.active { animation: pulseRing 1.2s ease-out; }
-
-        @keyframes pulseRing {
-            0% { width: 50%; height: 50%; opacity: 1; border-color: rgba(255, 0, 0, 0.8); }
-            100% { width: 150%; height: 150%; opacity: 0; border-color: rgba(255, 0, 0, 0); }
-        }
-
-        /* LOGO图片 */
-        .logo-img-loader {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            filter: drop-shadow(0 0 30px rgba(255, 0, 0, 0.8));
-            animation: neonFlicker 0.1s infinite alternate;
-        }
-
-        @keyframes neonFlicker {
-            0% { filter: drop-shadow(0 0 20px rgba(255, 0, 0, 0.5)) brightness(1); }
-            100% { filter: drop-shadow(0 0 40px rgba(255, 0, 0, 1)) brightness(1.3); }
-        }
-
-        /* 火花粒子 */
-        .sparks { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
-
-        .spark {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: #ff0000;
-            border-radius: 50%;
-            box-shadow: 0 0 6px #ff0000, 0 0 12px #ffaa00;
-            opacity: 0;
-        }
-
-        .spark.active { animation: sparkFly 0.8s ease-out forwards; }
-
-        @keyframes sparkFly {
-            0% { opacity: 1; transform: translate(0, 0) scale(1); }
-            100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0); }
-        }
-
-        /* 音浪环 */
-        .sound-waves {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-
-        .wave {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border: 1px solid rgba(255, 0, 0, 0.3);
-            border-radius: 50%;
-            opacity: 0;
-        }
-
-        .wave.active { animation: waveExpand 1s ease-out forwards; }
-
-        @keyframes waveExpand {
-            0% { width: 80%; height: 80%; opacity: 0.8; border-color: rgba(255, 0, 0, 0.6); }
-            100% { width: 200%; height: 200%; opacity: 0; border-color: rgba(255, 0, 0, 0); }
-        }
-
-        /* 炸裂效果 */
-        .explosion {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 0;
-            height: 0;
-            background: radial-gradient(circle, rgba(255, 0, 0, 1) 0%, rgba(255, 50, 0, 0.8) 30%, transparent 70%);
-            border-radius: 50%;
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .explosion.active { animation: explode 0.5s ease-out forwards; }
-
-        @keyframes explode {
-            0% { width: 0; height: 0; opacity: 1; }
-            50% { width: 300vmax; height: 300vmax; opacity: 0.8; }
-            100% { width: 400vmax; height: 400vmax; opacity: 0; }
-        }
-
-        /* 进度条 */
-        .progress-container {
-            width: 300px;
-            height: 3px;
-            background: rgba(255, 255, 255, 0.1);
-            margin-top: 40px;
-            position: relative;
-            overflow: hidden;
-            opacity: 0;
-        }
-
-        .progress-container.active { opacity: 1; transition: opacity 0.3s; }
-
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #ff0000, #ff6600, #ff0000);
-            width: 0%;
-            box-shadow: 0 0 10px #ff0000;
-            transition: width 0.1s linear;
-        }
-
-        .progress-text {
-            color: #ff0000;
-            font-family: 'Courier New', monospace;
-            font-size: 0.8rem;
-            margin-top: 10px;
-            letter-spacing: 0.2em;
-            opacity: 0;
-        }
-
-        .progress-text.active { opacity: 1; animation: blink 0.5s infinite; }
-
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-
-        /* 最终WELCOME画面 */
-        .welcome-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: url('https://livegigsasia.com/image/e-hero%20bg.jpg') center/cover no-repeat;
-            z-index: 99998;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            pointer-events: none;
-            transform: scale(1.1);
-            overflow: hidden;
-        }
-
-        @media (max-width: 768px) {
-            .welcome-screen {
-                background-position: center center;
-                background-size: cover;
-            }
-        }
-
-        @media (orientation: portrait) {
-            .welcome-screen {
-                background-position: center 30%;
-            }
-        }
-
-        .welcome-screen.active {
-            opacity: 1;
-            transform: scale(1);
-            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .welcome-screen.fade-out {
-            opacity: 0;
-            transform: scale(1.05);
-            transition: all 0.5s ease-out;
-        }
-
-        .welcome-text {
-            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-            font-size: clamp(28px, 6vw, 72px);
-            color: #fff;
-            letter-spacing: clamp(8px, 2.5vw, 24px);
-            text-transform: uppercase;
-            text-align: center;
-            opacity: 0;
-            transform: translateY(30px);
-            animation: welcomeRedFlash 2s ease-in-out infinite;
-            line-height: 1.2;
-            padding: 0 20px;
-            max-width: 95vw;
-            word-wrap: break-word;
-            hyphens: auto;
-        }
-
-        @keyframes welcomeRedFlash {
-            0%, 100% { 
-                text-shadow: 
-                    0 0 20px rgba(255, 0, 0, 0.8),
-                    0 0 40px rgba(255, 0, 0, 0.6),
-                    0 0 80px rgba(255, 0, 0, 0.4),
-                    0 0 120px rgba(139, 0, 0, 0.3),
-                    0 5px 15px rgba(0, 0, 0, 0.9);
-                filter: brightness(1);
-            }
-            50% { 
-                text-shadow: 
-                    0 0 30px rgba(255, 0, 0, 1),
-                    0 0 60px rgba(255, 0, 0, 0.9),
-                    0 0 100px rgba(255, 0, 0, 0.7),
-                    0 0 150px rgba(255, 50, 50, 0.5),
-                    0 0 200px rgba(139, 0, 0, 0.4),
-                    0 5px 15px rgba(0, 0, 0, 0.9);
-                filter: brightness(1.3);
-            }
-        }
-
-        /* 平板适配 */
-        @media (max-width: 1024px) {
-            .welcome-text {
-                font-size: clamp(24px, 7vw, 56px);
-                letter-spacing: clamp(6px, 2vw, 16px);
-                line-height: 1.3;
-            }
-        }
-
-        /* 手机横屏 */
-        @media (max-width: 768px) {
-            .welcome-text {
-                font-size: clamp(20px, 6vw, 40px);
-                letter-spacing: clamp(4px, 1.5vw, 12px);
-                line-height: 1.4;
-                padding: 0 30px;
-            }
-        }
-
-        /* 手机竖屏 */
-        @media (max-width: 480px) {
-            .welcome-text {
-                font-size: clamp(18px, 8vw, 32px);
-                letter-spacing: clamp(3px, 1.2vw, 8px);
-                line-height: 1.5;
-                padding: 0 20px;
-            }
-        }
-
-        /* 小屏手机 */
-        @media (max-width: 375px) {
-            .welcome-text {
-                font-size: clamp(16px, 7vw, 28px);
-                letter-spacing: clamp(2px, 1vw, 6px);
-                line-height: 1.6;
-                padding: 0 15px;
-            }
-        }
-
-        /* 超小屏 */
-        @media (max-width: 320px) {
-            .welcome-text {
-                font-size: 14px;
-                letter-spacing: 2px;
-                line-height: 1.7;
-                padding: 0 10px;
-            }
-        }
-
-        /* 竖屏模式强制优化 */
-        @media (orientation: portrait) and (max-width: 768px) {
-            .welcome-text {
-                font-size: clamp(20px, 9vw, 36px);
-                letter-spacing: clamp(4px, 2vw, 10px);
-            }
-        }
-
-        /* 横屏模式优化 */
-        @media (orientation: landscape) and (max-height: 500px) {
-            .welcome-text {
-                font-size: clamp(18px, 5vh, 36px);
-                letter-spacing: clamp(4px, 1.5vh, 10px);
-            }
-        }
-
-        .welcome-screen.active .welcome-text {
-            opacity: 1;
-            transform: translateY(0);
-            transition: all 0.6s ease-out 0.3s;
-        }
-
-        /* 隐藏状态 */
-        .hidden { display: none !important; }
-
-        #main-content { opacity: 0; }
-        #main-content.show { opacity: 1; transition: opacity 0.5s ease; }
-    </style>
+    
 
     <style>
         :root {
@@ -920,6 +429,7 @@
             cursor: default;
             background: #000;
             transition: all 0.4s ease;
+            aspect-ratio: 2/3;
         }
 
         .poster-item:hover {
@@ -987,6 +497,7 @@
             background: #000;
             transition: all 0.4s ease;
             border: none;
+            aspect-ratio: 2/3;
         }
 
         .poster-item-alt:hover {
@@ -1604,7 +1115,7 @@
                                 <div class="rebel-slider" id="rebelSlider">
                     <!-- Banner 1 -->
                     <div class="rebel-slide" data-editable="banner-slide-1">
-                        <img src="https://eplus.jp/s/oki_img/0000171052/thechats/main_img_v2.webp?v=260126" alt="The Chats JAPAN 2026" class="rebel-poster banner-placeholder" referrerpolicy="no-referrer"
+                        <img src="https://eplus.jp/s/oki_img/0000171052/thechats/main_img_v2.webp?v=260126" alt="The Chats JAPAN 2026" class="rebel-poster banner-placeholder" width="1280" height="672" referrerpolicy="no-referrer"
                              onerror="this.onerror=null; this.src='./image/asia-bannerbg.webp'; this.style.objectFit='cover';" data-editable="banner-1-image">
                         <div class="rebel-content">
                             <h2 data-editable="banner-1-title" data-text="The Chats JAPAN 2026">The Chats JAPAN 2026</h2>
@@ -1613,7 +1124,7 @@
                     </div>
                     <!-- Banner 2 -->
                     <div class="rebel-slide" data-editable="banner-slide-2">
-                        <img src="https://bandmaid.tokyo/s3/skiyaki/uploads/ckeditor/pictures/825706/content_260212_bm_worldtour_2026_rgb_01_X.jpg" alt="BAND-MAID WORLD TOUR 2026" class="rebel-poster banner-placeholder" referrerpolicy="no-referrer"
+                        <img src="https://bandmaid.tokyo/s3/skiyaki/uploads/ckeditor/pictures/825706/content_260212_bm_worldtour_2026_rgb_01_X.jpg" alt="BAND-MAID WORLD TOUR 2026" class="rebel-poster banner-placeholder" width="1280" height="672" referrerpolicy="no-referrer"
                              onerror="this.onerror=null; this.src='./image/asia-bannerbg.webp'; this.style.objectFit='cover';" data-editable="banner-2-image">
                         <div class="rebel-content">
                             <h2 data-editable="banner-2-title" data-text="BAND-MAID WORLD TOUR 2026">BAND-MAID WORLD TOUR 2026</h2>
@@ -1622,7 +1133,7 @@
                     </div>
                     <!-- Banner 3 -->
                     <div class="rebel-slide" data-editable="banner-slide-3">
-                        <img src="./image/punkheartbanner.jpg" alt="朋克心音樂節 2026" class="rebel-poster banner-placeholder"
+                        <img src="./image/punkheartbanner.jpg" alt="朋克心音樂節 2026" class="rebel-poster banner-placeholder" width="1280" height="672"
                              onerror="this.onerror=null; this.src='./image/asia-bannerbg.webp'; this.style.objectFit='cover';" data-editable="banner-3-image">
                         <div class="rebel-content">
                             <h2 data-editable="banner-3-title" data-text="朋克心音樂節 2026">朋克心音樂節 2026</h2>
@@ -1631,7 +1142,7 @@
                     </div>
                     <!-- Banner 4 -->
                     <div class="rebel-slide" data-editable="banner-slide-4">
-                        <img src="./image/nben1.jpg" alt="My Chemical Romance S.E Asia Tour 2026" class="rebel-poster banner-placeholder"
+                        <img src="./image/nben1.jpg" alt="My Chemical Romance S.E Asia Tour 2026" class="rebel-poster banner-placeholder" width="1280" height="672"
                              onerror="this.onerror=null; this.src='./image/asia-bannerbg.webp'; this.style.objectFit='cover';" data-editable="banner-4-image">
                         <div class="rebel-content">
                             <h2 data-editable="banner-4-title" data-text="My Chemical Romance S.E Asia Tour 2026">My Chemical Romance S.E Asia Tour 2026</h2>
@@ -1640,7 +1151,7 @@
                     </div>
                     <!-- Banner 5 -->
                     <div class="rebel-slide" data-editable="banner-slide-5">
-                        <img src="https://www.summersonic.com/common/images/bnr_main_pc_0226.jpg" alt="SUMMER SONIC 2026" class="rebel-poster banner-placeholder" referrerpolicy="no-referrer"
+                        <img src="https://www.summersonic.com/common/images/bnr_main_pc_0226.jpg" alt="SUMMER SONIC 2026" class="rebel-poster banner-placeholder" width="1280" height="672" referrerpolicy="no-referrer"
                              onerror="this.onerror=null; this.src='./image/asia-bannerbg.webp'; this.style.objectFit='cover';" data-editable="banner-5-image">
                         <div class="rebel-content">
                             <h2 data-editable="banner-5-title" data-text="SUMMER SONIC 2026">SUMMER SONIC 2026</h2>
@@ -2335,5 +1846,497 @@
 <!-- Admin管理脚本 -->
     
 
+<style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        /* 加载动画容器 */
+        #loader-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* 噪点层 */
+        .noise {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            animation: noise 0.1s steps(2) infinite;
+        }
+
+        @keyframes noise {
+            0%, 100% { transform: translate(0, 0); }
+            10% { transform: translate(-5%, -5%); }
+            20% { transform: translate(-10%, 5%); }
+            30% { transform: translate(5%, -10%); }
+            40% { transform: translate(-5%, 15%); }
+            50% { transform: translate(-10%, 5%); }
+            60% { transform: translate(15%, 0); }
+            70% { transform: translate(0, 10%); }
+            80% { transform: translate(-15%, 0); }
+            90% { transform: translate(10%, 5%); }
+        }
+
+        /* 震动线条 */
+        .scan-lines {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 0;
+            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255, 0, 0, 0.1) 2px, rgba(255, 0, 0, 0.1) 4px);
+            animation: scanlines 0.8s ease-out forwards;
+        }
+
+        @keyframes scanlines {
+            0% { height: 0; opacity: 0; }
+            100% { height: 100%; opacity: 1; }
+        }
+
+        /* 红色扫描线 */
+        .red-scan {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ff0000, transparent);
+            box-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000;
+            opacity: 0;
+        }
+
+        .red-scan.active { animation: scanMove 1s ease-in-out; }
+
+        @keyframes scanMove {
+            0% { left: -100%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { left: 100%; opacity: 0; }
+        }
+
+        /* 故障文字 - 副标题 */
+        .glitch-text {
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            color: #fff;
+            text-transform: uppercase;
+            opacity: 0;
+            position: relative;
+            text-align: center;
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+        }
+
+        .glitch-text.active { animation: glitchIn 1.2s ease-out forwards; }
+
+        @keyframes glitchIn {
+            0% { opacity: 0; transform: translateX(-20px); text-shadow: -2px 0 #ff0000, 2px 0 #00ffff; }
+            20% { opacity: 1; text-shadow: 2px 0 #ff0000, -2px 0 #00ffff; }
+            40% { text-shadow: -3px 0 #ff0000, 3px 0 #00ffff; transform: translateX(2px); }
+            60% { text-shadow: 3px 0 #ff0000, -3px 0 #00ffff; transform: translateX(-2px); }
+            80% { text-shadow: -1px 0 #ff0000, 1px 0 #00ffff; }
+            100% { opacity: 1; text-shadow: 0 0 30px rgba(255, 0, 0, 0.8); transform: translateX(0); }
+        }
+
+        /* 桌面端样式 - 大字体一行显示 */
+        .glitch-text.desktop {
+            display: block;
+            font-size: clamp(20px, 3.5vw, 36px);
+            letter-spacing: clamp(6px, 1.2vw, 14px);
+            line-height: 1.6;
+        }
+
+        .glitch-text.desktop .glitch-line {
+            display: block;
+            white-space: nowrap;
+        }
+
+        .glitch-text.desktop .glitch-line.small {
+            font-size: 0.65em;
+            letter-spacing: clamp(4px, 0.8vw, 8px);
+            color: rgba(255, 255, 255, 0.85);
+            margin-top: 15px;
+        }
+
+        /* 移动端样式 - 默认隐藏 */
+        .glitch-text.mobile {
+            display: none;
+            font-size: clamp(14px, 4vw, 20px);
+            letter-spacing: clamp(3px, 0.8vw, 6px);
+            line-height: 1.7;
+        }
+
+        .glitch-text.mobile .glitch-line {
+            display: block;
+            white-space: nowrap;
+        }
+
+        .glitch-text.mobile .glitch-line.line1 { font-size: 1em; }
+        .glitch-text.mobile .glitch-line.line2 { font-size: 1em; margin-top: 5px; }
+        .glitch-text.mobile .glitch-line.small {
+            font-size: 0.65em;
+            letter-spacing: clamp(2px, 0.5vw, 4px);
+            color: rgba(255, 255, 255, 0.85);
+            margin-top: 12px;
+        }
+
+        /* 移动端显示切换 */
+        @media (max-width: 768px) {
+            .glitch-text.desktop { display: none; }
+            .glitch-text.mobile { display: block; }
+        }
+
+        /* 小屏移动端适配 */
+        @media (max-width: 480px) {
+            .glitch-text.mobile {
+                font-size: clamp(12px, 3.8vw, 16px);
+                letter-spacing: clamp(2px, 0.6vw, 4px);
+            }
+        }
+
+        @media (max-width: 375px) {
+            .glitch-text.mobile {
+                font-size: clamp(11px, 3.5vw, 14px);
+                letter-spacing: clamp(1.5px, 0.5vw, 3px);
+            }
+        }
+
+        @media (max-width: 320px) {
+            .glitch-text.mobile {
+                font-size: 10px;
+                letter-spacing: 1.5px;
+            }
+        }
+
+        /* LOGO容器 */
+        .logo-container {
+            position: relative;
+            width: clamp(200px, 30vw, 400px);
+            height: clamp(200px, 30vw, 400px);
+            opacity: 0;
+            transform: scale(0.5);
+            margin: 40px 0;
+        }
+
+        .logo-container.active { animation: logoAwaken 1.2s ease-out forwards; }
+
+        @keyframes logoAwaken {
+            0% { opacity: 0; transform: scale(0.5) rotateY(0deg); }
+            30% { opacity: 1; transform: scale(1.1) rotateY(180deg); }
+            60% { transform: scale(0.95) rotateY(360deg); }
+            100% { opacity: 1; transform: scale(1) rotateY(360deg); }
+        }
+
+        /* 脉冲圆环 */
+        .pulse-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            border: 2px solid rgba(255, 0, 0, 0.5);
+            border-radius: 50%;
+            opacity: 0;
+        }
+
+        .pulse-ring.active { animation: pulseRing 1.2s ease-out; }
+
+        @keyframes pulseRing {
+            0% { width: 50%; height: 50%; opacity: 1; border-color: rgba(255, 0, 0, 0.8); }
+            100% { width: 150%; height: 150%; opacity: 0; border-color: rgba(255, 0, 0, 0); }
+        }
+
+        /* LOGO图片 */
+        .logo-img-loader {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 0 30px rgba(255, 0, 0, 0.8));
+            animation: neonFlicker 0.1s infinite alternate;
+        }
+
+        @keyframes neonFlicker {
+            0% { filter: drop-shadow(0 0 20px rgba(255, 0, 0, 0.5)) brightness(1); }
+            100% { filter: drop-shadow(0 0 40px rgba(255, 0, 0, 1)) brightness(1.3); }
+        }
+
+        /* 火花粒子 */
+        .sparks { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+
+        .spark {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #ff0000;
+            border-radius: 50%;
+            box-shadow: 0 0 6px #ff0000, 0 0 12px #ffaa00;
+            opacity: 0;
+        }
+
+        .spark.active { animation: sparkFly 0.8s ease-out forwards; }
+
+        @keyframes sparkFly {
+            0% { opacity: 1; transform: translate(0, 0) scale(1); }
+            100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0); }
+        }
+
+        /* 音浪环 */
+        .sound-waves {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .wave {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            border-radius: 50%;
+            opacity: 0;
+        }
+
+        .wave.active { animation: waveExpand 1s ease-out forwards; }
+
+        @keyframes waveExpand {
+            0% { width: 80%; height: 80%; opacity: 0.8; border-color: rgba(255, 0, 0, 0.6); }
+            100% { width: 200%; height: 200%; opacity: 0; border-color: rgba(255, 0, 0, 0); }
+        }
+
+        /* 炸裂效果 */
+        .explosion {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, rgba(255, 0, 0, 1) 0%, rgba(255, 50, 0, 0.8) 30%, transparent 70%);
+            border-radius: 50%;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .explosion.active { animation: explode 0.5s ease-out forwards; }
+
+        @keyframes explode {
+            0% { width: 0; height: 0; opacity: 1; }
+            50% { width: 300vmax; height: 300vmax; opacity: 0.8; }
+            100% { width: 400vmax; height: 400vmax; opacity: 0; }
+        }
+
+        /* 进度条 */
+        .progress-container {
+            width: 300px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            margin-top: 40px;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+        }
+
+        .progress-container.active { opacity: 1; transition: opacity 0.3s; }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #ff0000, #ff6600, #ff0000);
+            width: 0%;
+            box-shadow: 0 0 10px #ff0000;
+            transition: width 0.1s linear;
+        }
+
+        .progress-text {
+            color: #ff0000;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            margin-top: 10px;
+            letter-spacing: 0.2em;
+            opacity: 0;
+        }
+
+        .progress-text.active { opacity: 1; animation: blink 0.5s infinite; }
+
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+        /* 最终WELCOME画面 */
+        .welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: url('https://livegigsasia.com/image/e-hero%20bg.jpg') center/cover no-repeat;
+            z-index: 99998;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(1.1);
+            overflow: hidden;
+        }
+
+        @media (max-width: 768px) {
+            .welcome-screen {
+                background-position: center center;
+                background-size: cover;
+            }
+        }
+
+        @media (orientation: portrait) {
+            .welcome-screen {
+                background-position: center 30%;
+            }
+        }
+
+        .welcome-screen.active {
+            opacity: 1;
+            transform: scale(1);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .welcome-screen.fade-out {
+            opacity: 0;
+            transform: scale(1.05);
+            transition: all 0.5s ease-out;
+        }
+
+        .welcome-text {
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: clamp(28px, 6vw, 72px);
+            color: #fff;
+            letter-spacing: clamp(8px, 2.5vw, 24px);
+            text-transform: uppercase;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: welcomeRedFlash 2s ease-in-out infinite;
+            line-height: 1.2;
+            padding: 0 20px;
+            max-width: 95vw;
+            word-wrap: break-word;
+            hyphens: auto;
+        }
+
+        @keyframes welcomeRedFlash {
+            0%, 100% { 
+                text-shadow: 
+                    0 0 20px rgba(255, 0, 0, 0.8),
+                    0 0 40px rgba(255, 0, 0, 0.6),
+                    0 0 80px rgba(255, 0, 0, 0.4),
+                    0 0 120px rgba(139, 0, 0, 0.3),
+                    0 5px 15px rgba(0, 0, 0, 0.9);
+                filter: brightness(1);
+            }
+            50% { 
+                text-shadow: 
+                    0 0 30px rgba(255, 0, 0, 1),
+                    0 0 60px rgba(255, 0, 0, 0.9),
+                    0 0 100px rgba(255, 0, 0, 0.7),
+                    0 0 150px rgba(255, 50, 50, 0.5),
+                    0 0 200px rgba(139, 0, 0, 0.4),
+                    0 5px 15px rgba(0, 0, 0, 0.9);
+                filter: brightness(1.3);
+            }
+        }
+
+        /* 平板适配 */
+        @media (max-width: 1024px) {
+            .welcome-text {
+                font-size: clamp(24px, 7vw, 56px);
+                letter-spacing: clamp(6px, 2vw, 16px);
+                line-height: 1.3;
+            }
+        }
+
+        /* 手机横屏 */
+        @media (max-width: 768px) {
+            .welcome-text {
+                font-size: clamp(20px, 6vw, 40px);
+                letter-spacing: clamp(4px, 1.5vw, 12px);
+                line-height: 1.4;
+                padding: 0 30px;
+            }
+        }
+
+        /* 手机竖屏 */
+        @media (max-width: 480px) {
+            .welcome-text {
+                font-size: clamp(18px, 8vw, 32px);
+                letter-spacing: clamp(3px, 1.2vw, 8px);
+                line-height: 1.5;
+                padding: 0 20px;
+            }
+        }
+
+        /* 小屏手机 */
+        @media (max-width: 375px) {
+            .welcome-text {
+                font-size: clamp(16px, 7vw, 28px);
+                letter-spacing: clamp(2px, 1vw, 6px);
+                line-height: 1.6;
+                padding: 0 15px;
+            }
+        }
+
+        /* 超小屏 */
+        @media (max-width: 320px) {
+            .welcome-text {
+                font-size: 14px;
+                letter-spacing: 2px;
+                line-height: 1.7;
+                padding: 0 10px;
+            }
+        }
+
+        /* 竖屏模式强制优化 */
+        @media (orientation: portrait) and (max-width: 768px) {
+            .welcome-text {
+                font-size: clamp(20px, 9vw, 36px);
+                letter-spacing: clamp(4px, 2vw, 10px);
+            }
+        }
+
+        /* 横屏模式优化 */
+        @media (orientation: landscape) and (max-height: 500px) {
+            .welcome-text {
+                font-size: clamp(18px, 5vh, 36px);
+                letter-spacing: clamp(4px, 1.5vh, 10px);
+            }
+        }
+
+        .welcome-screen.active .welcome-text {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.6s ease-out 0.3s;
+        }
+
+        /* 隐藏状态 */
+        .hidden { display: none !important; }
+
+        #main-content { opacity: 0; }
+        #main-content.show { opacity: 1; transition: opacity 0.5s ease; }
+    </style>
 </body>
 </html>
