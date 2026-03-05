@@ -2153,6 +2153,10 @@
             };
 
             // 检查是否需要跳过动画
+            // 方式1: URL参数 ?reset=1 强制显示动画
+            const urlParams = new URLSearchParams(window.location.search);
+            const forceShow = urlParams.has('reset');
+
             const lastLoadTime = localStorage.getItem('livegigs_last_load');
             const currentTime = Date.now();
             const timeDiff = lastLoadTime ? currentTime - parseInt(lastLoadTime) : 99999999;
@@ -2160,8 +2164,8 @@
             // 记录本次加载时间
             localStorage.setItem('livegigs_last_load', currentTime.toString());
 
-            // 如果30分钟内有加载记录，跳过动画
-            if (timeDiff < 1800000) {
+            // 如果30分钟内有加载记录且没有强制重置参数，跳过动画
+            if (!forceShow && timeDiff < 1800000) {
                 elements.container.classList.add('hidden');
                 elements.welcomescreen.classList.add('hidden');
                 elements.maincontent.classList.add('show');
@@ -2529,7 +2533,17 @@
         function resetLoaderState() {
             localStorage.removeItem('livegigs_last_load');
             console.log('Loader state reset - animation will play on next visit');
+            console.log('Refresh the page to see the animation');
         }
+
+        // 键盘快捷键: Shift + R 重置并刷新
+        document.addEventListener('keydown', function(e) {
+            if (e.shiftKey && e.key === 'R') {
+                e.preventDefault();
+                resetLoaderState();
+                window.location.reload();
+            }
+        });
 
         window.LiveGigsAdmin = {
             update: function(editableId, newValue, type = 'text') {
