@@ -1224,559 +1224,33 @@
     </script>
 
 
-<!-- ==================== 加载动画样式 ==================== -->
-<style>
-/* 加载动画容器 */
-#lg-loader-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(ellipse at center, #0a0a0a 0%, #000 100%);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 99999;
-    transition: opacity 0.8s ease, visibility 0.8s ease;
-    overflow: hidden;
-}
-
-#lg-loader-container.lg-hidden {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-}
-
-/* 副标题打字机 */
-.lg-subtitle-container {
-    position: absolute;
-    top: 30%;
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
-    z-index: 10;
-}
-
-.lg-subtitle-text {
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    font-size: clamp(16px, 2.5vw, 28px);
-    letter-spacing: clamp(3px, 0.8vw, 6px);
-    text-transform: uppercase;
-    color: #c0c0c0;
-    text-shadow: 0 0 20px rgba(192, 192, 192, 0.3);
-    white-space: nowrap;
-    overflow: hidden;
-    border-right: 3px solid #8b0000;
-    width: 0;
-    opacity: 0;
-}
-
-.lg-subtitle-text.lg-typing-active {
-    opacity: 1;
-    animation: lg-typing 2s steps(40) forwards, lg-blink-caret 0.75s step-end infinite;
-}
-
-@keyframes lg-typing {
-    from { width: 0; }
-    to { width: 100%; }
-}
-
-@keyframes lg-blink-caret {
-    from, to { border-color: transparent; }
-    50% { border-color: #8b0000; }
-}
-
-/* 金属Logo */
-.lg-logo-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 100;
-    opacity: 0;
-    perspective: 1500px;
-}
-
-.lg-logo-container.lg-flying {
-    animation: lg-logo-impact 1.5s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
-}
-
-@keyframes lg-logo-impact {
-    0% {
-        opacity: 0;
-        transform: translate(-50%, -50%) translateZ(-3000px) scale(0.05) rotateY(-30deg) rotateX(-20deg);
-        filter: blur(50px) brightness(8);
-    }
-    30% {
-        opacity: 0.8;
-        filter: blur(30px) brightness(5);
-    }
-    60% {
-        transform: translate(-50%, -50%) translateZ(-500px) scale(0.8) rotateY(-10deg) rotateX(-5deg);
-        filter: blur(10px) brightness(3);
-    }
-    80% {
-        transform: translate(-50%, -50%) translateZ(-100px) scale(1.2) rotateY(0deg) rotateX(0deg);
-        filter: blur(3px) brightness(2);
-    }
-    90% {
-        transform: translate(-50%, -50%) translateZ(0) scale(1.05);
-        filter: blur(0) brightness(2.5);
-    }
-    95% {
-        transform: translate(-50%, -50%) scale(0.98);
-        filter: brightness(1.2);
-    }
-    100% {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
-        filter: blur(0) brightness(1);
-    }
-}
-
-.lg-metal-logo {
-    width: clamp(250px, 45vw, 600px);
-    height: auto;
-    filter: drop-shadow(0 0 40px rgba(139, 0, 0, 0.9)) drop-shadow(0 0 80px rgba(139, 0, 0, 0.4));
-    animation: lg-logo-breathe 3s ease-in-out infinite;
-}
-
-@keyframes lg-logo-breathe {
-    0%, 100% { filter: drop-shadow(0 0 40px rgba(139, 0, 0, 0.9)) drop-shadow(0 0 80px rgba(139, 0, 0, 0.4)); }
-    50% { filter: drop-shadow(0 0 60px rgba(139, 0, 0, 1)) drop-shadow(0 0 120px rgba(139, 0, 0, 0.6)); }
-}
-
-/* Logo光效拖尾 */
-.lg-logo-trail {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 90;
-    opacity: 0;
-}
-
-.lg-logo-trail.lg-active {
-    animation: lg-trail-fade 1.5s ease-out forwards;
-}
-
-@keyframes lg-trail-fade {
-    0% { opacity: 1; }
-    100% { opacity: 0; }
-}
-
-.lg-trail-ring {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-    border: 3px solid rgba(139, 0, 0, 0.6);
-    box-shadow: 0 0 30px rgba(139, 0, 0, 0.4), inset 0 0 30px rgba(139, 0, 0, 0.2);
-}
-
-.lg-trail-ring:nth-child(1) { width: 300px; height: 300px; animation: lg-trail-expand 1.5s ease-out infinite; }
-.lg-trail-ring:nth-child(2) { width: 400px; height: 400px; animation: lg-trail-expand 1.5s ease-out 0.2s infinite; }
-.lg-trail-ring:nth-child(3) { width: 500px; height: 500px; animation: lg-trail-expand 1.5s ease-out 0.4s infinite; }
-.lg-trail-ring:nth-child(4) { width: 600px; height: 600px; animation: lg-trail-expand 1.5s ease-out 0.6s infinite; }
-
-@keyframes lg-trail-expand {
-    0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0.8; }
-    100% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
-}
-
-/* 声音波纹进度 - 从Logo中心扩散 */
-.lg-sound-waves {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 80;
-    opacity: 0;
-    pointer-events: none;
-}
-
-.lg-sound-waves.lg-active {
-    opacity: 1;
-    transition: opacity 0.5s ease;
-}
-
-.lg-sound-wave {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-    border: 2px solid;
-    opacity: 0;
-}
-
-.lg-sound-wave.lg-wave-active {
-    animation: lg-sound-pulse 2s ease-out forwards;
-}
-
-@keyframes lg-sound-pulse {
-    0% {
-        transform: translate(-50%, -50%) scale(0.5);
-        opacity: 0.9;
-        border-width: 8px;
-    }
-    50% {
-        opacity: 0.6;
-    }
-    100% {
-        transform: translate(-50%, -50%) scale(4);
-        opacity: 0;
-        border-width: 1px;
-    }
-}
-
-.lg-sound-wave:nth-child(1) { 
-    width: 350px; height: 350px; 
-    border-color: rgba(192, 192, 192, 0.8);
-    box-shadow: 0 0 20px rgba(192, 192, 192, 0.4);
-}
-.lg-sound-wave:nth-child(2) { 
-    width: 350px; height: 350px; 
-    border-color: rgba(139, 0, 0, 0.6);
-    box-shadow: 0 0 20px rgba(139, 0, 0, 0.3);
-}
-.lg-sound-wave:nth-child(3) { 
-    width: 450px; height: 450px; 
-    border-color: rgba(192, 192, 192, 0.6);
-    box-shadow: 0 0 30px rgba(192, 192, 192, 0.3);
-}
-.lg-sound-wave:nth-child(4) { 
-    width: 450px; height: 450px; 
-    border-color: rgba(139, 0, 0, 0.4);
-    box-shadow: 0 0 30px rgba(139, 0, 0, 0.2);
-}
-.lg-sound-wave:nth-child(5) { 
-    width: 550px; height: 550px; 
-    border-color: rgba(192, 192, 192, 0.4);
-    box-shadow: 0 0 40px rgba(192, 192, 192, 0.2);
-}
-.lg-sound-wave:nth-child(6) { 
-    width: 550px; height: 550px; 
-    border-color: rgba(139, 0, 0, 0.3);
-    box-shadow: 0 0 40px rgba(139, 0, 0, 0.15);
-}
-
-/* 进度文字 */
-.lg-progress-text {
-    position: absolute;
-    top: 72%;
-    left: 50%;
-    transform: translateX(-50%);
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    font-size: 32px;
-    font-weight: bold;
-    color: #c0c0c0;
-    letter-spacing: 4px;
-    text-shadow: 0 0 20px rgba(192, 192, 192, 0.5);
-    z-index: 85;
-    opacity: 0;
-}
-
-.lg-progress-text.lg-show {
-    opacity: 1;
-    transition: opacity 0.5s ease;
-}
-
-/* 冲击波 */
-.lg-shockwave {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 0;
-    height: 0;
-    border-radius: 50%;
-    border: 5px solid rgba(255, 255, 255, 0.9);
-    opacity: 0;
-    z-index: 110;
-    pointer-events: none;
-}
-
-.lg-shockwave.lg-active {
-    animation: lg-shock-expand 0.6s ease-out forwards;
-}
-
-@keyframes lg-shock-expand {
-    0% { width: 0; height: 0; opacity: 1; border-width: 30px; }
-    100% { width: 250vmax; height: 250vmax; opacity: 0; border-width: 0; }
-}
-
-/* 光速爆发 */
-.lg-light-burst {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 0;
-    height: 0;
-    background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(139, 0, 0, 0.8) 30%, transparent 70%);
-    border-radius: 50%;
-    opacity: 0;
-    z-index: 105;
-}
-
-.lg-light-burst.lg-active {
-    animation: lg-burst-expand 0.5s ease-out forwards;
-}
-
-@keyframes lg-burst-expand {
-    0% { width: 0; height: 0; opacity: 1; }
-    50% { width: 100vw; height: 100vw; opacity: 0.9; }
-    100% { width: 150vw; height: 150vw; opacity: 0; }
-}
-
-/* 玻璃破碎层 */
-.lg-glass-layer {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 120;
-    overflow: hidden;
-}
-
-.lg-cracks {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    z-index: 121;
-}
-
-.lg-cracks.lg-active {
-    animation: lg-cracks-appear 0.05s ease-out forwards;
-}
-
-@keyframes lg-cracks-appear {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
-}
-
-.lg-cracks svg {
-    width: 100%;
-    height: 100%;
-}
-
-.lg-cracks path {
-    stroke: rgba(255, 255, 255, 0.95);
-    stroke-width: 3;
-    fill: none;
-    stroke-linecap: round;
-    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 1));
-    stroke-dasharray: 1000;
-    stroke-dashoffset: 1000;
-}
-
-.lg-cracks.lg-active path {
-    animation: lg-crack-draw 0.2s ease-out forwards;
-}
-
-@keyframes lg-crack-draw {
-    to { stroke-dashoffset: 0; }
-}
-
-.lg-glass-shard {
-    position: absolute;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(220, 220, 220, 0.95) 40%, rgba(139, 0, 0, 0.4) 100%);
-    box-shadow: 0 0 30px rgba(255, 255, 255, 0.8), inset 0 0 15px rgba(255, 255, 255, 0.5);
-    opacity: 0;
-    z-index: 122;
-    backdrop-filter: blur(3px);
-}
-
-.lg-glass-shard.lg-shatter {
-    animation: lg-shard-explode 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-}
-
-@keyframes lg-shard-explode {
-    0% {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1) rotate(0deg);
-    }
-    20% {
-        opacity: 1;
-        transform: translate(calc(-50% + var(--tx) * 0.2), calc(-50% + var(--ty) * 0.2)) scale(1.2) rotate(calc(var(--rot) * 0.2));
-    }
-    100% {
-        opacity: 0;
-        transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(0.2) rotate(var(--rot));
-    }
-}
-
-/* 闪光效果 */
-.lg-flash-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at center, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.9) 10%, rgba(139, 0, 0, 0.5) 40%, transparent 70%);
-    opacity: 0;
-    z-index: 130;
-    pointer-events: none;
-    mix-blend-mode: screen;
-}
-
-.lg-flash-overlay.lg-active {
-    animation: lg-flash-burst 0.6s ease-out forwards;
-}
-
-@keyframes lg-flash-burst {
-    0% { opacity: 0; transform: scale(0); }
-    20% { opacity: 1; transform: scale(1); }
-    100% { opacity: 0; transform: scale(2); }
-}
-
-/* 红色电波光 */
-.lg-electric-wave {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 0;
-    height: 0;
-    border-radius: 50%;
-    border: 4px solid #8b0000;
-    box-shadow: 0 0 60px #8b0000, inset 0 0 60px rgba(139, 0, 0, 0.5);
-    opacity: 0;
-    z-index: 90;
-    pointer-events: none;
-}
-
-.lg-electric-wave.lg-active {
-    animation: lg-wave-expand 2s ease-out forwards;
-}
-
-@keyframes lg-wave-expand {
-    0% { width: 0; height: 0; opacity: 1; }
-    100% { width: 400vmax; height: 400vmax; opacity: 0; }
-}
-
-/* 屏幕震动 */
-.lg-screen-shake {
-    animation: lg-shake 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-}
-
-@keyframes lg-shake {
-    0%, 100% { transform: translate3d(0, 0, 0); }
-    10%, 30%, 50%, 70%, 90% { transform: translate3d(-10px, 0, 0); }
-    20%, 40%, 60%, 80% { transform: translate3d(10px, 0, 0); }
-}
-
-/* 页面内容初始隐藏 */
-body.lg-loading nav,
-body.lg-loading .hero,
-body.lg-loading .content-wrapper {
-    opacity: 0;
-    transition: opacity 0.8s ease;
-}
-
-body.lg-loaded nav,
-body.lg-loaded .hero,
-body.lg-loaded .content-wrapper {
-    opacity: 1;
-}
-</style>
+    <!-- 纯Canvas玻璃破碎加载动画 -->
+    <style>
+        #page-loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: radial-gradient(ellipse at center, #0a0a0a 0%, #000 100%); z-index: 99999; overflow: hidden; }
+        #page-loader.hidden { display: none !important; }
+        #page-loader.fade-out { animation: fadeOut 0.6s ease-out forwards; }
+        @keyframes fadeOut { to { opacity: 0; visibility: hidden; } }
+        #gameCanvas { display: block; width: 100%; height: 100%; }
+        .loading-text { position: absolute; top: 15%; left: 50%; transform: translateX(-50%); font-family: Impact, 'Arial Narrow Bold', sans-serif; font-size: clamp(12px, 2.5vw, 20px); letter-spacing: 6px; text-transform: uppercase; color: #666; text-align: center; opacity: 0; transition: all 0.5s ease; pointer-events: none; }
+        .loading-text.show { opacity: 1; color: #c0c0c0; text-shadow: 0 0 20px rgba(139, 0, 0, 0.5); }
+        .progress-box { position: absolute; bottom: 10%; left: 50%; transform: translateX(-50%); width: 300px; text-align: center; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; }
+        .progress-box.visible { opacity: 1; }
+        .progress-line { width: 100%; height: 2px; background: rgba(255, 255, 255, 0.1); margin-bottom: 10px; }
+        .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #8b0000, #c0c0c0); box-shadow: 0 0 10px rgba(139, 0, 0, 0.5); transition: width 0.1s linear; }
+        .progress-number { font-family: 'Courier New', monospace; font-size: 24px; color: #c0c0c0; letter-spacing: 4px; }
+    </style>
 </head>
 <body>
-
-<!-- ==================== 加载动画 ==================== -->
-<div id="lg-loader-container">
-    <div class="lg-subtitle-container">
-        <div class="lg-subtitle-text" id="lg-subtitle">Concerts, Festivals, Tickets, Tour Dates</div>
+    <div id="page-loader">
+        <div class="loading-text" id="loadingText">SYSTEM INITIALIZING</div>
+        <canvas id="gameCanvas"></canvas>
+        <div class="progress-box" id="progressBox">
+            <div class="progress-line">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-number" id="progressNumber">0%</div>
+        </div>
     </div>
-
-    <div class="lg-logo-trail" id="lg-logo-trail">
-        <div class="lg-trail-ring"></div>
-        <div class="lg-trail-ring"></div>
-        <div class="lg-trail-ring"></div>
-        <div class="lg-trail-ring"></div>
-    </div>
-
-    <div class="lg-light-burst" id="lg-light-burst"></div>
-    <div class="lg-shockwave" id="lg-shockwave"></div>
-
-    <div class="lg-logo-container" id="lg-logo-container">
-        <img src="./image/webtop.png" alt="LiveGigs Asia" class="lg-metal-logo" id="lg-metal-logo">
-    </div>
-
-    <div class="lg-sound-waves" id="lg-sound-waves">
-        <div class="lg-sound-wave"></div>
-        <div class="lg-sound-wave"></div>
-        <div class="lg-sound-wave"></div>
-        <div class="lg-sound-wave"></div>
-        <div class="lg-sound-wave"></div>
-        <div class="lg-sound-wave"></div>
-    </div>
-
-    <div class="lg-progress-text" id="lg-progress-text">0%</div>
-</div>
-
-<div class="lg-glass-layer" id="lg-glass-layer">
-    <div class="lg-cracks" id="lg-cracks">
-        <svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
-            <path d="M 960 540 L 960 100" />
-            <path d="M 960 540 L 1150 150" />
-            <path d="M 960 540 L 1300 300" />
-            <path d="M 960 540 L 1400 540" />
-            <path d="M 960 540 L 1300 780" />
-            <path d="M 960 540 L 1150 930" />
-            <path d="M 960 540 L 960 980" />
-            <path d="M 960 540 L 770 930" />
-            <path d="M 960 540 L 620 780" />
-            <path d="M 960 540 L 520 540" />
-            <path d="M 960 540 L 620 300" />
-            <path d="M 960 540 L 770 150" />
-            <path d="M 960 100 L 800 0" />
-            <path d="M 960 100 L 1120 0" />
-            <path d="M 1150 150 L 1350 50" />
-            <path d="M 1300 300 L 1500 200" />
-            <path d="M 1400 540 L 1600 540" />
-            <path d="M 1300 780 L 1500 880" />
-            <path d="M 1150 930 L 1350 1030" />
-            <path d="M 960 980 L 1120 1080" />
-            <path d="M 960 980 L 800 1080" />
-            <path d="M 770 930 L 570 1030" />
-            <path d="M 620 780 L 420 880" />
-            <path d="M 520 540 L 320 540" />
-            <path d="M 620 300 L 420 200" />
-            <path d="M 770 150 L 570 50" />
-            <path d="M 800 0 L 700 -50" />
-            <path d="M 1120 0 L 1220 -50" />
-            <path d="M 1350 50 L 1450 0" />
-            <path d="M 1500 200 L 1600 100" />
-            <path d="M 1600 540 L 1700 440" />
-            <path d="M 1500 880 L 1600 980" />
-            <path d="M 1350 1030 L 1450 1130" />
-            <path d="M 1120 1080 L 1220 1180" />
-            <path d="M 800 1080 L 700 1180" />
-            <path d="M 570 1030 L 470 1130" />
-            <path d="M 420 880 L 320 980" />
-            <path d="M 320 540 L 220 640" />
-            <path d="M 420 200 L 320 100" />
-            <path d="M 570 50 L 470 -50" />
-        </svg>
-    </div>
-</div>
-
-<div class="lg-flash-overlay" id="lg-flash-overlay"></div>
-<div class="lg-electric-wave" id="lg-electric-wave"></div>
 
 
     <!-- 导航栏 -->
@@ -2497,162 +1971,252 @@ body.lg-loaded .content-wrapper {
         window.addEventListener('load', initPoster2Carousel);
     </script>
 
-<!-- ==================== 加载动画脚本 ==================== -->
-<script>
-(function() {
-    const LGLoader = {
-        init: function() {
-            document.body.classList.add('lg-loading');
-            this.startSequence();
+    <script>
+    const Game={
+        canvas:null,ctx:null,width:0,height:0,centerX:0,centerY:0,
+        logo:null,logoLoaded:false,
+        state:'LOADING',stateTime:0,
+        shards:[],particles:[],progress:0,ui:{},
+        init:function(){
+            this.canvas=document.getElementById('gameCanvas');
+            this.ctx=this.canvas.getContext('2d');
+            this.resize();
+            window.addEventListener('resize',()=>this.resize());
+            this.ui={
+                text:document.getElementById('loadingText'),
+                progressBox:document.getElementById('progressBox'),
+                progressFill:document.getElementById('progressFill'),
+                progressNumber:document.getElementById('progressNumber'),
+                loader:document.getElementById('page-loader'),
+                mainContent:document.getElementById('main-content')
+            };
+            this.loadLogo();
         },
-
-        startSequence: function() {
-            const subtitle = document.getElementById('lg-subtitle');
-            const logoContainer = document.getElementById('lg-logo-container');
-            const logoTrail = document.getElementById('lg-logo-trail');
-            const lightBurst = document.getElementById('lg-light-burst');
-            const shockwave = document.getElementById('lg-shockwave');
-            const cracks = document.getElementById('lg-cracks');
-            const glassLayer = document.getElementById('lg-glass-layer');
-            const flashOverlay = document.getElementById('lg-flash-overlay');
-            const soundWaves = document.getElementById('lg-sound-waves');
-            const progressText = document.getElementById('lg-progress-text');
-            const loaderContainer = document.getElementById('lg-loader-container');
-            const electricWave = document.getElementById('lg-electric-wave');
-
-            // 步骤1: 打字机效果
-            setTimeout(() => subtitle.classList.add('lg-typing-active'), 500);
-
-            // 步骤2: Logo飞入
-            setTimeout(() => {
-                subtitle.style.opacity = '0';
-                subtitle.style.transition = 'opacity 0.3s ease';
-                logoContainer.classList.add('lg-flying');
-                logoTrail.classList.add('lg-active');
-
-                // Logo撞击时刻
-                setTimeout(() => {
-                    this.triggerImpact(lightBurst, shockwave, cracks, glassLayer, flashOverlay, soundWaves, progressText);
-                }, 1350);
-            }, 2500);
+        resize:function(){
+            this.width=window.innerWidth;this.height=window.innerHeight;
+            this.canvas.width=this.width;this.canvas.height=this.height;
+            this.centerX=this.width/2;this.centerY=this.height/2;
         },
-
-        triggerImpact: function(lightBurst, shockwave, cracks, glassLayer, flashOverlay, soundWaves, progressText) {
-            // 屏幕震动
-            document.body.classList.add('lg-screen-shake');
-            setTimeout(() => document.body.classList.remove('lg-screen-shake'), 600);
-
-            // 光速爆发
-            lightBurst.classList.add('lg-active');
-
-            // 冲击波
-            shockwave.classList.add('lg-active');
-
-            // 显示裂纹
-            cracks.classList.add('lg-active');
-
-            // 创建玻璃碎片
-            this.createGlassShards(glassLayer);
-
-            // 闪光
-            setTimeout(() => {
-                flashOverlay.classList.add('lg-active');
-            }, 50);
-
-            // 声音波纹进度
-            setTimeout(() => {
-                soundWaves.classList.add('lg-active');
-                this.animateSoundWaves(soundWaves, progressText, () => {
-                    this.triggerFinalEffects(electricWave, loaderContainer);
-                });
-            }, 200);
+        loadLogo:function(){
+            this.logo=new Image();
+            this.logo.onload=()=>{this.logoLoaded=true;this.startGame();};
+            this.logo.onerror=()=>{this.logo.src='https://livegigsasia.com/image/webtop.png';};
+            this.logo.src='./image/webtop.png';
         },
-
-        createGlassShards: function(container) {
-            const shardCount = 80;
-            const centerX = window.innerWidth / 2;
-            const centerY = window.innerHeight / 2;
-
-            for (let i = 0; i < shardCount; i++) {
-                const shard = document.createElement('div');
-                shard.className = 'lg-glass-shard';
-
-                const size = Math.random() * 100 + 40;
-                const angle = (Math.PI * 2 * i) / shardCount + (Math.random() - 0.5) * 0.8;
-                const distance = Math.random() * 800 + 400;
-                const tx = Math.cos(angle) * distance;
-                const ty = Math.sin(angle) * distance;
-                const rot = Math.random() * 1440 - 720;
-
-                const points = [];
-                const sides = Math.floor(Math.random() * 3) + 3;
-                for (let j = 0; j < sides; j++) {
-                    const px = 15 + Math.random() * 70;
-                    const py = 15 + Math.random() * 70;
-                    points.push(`${px}% ${py}%`);
-                }
-
-                shard.style.cssText = `
-                    width: ${size}px;
-                    height: ${size}px;
-                    left: ${centerX}px;
-                    top: ${centerY}px;
-                    clip-path: polygon(${points.join(', ')});
-                `;
-                shard.style.setProperty('--tx', tx + 'px');
-                shard.style.setProperty('--ty', ty + 'px');
-                shard.style.setProperty('--rot', rot + 'deg');
-
-                container.appendChild(shard);
-
-                setTimeout(() => {
-                    shard.classList.add('lg-shatter');
-                }, Math.random() * 150);
+        startGame:function(){
+            setTimeout(()=>{this.ui.text.classList.add('show');this.ui.text.textContent='CONCERTS, FESTIVALS, TICKETS';},300);
+            setTimeout(()=>{this.ui.text.textContent='- LIVE GIGS';},800);
+            setTimeout(()=>{this.state='FLYING';this.stateTime=0;this.ui.progressBox.classList.add('visible');},1200);
+            this.loop();
+        },
+        loop:function(){
+            if(this.state==='FINISHED')return;
+            this.update();this.draw();
+            requestAnimationFrame(()=>this.loop());
+        },
+        update:function(){
+            this.stateTime+=16;
+            switch(this.state){
+                case'FLYING':this.updateFlying();break;
+                case'EXPLODING':this.updateExploding();break;
             }
         },
-
-        animateSoundWaves: function(container, text, callback) {
-            const waves = container.querySelectorAll('.lg-sound-wave');
-            let progress = 0;
-            let waveIndex = 0;
-
-            text.classList.add('lg-show');
-
-            const waveInterval = setInterval(() => {
-                if (waveIndex < waves.length) {
-                    waves[waveIndex].classList.add('lg-wave-active');
-                    waveIndex++;
-                }
-
-                progress += 16.67;
-                if (progress > 100) progress = 100;
-                text.textContent = Math.floor(progress) + '%';
-
-                if (waveIndex >= waves.length) {
-                    clearInterval(waveInterval);
-                    text.textContent = '100%';
-                    setTimeout(callback, 500);
-                }
-            }, 400);
+        updateFlying:function(){
+            const duration=2000;
+            this.progress=Math.min(this.stateTime/duration,1);
+            this.ui.progressFill.style.width=(this.progress*100)+'%';
+            this.ui.progressNumber.textContent=Math.floor(this.progress*100)+'%';
+            if(this.progress>=1)this.startExplosion();
         },
-
-        triggerFinalEffects: function(electricWave, loaderContainer) {
-            electricWave.classList.add('lg-active');
-
-            setTimeout(() => {
-                loaderContainer.classList.add('lg-hidden');
-                document.body.classList.remove('lg-loading');
-                document.body.classList.add('lg-loaded');
-            }, 800);
+        startExplosion:function(){
+            this.state='EXPLODING';this.stateTime=0;
+            for(let i=0;i<100;i++)this.shards.push(new Shard(this.centerX,this.centerY));
+            for(let i=0;i<50;i++)this.particles.push(new Particle(this.centerX,this.centerY));
+            setTimeout(()=>this.finish(),1500);
+        },
+        updateExploding:function(){
+            this.shards.forEach(s=>s.update());
+            this.shards=this.shards.filter(s=>s.life>0);
+            this.particles.forEach(p=>p.update());
+            this.particles=this.particles.filter(p=>p.life>0);
+        },
+        finish:function(){
+            this.state='FINISHED';
+            this.ui.loader.classList.add('fade-out');
+            this.ui.mainContent.style.opacity='1';
+            setTimeout(()=>this.ui.loader.classList.add('hidden'),600);
+        },
+        draw:function(){
+            this.ctx.fillStyle='rgba(0,0,0,0.3)';
+            this.ctx.fillRect(0,0,this.width,this.height);
+            switch(this.state){
+                case'FLYING':this.drawFlying();break;
+                case'EXPLODING':this.drawExploding();break;
+            }
+        },
+        drawFlying:function(){
+            if(!this.logoLoaded)return;
+            const ctx=this.ctx,t=this.progress;
+            const startScale=0.05,endScale=1.0,scale=startScale+(endScale-startScale)*t;
+            const maxWidth=Math.min(this.width*0.7,500);
+            const drawWidth=maxWidth*scale;
+            const drawHeight=(this.logo.height/this.logo.width)*drawWidth;
+            const x=this.centerX-drawWidth/2,y=this.centerY-drawHeight/2;
+            ctx.save();
+            ctx.shadowColor='#8b0000';ctx.shadowBlur=t*30;
+            ctx.globalAlpha=0.3+t*0.7;
+            ctx.drawImage(this.logo,x,y,drawWidth,drawHeight);
+            ctx.restore();
+            for(let i=0;i<3;i++){
+                const ringT=(t-i*0.2)/0.5;
+                if(ringT>0&&ringT<1){
+                    const radius=50+ringT*500;
+                    ctx.beginPath();
+                    ctx.arc(this.centerX,this.centerY,radius,0,Math.PI*2);
+                    ctx.strokeStyle=`rgba(139,0,0,${(1-ringT)*0.5})`;
+                    ctx.lineWidth=3;ctx.stroke();
+                }
+            }
+        },
+        drawExploding:function(){
+            this.shards.forEach(s=>s.draw(this.ctx));
+            this.particles.forEach(p=>p.draw(this.ctx));
+            if(this.stateTime<300){
+                const flashAlpha=1-this.stateTime/300;
+                this.ctx.fillStyle=`rgba(255,255,255,${flashAlpha})`;
+                this.ctx.fillRect(0,0,this.width,this.height);
+            }
+            const waveRadius=this.stateTime*2;
+            if(waveRadius<1000){
+                this.ctx.beginPath();
+                this.ctx.arc(this.centerX,this.centerY,waveRadius,0,Math.PI*2);
+                this.ctx.strokeStyle=`rgba(139,0,0,${1-waveRadius/1000})`;
+                this.ctx.lineWidth=10;this.ctx.stroke();
+            }
         }
     };
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => LGLoader.init());
-    } else {
-        LGLoader.init();
+    class Shard{
+        constructor(x,y){
+            this.x=x;this.y=y;
+            const angle=Math.random()*Math.PI*2;
+            const speed=8+Math.random()*12;
+            this.vx=Math.cos(angle)*speed;this.vy=Math.sin(angle)*speed;
+            this.rotation=Math.random()*Math.PI*2;
+            this.rotationSpeed=(Math.random()-0.5)*0.3;
+            this.size=20+Math.random()*60;
+            this.points=[];
+            const sides=4+Math.floor(Math.random()*3);
+            for(let i=0;i<sides;i++){
+                const a=(i/sides)*Math.PI*2;
+                const r=this.size*(0.4+Math.random()*0.6);
+                this.points.push({x:Math.cos(a)*r,y:Math.sin(a)*r});
+            }
+            this.color=Math.random()>0.4?'#8b0000':'#c0c0c0';
+            this.life=1.0;
+        }
+        update(){
+            this.x+=this.vx;this.y+=this.vy;
+            this.vx*=0.98;this.vy*=0.98;
+            this.vy+=0.3;
+            this.rotation+=this.rotationSpeed;
+            this.life-=0.015;
+        }
+        draw(ctx){
+            if(this.life<=0)return;
+            ctx.save();
+            ctx.translate(this.x,this.y);
+            ctx.rotate(this.rotation);
+            ctx.globalAlpha=this.life;
+            ctx.beginPath();
+            this.points.forEach((p,i)=>{if(i===0)ctx.moveTo(p.x,p.y);else ctx.lineTo(p.x,p.y);});
+            ctx.closePath();
+            const grad=ctx.createRadialGradient(0,0,0,0,0,this.size);
+            grad.addColorStop(0,'rgba(255,255,255,0.9)');
+            grad.addColorStop(0.5,this.color);
+            grad.addColorStop(1,'rgba(139,0,0,0.3)');
+            ctx.fillStyle=grad;ctx.fill();
+            ctx.strokeStyle='rgba(255,255,255,0.5)';
+            ctx.lineWidth=1;ctx.stroke();
+            ctx.restore();
+        }
     }
-})();
-</script>
+    class Particle{
+        constructor(x,y){
+            this.x=x;this.y=y;
+            const angle=Math.random()*Math.PI*2;
+            const speed=5+Math.random()*10;
+            this.vx=Math.cos(angle)*speed;this.vy=Math.sin(angle)*speed;
+            this.size=2+Math.random()*4;
+            this.color=Math.random()>0.5?'#8b0000':'#ffffff';
+            this.life=1.0;
+        }
+        update(){
+            this.x+=this.vx;this.y+=this.vy;
+            this.vx*=0.95;this.vy*=0.95;
+            this.life-=0.02;
+        }
+        draw(ctx){
+            if(this.life<=0)return;
+            ctx.save();
+            ctx.globalAlpha=this.life;
+            ctx.fillStyle=this.color;
+            ctx.shadowColor=this.color;ctx.shadowBlur=10;
+            ctx.beginPath();
+            ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
+            ctx.fill();
+            ctx.restore();
+        }
+    }
+    if(document.readyState==='loading'){
+        document.addEventListener('DOMContentLoaded',()=>Game.init());
+    }else{
+        Game.init();
+    }
+    </script>
+</body>
+</html>   fadeFlash();
+            const ringGeo=new THREE.RingGeometry(0.1,0.5,32);
+            const ringMat=new THREE.MeshBasicMaterial({color:0x8b0000,transparent:true,opacity:0.8,side:THREE.DoubleSide});
+            const ring=new THREE.Mesh(ringGeo,ringMat);
+            ring.position.z=1;
+            this.scene.add(ring);
+            const expandRing=()=>{
+                ring.scale.multiplyScalar(1.1);
+                ringMat.opacity-=0.02;
+                if(ringMat.opacity>0)requestAnimationFrame(expandRing);
+                else this.scene.remove(ring);
+            };
+            expandRing();
+        },
+        updateShatter:function(elapsed){
+            this.glassPieces.forEach(piece=>{
+                piece.mesh.position.add(piece.velocity);
+                piece.mesh.rotation.x+=piece.rotationSpeed.x;
+                piece.mesh.rotation.y+=piece.rotationSpeed.y;
+                piece.mesh.rotation.z+=piece.rotationSpeed.z;
+                piece.velocity.y-=0.005;
+                piece.velocity.multiplyScalar(0.995);
+                piece.life-=0.008;
+                piece.mesh.material.opacity=Math.max(0,piece.life);
+                if(piece.life<=0)piece.mesh.visible=false;
+            });
+            this.camera.position.z+=0.1;
+        },
+        exit:function(){
+            this.phase='exited';
+            this.elements.loader.classList.add('fade-out');
+            this.elements.mainContent.style.opacity='1';
+            setTimeout(()=>{
+                this.elements.loader.classList.add('hidden');
+                this.renderer.dispose();
+            },800);
+        }
+    };
+    if(document.readyState==='loading'){
+        document.addEventListener('DOMContentLoaded',()=>Glass3DLoader.init());
+    }else{
+        Glass3DLoader.init();
+    }
+    </script>
 </body>
 </html>
