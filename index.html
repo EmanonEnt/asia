@@ -14,7 +14,298 @@
 
     <link rel="icon" type="image/png" href="./image/webtop.png">
     <link rel="shortcut icon" type="image/png" href="./image/webtop.png">
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LiveGigs Asia</title>
+    <!-- Tab图标 -->
+        <!-- 预加载关键资源 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://eplus.jp">
+    <link rel="dns-prefetch" href="https://bandmaid.tokyo">
+    <link rel="dns-prefetch" href="https://www.summersonic.com">
+
+    <link rel="icon" type="image/png" href="./image/webtop.png">
+    <link rel="shortcut icon" type="image/png" href="./image/webtop.png">
+
+    <!-- 加载动画样式 -->
     <style>
+        /* ========== 赛博朋克加载动画 ========== */
+        #loading-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            transition: opacity 1.5s ease-out, visibility 1.5s;
+        }
+
+        #loading-container.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* 副标题 */
+        #loading-subtitle-container {
+            position: absolute;
+            top: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            z-index: 10;
+        }
+
+        #loading-subtitle-line1 {
+            color: #c0c0c0;
+            font-size: clamp(12px, 2vw, 20px);
+            letter-spacing: clamp(2px, 0.6vw, 4px);
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(192, 192, 192, 0.5);
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 2px solid #8b0000;
+            width: 0;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        }
+
+        #loading-subtitle-line1.typing {
+            animation: loadingTyping 2s steps(35) forwards, loadingBlink 0.7s infinite;
+        }
+
+        #loading-subtitle-line2 {
+            color: #8b0000;
+            font-size: clamp(16px, 2.5vw, 28px);
+            letter-spacing: clamp(3px, 0.8vw, 6px);
+            text-transform: uppercase;
+            margin-top: 10px;
+            opacity: 0;
+            text-shadow: 0 0 20px rgba(139, 0, 0, 0.8), 0 0 40px rgba(255, 0, 0, 0.4);
+            font-weight: bold;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        }
+
+        @keyframes loadingTyping {
+            to { width: 100%; }
+        }
+
+        @keyframes loadingBlink {
+            50% { border-color: transparent; }
+        }
+
+        /* Logo */
+        #loading-logo-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.05);
+            opacity: 0;
+            z-index: 100;
+        }
+
+        #loading-logo-container.impact {
+            animation: loadingLogoImpact 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        #loading-logo-container.pulsing {
+            animation: loadingLogoPulse 0.3s ease-in-out infinite;
+        }
+
+        #loading-logo-img {
+            width: clamp(300px, 50vw, 700px);
+            height: auto;
+            display: block;
+            filter: drop-shadow(0 0 40px rgba(139, 0, 0, 0.9));
+        }
+
+        @keyframes loadingLogoImpact {
+            0% { transform: translate(-50%, -50%) scale(0.05); opacity: 0; filter: drop-shadow(0 0 5px rgba(139, 0, 0, 0.2)) blur(20px); }
+            40% { opacity: 1; filter: drop-shadow(0 0 30px rgba(139, 0, 0, 0.6)) blur(5px); }
+            75% { transform: translate(-50%, -50%) scale(1.2); filter: drop-shadow(0 0 80px rgba(255, 0, 0, 1)) drop-shadow(0 0 120px rgba(255, 255, 255, 0.6)); }
+            90% { transform: translate(-50%, -50%) scale(0.95); filter: drop-shadow(0 0 100px rgba(255, 0, 0, 1)); }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; filter: drop-shadow(0 0 60px rgba(139, 0, 0, 1)) drop-shadow(0 0 100px rgba(255, 0, 0, 0.5)); }
+        }
+
+        @keyframes loadingLogoPulse {
+            0%, 100% { filter: drop-shadow(0 0 60px rgba(139, 0, 0, 1)) drop-shadow(0 0 100px rgba(255, 0, 0, 0.5)); }
+            50% { filter: drop-shadow(0 0 100px rgba(255, 0, 0, 1)) drop-shadow(0 0 150px rgba(255, 255, 255, 0.3)); }
+        }
+
+        /* 十字进度条 */
+        #loading-cross-progress {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            opacity: 0;
+            z-index: 50;
+        }
+
+        .loading-progress-h {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            height: 3px;
+            background: linear-gradient(90deg, transparent 0%, #8b0000 20%, #ff0000 50%, #ffffff 50%, #ff0000 80%, #8b0000 100%);
+            box-shadow: 0 0 15px rgba(139, 0, 0, 0.8), 0 0 30px rgba(255, 0, 0, 0.4);
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        .loading-progress-v {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 3px;
+            background: linear-gradient(180deg, transparent 0%, #8b0000 20%, #ff0000 50%, #ffffff 50%, #ff0000 80%, #8b0000 100%);
+            box-shadow: 0 0 15px rgba(139, 0, 0, 0.8), 0 0 30px rgba(255, 0, 0, 0.4);
+            height: 0%;
+            transition: height 0.1s linear;
+        }
+
+        #loading-progress-text {
+            position: absolute;
+            top: calc(50% + 150px);
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            font-size: clamp(48px, 6vw, 80px);
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            text-shadow: 0 0 20px rgba(139, 0, 0, 1), 0 0 40px rgba(255, 0, 0, 0.8);
+            opacity: 0;
+            z-index: 60;
+            letter-spacing: 6px;
+        }
+
+        /* 激光网格 */
+        .loading-laser-h, .loading-laser-v {
+            position: absolute;
+            background: linear-gradient(90deg, transparent 0%, rgba(139, 0, 0, 0.8) 10%, #ff0000 30%, #ffffff 50%, #ff0000 70%, rgba(139, 0, 0, 0.8) 90%, transparent 100%);
+            box-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 40px rgba(139, 0, 0, 0.8);
+            opacity: 0;
+        }
+
+        .loading-laser-v {
+            background: linear-gradient(180deg, transparent 0%, rgba(139, 0, 0, 0.8) 10%, #ff0000 30%, #ffffff 50%, #ff0000 70%, rgba(139, 0, 0, 0.8) 90%, transparent 100%);
+        }
+
+        #loading-laser-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 200;
+            opacity: 0;
+        }
+
+        /* 玻璃碎片 */
+        .loading-shard {
+            position: absolute;
+            background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(220,220,220,0.8) 30%, rgba(192,192,192,0.6) 60%, rgba(139,0,0,0.3) 100%);
+            border: 1px solid rgba(255,255,255,0.95);
+            box-shadow: 0 0 20px rgba(255,255,255,0.8), inset 0 0 15px rgba(139,0,0,0.3), 0 0 40px rgba(255,0,0,0.4);
+            opacity: 0;
+            z-index: 250;
+        }
+
+        #loading-shatter-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 250;
+        }
+
+        /* 闪光 */
+        #loading-flash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle at center, #ffffff 0%, #ff0000 15%, #8b0000 35%, #000 70%);
+            opacity: 0;
+            z-index: 240;
+            pointer-events: none;
+            transition: opacity 1.2s ease-out;
+        }
+
+        /* 电波 */
+        .loading-wave {
+            position: absolute;
+            border: 3px solid rgba(255, 0, 0, 0.9);
+            border-radius: 50%;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 1), 0 0 60px rgba(139, 0, 0, 0.8), inset 0 0 40px rgba(139, 0, 0, 0.4);
+            opacity: 0;
+            z-index: 30;
+        }
+
+        #loading-wave-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 0;
+            height: 0;
+            z-index: 30;
+        }
+
+        /* 扫描线 */
+        .loading-scanline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent 50%, rgba(139, 0, 0, 0.03) 50%);
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 300;
+        }
+
+        /* 噪点 */
+        .loading-noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 150;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* 主页内容初始隐藏 */
+        #main-content {
+            opacity: 0;
+            transition: opacity 1s ease-out;
+        }
+
+        #main-content.visible {
+            opacity: 1;
+        }
+    </style>
+<style>
         :root {
             --dark-red: #8b0000;
             --darker-red: #4a0000;
@@ -1223,34 +1514,37 @@
         });
     </script>
 
-
-    <!-- 纯Canvas玻璃破碎加载动画 -->
-    <style>
-        #page-loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: radial-gradient(ellipse at center, #0a0a0a 0%, #000 100%); z-index: 99999; overflow: hidden; }
-        #page-loader.hidden { display: none !important; }
-        #page-loader.fade-out { animation: fadeOut 0.6s ease-out forwards; }
-        @keyframes fadeOut { to { opacity: 0; visibility: hidden; } }
-        #gameCanvas { display: block; width: 100%; height: 100%; }
-        .loading-text { position: absolute; top: 15%; left: 50%; transform: translateX(-50%); font-family: Impact, 'Arial Narrow Bold', sans-serif; font-size: clamp(12px, 2.5vw, 20px); letter-spacing: 6px; text-transform: uppercase; color: #666; text-align: center; opacity: 0; transition: all 0.5s ease; pointer-events: none; }
-        .loading-text.show { opacity: 1; color: #c0c0c0; text-shadow: 0 0 20px rgba(139, 0, 0, 0.5); }
-        .progress-box { position: absolute; bottom: 10%; left: 50%; transform: translateX(-50%); width: 300px; text-align: center; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; }
-        .progress-box.visible { opacity: 1; }
-        .progress-line { width: 100%; height: 2px; background: rgba(255, 255, 255, 0.1); margin-bottom: 10px; }
-        .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #8b0000, #c0c0c0); box-shadow: 0 0 10px rgba(139, 0, 0, 0.5); transition: width 0.1s linear; }
-        .progress-number { font-family: 'Courier New', monospace; font-size: 24px; color: #c0c0c0; letter-spacing: 4px; }
-    </style>
 </head>
 <body>
-    <div id="page-loader">
-        <div class="loading-text" id="loadingText">SYSTEM INITIALIZING</div>
-        <canvas id="gameCanvas"></canvas>
-        <div class="progress-box" id="progressBox">
-            <div class="progress-line">
-                <div class="progress-fill" id="progressFill"></div>
-            </div>
-            <div class="progress-number" id="progressNumber">0%</div>
+    <!-- 赛博朋克加载动画 -->
+    <div id="loading-container">
+        <div class="loading-scanline"></div>
+        <div class="loading-noise"></div>
+
+        <div id="loading-subtitle-container">
+            <div id="loading-subtitle-line1">CONCERTS, FESTIVALS, TICKETS, TOUR DATES</div>
+            <div id="loading-subtitle-line2">- LIVE GIGS</div>
         </div>
+
+        <div id="loading-cross-progress">
+            <div class="loading-progress-h" id="loading-progress-h"></div>
+            <div class="loading-progress-v" id="loading-progress-v"></div>
+        </div>
+
+        <div id="loading-progress-text">0%</div>
+
+        <div id="loading-logo-container">
+            <img src="https://livegigsasia.com/image/webtop.png" alt="LiveGigs Asia" id="loading-logo-img" crossorigin="anonymous">
+        </div>
+
+        <div id="loading-laser-grid"></div>
+        <div id="loading-wave-container"></div>
+        <div id="loading-flash"></div>
+        <div id="loading-shatter-container"></div>
     </div>
+
+    <!-- 主页内容容器 -->
+    <div id="main-content">
 
 
     <!-- 导航栏 -->
@@ -1971,252 +2265,274 @@
         window.addEventListener('load', initPoster2Carousel);
     </script>
 
+    </div><!-- /main-content -->
+
+    <!-- 加载动画控制脚本 -->
     <script>
-    const Game={
-        canvas:null,ctx:null,width:0,height:0,centerX:0,centerY:0,
-        logo:null,logoLoaded:false,
-        state:'LOADING',stateTime:0,
-        shards:[],particles:[],progress:0,ui:{},
-        init:function(){
-            this.canvas=document.getElementById('gameCanvas');
-            this.ctx=this.canvas.getContext('2d');
-            this.resize();
-            window.addEventListener('resize',()=>this.resize());
-            this.ui={
-                text:document.getElementById('loadingText'),
-                progressBox:document.getElementById('progressBox'),
-                progressFill:document.getElementById('progressFill'),
-                progressNumber:document.getElementById('progressNumber'),
-                loader:document.getElementById('page-loader'),
-                mainContent:document.getElementById('main-content')
-            };
-            this.loadLogo();
-        },
-        resize:function(){
-            this.width=window.innerWidth;this.height=window.innerHeight;
-            this.canvas.width=this.width;this.canvas.height=this.height;
-            this.centerX=this.width/2;this.centerY=this.height/2;
-        },
-        loadLogo:function(){
-            this.logo=new Image();
-            this.logo.onload=()=>{this.logoLoaded=true;this.startGame();};
-            this.logo.onerror=()=>{this.logo.src='https://livegigsasia.com/image/webtop.png';};
-            this.logo.src='./image/webtop.png';
-        },
-        startGame:function(){
-            setTimeout(()=>{this.ui.text.classList.add('show');this.ui.text.textContent='CONCERTS, FESTIVALS, TICKETS';},300);
-            setTimeout(()=>{this.ui.text.textContent='- LIVE GIGS';},800);
-            setTimeout(()=>{this.state='FLYING';this.stateTime=0;this.ui.progressBox.classList.add('visible');},1200);
-            this.loop();
-        },
-        loop:function(){
-            if(this.state==='FINISHED')return;
-            this.update();this.draw();
-            requestAnimationFrame(()=>this.loop());
-        },
-        update:function(){
-            this.stateTime+=16;
-            switch(this.state){
-                case'FLYING':this.updateFlying();break;
-                case'EXPLODING':this.updateExploding();break;
-            }
-        },
-        updateFlying:function(){
-            const duration=2000;
-            this.progress=Math.min(this.stateTime/duration,1);
-            this.ui.progressFill.style.width=(this.progress*100)+'%';
-            this.ui.progressNumber.textContent=Math.floor(this.progress*100)+'%';
-            if(this.progress>=1)this.startExplosion();
-        },
-        startExplosion:function(){
-            this.state='EXPLODING';this.stateTime=0;
-            for(let i=0;i<100;i++)this.shards.push(new Shard(this.centerX,this.centerY));
-            for(let i=0;i<50;i++)this.particles.push(new Particle(this.centerX,this.centerY));
-            setTimeout(()=>this.finish(),1500);
-        },
-        updateExploding:function(){
-            this.shards.forEach(s=>s.update());
-            this.shards=this.shards.filter(s=>s.life>0);
-            this.particles.forEach(p=>p.update());
-            this.particles=this.particles.filter(p=>p.life>0);
-        },
-        finish:function(){
-            this.state='FINISHED';
-            this.ui.loader.classList.add('fade-out');
-            this.ui.mainContent.style.opacity='1';
-            setTimeout(()=>this.ui.loader.classList.add('hidden'),600);
-        },
-        draw:function(){
-            this.ctx.fillStyle='rgba(0,0,0,0.3)';
-            this.ctx.fillRect(0,0,this.width,this.height);
-            switch(this.state){
-                case'FLYING':this.drawFlying();break;
-                case'EXPLODING':this.drawExploding();break;
-            }
-        },
-        drawFlying:function(){
-            if(!this.logoLoaded)return;
-            const ctx=this.ctx,t=this.progress;
-            const startScale=0.05,endScale=1.0,scale=startScale+(endScale-startScale)*t;
-            const maxWidth=Math.min(this.width*0.7,500);
-            const drawWidth=maxWidth*scale;
-            const drawHeight=(this.logo.height/this.logo.width)*drawWidth;
-            const x=this.centerX-drawWidth/2,y=this.centerY-drawHeight/2;
-            ctx.save();
-            ctx.shadowColor='#8b0000';ctx.shadowBlur=t*30;
-            ctx.globalAlpha=0.3+t*0.7;
-            ctx.drawImage(this.logo,x,y,drawWidth,drawHeight);
-            ctx.restore();
-            for(let i=0;i<3;i++){
-                const ringT=(t-i*0.2)/0.5;
-                if(ringT>0&&ringT<1){
-                    const radius=50+ringT*500;
-                    ctx.beginPath();
-                    ctx.arc(this.centerX,this.centerY,radius,0,Math.PI*2);
-                    ctx.strokeStyle=`rgba(139,0,0,${(1-ringT)*0.5})`;
-                    ctx.lineWidth=3;ctx.stroke();
+        (function() {
+            const loading = {
+                container: document.getElementById('loading-container'),
+                subtitleContainer: document.getElementById('loading-subtitle-container'),
+                subtitleLine1: document.getElementById('loading-subtitle-line1'),
+                subtitleLine2: document.getElementById('loading-subtitle-line2'),
+                logoContainer: document.getElementById('loading-logo-container'),
+                progressH: document.getElementById('loading-progress-h'),
+                progressV: document.getElementById('loading-progress-v'),
+                progressContainer: document.getElementById('loading-cross-progress'),
+                progressText: document.getElementById('loading-progress-text'),
+                laserGrid: document.getElementById('loading-laser-grid'),
+                flash: document.getElementById('loading-flash'),
+                waveContainer: document.getElementById('loading-wave-container'),
+                shatterContainer: document.getElementById('loading-shatter-container'),
+                mainContent: document.getElementById('main-content'),
+
+                async init() {
+                    // 主页内容先隐藏
+                    this.mainContent.style.opacity = '0';
+                    await this.preloadLogo();
+                    this.startSequence();
+                },
+
+                preloadLogo() {
+                    return new Promise((resolve) => {
+                        const img = new Image();
+                        img.onload = resolve;
+                        img.onerror = resolve;
+                        img.src = 'https://livegigsasia.com/image/webtop.png';
+                    });
+                },
+
+                async startSequence() {
+                    // 阶段1: 打字
+                    this.subtitleLine1.classList.add('typing');
+                    await this.wait(2000);
+
+                    // 显示 - LIVE GIGS
+                    this.subtitleLine2.style.opacity = '1';
+                    this.subtitleLine2.style.animation = 'loadingTyping 0.8s steps(12) forwards';
+                    this.subtitleLine2.style.width = '0';
+                    this.subtitleLine2.style.whiteSpace = 'nowrap';
+                    this.subtitleLine2.style.overflow = 'hidden';
+                    this.subtitleLine2.style.borderRight = '2px solid #8b0000';
+                    this.subtitleLine2.style.display = 'inline-block';
+
+                    await this.wait(1000);
+
+                    // 隐藏副标题
+                    this.subtitleContainer.style.transition = 'all 0.3s';
+                    this.subtitleContainer.style.opacity = '0';
+                    this.subtitleContainer.style.transform = 'translateX(-50%) scale(0.8)';
+
+                    await this.wait(300);
+                    this.subtitleContainer.style.display = 'none';
+
+                    // 阶段2: Logo砸入
+                    this.logoContainer.classList.add('impact');
+                    this.progressContainer.style.opacity = '1';
+                    this.progressText.style.opacity = '1';
+
+                    // 阶段3: 进度条
+                    await this.animateProgress();
+
+                    // 阶段4: 激光网格爆炸
+                    await this.laserExplosion();
+
+                    // 阶段5: 显示主页
+                    await this.showMainContent();
+                },
+
+                async animateProgress() {
+                    const duration = 1800;
+                    const startTime = Date.now();
+
+                    return new Promise(resolve => {
+                        const update = () => {
+                            const elapsed = Date.now() - startTime;
+                            const progress = Math.min(elapsed / duration, 1);
+                            const percentage = Math.floor(progress * 100);
+
+                            this.progressH.style.width = (progress * 100) + 'vw';
+                            this.progressV.style.height = (progress * 100) + 'vh';
+                            this.progressText.textContent = percentage + '%';
+
+                            if (percentage < 30) {
+                                this.progressText.style.color = '#8b0000';
+                            } else if (percentage < 70) {
+                                this.progressText.style.color = '#ff3333';
+                            } else {
+                                this.progressText.style.color = '#fff';
+                                this.progressText.style.textShadow = '0 0 30px rgba(255, 0, 0, 1), 0 0 60px rgba(139, 0, 0, 0.9)';
+                                if (percentage > 85 && !this.logoContainer.classList.contains('pulsing')) {
+                                    this.logoContainer.classList.add('pulsing');
+                                }
+                            }
+
+                            if (progress < 1) {
+                                requestAnimationFrame(update);
+                            } else {
+                                this.progressText.textContent = '100%';
+                                resolve();
+                            }
+                        };
+                        requestAnimationFrame(update);
+                    });
+                },
+
+                async laserExplosion() {
+                    const logoRect = document.getElementById('loading-logo-img').getBoundingClientRect();
+                    const centerY = logoRect.top + logoRect.height / 2;
+
+                    this.createLaserGrid(centerY);
+                    await this.wait(600);
+
+                    this.flash.style.opacity = '1';
+                    this.createShatter();
+                    this.createWaves();
+
+                    await this.wait(100);
+                    this.flash.style.opacity = '0';
+                    await this.wait(1200);
+                },
+
+                createLaserGrid(logoCenterY) {
+                    this.laserGrid.style.opacity = '1';
+                    const numH = 12, numV = 16;
+
+                    for (let i = 0; i < numH; i++) {
+                        const laser = document.createElement('div');
+                        laser.className = 'loading-laser-h';
+                        laser.style.height = '2px';
+                        laser.style.left = '0';
+                        laser.style.width = '100%';
+
+                        let topPos;
+                        if (i === 0) topPos = logoCenterY;
+                        else if (i % 2 === 1) topPos = logoCenterY - (Math.ceil(i/2) * (window.innerHeight / numH));
+                        else topPos = logoCenterY + (i/2 * (window.innerHeight / numH));
+
+                        laser.style.top = topPos + 'px';
+                        this.laserGrid.appendChild(laser);
+
+                        const delay = Math.abs(i - numH/2) * 30;
+                        laser.animate([
+                            { transform: 'scaleX(0)', opacity: 0 },
+                            { transform: 'scaleX(1)', opacity: 1, offset: 0.3 },
+                            { transform: 'scaleX(1)', opacity: 1 }
+                        ], { duration: 800, delay: delay, easing: 'cubic-bezier(0.4, 0, 0.2, 1)', fill: 'forwards' });
+                    }
+
+                    for (let i = 0; i < numV; i++) {
+                        const laser = document.createElement('div');
+                        laser.className = 'loading-laser-v';
+                        laser.style.width = '2px';
+                        laser.style.top = '0';
+                        laser.style.height = '100%';
+                        laser.style.left = ((i + 1) * (window.innerWidth / (numV + 1))) + 'px';
+                        this.laserGrid.appendChild(laser);
+
+                        const delay = Math.abs(i - numV/2) * 25;
+                        laser.animate([
+                            { transform: 'scaleY(0)', opacity: 0 },
+                            { transform: 'scaleY(1)', opacity: 1, offset: 0.3 },
+                            { transform: 'scaleY(1)', opacity: 1 }
+                        ], { duration: 800, delay: delay, easing: 'cubic-bezier(0.4, 0, 0.2, 1)', fill: 'forwards' });
+                    }
+                },
+
+                createShatter() {
+                    const shards = 100;
+                    const logoRect = document.getElementById('loading-logo-img').getBoundingClientRect();
+                    const centerX = logoRect.left + logoRect.width / 2;
+                    const centerY = logoRect.top + logoRect.height / 2;
+
+                    for (let i = 0; i < shards; i++) {
+                        const shard = document.createElement('div');
+                        shard.className = 'loading-shard';
+
+                        const angle = (i / shards) * 360 + Math.random() * 20;
+                        const startDist = Math.random() * 100;
+                        const rad = (angle * Math.PI) / 180;
+                        const startX = centerX + Math.cos(rad) * startDist;
+                        const startY = centerY + Math.sin(rad) * startDist;
+
+                        shard.style.width = (30 + Math.random() * 80) + 'px';
+                        shard.style.height = (30 + Math.random() * 80) + 'px';
+                        shard.style.left = startX + 'px';
+                        shard.style.top = startY + 'px';
+
+                        const p1 = Math.random() * 25, p2 = 25 + Math.random() * 25;
+                        const p3 = 50 + Math.random() * 25, p4 = 75 + Math.random() * 25;
+                        shard.style.clipPath = `polygon(${p1}% 0%, 100% ${p2}%, ${p3}% 100%, 0% ${p4}%)`;
+
+                        this.shatterContainer.appendChild(shard);
+
+                        const flyDist = 300 + Math.random() * 800;
+                        const destX = Math.cos(rad) * flyDist;
+                        const destY = Math.sin(rad) * flyDist;
+                        const rotation = Math.random() * 1440 - 720;
+
+                        shard.animate([
+                            { transform: `translate(-50%, -50%) scale(0.3) rotate(0deg)`, opacity: 0 },
+                            { transform: `translate(-50%, -50%) scale(1.3) rotate(${rotation * 0.15}deg)`, opacity: 1, offset: 0.08 },
+                            { transform: `translate(calc(-50% + ${destX * 0.6}px), calc(-50% + ${destY * 0.6}px)) scale(1) rotate(${rotation * 0.4}deg)`, opacity: 0.95, offset: 0.4 },
+                            { transform: `translate(calc(-50% + ${destX}px), calc(-50% + ${destY}px)) scale(0.2) rotate(${rotation}deg)`, opacity: 0 }
+                        ], { duration: 2000 + Math.random() * 800, easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)', fill: 'forwards' });
+                    }
+                },
+
+                createWaves() {
+                    for (let i = 0; i < 8; i++) {
+                        setTimeout(() => {
+                            const wave = document.createElement('div');
+                            wave.className = 'loading-wave';
+                            wave.style.left = '50%';
+                            wave.style.top = '50%';
+                            wave.style.transform = 'translate(-50%, -50%)';
+                            wave.style.width = '50px';
+                            wave.style.height = '50px';
+                            this.waveContainer.appendChild(wave);
+
+                            wave.animate([
+                                { width: '50px', height: '50px', opacity: 1, borderWidth: '4px' },
+                                { width: '500vw', height: '500vw', opacity: 0, borderWidth: '0px' }
+                            ], { duration: 3000, easing: 'ease-out', fill: 'forwards' }).onfinish = () => wave.remove();
+                        }, i * 120);
+                    }
+
+                    const burst = document.createElement('div');
+                    burst.style.cssText = 'position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:0;height:0;background:radial-gradient(circle,rgba(255,0,0,1)0%,rgba(139,0,0,0.8)20%,rgba(139,0,0,0.3)50%,transparent 70%);border-radius:50%;z-index:25;';
+                    this.waveContainer.appendChild(burst);
+                    burst.animate([
+                        { width: '0', height: '0', opacity: 1 },
+                        { width: '600vw', height: '600vw', opacity: 0 }
+                    ], { duration: 3500, easing: 'ease-out', fill: 'forwards' });
+                },
+
+                async showMainContent() {
+                    // 显示主页内容
+                    this.mainContent.classList.add('visible');
+
+                    // 隐藏加载动画
+                    await this.wait(500);
+                    this.container.classList.add('hidden');
+
+                    // 清理DOM
+                    await this.wait(1500);
+                    this.container.style.display = 'none';
+                },
+
+                wait(ms) {
+                    return new Promise(resolve => setTimeout(resolve, ms));
                 }
-            }
-        },
-        drawExploding:function(){
-            this.shards.forEach(s=>s.draw(this.ctx));
-            this.particles.forEach(p=>p.draw(this.ctx));
-            if(this.stateTime<300){
-                const flashAlpha=1-this.stateTime/300;
-                this.ctx.fillStyle=`rgba(255,255,255,${flashAlpha})`;
-                this.ctx.fillRect(0,0,this.width,this.height);
-            }
-            const waveRadius=this.stateTime*2;
-            if(waveRadius<1000){
-                this.ctx.beginPath();
-                this.ctx.arc(this.centerX,this.centerY,waveRadius,0,Math.PI*2);
-                this.ctx.strokeStyle=`rgba(139,0,0,${1-waveRadius/1000})`;
-                this.ctx.lineWidth=10;this.ctx.stroke();
-            }
-        }
-    };
-    class Shard{
-        constructor(x,y){
-            this.x=x;this.y=y;
-            const angle=Math.random()*Math.PI*2;
-            const speed=8+Math.random()*12;
-            this.vx=Math.cos(angle)*speed;this.vy=Math.sin(angle)*speed;
-            this.rotation=Math.random()*Math.PI*2;
-            this.rotationSpeed=(Math.random()-0.5)*0.3;
-            this.size=20+Math.random()*60;
-            this.points=[];
-            const sides=4+Math.floor(Math.random()*3);
-            for(let i=0;i<sides;i++){
-                const a=(i/sides)*Math.PI*2;
-                const r=this.size*(0.4+Math.random()*0.6);
-                this.points.push({x:Math.cos(a)*r,y:Math.sin(a)*r});
-            }
-            this.color=Math.random()>0.4?'#8b0000':'#c0c0c0';
-            this.life=1.0;
-        }
-        update(){
-            this.x+=this.vx;this.y+=this.vy;
-            this.vx*=0.98;this.vy*=0.98;
-            this.vy+=0.3;
-            this.rotation+=this.rotationSpeed;
-            this.life-=0.015;
-        }
-        draw(ctx){
-            if(this.life<=0)return;
-            ctx.save();
-            ctx.translate(this.x,this.y);
-            ctx.rotate(this.rotation);
-            ctx.globalAlpha=this.life;
-            ctx.beginPath();
-            this.points.forEach((p,i)=>{if(i===0)ctx.moveTo(p.x,p.y);else ctx.lineTo(p.x,p.y);});
-            ctx.closePath();
-            const grad=ctx.createRadialGradient(0,0,0,0,0,this.size);
-            grad.addColorStop(0,'rgba(255,255,255,0.9)');
-            grad.addColorStop(0.5,this.color);
-            grad.addColorStop(1,'rgba(139,0,0,0.3)');
-            ctx.fillStyle=grad;ctx.fill();
-            ctx.strokeStyle='rgba(255,255,255,0.5)';
-            ctx.lineWidth=1;ctx.stroke();
-            ctx.restore();
-        }
-    }
-    class Particle{
-        constructor(x,y){
-            this.x=x;this.y=y;
-            const angle=Math.random()*Math.PI*2;
-            const speed=5+Math.random()*10;
-            this.vx=Math.cos(angle)*speed;this.vy=Math.sin(angle)*speed;
-            this.size=2+Math.random()*4;
-            this.color=Math.random()>0.5?'#8b0000':'#ffffff';
-            this.life=1.0;
-        }
-        update(){
-            this.x+=this.vx;this.y+=this.vy;
-            this.vx*=0.95;this.vy*=0.95;
-            this.life-=0.02;
-        }
-        draw(ctx){
-            if(this.life<=0)return;
-            ctx.save();
-            ctx.globalAlpha=this.life;
-            ctx.fillStyle=this.color;
-            ctx.shadowColor=this.color;ctx.shadowBlur=10;
-            ctx.beginPath();
-            ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
-            ctx.fill();
-            ctx.restore();
-        }
-    }
-    if(document.readyState==='loading'){
-        document.addEventListener('DOMContentLoaded',()=>Game.init());
-    }else{
-        Game.init();
-    }
-    </script>
-</body>
-</html>   fadeFlash();
-            const ringGeo=new THREE.RingGeometry(0.1,0.5,32);
-            const ringMat=new THREE.MeshBasicMaterial({color:0x8b0000,transparent:true,opacity:0.8,side:THREE.DoubleSide});
-            const ring=new THREE.Mesh(ringGeo,ringMat);
-            ring.position.z=1;
-            this.scene.add(ring);
-            const expandRing=()=>{
-                ring.scale.multiplyScalar(1.1);
-                ringMat.opacity-=0.02;
-                if(ringMat.opacity>0)requestAnimationFrame(expandRing);
-                else this.scene.remove(ring);
             };
-            expandRing();
-        },
-        updateShatter:function(elapsed){
-            this.glassPieces.forEach(piece=>{
-                piece.mesh.position.add(piece.velocity);
-                piece.mesh.rotation.x+=piece.rotationSpeed.x;
-                piece.mesh.rotation.y+=piece.rotationSpeed.y;
-                piece.mesh.rotation.z+=piece.rotationSpeed.z;
-                piece.velocity.y-=0.005;
-                piece.velocity.multiplyScalar(0.995);
-                piece.life-=0.008;
-                piece.mesh.material.opacity=Math.max(0,piece.life);
-                if(piece.life<=0)piece.mesh.visible=false;
-            });
-            this.camera.position.z+=0.1;
-        },
-        exit:function(){
-            this.phase='exited';
-            this.elements.loader.classList.add('fade-out');
-            this.elements.mainContent.style.opacity='1';
-            setTimeout(()=>{
-                this.elements.loader.classList.add('hidden');
-                this.renderer.dispose();
-            },800);
-        }
-    };
-    if(document.readyState==='loading'){
-        document.addEventListener('DOMContentLoaded',()=>Glass3DLoader.init());
-    }else{
-        Glass3DLoader.init();
-    }
+
+            // 启动加载动画
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', () => loading.init());
+            } else {
+                loading.init();
+            }
+        })();
     </script>
 </body>
 </html>
