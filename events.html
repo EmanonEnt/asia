@@ -2383,12 +2383,16 @@ if ('serviceWorker' in navigator) {
             const now = new Date();
             now.setHours(0, 0, 0, 0);
 
-            const upcoming = [];
-            const passed = [];
+            const upcoming = []; // åæ¬å³å°å¼å§åæ­£å¨å·¡æ¼ç
+            const passed = [];   // å·²è¿æï¼ç»ææ¥æå·²è¿ï¼
 
             sortedData.forEach(item => {
                 const itemDate = parseDate(item.date);
-                if (itemDate >= now) {
+                const itemEndDate = item.endDate ? parseDate(item.endDate) : itemDate;
+                itemEndDate.setHours(23, 59, 59, 999); // ç»ææ¥æè®¾ä¸ºå½å¤©æåä¸å»
+
+                // å¦æç»ææ¥æè¿æªè¿ï¼åè§ä¸º upcomingï¼åæ¬æ­£å¨å·¡æ¼çï¼
+                if (itemEndDate >= now) {
                     upcoming.push(item);
                 } else {
                     passed.push(item);
